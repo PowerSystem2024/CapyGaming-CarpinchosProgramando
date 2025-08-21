@@ -1,0 +1,702 @@
+export const productos = [
+    {
+    id: 1,
+    nombre: "Notebook Acer Aspire 3 15.6 AMD Ryzen 5 7520U 8GB DDR5 SSD 512GB",
+    precio: "$ 850000",
+    imagenes: [
+    "https://imgur.com/7NMbCj1.jpg",
+    "https://imgur.com/7GsShZt.jpg",
+    ],
+    categoria: "Notebook",
+    },
+    {
+    id: 2,
+    nombre:
+    "Notebook Asus Rog Strix G16 16 32GB 275HX Intel Core ULTRA 9 DDR5 1TB",
+    precio: "$ 5700650",
+    imagenes: [
+    "https://imgur.com/ZUmtx2s.jpg",
+    "https://imgur.com/pHnYteI.jpg",
+    ],
+    categoria: "Notebook",
+    },
+    {
+    id: 3,
+    nombre:
+    "Notebook Lenovo IdeaPad Slim 3 15.6 Intel Core i3 N305 8GB SSD 256GB Win11 Arctic Grey 15IAN8 82XB008LUS",
+    precio: "$ 620900",
+    imagenes: [
+    "https://imgur.com/TeEWZvg.jpg",
+    "https://imgur.com/VFVyifI.jpg",
+    ],
+    categoria: "Notebook",
+    },
+    {
+    id: 4,
+    nombre:
+    "Notebook Asus Vivobook Go 15 15.6 AMD Ryzen 5 7520U 8GB DDR5 SSD 1TB Win11 Teclado Español E1504FA-NJ179W-F",
+    precio: "$ 870900",
+    imagenes: [
+    "https://imgur.com/QT51L4G.jpg",
+    "https://imgur.com/EZyGHIf.jpg",
+    ],
+    categoria: "Notebook",
+    },
+    {
+    id: 5,
+    nombre:
+    "Kit Mother ASUS H610M-K + Procesador Intel Core I5 12400F 4.4GHz Turbo (Sin Video Integrado)",
+    precio: "$ 280960",
+    imagenes: ["https://imgur.com/gkaPcT8.jpg"],
+    categoria: "Kit Upgrade",
+    },
+    {
+    id: 6,
+    nombre:
+    "Kit Procesador Intel Core I7 12700 4.9GHz Turbo (Con Video Integrado) + Mother ASUS PRIME H610M-K CSM DDR4 S1700 + 2x Memoria Team DDR4 8GB 3200Mhz Vulcan ASUS TUF Alliance CL16",
+    precio: "$ 595800",
+    imagenes: ["https://imgur.com/LEortWA.jpg"],
+    categoria: "Kit Upgrade",
+    },
+    {
+    id: 7,
+    nombre:
+    "Kit Mother ASUS H610M-K + Procesador Intel Core I7 12700F 4.9GHz Turbo (Sin Video Integrado) + Memoria Team DDR4 8GB 3200Mhz Vulcan ASUS TUF Certificate",
+    precio: "$ 530700",
+    imagenes: ["https://imgur.com/nlkNm3D.jpg"],
+    categoria: "Kit Upgrade",
+    },
+    {
+    id: 8,
+    nombre: "Volante Logitech G923 Trueforce Racing PC/PS4/PS5 + Palanca",
+    precio: "$ 650700",
+    imagenes: ["https://imgur.com/utuxRgi.jpg"],
+    categoria: "Volante",
+    },
+    {
+    id: 9,
+    nombre: "Volante Logitech G923 Trueforce Racing PC/PS4/PS5",
+    precio: "$ 570700",
+    imagenes: ["https://imgur.com/GoPofvS.jpg"],
+    categoria: "Volante",
+    },
+    {
+    id: 10,
+    nombre: "Palanca de Cambios Secuencial y Freno de Mano Logitech RS",
+    precio: "$ 298900",
+    imagenes: ["https://imgur.com/VhNvJoo.jpg"],
+    categoria: "Volante",
+    },
+    {
+    id: 11,
+    nombre: "Disco Sólido SSD Kingston 480GB A400 500MB/s",
+    precio: "$ 58000",
+    imagenes: ["https://imgur.com/b5MXCcg.jpg"],
+    categoria: "Almacenamiento/Disco Solido",
+    },
+    {
+    id: 12,
+    nombre: "Disco Solido SSD M.2 Team 256GB MP33 1600MB/s NVMe PCI-E Gen3 x4",
+    precio: "$ 35000",
+    imagenes: [
+    "https://imgur.com/VD93ACW.jpg",
+    "https://imgur.com/n6q0D5Q.jpg",
+    ],
+    categoria: "Almacenamiento/Disco Solido",
+    },
+    {
+    id: 13,
+    nombre: "Disco Rígido WD 8TB PURPLE 256MB SATA 6.0GB/s",
+    precio: "$ 315000",
+    imagenes: ["https://imgur.com/kNePEfO.jpg"],
+    categoria: "Almacenamiento/Disco Rigido",
+    },
+    {
+    id: 14,
+    nombre: "Disco Rígido Seagate 4TB Barracuda 256MB SATA 6GB/s",
+    precio: "$ 132000",
+    imagenes: ["https://imgur.com/qu4FswG.jpg"],
+    categoria: "Almacenamiento/Disco Rigido",
+    },
+    {
+    id: 15,
+    nombre: "Disco Solido SSD Team 256GB GX2 530MB/s",
+    precio: "$ 27500",
+    imagenes: ["https://imgur.com/sCxja0q.jpg"],
+    categoria: "Almacenamiento/Disco Solido",
+    },
+    {
+    id: 16,
+    nombre: "Disco Rigido WD 8TB Purple Pro 7.2K RPM 256MB WD8002PURP",
+    precio: "$ 352000",
+    imagenes: ["https://imgur.com/b5gWfKP.jpg"],
+    categoria: "Almacenamiento/Disco Rigido",
+    },
+    {
+    id: 17,
+    nombre: "Auriculares Logitech H390 Black USB",
+    precio: "$ 46000",
+    imagenes: ["https://imgur.com/sZw82Al.jpg"],
+    categoria: "Perifericos/Auriculares",
+    },
+    {
+    id: 18,
+    nombre:
+    "Mouse Logitech G903 Wireless 2.4Ghz Lightspeed 1ms HERO 25K 110g 24Hs",
+    precio: "$ 115000",
+    imagenes: ["https://imgur.com/J1r76Mz.jpg"],
+    categoria: "Perifericos/Mouse",
+    },
+    {
+    id: 19,
+    nombre: "Mouse Redragon Griffin M607 RGB Black",
+    precio: "$ 25000",
+    imagenes: ["https://imgur.com/1X9OzTp.jpg"],
+    categoria: "Perifericos/Mouse",
+    },
+    {
+    id: 20,
+    nombre: "Microfono Redragon Blazar GM300 Condensador USB",
+    precio: "$ 110500",
+    imagenes: ["https://imgur.com/sjdI68E.jpg"],
+    categoria: "Perifericos/Microfono",
+    },
+    {
+    id: 21,
+    nombre:
+    "Auriculares Logitech G733 Wireless Lightspeed LightSync RGB Blue 29Hs",
+    precio: "$ 300300",
+    imagenes: ["https://imgur.com/2zWWaFi.jpg"],
+    categoria: "Perifericos/Auriculares",
+    },
+    {
+    id: 22,
+    nombre:
+    "Microfono Logitech Yeti GX Premium Supercardioide Black RGB LightSync USB-C",
+    precio: "$ 169000",
+    imagenes: ["https://imgur.com/l7qamr3.jpg"],
+    categoria: "Perifericos/Microfono",
+    },
+    {
+    id: 23,
+    nombre:
+    "Micrófono SteelSeries Alias PRO Condensador Studio Quality XLR Stream Mixer RGB Niveles de Led ANC USB-C",
+    precio: "$ 500900",
+    imagenes: ["https://imgur.com/kxKuUwt.jpg"],
+    categoria: "Perifericos/Microfono",
+    },
+    {
+    id: 24,
+    nombre:
+    "Mouse SteelSeries Aerox 9 MOBA/MMO Wireless 2.4Ghz Bluetooth Ultra LightWeight AquaBarrier IP54 Sensor TrueMove Air RGB 89g 180Hs",
+    precio: "$ 200300",
+    imagenes: ["https://imgur.com/n1TeF7z.jpg"],
+    categoria: "Perifericos/Mouse",
+    },
+    {
+    id: 25,
+    nombre: "Mouse Pad Logitech G Powerplay Carga Inalambrica 321x344mm",
+    precio: "$ 200000",
+    imagenes: ["https://imgur.com/zjafcLs.jpg"],
+    categoria: "Perifericos/MousePad",
+    },
+    {
+    id: 26,
+    nombre: "Mouse Pad Logitech XL Lavanda 700x300mm",
+    precio: "$ 30000",
+    imagenes: ["https://imgur.com/EKXH6Op.jpg"],
+    categoria: "Perifericos/MousePad",
+    },
+    {
+    id: 27,
+    nombre: "Teclado Redragon K509 Dyaus Español Retroiluminado 7 Colores",
+    precio: "$ 30000",
+    imagenes: ["https://imgur.com/l87hKRH.jpg"],
+    categoria: "Perifericos/Teclado",
+    },
+    {
+    id: 28,
+    nombre:
+    "Combo Redragon S129 3 en 1 Teclado K630 + Mouse M607 White + Auriculares H350 RGB White",
+    precio: "$ 110000",
+    imagenes: ["https://imgur.com/RJ0NpQi.jpg"],
+    categoria: "Perifericos/Combo",
+    },
+    {
+    id: 29,
+    nombre: "Webcam Logitech Brio 300 Rose 1080p/30 fps 720p/60fps USB-C",
+    precio: "$ 80000",
+    imagenes: ["https://imgur.com/i3mfaU2.jpg"],
+    categoria: "Perifericos/Webcam",
+    },
+    {
+    id: 30,
+    nombre: "Webcam Logitech MX Brio UHD RightLight 5 4K HDR 1080p/60FPS USB-C",
+    precio: "$ 260000",
+    imagenes: ["https://imgur.com/XWkys09.jpg"],
+    categoria: "Perifericos/Webcam",
+    },
+    {
+    id: 31,
+    nombre: "Webcam Elgato MK.2 1080p 60fps HDR DSLR USB",
+    precio: "$ 215000",
+    imagenes: ["https://imgur.com/vcJ1pgr.jpg"],
+    categoria: "Perifericos/Webcam",
+    },
+    {
+    id: 32,
+    nombre:
+    "Parlante JBL Charge 5 Black Bluetooth 5.2 Resistente Polvo/Agua IP67 40W 20Hs",
+    precio: "$ 280000",
+    imagenes: ["https://imgur.com/vf1GH39.jpg"],
+    categoria: "Perifericos/Parlante",
+    },
+    {
+    id: 33,
+    nombre: "Parlante Logitech Ultimate Ears Megaboom 4 Black",
+    precio: "$ 330000",
+    imagenes: ["https://imgur.com/l0RnuOx.jpg"],
+    categoria: "Perifericos/Parlante",
+    },
+    {
+    id: 34,
+    nombre:
+    "Parlante JBL CLIP 5 Bluetooth 5.3 Resistente Polvo/Agua IP67 Black 15Hs",
+    precio: "$ 81000",
+    imagenes: ["https://imgur.com/suly2TP.jpg"],
+    categoria: "Perifericos/Parlante",
+    },
+    {
+    id: 35,
+    nombre:
+    "Auriculares SteelSeries Arctis Nova PRO Dualconnect Wireless 2.4Ghz Bluetooth White Infinity Power System 44Hs Hot-swap PC/PS/XBOX/MAC/Switch",
+    precio: "$ 640000",
+    imagenes: ["https://imgur.com/IaQlq8D.jpg"],
+    categoria: "Perifericos/Auriculares",
+    },
+    {
+    id: 36,
+    nombre:
+    "Teclado Hipermagnético Steel Series Apex PRO TKL 3 Wireless 2.4Ghz Bluetooth Black RGB Omnipoint 3.0 Hall Effect",
+    precio: "$ 360000",
+    imagenes: ["https://imgur.com/jOTEMlM.jpg"],
+    categoria: "Perifericos/Teclado",
+    },
+    {
+    id: 37,
+    nombre: "Combo Logitech teclado y mouse POP Icon Wireless Graphite",
+    precio: "$ 82000",
+    imagenes: ["https://imgur.com/J3yZFAz.jpg"],
+    categoria: "Perifericos/Combo",
+    },
+    {
+    id: 38,
+    nombre: "Combo Logitech teclado y mouse POP Icon Wireless White",
+    precio: "$ 82000",
+    imagenes: ["https://imgur.com/yX6kdbm.jpg"],
+    categoria: "Perifericos/Combo",
+    },
+    {
+    id: 39,
+    nombre: "Gabinete Cougar MX410 Mesh-G RGB 4x120mm ARGB Fans",
+    precio: "$ 90000",
+    imagenes: ["https://imgur.com/8mQnJvi.jpg"],
+    categoria: "Gabinetes",
+    },
+    {
+    id: 40,
+    nombre: "Gabinete Corsair 6500D Airflow TG Super Mid-Tower White",
+    precio: "$ 290000",
+    imagenes: ["https://imgur.com/dYzo2W9.jpg"],
+    categoria: "Gabinetes",
+    },
+    {
+    id: 41,
+    nombre:
+    "Gabinete HYTE Y70 TOUCH INFINITE Snow White Vidrio Templado Pantalla Tactil 2.5K LCD IPS 60Hz Inc. Cable Riser PCIe 4x16 USB-C 3.2",
+    precio: "$ 620000",
+    imagenes: ["https://imgur.com/FSpNnAy.jpg"],
+    categoria: "Gabinetes",
+    },
+    {
+    id: 42,
+    nombre:
+    "Gabinete HYTE Y70 TOUCH INFINITE Black Vidrio Templado Pantalla Tactil 2.5K LCD IPS 60Hz Inc. Cable Riser PCIe 4x16 USB-C 3.2",
+    precio: "$ 620000",
+    imagenes: ["https://imgur.com/FQKh4VQ.jpg"],
+    categoria: "Gabinetes",
+    },
+    {
+    id: 43,
+    nombre: "Mouse Pad Glorious 2 3XL Stitched Black 1220x610mm",
+    precio: "$ 90000",
+    imagenes: ["https://imgur.com/yKdc2hF.jpg"],
+    categoria: "Perifericos/MousePad",
+    },
+    {
+    id: 44,
+    nombre:
+    "Joystick XBOX Wireless Bluetooth DOOM The Dark Ages PC/XBOX Serie S/X/One",
+    precio: "$ 203000",
+    imagenes: ["https://imgur.com/nShyJLB.jpg"],
+    categoria: "Perifericos/Joystick",
+    },
+    {
+    id: 45,
+    nombre:
+    "Teclado Mecanico Glorious GMMK3 HE 75% RGB Hall Efect 8K Hz White US",
+    precio: "$ 240000",
+    imagenes: ["https://imgur.com/mG9Jw9u.jpg"],
+    categoria: "Perifericos/Teclado",
+    },
+    {
+    id: 46,
+    nombre: "Silla Gamer Cooler Master Caliber X1C Grey 4D (Peso MAX 150Kg)",
+    precio: "$ 500000",
+    imagenes: [
+    "https://imgur.com/EBOXGfv.jpg",
+    "https://imgur.com/Qijp8h2.jpg",
+    ],
+    categoria: "Silla",
+    },
+    {
+    id: 47,
+    nombre:
+    "Silla Gamer Noblechairs EPIC Fallout Nuka Cola Edition (sin almohadones) (Peso MAX. 120kg)",
+    precio: "$ 680000",
+    imagenes: [
+    "https://imgur.com/pumwnOI.jpg",
+    "https://imgur.com/yiJcKTt.jpg",
+    ],
+    categoria: "Silla",
+    },
+    {
+    id: 48,
+    nombre:
+    "Silla Gamer Vertagear SL3800 HygennX Negro Carbon Ergonomic (Peso MAX. 100kg)",
+    precio: "$ 380000",
+    imagenes: [
+    "https://imgur.com/IW32Gn8.jpg",
+    "https://imgur.com/drRPQ6T.jpg",
+    ],
+    categoria: "Silla",
+    },
+    {
+    id: 49,
+    nombre:
+    "Silla Gamer Razer Iskur V2 X Tela 2D Gris y Negro Ergonomic (Peso MAX. 136Kg)",
+    precio: "$ 520000",
+    imagenes: ["https://imgur.com/MTeUk2K.jpg"],
+    categoria: "Silla",
+    },
+    {
+    id: 50,
+    nombre: "Procesador AMD Ryzen 5 4500 + Wraith Stealth Cooler AM4",
+    precio: "$ 100000",
+    imagenes: ["https://imgur.com/NP0OqXK.jpg"],
+    categoria: "Procesadores",
+    },
+    {
+    id: 51,
+    nombre:
+    "Procesador AMD Ryzen 9 7950X 5.7GHz AM5 - No incluye Cooler - C/Video",
+    precio: "$ 840000",
+    imagenes: [
+    "https://imgur.com/mA5Vpu7.jpg",
+    "https://imgur.com/hdGVGtA.jpg",
+    ],
+    categoria: "Procesadores",
+    },
+    {
+    id: 52,
+    nombre:
+    "Procesador AMD Ryzen 7 9800X3D 5.2GHz Turbo AM5 - No Incluye Cooler",
+    precio: "$ 720000",
+    imagenes: ["https://imgur.com/r0HRhbN.jpg"],
+    categoria: "Procesadores",
+    },
+    {
+    id: 53,
+    nombre: "UPS con Estabilizador Lyonn Ctb 800ap 800v LED",
+    precio: "$ 80000",
+    imagenes: ["https://imgur.com/TWKQiZN.jpg"],
+    categoria: "Estabilizadores",
+    },
+    {
+    id: 54,
+    nombre: "UPS con Estabilizador Lyonn Ctb 2000ap 2000v Display Lcd",
+    precio: "$ 322000",
+    imagenes: ["https://imgur.com/LUTYm2k.jpg"],
+    categoria: "Estabilizadores",
+    },
+    {
+    id: 55,
+    nombre: "Monitor LG 28'' Dual Ergo 28MQ780-B SDQHD Nano IPS",
+    precio: "$ 1109000",
+    imagenes: [
+    "https://imgur.com/PVS1gAW.jpg",
+    "https://imgur.com/YZFCHja.jpg",
+    ],
+    categoria: "Monitores",
+    },
+    {
+    id: 56,
+    nombre:
+    "Monitor Gamer AsRock Phantom PG27QFT2A 27 pulgadas QHD IPS 1440p 180Hz FreeSync Antena WiFi Integrada Base Regulable",
+    precio: "$ 410000",
+    imagenes: ["https://imgur.com/suroFP3.jpg"],
+    categoria: "Monitores",
+    },
+    {
+    id: 57,
+    nombre:
+    "Monitor Gamer Samsung Odyssey G8 34 pulgadas OLED UWQHD Curvo 1800R 175Hz AMD Freesync Premium",
+    precio: "$ 3287000",
+    imagenes: ["https://imgur.com/6jawxmU.jpg"],
+    categoria: "Monitores",
+    },
+    {
+    id: 58,
+    nombre:
+    "Monitor LG 49WQ95C-W 49 pulgadas 5120x1440 IPS Curvo 3800R Freesync Premium Pro",
+    precio: "$ 3167000",
+    imagenes: ["https://imgur.com/Kww2Qov.jpg"],
+    categoria: "Monitores",
+    },
+    {
+    id: 59,
+    nombre: "Mother ASUS ROG CROSSHAIR X670E HERO AM5",
+    precio: "$ 884000",
+    imagenes: ["https://imgur.com/JMa7GAX.jpg"],
+    categoria: "Mothers",
+    },
+    {
+    id: 60,
+    nombre: "Mother ASUS ROG STRIX X670E-E GAMING WIFI AM5 DDR5",
+    precio: "$ 708000",
+    imagenes: ["https://imgur.com/HjYTCkD.jpg"],
+    categoria: "Mothers",
+    },
+    {
+    id: 61,
+    nombre: "Mother ASUS TUF GAMING A620M-PLUS WIFI AM5 DDR5",
+    precio: "$ 182000",
+    imagenes: ["https://imgur.com/Wp1l2fZ.jpg"],
+    categoria: "Mothers",
+    },
+    {
+    id: 62,
+    nombre: "Impresora Multifuncion Laser Brother DCP-1617NW Mono B&N WiFi",
+    precio: "$ 468900",
+    imagenes: ["https://imgur.com/m9xKg0V.jpg"],
+    categoria: "Impresoras",
+    },
+    {
+    id: 63,
+    nombre: "Impresora Multifuncion HP Smart Tank 580 Sistema Continuo",
+    precio: "$ 339000",
+    imagenes: ["https://imgur.com/2WidiwG.jpg"],
+    categoria: "Impresoras",
+    },
+    {
+    id: 64,
+    nombre: "Stream Deck XL 32 Botones Customizables LCD Elgato",
+    precio: "$ 440000",
+    imagenes: ["https://imgur.com/smPGMT9.jpg"],
+    categoria: "Perifericos/StreamDeck",
+    },
+    {
+    id: 65,
+    nombre: "Stream Deck PLUS 8 Botones Customizables LCD Elgato",
+    precio: "$ 350000",
+    imagenes: ["https://imgur.com/V3hJ0yS.jpg"],
+    categoria: "Perifericos/StreamDeck",
+    },
+    {
+    id: 66,
+    nombre: "Stream Deck PLUS 8 Botones Customizables White LCD Elgato",
+    precio: "$ 365000",
+    imagenes: ["https://imgur.com/zl3zfJq.jpg"],
+    categoria: "Perifericos/StreamDeck",
+    },
+    {
+    id: 67,
+    nombre:
+    "Fuente ADATA XPG 1200W 80 Plus Gold Full Modular ATX 3.0 PCIe 5.0 CORE REACTOR II",
+    precio: "$ 270000",
+    imagenes: ["https://imgur.com/XhiDgV6.jpg"],
+    categoria: "Fuentes",
+    },
+    {
+    id: 68,
+    nombre:
+    "Fuente Be Quiet 1000W 80 Plus Platinum STRAIGHT POWER 12 Full Modular ATX 3.1 PCIe 5.1",
+    precio: "$ 282000",
+    imagenes: ["https://imgur.com/0VWTGyv.jpg"],
+    categoria: "Fuentes",
+    },
+    {
+    id: 69,
+    nombre:
+    "Fuente Corsair 1000W 80 Plus Gold RM1000X SHIFT Full Modular ATX 3.1 PCIe 5.1",
+    precio: "$ 329000",
+    imagenes: ["https://imgur.com/zOJVwDC.jpg"],
+    categoria: "Fuentes",
+    },
+    {
+    id: 70,
+    nombre: "Placa de Video Zotac GeForce RTX 5080 16GB GDDR7 Solid OC",
+    precio: "$ 1873200",
+    imagenes: [
+    "https://imgur.com/fBJnGWd.jpg",
+    "https://imgur.com/huoBJYS.jpg",
+    ],
+    categoria: "Placas de Video",
+    },
+    {
+    id: 71,
+    nombre:
+    "Placa de Video Zotac GeForce RTX 5080 16GB GDDR7 AMP EXTREME INFINITY",
+    precio: "$ 2021000",
+    imagenes: [
+    "https://imgur.com/7LwsV6f.jpg",
+    "https://imgur.com/AHSktP3.jpg",
+    ],
+    categoria: "Placas de Video",
+    },
+    {
+    id: 72,
+    nombre:
+    "Joystick PS5 Sony Dualsense Wireless Bluetooth Cobalt Blue Original USB-C",
+    precio: "$ 113000",
+    imagenes: ["https://imgur.com/HeF33NH.jpg"],
+    categoria: "Perifericos/Joystick",
+    },
+    {
+    id: 73,
+    nombre:
+    "Joystick PS5 Sony Dualsense Wireless Bluetooth Volcanic Red Original USB-C",
+    precio: "$ 113000",
+    imagenes: ["https://imgur.com/U9CGVNx.jpg"],
+    categoria: "Perifericos/Joystick",
+    },
+    {
+    id: 74,
+    nombre: "Placa de Red Tp-Link TX401 Pcie Red 10 Gigabit",
+    precio: "$ 85000",
+    imagenes: ["https://imgur.com/y5QfPdQ.jpg"],
+    categoria: "Conectividad/Placas de Red",
+    },
+    {
+    id: 75,
+    nombre:
+    "Placa de Video ASUS ROG GeForce RTX 5090 32GB GDDR7 ASTRAL OC Liquid Cooling",
+    precio: "$ 4942000",
+    imagenes: [
+    "https://imgur.com/8NlUTY8.jpg",
+    "https://imgur.com/AelXhIU.jpg",
+    ],
+    categoria: "Placas de Video",
+    },
+    {
+    id: 76,
+    nombre: "Impresora Multifuncion Pantum M6509NW Laser Monocromatica",
+    precio: "$ 232000",
+    imagenes: ["https://imgur.com/8aW7vIj.jpg"],
+    categoria: "Impresoras",
+    },
+    {
+    id: 77,
+    nombre: "Adaptador de Red Archer T4U Tp-Link AC1300 Dual Band USB",
+    precio: "$ 31000",
+    imagenes: ["https://imgur.com/gYQBCp0.jpg"],
+    categoria: "Conectividad/Placas de Red",
+    },
+    {
+    id: 78,
+    nombre: "Adaptador WiFi Tp-Link Archer T2U AC600 Nano USB 2.0",
+    precio: "$ 16000",
+    imagenes: ["https://imgur.com/GpvcEKl.jpg"],
+    categoria: "Conectividad/Placas de Red",
+    },
+    {
+    id: 79,
+    nombre:
+    "Cooler FAN XYZ VORTEX PRO 120mm White Reversed Airflow ARGB KIT X3",
+    precio: "$ 95000",
+    imagenes: ["https://imgur.com/gallery/Zi8VAPo.jpg"],
+    categoria: "Refrigeracion/Coolers",
+    },
+    {
+    id: 80,
+    nombre:
+    "Disco Solido SSD M.2 ADATA 2TB XPG MARS 980 STORM 14000MB/s NVMe PCIe Gen5 x4 Water Cooled Heatsink",
+    precio: "$ 382000",
+    imagenes: ["https://imgur.com/EajSexF.jpg"],
+    categoria: "Almacenamiento/Discos Solidos",
+    },
+    {
+    id: 81,
+    nombre:
+    "Memoria ADATA DDR5 48GB (2x24GB) 9200MHz XPG Lancer CUDIMM RGB CL42 Intel XMP 3.0",
+    precio: "$ 385000",
+    imagenes: ["https://imgur.com/BpKmmiN.jpg"],
+    categoria: "Memorias RAM",
+    },
+    {
+    id: 82,
+    nombre:
+    "Memoria Team DDR5 64GB (2x32GB) 6400MHz T-Force Delta RGB CL34 White Intel XMP 3.0 / AMD EXPO",
+    precio: "$ 372000",
+    imagenes: ["https://imgur.com/pXjVtdD.jpg"],
+    categoria: "Memorias RAM",
+    },
+    {
+    id: 83,
+    nombre:
+    "Memoria G.Skill DDR5 64GB (2x32GB) 6000MHz TRIDENT Z5 NEO RGB Black CL36 AMD EXPO/XMP 3.0",
+    precio: "$ 302000",
+    imagenes: ["https://imgur.com/Avl8Tmd.jpg"],
+    categoria: "Memorias RAM",
+    },
+    {
+    id: 84,
+    nombre:
+    "Memoria G.Skill DDR5 64GB (2x32GB) 6000MHz TRIDENT Z5 NEO RGB White CL36 AMD EXPO/XMP 3.0",
+    precio: "$ 370000",
+    imagenes: ["https://imgur.com/WZJCVmS.jpg"],
+    categoria: "Memorias RAM",
+    },
+    {
+    id: 85,
+    nombre:
+    "Cooler FAN Be Quiet! LIGHT WINGS 120mm White ARGB PWM High-speed KIT X3",
+    precio: "$ 90000",
+    imagenes: ["https://imgur.com/R8zxakE.jpg"],
+    categoria: "Refrigeracion/Coolers",
+    },
+    {
+    id: 86,
+    nombre:
+    "Cooler FAN Be Quiet! LIGHT WINGS 140mm White ARGB PWM High-speed KIT X3",
+    precio: "$ 120000",
+    imagenes: ["https://imgur.com/P21qfbr.jpg"],
+    categoria: "Refrigeracion/Coolers",
+    },
+    {
+    id: 87,
+    nombre:
+    "Nintendo Switch 2 Standard 256GB + Cargador",
+    precio: "$ 1182000",
+    imagenes: ["https://imgur.com/MtZ0ZWc.jpg"],
+    categoria: "Consolas",
+    },
+    {
+    id: 88,
+    nombre:
+    "Nintendo Switch 2 Mario Kart World Bundle 256GB + Cargador ",
+    precio: "$ 1258000",
+    imagenes: ["https://imgur.com/1mWlfSf.jpg"],
+    categoria: "Consolas",
+    },
+];

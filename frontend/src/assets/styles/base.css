@@ -1,0 +1,128 @@
+/* base.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+    --color-background: #1C2833;
+    --color-foreground: #FDEBD0;
+    --color-primary: #F39C12;
+    --color-primary-foreground: #1C2833;
+
+    --color-secondary: #3498DB;
+    --color-secondary-foreground: #1C2833;
+    --color-accent: #2C3E50;
+    --color-accent-foreground: #FDEBD0;
+
+    --color-card: #212F3C;
+    --color-card-foreground: #FDEBD0;
+    --color-popover: #212F3C;
+    --color-popover-foreground: #FDEBD0;
+    --color-muted: #2C3E50;
+    --color-muted-foreground: #AAB7B8;
+
+    --color-border: #2C3E50;
+    --color-input: #2C3E50;
+    --color-ring: #3498DB;
+
+    --color-destructive: #E74C3C;
+    --color-destructive-foreground: #FDEBD0;
+
+    --chart-1: #F39C12;
+    --chart-2: #3498DB;
+    --chart-3: #E67E22;
+    --chart-4: #5DADE2;
+    --chart-5: #F5B041;
+
+    --sidebar-background: #212F3C;
+    --sidebar-foreground: #FDEBD0;
+    --sidebar-primary: #F39C12;
+    --sidebar-primary-foreground: #1C2833;
+    --sidebar-accent: #F39C12;
+    --sidebar-accent-foreground: #1C2833;
+    --sidebar-border: #2C3E50;
+    --sidebar-ring: #3498DB;
+
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    background-color: #ffffff;
+    color: var(--color-foreground);
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: var(--sidebar-accent);
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: var(--sidebar-ring);
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card {
+    padding: 2em;
+}
+
+#app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+    a:hover {
+        color: var(--chart-5);
+    }
+    button {
+        background-color: #f9f9f9;
+    }
+}
