@@ -38,7 +38,7 @@
 
 <script>
 import { productos } from "../assets/data/productsData";
-
+import { addToCart } from "../utils/cartUtils";
 export default {
     name: "Productos",
     data() {
@@ -52,7 +52,8 @@ export default {
             "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
         agregarAlCarrito(producto) {
-        console.log("Agregado al carrito:", producto);
+            addToCart(producto);
+           alert(`${producto.nombre} agregado al carrito!`);
         },
     },
 };
