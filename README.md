@@ -5,7 +5,7 @@
 ---
 
 ## 🔹 Descripción
-CapyGaming es tu tienda online de confianza para todo lo relacionado con el mundo gamer. Encuentra lo último en hardware, periféricos y accesorios para potenciar tu experiencia de juego.  
+**CapyGaming** es tu tienda online de confianza para todo lo relacionado con el mundo gamer. Encuentra lo último en hardware, periféricos y accesorios para potenciar tu experiencia de juego.  
 
 ---
 
