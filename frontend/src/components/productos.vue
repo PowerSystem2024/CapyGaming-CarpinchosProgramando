@@ -134,7 +134,10 @@ export default {
 }
 
 .catalogo {
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    align-items: center;
 }
 
 .titulo {
@@ -152,16 +155,19 @@ export default {
 
 .grid {
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     width: 100%;
     background-color: var(--color-background);
+    border-radius: 10px;
 }
 
 .card {
     border-radius: 8px;
     padding: 1rem;
     width: 250px;
+    margin: 15px;
     text-align: center;
     transition: transform 0.2s ease;
     background-color: var(--color-card);
