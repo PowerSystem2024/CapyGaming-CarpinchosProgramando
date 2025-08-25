@@ -26,6 +26,29 @@
 
 ---
 
+## 🗂 Estructura General del Proyecto
+# Cuadro de Información del Sitio Web
+
+# Cuadro de Organización del E-commerce
+
+| Componente | Responsable |
+|------------|-------------|
+| **Header/Nawbar** | MELINA |
+| **Mapa del sitio** | NICOLÁS |
+| **Integración Pago Mercadopago** | -- |
+| **Sección Productos Destacados por categorías** | ANA |
+| **Catálogo completo** | MERCEDES |
+| **Explorador de categorías** | ANA |
+| **Sección de Ofertas** | MARIANA |
+| **Cuotas sin interés, envios, garantía oficial** | WANDA |
+| **Sección de Marcas** | MARIANA |
+| **Footer** | MELINA |
+| **Formularios (registro, login, password)** | EZEQUIEL |
+| **Carrito de compras** | WANDA |
+
+
+---
+
 ## 📌 Objetivo
 Crear una experiencia de compra fluida y completa para la comunidad gamer, combinando variedad de productos, seguridad en los pagos y facilidad de uso.  
 
