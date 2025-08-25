@@ -1,29 +1,53 @@
 <template>
   <div class="carrito-container">
     <h1>Carrito de Compras</h1>
-    <div class="products-grid">
-      <div v-for="product in cartItems" :key="product.id" class="product-card">
-        <p>Cantidad: {{ product.quantity }} </p>
-        <p>Subtotal: ${{ product.quantity * product.precio }}</p>
-        <button @click="removeItem(product.id)">Eliminar</button>
-        total: ${{ total }}
-        <h2>{{ product.nombre }}</h2>
-        <p>Price: ${{ product.precio }}</p>
-        <img :src="product.imagenes[0]" :alt="product.nombre" width="150" height="150" />
+    <div v-if="cartItems.length === 0" class="carrito-vacio">
+      <p>El carrito está vacío</p>
+      <router-link to="/">Ir a comprar</router-link>
+    </div>
+
+    <div v-else>
+      <div class="products-grid">
+        <div v-for="product in cartItems" :key="product.id" class="product-card">
+          <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
+          <div class="product-info">
+            <h3>{{ product.nombre }}</h3>
+            <p class="precio">Precio: ${{ product.precio }}</p>
+            
+            <p>Cantidad: {{ product.quantity }}</p>
+            <p>Subtotal: ${{ product.quantity * product.precio }}</p>
+      
+            <div class="cantidad-controls">
+              <button @click="decrementQuantity(product)" class="btn-cantidad">-</button>
+              <span class="cantidad">{{ product.quantity }}</span>
+              <button @click="incrementQuantity(product)" class="btn-cantidad">+</button>
+            </div>
+
+            <p class="Subtotal">Subtotal: ${{ product.precio * product.quantity }}</p>
+            <button @click="removeItem(product.id)" class="btn-eliminar">🗑️ Eliminar</button>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="total-carrito">
+      <h2>Total: ${{ total }}</h2>
+      <button class="btn-comprar">Proceder al pago</button>
     </div>
   </div>
 </template>
 
 <script>
 // Importamos los productos desde el archivo de datos
-import { getCart , removeFromCart, updateQuantity,getCartTotal } from "../utils/cartUtils";
+import { defineSSRCustomElement } from "vue";
+import { getCart, removeFromCart, updateQuantity, getCartTotal } from "../utils/cartUtils";
+
 export default {
   name: "Carrito",
-  data(){
-    return{
-      cartItems:[],
-      total :0 
+  data() {
+    return {
+      cartItems: [],
+      total: 0 
     }
   },
   mounted() {
