@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import Productos from "./components/productos.vue";
 </script>
 
@@ -7,6 +7,17 @@ import Productos from "./components/productos.vue";
     <Productos />
   </div>
 </template>
+
+<style scoped>
+</style> -->
+
+<template>
+  <LoginForm />
+</template>
+
+<script setup>
+import LoginForm from './components/inicioSesion.vue';
+</script>
 
 <style scoped>
 </style>
