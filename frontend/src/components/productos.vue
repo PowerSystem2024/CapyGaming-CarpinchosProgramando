@@ -1,119 +1,143 @@
 <template>
-    <div class="catalogo">
-        <h2 class="titulo">Catálogo de productos</h2>
-        <div class="grid">
-        <div v-for="producto in productos" :key="producto.id" class="card">
-            <div class="imagenes">
-            <a
-                v-for="(img, index) in producto.imagenes"
-                :key="index"
-                :href="img"
-                :data-title="producto.nombre"
-            >
-                <img
-                :src="img"
-                :alt="`${producto.nombre} vista ${index + 1}`"
-                class="imagen"
-                @error="imagenError($event)"
-                />
-            </a>
-            </div>
-
-            <h3 class="nombre">{{ producto.nombre }}</h3>
-
-            <!-- Precio con $ -->
-            <p class="precio">$ {{ producto.precio }}</p>
-
-            <!-- Stock disponible -->
-            <p class="stock">Stock disponible: {{ producto.stock }}</p>
-
-            <!-- Botón agregar al carrito -->
-            <button class="btn-carrito" @click="agregarAlCarrito(producto)">
-            🛒 Agregar al carrito
-            </button>
+    <div class="catalogo-page">
+        <div class="sidebar">
+            <Categorias 
+                @categoria-seleccionada="filtrarProductosPorCategoria"
+                @orden-cambiado="ordenarProductos"
+            />
         </div>
+    
+        <div class="catalogo">
+            <h2 class="titulo">Catálogo de productos</h2>
+            <div class="grid">
+                <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
+                <div class="imagenes">
+                    <a
+                    v-for="(img, index) in producto.imagenes"
+                    :key="index"
+                    :href="img"
+                    :data-title="producto.nombre"
+                    >
+                    <img
+                        :src="img"
+                        :alt="`${producto.nombre} vista ${index + 1}`"
+                        class="imagen"
+                        @error="imagenError($event)"
+                    />
+                    </a>
+                </div>
+
+                <h3 class="nombre">{{ producto.nombre }}</h3>
+                <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
+                <p class="stock">Stock disponible: {{ producto.stock }}</p>
+
+                <button class="btn-carrito" @click="agregarAlCarrito(producto)">
+                    🛒 Agregar al carrito
+                </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { productos } from "../assets/data/productsData";
+import Categorias from "../components/exploradorCategorias.vue";
 
 export default {
     name: "Productos",
+    components: {
+    Categorias
+    },
     data() {
-        return {
+    return {
         productos,
-        };
+        productosFiltrados: productos,
+        categoriaSeleccionada: null,
+        ordenSeleccionado: "todos"
+    };
     },
     methods: {
-        imagenError(event) {
+    imagenError(event) {
         event.target.src =
-            "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
-        },
-        agregarAlCarrito(producto) {
-        console.log("Agregado al carrito:", producto);
-        },
+        "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
     },
+    agregarAlCarrito(producto) {
+        console.log("Agregado al carrito:", producto);
+    },
+    filtrarProductosPorCategoria(categoriaExplorador) {
+        this.categoriaSeleccionada = categoriaExplorador;
+        
+      // Mapeo de categorías del explorador a categorías de productos
+        const mapeoCategorias = {
+        "Notebooks": "Notebook",
+        "Kits de actualización": "Kit Upgrade",
+        "Procesadores": "Procesadores",
+        "Mothers": "Mothers",
+        "Placas de Video": "Placas de Video",
+        "Memorias RAM": "Memorias RAM",
+        "Almacenamiento": "Almacenamiento",
+        "Refrigeración": "Refrigeracion",
+        "Cabinetes": "Gabinetes",
+        "Fuentes": "Fuentes",
+        "Monitores": "Monitores",
+        "Periféricos": "Perifericos",
+        "Sillas Garners": "Silla",
+        "Conectividad": "Conectividad",
+        "Estabilizadores y UPS": "Estabilizadores",
+        "Consolas de Video Juego": "Consolas",
+        "Impresoras e Insumos": "Impresoras"
+        };
+        
+        if (categoriaExplorador === "Todos") {
+        this.productosFiltrados = this.productos;
+        } else {
+        const categoriaProducto = mapeoCategorias[categoriaExplorador];
+        if (categoriaProducto) {
+            this.productosFiltrados = this.productos.filter(producto => 
+            producto.categoria === categoriaProducto
+            );
+        } else {
+            this.productosFiltrados = this.productos;
+        }
+        }
+    },
+    ordenarProductos(orden) {
+        this.ordenSeleccionado = orden;
+        
+        if (orden === "mayorPrecio") {
+        this.productosFiltrados.sort((a, b) => b.precio - a.precio);
+        } else if (orden === "menorPrecio") {
+        this.productosFiltrados.sort((a, b) => a.precio - b.precio);
+        } else {
+        // Por defecto o "destacados"
+        this.productosFiltrados = [...this.productos];
+        }
+    }
+    }
 };
 </script>
 
-
 <style scoped>
 @import url(../assets/styles/base.css);
-    .catalogo {
+
+.catalogo-page {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    font-family: 'Roboto', sans-serif;
+    gap: 2rem;
     padding: 2rem;
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    }
+}
 
-    .card {
-    border-radius: 8px;
-    padding: 1rem;
-    width: 250px;
-    text-align: center;
-    transition: transform 0.2s ease;
-    background-color: var(--color-card);
-    color: var(--color-card-foreground);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+.sidebar {
+    flex: 0 0 300px;  
+}
 
-    .card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+.catalogo {
+    flex: 1;
+}
 
-    .imagenes {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-    border-radius: 10px;
-    }
-
-    .imagen {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .imagen:hover{
-        transform: scale(1.4);
-    }
-
-    .titulo {
-    grid-column: 1/-1;
+.titulo {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -124,28 +148,62 @@ export default {
     padding: 1rem;
     border-radius: 8px;
     width: 100%;
-    max-width: 1200px;
-    }
+}
 
-    .grid {
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     width: 100%;
-    max-width: 1200px;
     background-color: var(--color-background);
-    }
+}
 
-    .nombre {
+.card {
+    border-radius: 8px;
+    padding: 1rem;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.2s ease;
+    background-color: var(--color-card);
+    color: var(--color-card-foreground);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.imagenes {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+}
+
+.imagen {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imagen:hover{
+    transform: scale(1.4);
+}
+
+.nombre {
     font-size: 1rem;
     margin-top: 0.5rem;
     text-align: center;
     color: var(--color-primary);
     background-color: var(--color-card);
+}
 
-    }
-
-    .precio {
+.precio {
     font-weight: bold;
     color: var(--color-secondary);
     font-size: 1.2rem;
@@ -153,15 +211,15 @@ export default {
     color: var(--color-foreground);
     margin: 0.5rem 0;
     background-color: var(--color-card);
-    }
+}
 
-    .stock {
+.stock {
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
     background-color: var(--color-card);
-    }
+}
 
-    .btn-carrito {
+.btn-carrito {
     font-size: 1rem;
     font-weight: bold;
     margin-top: 0.5rem;
@@ -172,11 +230,11 @@ export default {
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s;
-    }
+}
 
-    .btn-carrito:hover {
+.btn-carrito:hover {
     background-color: var(--sidebar-ring);
     color: var(--color-foreground);
     transform: scale(1.1);
-    }
+}
 </style>
