@@ -30,7 +30,7 @@
 
 | Componente | Responsable |
 |------------|-------------|
-| **Header/Nawbar** | MELINA |
+| **Header/Navbar** | MELINA |
 | **Mapa del sitio** | NICOLÁS |
 | **Integración Pago Mercadopago** | -- |
 | **Sección Productos Destacados por categorías** | ANA |
