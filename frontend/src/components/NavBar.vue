@@ -1,27 +1,24 @@
 <template>
   <nav class="navbar">
-    <!-- Logo -->
-    <div class="logo">
-      <img src="../assets/logo.png" alt="Logo" />
-      <h1>CapyGaming</h1>
-    </div>
+    <div class="navbar-content">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="../assets/logoconletras.png" alt="Logo" />
+      </div>
 
-    <!-- Buscador -->
-    <div class="search">
-      <input type="text" placeholder="Buscar productos" v-model="searchText" />
-      <button @click="buscarProducto">
-        🔍
-      </button>
-    </div>
+      <!-- Buscador -->
+      <div class="search">
+        <input type="text" placeholder="Buscar productos" v-model="searchText" />
+        <button  class="search-btn" @click="buscarProducto">
+          <img src="../assets/search.svg" alt="Buscar"/>
+        </button>
+      </div>
 
-    <!-- Opciones usuario -->
-    <div class="user-options">
-      <button @click="login">
-        👤 Ingresá
-      </button>
-      <button @click="verCarrito">
-        🛒
-      </button>
+      <!-- Opciones usuario -->
+      <div class="user-options">
+        <button @click="login">👤 Ingresá</button>
+        <button @click="verCarrito">🛒</button>
+      </div>
     </div>
   </nav>
 </template>
@@ -49,53 +46,76 @@ export default {
 </script>
 
 <style scoped>
+@import url(../assets/styles/base.css);
+
 .navbar {
-  display: flex;
   position: fixed;
-  top: 0;
+  top: 0px;
   left: 0;
+  width: 100%;
+  height: 88px;
+  background: #001031;
+  box-sizing: border-box;
+}
+
+.navbar-content {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: #000000;
-  box-sizing: border-box;
-  width: 100%;
+  max-width: 1250px; /* 👈 limita el ancho */
+  margin: 0 auto;    /* 👈 lo centra */
+  height: 100%;
 }
+
 
 .logo {
   display: flex;
   align-items: center;
-  width: 10px;
+  width: auto;
+  max-height: 100%;
   gap: 0.5rem;
 }
 
 .logo img{
-    width: 85px;
-    height: auto;
-    background: rgba(0, 0, 0, 0);
+    max-height: 70px;
 }
 
 .search {
+  position: relative;
   display: flex;
   align-items: center;
 }
 
+.search img{
+  padding-top: 3px;
+  max-height: 25px;
+}
+
 .search input {
-  padding: 0.5rem;
+  width: 450px;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 40px;
   border-radius: 5px;
-  border: 1px solid #070505;
+  border: 1.9px solid #FA6400;
+  background-color: #00103100;
+  outline: none;
 }
 
 .search button {
+  position: absolute;
+  right: 5px;
   margin-left: 0.5rem;
   cursor: pointer;
+  background-color: #00103100;
+  border: rgba(245, 245, 220, 0);
 }
 
 .user-options button {
   margin-left: 1rem;
-  background: rgb(182, 65, 65);
+  background: rgba(0, 0, 0, 0);
   border: none;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 </style>
