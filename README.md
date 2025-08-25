@@ -27,9 +27,6 @@
 ---
 
 ## 🗂 Estructura General del Proyecto
-# Cuadro de Información del Sitio Web
-
-# Cuadro de Organización del E-commerce
 
 | Componente | Responsable |
 |------------|-------------|
