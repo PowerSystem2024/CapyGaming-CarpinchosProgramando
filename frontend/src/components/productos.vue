@@ -105,9 +105,9 @@ export default {
     ordenarProductos(orden) {
         this.ordenSeleccionado = orden;
         
-        if (orden === "mayorPrecio") {
+        if (orden === "menorPrecio") {
         this.productosFiltrados.sort((a, b) => b.precio - a.precio);
-        } else if (orden === "menorPrecio") {
+        } else if (orden === "mayorPrecio") {
         this.productosFiltrados.sort((a, b) => a.precio - b.precio);
         } else {
         // Por defecto o "destacados"

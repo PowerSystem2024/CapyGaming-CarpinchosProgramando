@@ -168,6 +168,10 @@ export default {
 }
 
 /* Destacados */
+.destacados-section {
+    background-color: var(--sidebar-accent-foreground);
+}
+
 .destacado-item {
     margin-bottom: 1rem;
     background-color: var(--color-card);
@@ -177,11 +181,10 @@ export default {
 }
 
 .destacado-link {
-    background-color: var(--color-accent);
+    background-color: var(--color-card);
     color: var(--color-secondary);
     text-decoration: none;
     display: block;
-    margin-bottom: 0.5rem;
     font-weight: bold;
 }
 
@@ -191,6 +194,9 @@ export default {
 }
 
 /* Categorías */
+.categorias-section {
+    background-color: var(--sidebar-accent-foreground);
+}
 .categorias-list {
     background-color: var(--color-background);
     list-style: none;
@@ -224,6 +230,14 @@ export default {
 }
 
 /* Filtros */
+.filtros-section {
+    background-color: var(--sidebar-accent-foreground);
+}
+
+.filtro-info {
+    background-color: var(--color-card);
+}
+
 .filtro-item {
     margin-bottom: 1.5rem;
     padding: 0.75rem;
@@ -285,6 +299,7 @@ export default {
 }
 
 .ordenar-por {
+    background-color: var(--color-card);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -309,4 +324,5 @@ export default {
     outline: none;
     border-color: var(--color-primary);
 }
+
 </style>
