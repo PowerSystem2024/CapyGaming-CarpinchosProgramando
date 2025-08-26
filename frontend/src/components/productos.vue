@@ -5,36 +5,46 @@
                 @categoria-seleccionada="filtrarProductosPorCategoria"
                 @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
                 @orden-cambiado="ordenarProductos"
+                @ver-destacados="mostrarDestacados"
             />
         </div>
     
-        <div class="catalogo">
-            <h2 class="titulo">Catálogo de productos</h2>
-            <div class="grid">
-                <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
-                <div class="imagenes">
-                    <a
-                    v-for="(img, index) in producto.imagenes"
-                    :key="index"
-                    :href="img"
-                    :data-title="producto.nombre"
-                    >
-                    <img
-                        :src="img"
-                        :alt="`${producto.nombre} vista ${index + 1}`"
-                        class="imagen"
-                        @error="imagenError($event)"
-                    />
-                    </a>
-                </div>
+            <div class="catalogo">
+                <!-- Mostrar productos destacados o catálogo normal según el estado -->
+                <ProductosDestacados 
+                    v-if="mostrandoDestacados"
+                    @agregar-al-carrito="agregarAlCarrito"
+                    @volver-al-catalogo="mostrandoDestacados = false"
+                />
+                
+                <div v-else>
+                    <h2 class="titulo">Catálogo de productos</h2>
+                    <div class="grid">
+                    <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
+                    <div class="imagenes">
+                        <a
+                        v-for="(img, index) in producto.imagenes"
+                        :key="index"
+                        :href="img"
+                        :data-title="producto.nombre"
+                        >
+                        <img
+                            :src="img"
+                            :alt="`${producto.nombre} vista ${index + 1}`"
+                            class="imagen"
+                            @error="imagenError($event)"
+                        />
+                        </a>
+                    </div>
 
-                <h3 class="nombre">{{ producto.nombre }}</h3>
-                <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
-                <p class="stock">Stock disponible: {{ producto.stock }}</p>
+                    <h3 class="nombre">{{ producto.nombre }}</h3>
+                    <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
+                    <p class="stock">Stock disponible: {{ producto.stock }}</p>
 
-                <button class="btn-carrito" @click="agregarAlCarrito(producto)">
-                    🛒 Agregar al carrito
-                </button>
+                    <button class="btn-carrito" @click="agregarAlCarrito(producto)">
+                        🛒 Agregar al carrito
+                    </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,20 +54,23 @@
 <script>
 import { productos } from "../assets/data/productsData";
 import Categorias from "../components/exploradorCategorias.vue";
+import ProductosDestacados from "../components/productosDestacados.vue";
 
 export default {
     name: "Productos",
     components: {
-    Categorias
+        Categorias,
+        ProductosDestacados
     },
     data() {
-    return {
-        productos,
-        productosFiltrados: productos,
-        categoriaSeleccionada: null,
-        subcategoriaSeleccionada: null,
-        ordenSeleccionado: "todos"
-    };
+        return {
+            productos,
+            productosFiltrados: productos,
+            categoriaSeleccionada: null,
+            subcategoriaSeleccionada: null,
+            ordenSeleccionado: "todos",
+            mostrandoDestacados: false
+        };
     },
     methods: {
     imagenError(event) {
@@ -112,6 +125,9 @@ export default {
                 this.productosFiltrados = this.productos;
             }
         }
+    },
+    mostrarDestacados() {
+            this.mostrandoDestacados = true;
     },
     filtrarProductosPorSubcategoria(subcategoriaExplorador) {
         this.subcategoriaSeleccionada = subcategoriaExplorador;
@@ -228,7 +244,6 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
-    align-items: center;
 }
 
 .titulo {

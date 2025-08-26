@@ -4,9 +4,10 @@
         <div class="destacados-section">
             <h2 class="section-title">Destacados</h2>
             <div class="destacado-item">
-                <a href="#" class="destacado-link">Ver destacados</a>
+                <a href="#" @click.prevent="verDestacados" class="destacado-link">Ver destacados</a>
             </div>
         </div>
+
 
         <hr class="separador">
 
@@ -50,7 +51,6 @@
                 <span>Ordenar por</span>
                 <select v-model="ordenSeleccionado" @change="aplicarOrden" class="orden-select">
                     <option value="todos">Todos</option>
-                    <option value="destacados">Destacados</option>
                     <option value="mayorPrecio">Mayor precio</option>
                     <option value="menorPrecio">Menor precio</option>
                 </select>
@@ -169,7 +169,7 @@ export default {
                 { id: 15, nombre: "Estabilizadores y UPS" },
                 { id: 16, nombre: "Consolas de Video Juego",
                     subcategorias: [
-                        {id: 1601, nombre: "Nintendo Switch"}
+                        {id: 1601, nombre: "Nintendo Switch"} 
                         /*{id: 1602, nombre: "PlayStation"},
                         {id: 1603, nombre: "Xbox"}*/
                     ]
@@ -181,6 +181,9 @@ export default {
         };
     },
     methods: {
+        verDestacados() {
+            this.$emit('ver-destacados');
+        },
         filtrarPorCategoria(categoria) {
             this.$emit('categoria-seleccionada', categoria);
         },
