@@ -325,4 +325,8 @@ export default {
     border-color: var(--color-primary);
 }
 
+.orden-select option {
+    background-color: var(--color-background);
+}
+
 </style>
