@@ -171,7 +171,9 @@ export default {
 
             "LG": "Monitores/LG",
             "AsRock": "Monitores/AsRock",
-            "Samsung": "Monitores/Samsung"
+            "Samsung": "Monitores/Samsung",
+
+            "Nintendo Switch": "Consolas/Nintendo Switch"
         };
         
         const subcategoriaProducto = mapeoSubcategorias[subcategoriaExplorador];

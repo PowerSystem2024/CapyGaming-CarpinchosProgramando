@@ -775,7 +775,7 @@ export const productos = [
     "Nintendo Switch 2 Standard 256GB + Cargador",
     precio: 1182000,
     imagenes: ["https://imgur.com/MtZ0ZWc.jpg"],
-    categoria: "Consolas",
+    categoria: "Consolas/Nintendo Switch",
     stock: 450,
     },
     {
@@ -784,7 +784,7 @@ export const productos = [
     "Nintendo Switch 2 Mario Kart World Bundle 256GB + Cargador ",
     precio: 1258000,
     imagenes: ["https://imgur.com/1mWlfSf.jpg"],
-    categoria: "Consolas",
+    categoria: "Consolas/Nintendo Switch",
     stock: 250,
     },
 ];

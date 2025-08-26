@@ -167,7 +167,13 @@ export default {
                 { id: 13, nombre: "Sillas Gamer" },
                 { id: 14, nombre: "Conectividad" },
                 { id: 15, nombre: "Estabilizadores y UPS" },
-                { id: 16, nombre: "Consolas de Video Juego" },
+                { id: 16, nombre: "Consolas de Video Juego",
+                    subcategorias: [
+                        {id: 1601, nombre: "Nintendo Switch"}
+                        /*{id: 1602, nombre: "PlayStation"},
+                        {id: 1603, nombre: "Xbox"}*/
+                    ]
+                },
                 { id: 17, nombre: "Impresoras e Insumos" }
             ],
             ordenSeleccionado: "todos",
