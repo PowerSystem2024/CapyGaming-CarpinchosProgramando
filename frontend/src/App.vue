@@ -1,23 +1,25 @@
-<!-- <script setup>
+<script setup>
+import LoginForm from './components/inicioSesion.vue';
 import Productos from "./components/productos.vue";
 </script>
 
 <template>
   <div id="app">
+    <LoginForm />
     <Productos />
   </div>
 </template>
 
 <style scoped>
-</style> -->
+</style>
 
-<template>
+<!-- <template>
   <LoginForm />
 </template>
 
 <script setup>
 import LoginForm from './components/inicioSesion.vue';
-</script>
+</script> -->
 
 <!-- <style scoped>
 </style> -->
