@@ -19,5 +19,5 @@ import Productos from "./components/productos.vue";
 import LoginForm from './components/inicioSesion.vue';
 </script>
 
-<style scoped>
-</style>
+<!-- <style scoped>
+</style> -->

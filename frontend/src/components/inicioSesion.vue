@@ -11,7 +11,7 @@
             id="email"
             type="email"
             v-model.trim="form.email"
-            placeholder="ej: eze@mail.com"
+            placeholder="ej: ejemplo@mail.com"
             required
           />
           <p v-if="errors.email" class="error">{{ errors.email }}</p>
@@ -89,7 +89,7 @@ function onForgot () {
 <style scoped>
 /* Estructura */
 .auth-page{
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,14 +115,15 @@ h1{
   font-size: 1.6rem;
   color: var(--color-primary);                /* #F39C12: naranja del proyecto */
   text-align: center;
+  background-color: var(--color-card);
 }
 
 /* Campos */
-.field{ margin-bottom: 1rem; text-align: left; }
-label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); }
+.field{ margin-bottom: 1rem; text-align: left; background-color: var(--color-card);}
+label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card);}
 
 input{
-  width:100%;
+  width:90%;
   padding:.75rem .9rem;
   border-radius:10px;
   border:1px solid var(--color-input);        /* #2C3E50 */
@@ -136,7 +137,7 @@ input:focus{
   box-shadow: 0 0 0 3px rgba(52,152,219,.25);
 }
 
-.password-row{ display:flex; gap:.5rem; align-items:center; }
+.password-row{ display:flex; gap:.5rem; align-items:center; background-color: var(--color-card);}
 .password-row input{ flex: 1; }
 
 /* Botones */
@@ -150,6 +151,11 @@ button.btn{
   font-weight:700;
   cursor: pointer;
 }
+
+span {
+  background-color: var(--color-primary);
+}
+
 button.btn:hover{ filter: brightness(1.05); }
 button.btn:disabled{ opacity:.6; cursor:not-allowed; }
 
@@ -162,12 +168,17 @@ button.ghost{
   cursor: pointer;
 }
 
+form {
+  background-color: var(--color-card);
+}
+
 /* Filas auxiliares */
 .row{
   display:flex; justify-content:space-between; align-items:center;
   gap:1rem; margin:.25rem 0 1rem;
+ background-color: var(--color-card);
 }
-.link{ color: var(--color-secondary); text-decoration: none; } /* Azul */
+.link{ color: var(--color-secondary); text-decoration: none; background-color: var(--color-card); } /* Azul */
 .link:hover{ text-decoration: underline; }
 
 /* Errores */

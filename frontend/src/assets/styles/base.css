@@ -54,9 +54,9 @@
 }
 
 * {
-    background-color: #ffffff;
     color: var(--color-foreground);
     font-family: 'Roboto', sans-serif;
+    background-color: var(--color-background);
 }
 
 a {
