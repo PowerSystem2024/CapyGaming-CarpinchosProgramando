@@ -7,7 +7,7 @@ export const productos = [
     "https://imgur.com/7NMbCj1.jpg",
     "https://imgur.com/7GsShZt.jpg",
     ],
-    categoria: "Notebook",
+    categoria: "Notebook/ACER",
     stock: 30,
     },
     {
@@ -19,7 +19,7 @@ export const productos = [
     "https://imgur.com/ZUmtx2s.jpg",
     "https://imgur.com/pHnYteI.jpg",
     ],
-    categoria: "Notebook",
+    categoria: "Notebook/ASUS",
     stock: 25,
     },
     {
@@ -31,7 +31,7 @@ export const productos = [
     "https://imgur.com/TeEWZvg.jpg",
     "https://imgur.com/VFVyifI.jpg",
     ],
-    categoria: "Notebook",
+    categoria: "Notebook/Lenovo",
     stock: 35,
     },
     {
@@ -43,7 +43,7 @@ export const productos = [
     "https://imgur.com/QT51L4G.jpg",
     "https://imgur.com/EZyGHIf.jpg",
     ],
-    categoria: "Notebook",
+    categoria: "Notebook/ASUS",
     stock: 15,
     },
     {
@@ -52,7 +52,7 @@ export const productos = [
     "Kit Mother ASUS H610M-K + Procesador Intel Core I5 12400F 4.4GHz Turbo (Sin Video Integrado)",
     precio: 280960,
     imagenes: ["https://imgur.com/gkaPcT8.jpg"],
-    categoria: "Kit Upgrade",
+    categoria: "Kit Upgrade/CPU + Motherboard",
     stock: 125,
     },
     {
@@ -61,7 +61,7 @@ export const productos = [
     "Kit Procesador Intel Core I7 12700 4.9GHz Turbo (Con Video Integrado) + Mother ASUS PRIME H610M-K CSM DDR4 S1700 + 2x Memoria Team DDR4 8GB 3200Mhz Vulcan ASUS TUF Alliance CL16",
     precio: 595800,
     imagenes: ["https://imgur.com/LEortWA.jpg"],
-    categoria: "Kit Upgrade",
+    categoria: "Kit Upgrade/Completos",
     stock: 25,
     },
     {
@@ -70,7 +70,7 @@ export const productos = [
     "Kit Mother ASUS H610M-K + Procesador Intel Core I7 12700F 4.9GHz Turbo (Sin Video Integrado) + Memoria Team DDR4 8GB 3200Mhz Vulcan ASUS TUF Certificate",
     precio: 530700,
     imagenes: ["https://imgur.com/nlkNm3D.jpg"],
-    categoria: "Kit Upgrade",
+    categoria: "Kit Upgrade/Completos",
     stock: 105,
     },
     {
@@ -339,7 +339,7 @@ export const productos = [
     nombre: "Gabinete Cougar MX410 Mesh-G RGB 4x120mm ARGB Fans",
     precio: 90000,
     imagenes: ["https://imgur.com/8mQnJvi.jpg"],
-    categoria: "Gabinetes",
+    categoria: "Gabinetes/Cougar",
     stock: 120,
     },
     {
@@ -347,7 +347,7 @@ export const productos = [
     nombre: "Gabinete Corsair 6500D Airflow TG Super Mid-Tower White",
     precio: 290000,
     imagenes: ["https://imgur.com/dYzo2W9.jpg"],
-    categoria: "Gabinetes",
+    categoria: "Gabinetes/Corsair",
     stock: 320,
     },
     {
@@ -356,7 +356,7 @@ export const productos = [
     "Gabinete HYTE Y70 TOUCH INFINITE Snow White Vidrio Templado Pantalla Tactil 2.5K LCD IPS 60Hz Inc. Cable Riser PCIe 4x16 USB-C 3.2",
     precio: 620000,
     imagenes: ["https://imgur.com/FSpNnAy.jpg"],
-    categoria: "Gabinetes",
+    categoria: "Gabinetes/HYTE",
     stock: 920,
     },
     {
@@ -365,7 +365,7 @@ export const productos = [
     "Gabinete HYTE Y70 TOUCH INFINITE Black Vidrio Templado Pantalla Tactil 2.5K LCD IPS 60Hz Inc. Cable Riser PCIe 4x16 USB-C 3.2",
     precio: 620000,
     imagenes: ["https://imgur.com/FQKh4VQ.jpg"],
-    categoria: "Gabinetes",
+    categoria: "Gabinetes/HYTE",
     stock: 250,
     },
     {
@@ -443,7 +443,7 @@ export const productos = [
     nombre: "Procesador AMD Ryzen 5 4500 + Wraith Stealth Cooler AM4",
     precio: 100000,
     imagenes: ["https://imgur.com/NP0OqXK.jpg"],
-    categoria: "Procesadores",
+    categoria: "Procesadores/AMD",
     stock: 350,
     },
     {
@@ -455,7 +455,7 @@ export const productos = [
     "https://imgur.com/mA5Vpu7.jpg",
     "https://imgur.com/hdGVGtA.jpg",
     ],
-    categoria: "Procesadores",
+    categoria: "Procesadores/AMD",
     stock: 250,
     },
     {
@@ -464,7 +464,7 @@ export const productos = [
     "Procesador AMD Ryzen 7 9800X3D 5.2GHz Turbo AM5 - No Incluye Cooler",
     precio: 720000,
     imagenes: ["https://imgur.com/r0HRhbN.jpg"],
-    categoria: "Procesadores",
+    categoria: "Procesadores/AMD",
     stock: 450,
     },
     {
@@ -491,7 +491,7 @@ export const productos = [
     "https://imgur.com/PVS1gAW.jpg",
     "https://imgur.com/YZFCHja.jpg",
     ],
-    categoria: "Monitores",
+    categoria: "Monitores/LG",
     stock: 30,
     },
     {
@@ -500,7 +500,7 @@ export const productos = [
     "Monitor Gamer AsRock Phantom PG27QFT2A 27 pulgadas QHD IPS 1440p 180Hz FreeSync Antena WiFi Integrada Base Regulable",
     precio: 410000,
     imagenes: ["https://imgur.com/suroFP3.jpg"],
-    categoria: "Monitores",
+    categoria: "Monitores/AsRock",
     stock: 50,
     },
     {
@@ -509,7 +509,7 @@ export const productos = [
     "Monitor Gamer Samsung Odyssey G8 34 pulgadas OLED UWQHD Curvo 1800R 175Hz AMD Freesync Premium",
     precio: 3287000,
     imagenes: ["https://imgur.com/6jawxmU.jpg"],
-    categoria: "Monitores",
+    categoria: "Monitores/Samsung",
     stock: 20,
     },
     {
@@ -518,7 +518,7 @@ export const productos = [
     "Monitor LG 49WQ95C-W 49 pulgadas 5120x1440 IPS Curvo 3800R Freesync Premium Pro",
     precio: 3167000,
     imagenes: ["https://imgur.com/Kww2Qov.jpg"],
-    categoria: "Monitores",
+    categoria: "Monitores/LG",
     stock: 250,
     },
     {
@@ -526,7 +526,7 @@ export const productos = [
     nombre: "Mother ASUS ROG CROSSHAIR X670E HERO AM5",
     precio: 884000,
     imagenes: ["https://imgur.com/JMa7GAX.jpg"],
-    categoria: "Mothers",
+    categoria: "Mothers/ASUS",
     stock: 6500,
     },
     {
@@ -534,7 +534,7 @@ export const productos = [
     nombre: "Mother ASUS ROG STRIX X670E-E GAMING WIFI AM5 DDR5",
     precio: 708000,
     imagenes: ["https://imgur.com/HjYTCkD.jpg"],
-    categoria: "Mothers",
+    categoria: "Mothers/ASUS",
     stock: 1250,
     },
     {
@@ -542,7 +542,7 @@ export const productos = [
     nombre: "Mother ASUS TUF GAMING A620M-PLUS WIFI AM5 DDR5",
     precio: 182000,
     imagenes: ["https://imgur.com/Wp1l2fZ.jpg"],
-    categoria: "Mothers",
+    categoria: "Mothers/ASUS",
     stock: 2500,
     },
     {
@@ -591,7 +591,7 @@ export const productos = [
     "Fuente ADATA XPG 1200W 80 Plus Gold Full Modular ATX 3.0 PCIe 5.0 CORE REACTOR II",
     precio: 270000,
     imagenes: ["https://imgur.com/XhiDgV6.jpg"],
-    categoria: "Fuentes",
+    categoria: "Fuentes/ADATA",
     stock: 820,
     },
     {
@@ -600,7 +600,7 @@ export const productos = [
     "Fuente Be Quiet 1000W 80 Plus Platinum STRAIGHT POWER 12 Full Modular ATX 3.1 PCIe 5.1",
     precio: 282000,
     imagenes: ["https://imgur.com/0VWTGyv.jpg"],
-    categoria: "Fuentes",
+    categoria: "Fuentes/Be Quiet",
     stock: 250,
     },
     {
@@ -609,7 +609,7 @@ export const productos = [
     "Fuente Corsair 1000W 80 Plus Gold RM1000X SHIFT Full Modular ATX 3.1 PCIe 5.1",
     precio: 329000,
     imagenes: ["https://imgur.com/zOJVwDC.jpg"],
-    categoria: "Fuentes",
+    categoria: "Fuentes/Corsair",
     stock: 260,
     },
     {
@@ -620,7 +620,7 @@ export const productos = [
     "https://imgur.com/fBJnGWd.jpg",
     "https://imgur.com/huoBJYS.jpg",
     ],
-    categoria: "Placas de Video",
+    categoria: "Placas de Video/Zotac",
     stock: 20,
     },
     {
@@ -632,7 +632,7 @@ export const productos = [
     "https://imgur.com/7LwsV6f.jpg",
     "https://imgur.com/AHSktP3.jpg",
     ],
-    categoria: "Placas de Video",
+    categoria: "Placas de Video/Zotac",
     stock: 150,
     },
     {
@@ -670,7 +670,7 @@ export const productos = [
     "https://imgur.com/8NlUTY8.jpg",
     "https://imgur.com/AelXhIU.jpg",
     ],
-    categoria: "Placas de Video",
+    categoria: "Placas de Video/ASUS",
     stock: 250,
     },
     {
@@ -721,7 +721,7 @@ export const productos = [
     "Memoria ADATA DDR5 48GB (2x24GB) 9200MHz XPG Lancer CUDIMM RGB CL42 Intel XMP 3.0",
     precio: 385000,
     imagenes: ["https://imgur.com/BpKmmiN.jpg"],
-    categoria: "Memorias RAM",
+    categoria: "Memorias RAM/ADATA",
     stock: 20,
     },
     {
@@ -730,7 +730,7 @@ export const productos = [
     "Memoria Team DDR5 64GB (2x32GB) 6400MHz T-Force Delta RGB CL34 White Intel XMP 3.0 / AMD EXPO",
     precio: 372000,
     imagenes: ["https://imgur.com/pXjVtdD.jpg"],
-    categoria: "Memorias RAM",
+    categoria: "Memorias RAM/Team Group",
     stock: 2500,
     },
     {
@@ -739,7 +739,7 @@ export const productos = [
     "Memoria G.Skill DDR5 64GB (2x32GB) 6000MHz TRIDENT Z5 NEO RGB Black CL36 AMD EXPO/XMP 3.0",
     precio: 302000,
     imagenes: ["https://imgur.com/Avl8Tmd.jpg"],
-    categoria: "Memorias RAM",
+    categoria: "Memorias RAM/G.Skill",
     stock: 20,
     },
     {
@@ -748,7 +748,7 @@ export const productos = [
     "Memoria G.Skill DDR5 64GB (2x32GB) 6000MHz TRIDENT Z5 NEO RGB White CL36 AMD EXPO/XMP 3.0",
     precio: 370000,
     imagenes: ["https://imgur.com/WZJCVmS.jpg"],
-    categoria: "Memorias RAM",
+    categoria: "Memorias RAM/G.Skill",
     stock: 250,
     },
     {

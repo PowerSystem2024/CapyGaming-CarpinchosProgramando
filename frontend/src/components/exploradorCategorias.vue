@@ -20,8 +20,22 @@
                     </a>
                 </li>
                 <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
-                    <a href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-link">
-                        {{ categoria.nombre }}
+                    <div class="categoria-main" @click="toggleSubcategorias(categoria.id)">
+                        <span class="categoria-nombre">{{ categoria.nombre }}</span>
+                        <span class="categoria-toggle" v-if="categoria.subcategorias && categoria.subcategorias.length">
+                            {{ categoriaAbierta === categoria.id ? '−' : '+' }}
+                        </span>
+                    </div>
+                    <ul v-if="categoriaAbierta === categoria.id && categoria.subcategorias && categoria.subcategorias.length" 
+                        class="subcategorias-list">
+                        <li v-for="subcategoria in categoria.subcategorias" :key="subcategoria.id" 
+                            class="subcategoria-item">
+                            <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria.nombre)" class="subcategoria-link">
+                                {{ subcategoria.nombre }}
+                            </a>
+                        </li>
+                    </ul>
+                    <a v-else href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-link">
                     </a>
                 </li>
             </ul>
@@ -51,36 +65,131 @@ export default {
     data() {
         return {
             categorias: [
-                { id: 1, nombre: "Notebooks" },
-                { id: 2, nombre: "Kits de actualización" },
-                { id: 3, nombre: "Procesadores" },
-                { id: 4, nombre: "Mothers" },
-                { id: 5, nombre: "Placas de Video" },
-                { id: 6, nombre: "Memorias RAM" },
-                { id: 7, nombre: "Almacenamiento" },
-                { id: 8, nombre: "Refrigeración" },
-                { id: 9, nombre: "Cabinetes" },
-                { id: 10, nombre: "Fuentes" },
-                { id: 11, nombre: "Monitores" },
-                { id: 12, nombre: "Periféricos" },
-                { id: 13, nombre: "Sillas Garners" },
-                { id: 14, nombre: "Robots" },
-                { id: 15, nombre: "Conectividad" },
-                { id: 16, nombre: "Estabilizadores y UPS" },
-                { id: 17, nombre: "Consolas de Video Juego" },
-                { id: 18, nombre: "Cables y Adaptadores" },
-                { id: 19, nombre: "Celulares y Smartwatch" },
-                { id: 20, nombre: "Impresoras e Insumos" }
+                { 
+                    id: 1, 
+                    nombre: "Notebooks",
+                    subcategorias: [
+                        { id: 101, nombre: "ACER" },
+                        { id: 201, nombre: "ASUS"},
+                        { id: 202, nombre: "Lenovo"}
+                    ]
+                },
+                { 
+                    id: 2, 
+                    nombre: "Kits de actualización",
+                    subcategorias: [
+                        { id: 201, nombre: "CPU + Motherboard" },
+                        { id: 202, nombre: "CPU + RAM" },
+                        { id: 203, nombre: "Completos" }
+                    ]
+                },
+                { id: 3, nombre: "Procesadores",
+                    subcategorias: [
+                        {id: 301, nombre: "AMD"},
+                        /*{id: 302, nombre: "Intel"}*/
+                    ]
+                },
+                { id: 4, nombre: "Mothers",
+                    subcategorias: [
+                        {id: 401, nombre: "ASUS"},
+                        /*{id: 402, nombre: "MSI"},*/
+                        /*{id: 403, nombre: "Gigabyte"},*/
+                        /*{id: 404, nombre: "ASRock"},*/
+                    ]
+                },
+                { id: 5, nombre: "Placas de Video", 
+                    subcategorias: [
+                        {id: 501, nombre: "Zotac"},
+                        {id: 502, nombre: "ASUS"}
+                    ]
+                },
+                { id: 6, nombre: "Memorias RAM",
+                    subcategorias: [
+                        {id: 601, nombre: "ADATA"},
+                        {id: 602, nombre: "Team Group"},
+                        {id: 603, id: 84, nombre: "G.Skill"}
+                    ]
+                },
+                { 
+                    id: 7, 
+                    nombre: "Almacenamiento",
+                    subcategorias: [
+                        { id: 702, nombre: "Discos Rígidos" },
+                        { id: 703, nombre: "Discos Sólidos SSD" }
+                    ]
+                },
+                { 
+                    id: 8, 
+                    nombre: "Refrigeración",
+                    subcategorias: [
+                        { id: 801, nombre: "Coolers" }
+                        /*{id: 802, nombre: "Water Cooler"},*/
+                    ]
+                },
+                { id: 9, nombre: "Gabinetes",
+                    subcategorias: [
+                        {id: 901, nombre: "Cougar"},
+                        {id: 902, nombre: "Corsair"},
+                        {id: 903, nombre: "HYTE"}
+                    ]
+                },
+                { id: 10, nombre: "Fuentes",
+                    subcategorias: [
+                        {id: 1001, nombre: "ADATA"},
+                        {id: 1002, nombre: "Be Quiet"},
+                        {id: 1003, nombre: "Corsair"}
+                    ]
+                },
+                { id: 11, nombre: "Monitores",
+                    subcategorias: [
+                        {id: 1101, nombre: "LG"},
+                        {id: 1102, nombre: "AsRock"},
+                        {id: 1103, nombre: "Samsung"}
+                    ]
+                },
+                { 
+                    id: 12, 
+                    nombre: "Periféricos",
+                    subcategorias: [
+                        { id: 1201, nombre: "Teclados" },
+                        { id: 1202, nombre: "Mouse" },
+                        { id: 1203, nombre: "Auriculares" },
+                        { id: 1204, nombre: "Micrófonos" },
+                        { id: 1205, nombre: "Webcams" },
+                        { id: 1206, nombre: "Joysticks" },
+                        { id: 1207, nombre: "Volantes" },
+                        { id: 1208, nombre: "Mouse Pads" },
+                        { id: 1209, nombre: "Stream Decks" },
+                        { id: 1210, nombre: "Parlantes" },
+                        { id: 1211, nombre: "Combos" }
+                    ]
+                },
+                { id: 13, nombre: "Sillas Gamer" },
+                { id: 14, nombre: "Conectividad" },
+                { id: 15, nombre: "Estabilizadores y UPS" },
+                { id: 16, nombre: "Consolas de Video Juego" },
+                { id: 17, nombre: "Impresoras e Insumos" }
             ],
-            ordenSeleccionado: "todos"
+            ordenSeleccionado: "todos",
+            categoriaAbierta: null
         };
     },
     methods: {
         filtrarPorCategoria(categoria) {
             this.$emit('categoria-seleccionada', categoria);
         },
+        filtrarPorSubcategoria(subcategoria) {
+            this.$emit('subcategoria-seleccionada', subcategoria);
+        },
         aplicarOrden() {
             this.$emit('orden-cambiado', this.ordenSeleccionado);
+        },
+        toggleSubcategorias(categoriaId) {
+            if (this.categoriaAbierta === categoriaId) {
+                this.categoriaAbierta = null;
+            } else {
+                this.categoriaAbierta = categoriaId;
+            }
         }
     }
 };
@@ -161,10 +270,61 @@ export default {
     border-radius: 4px;
     border: 1px solid var(--color-border);
     transition: transform 0.2s ease;
+    overflow: hidden;
 }
 
 .categoria-item:hover {
     transform: translateX(5px);
+}
+
+.categoria-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: var(--color-accent);
+    color: var(--color-foreground);
+    transition: background-color 0.2s;
+}
+
+.categoria-nombre {
+    color: var(--chart-2);
+    background-color: var(--color-accent);
+    font-weight: bold;
+}   
+
+.categoria-toggle {
+    background-color: var(--color-accent);
+    color: var(--chart-2);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.subcategorias-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--color-background);
+}
+
+.subcategoria-item {
+    border-top: 1px solid var(--color-border);
+}
+
+.subcategoria-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--color-muted-foreground);
+    background-color: var(--color-card);
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.subcategoria-link:hover {
+    color: var(--color-primary);
+    background-color: var(--color-accent);
+    padding-left: 1.5rem;
 }
 
 .categoria-link {
@@ -273,5 +433,4 @@ export default {
 .orden-select option {
     background-color: var(--color-background);
 }
-
 </style>
