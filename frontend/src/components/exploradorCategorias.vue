@@ -4,7 +4,7 @@
         <div class="destacados-section">
             <h2 class="section-title">Destacados</h2>
             <div class="destacado-item">
-                <a href="#" class="destacado-link">Ver descuentos</a>
+                <a href="#" class="destacado-link">Ver destacados</a>
             </div>
         </div>
 
@@ -32,24 +32,6 @@
         <!-- Filtros -->
         <div class="filtros-section">
             <h2 class="section-title">Filtros</h2>
-            <div class="filtro-item" v-for="filtro in filtros" :key="filtro.id">
-                <div class="filtro-header">
-                    <span class="filtro-titulo">Descuento</span>
-                    <span class="filtro-valor">{{ filtro.descuento }}</span>
-                </div>
-                <div class="filtro-info">
-                    <p class="filtro-nombre">{{ filtro.nombre }}</p>
-                    <p class="filtro-precio">+{{ filtro.precio }}</p>
-                    <p class="filtro-total">{{ filtro.total }}</p>
-                </div>
-            </div>
-        </div>
-
-        <hr class="separador">
-
-        <!-- Ayuda -->
-        <div class="ayuda-section">
-            <h2 class="section-title">Ayuda</h2>
             <div class="ordenar-por">
                 <span>Ordenar por</span>
                 <select v-model="ordenSeleccionado" @change="aplicarOrden" class="orden-select">
@@ -89,36 +71,6 @@ export default {
                 { id: 18, nombre: "Cables y Adaptadores" },
                 { id: 19, nombre: "Celulares y Smartwatch" },
                 { id: 20, nombre: "Impresoras e Insumos" }
-            ],
-            filtros: [
-                { 
-                    id: 1, 
-                    descuento: "1.87,065", 
-                    nombre: "Silla Garner Vertagear SL3800 HygennX Negro Carbon Ergonomic (Peso MAX. 100kg)", 
-                    precio: "463300", 
-                    total: "3395.335" 
-                },
-                { 
-                    id: 2, 
-                    descuento: "1.651,696", 
-                    nombre: "Notebook ASUS ROG Strix SCAR B 18' Intel Core Ultra 9 275HX 32GB DDR5 SSD 2TB RTX 5080 2.5K 240Hz...", 
-                    precio: "8144.200", 
-                    total: "57.494.504" 
-                },
-                { 
-                    id: 3, 
-                    descuento: "1.58,636", 
-                    nombre: "Silla Garner Vertagear SL3800 HygennX Negro y Blanco Ergonomic (Peso MAX. 100kg)", 
-                    precio: "497,560", 
-                    total: "24.28.764" 
-                },
-                { 
-                    id: 4, 
-                    descuento: "1.791,452", 
-                    nombre: "Notebook ASUS ROG Strix SCAR B 18' Intel Core Ultra 9 275HX 64GB SSD 2TB RTX 5090 2.5K 240Hz Win...", 
-                    precio: "8493,150", 
-                    total: "59.101.698" 
-                }
             ],
             ordenSeleccionado: "todos"
         };
@@ -290,14 +242,6 @@ export default {
     color: var(--color-muted-foreground);
 }
 
-/* Ayuda */
-.ayuda-section {
-    background-color: var(--color-card);
-    padding: 0.75rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-}
-
 .ordenar-por {
     background-color: var(--color-card);
     display: flex;
@@ -306,6 +250,7 @@ export default {
 }
 
 .ordenar-por span {
+    margin-top: 10px;
     background-color: var(--color-card);
     font-weight: bold;
     color: var(--color-primary);
