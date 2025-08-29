@@ -1,7 +1,7 @@
 <script setup>
 import Productos from "./components/productos.vue";
 import Marcas from "./components/marcas.vue";
-import ofertas from "./components/ofertas.vue";
+import Ofertas from "./components/ofertas.vue";
 </script>
 
 <template>
@@ -10,6 +10,9 @@ import ofertas from "./components/ofertas.vue";
     
     <!-- Componente de marcas -->
     <Marcas />
+
+    <!-- Componente de ofertas -->
+    <Ofertas />
 
     <!-- Componente de productos -->
     <Productos />
