@@ -24,16 +24,24 @@ const CART_KEY = 'capygaming_cart';
     const existingItemIndex = cart.findIndex(item => item.id === product.id);
 
     if (existingItemIndex !== -1) {
-      cart[existingItemIndex].quantity += 1;
+      // Si existe, verificar stock antes de aumentar
+      const currentQuantity = cart[existingItemIndex].quantity;
+      if (currentQuantity < product.stock) {
+        cart[existingItemIndex].quantity += 1;
+        saveCart(cart);
+        return { success: true, message: 'Producto agregado al carrito' };
+      } else {
+        return { success: false, message: `Stock máximo alcanzado (${product.stock} unidades)` };
+      }
     } else {
+      // Si no existe, agregarlo con cantidad 1
       cart.push({
         ...product,
         quantity: 1
       });
+      saveCart(cart);
+      return { success: true, message: 'Producto agregado al carrito' };
     }
-
-    saveCart(cart);
-    return cart;
   }
 
   export function removeFromCart(productId) {
@@ -51,6 +59,12 @@ const CART_KEY = 'capygaming_cart';
       if (quantity <= 0) {
         return removeFromCart(productId);
       } else {
+        // Verificar que no exceda el stock
+        const product = cart[itemIndex];
+        if (quantity > product.stock) {
+          alert(`⚠️ Stock máximo: ${product.stock} unidades`);
+          return cart;
+        }
         cart[itemIndex].quantity = quantity;
         saveCart(cart);
       }

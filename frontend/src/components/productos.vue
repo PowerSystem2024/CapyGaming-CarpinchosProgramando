@@ -52,8 +52,12 @@ export default {
             "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
         agregarAlCarrito(producto) {
-            addToCart(producto);
-           alert(`${producto.nombre} agregado al carrito!`);
+            const result = addToCart(producto);
+            if (result.success) {
+                alert(`✅ ${producto.nombre} agregado al carrito!`);
+            } else {
+                alert(`⚠️ ${result.message}`);
+            }
         },
     },
 };
