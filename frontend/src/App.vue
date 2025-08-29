@@ -1,11 +1,17 @@
 <script setup>
 import carrito from "./components/carrito.vue";
 import Productos from "./components/productos.vue";
+import Marcas from "./components/marcas.vue";
+import Ofertas from "./components/ofertas.vue";
 </script>
 
 <template>
   <div id="app">
     <nav>
+
+      <Marcas />
+      <Ofertas />
+
 
   <!-- Menú de navegación opcional -->
       <router-link to="/">Productos</router-link>
