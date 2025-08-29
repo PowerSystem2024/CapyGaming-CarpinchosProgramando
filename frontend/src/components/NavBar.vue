@@ -60,6 +60,7 @@ export default {
   height: 88px;
   background: var(--color-background);
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 .navbar-content {
