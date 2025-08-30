@@ -134,11 +134,41 @@ export default {
         
         // Mapeo mejorado de subcategorías a filtros específicos
         const mapeoSubcategorias = {
+            // Subcategorías de Notebook
+            "Notebooks ACER": "Notebook/ACER",
+            "Notebooks ASUS": "Notebook/ASUS",
+            "Notebooks Lenovo": "Notebook/Lenovo",
+
+            // Subcategorías de Kits de actualización  
+            "CPU + Motherboard": "Kit Upgrade/CPU + Motherboard",
+            "CPU + RAM": "Kit Upgrade",
+            "Completos": "Kit Upgrade/Completos",
+
+            // Subcategorías de Procesadores
+            "Procesadores AMD": "Procesadores/AMD",
+            // "Procesadores Intel": "Procesadores/Intel"
+
+            // Subcategorías de Mothers
+            "Mother ASUS": "Mothers/ASUS",
+
+            // Subcategorías de Placas de Video
+            "Placas de Video Zotac": "Placas de Video/Zotac",
+            "Placas de Video ASUS": "Placas de Video/ASUS",
+
+            // Subcategorías de Memorias RAM
+            "Memorias RAM ADATA": "Memorias RAM/ADATA",
+            "Memorias RAM Team Group": "Memorias RAM/Team Group",
+            "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
+
             // Subcategorías de Almacenamiento
             "Discos Externos": "Almacenamiento/Disco Externo",
             "Discos Rígidos": "Almacenamiento/Disco Rigido",
             "Discos Sólidos SSD": "Almacenamiento/Disco Solido",
-            
+
+            // Subcategorías de Refrigeración
+            "Coolers": "Refrigeracion/Coolers",
+            // "Water Cooler": "Refrigeracion/Water Cooler",
+
             // Subcategorías de Periféricos
             "Teclados": "Perifericos/Teclado",
             "Mouse": "Perifericos/Mouse",
@@ -152,43 +182,22 @@ export default {
             "Parlantes": "Perifericos/Parlante",
             "Combos": "Perifericos/Combo",
             
-            // Subcategorías de Refrigeración
-            "Coolers": "Refrigeracion/Coolers",
-            // "Water Cooler": "Refrigeracion/Water Cooler",
-            
-            // Subcategorías de Kits de actualización (no existen en los datos actuales)    
-            "CPU + Motherboard": "Kit Upgrade/CPU + Motherboard",
-            "CPU + RAM": "Kit Upgrade",
-            "Completos": "Kit Upgrade/Completos",
-
-            "Procesadores AMD": "Procesadores/AMD",
-            // "Procesadores Intel": "Procesadores/Intel"
-
-            "Mother ASUS": "Mothers/ASUS",
-
-            "Memorias RAM ADATA": "Memorias RAM/ADATA",
-            "Memorias RAM Team Group": "Memorias RAM/Team Group",
-            "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
-
-            "Placas de Video Zotac": "Placas de Video/Zotac",
-            "Placas de Video ASUS": "Placas de Video/ASUS",
-
+            // Subcategorías de Gabinetes
             "Gabinetes Cougar": "Gabinetes/Cougar",
             "Gabinetes Corsair": "Gabinetes/Corsair",
             "Gabinetes HYTE": "Gabinetes/HYTE",
-
-            "Notebooks ACER": "Notebook/ACER",
-            "Notebooks ASUS": "Notebook/ASUS",
-            "Notebooks Lenovo": "Notebook/Lenovo",
-
+            
+            // Subcategorías de Fuentes
             "Fuentes ADATA": "Fuentes/ADATA",
             "Fuentes Be Quiet": "Fuentes/Be Quiet",
             "Fuentes Corsair": "Fuentes/Corsair",
 
+            // Subcategorías de Monitores
             "Monitores LG": "Monitores/LG",
             "Monitores AsRock": "Monitores/AsRock",
             "Monitores Samsung": "Monitores/Samsung",
 
+            // Subcategorías de Consolas
             "Nintendo Switch": "Consolas/Nintendo Switch"
         };
         
