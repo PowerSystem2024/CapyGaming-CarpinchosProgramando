@@ -3,24 +3,24 @@
     <div class="navbar-content">
       <!-- Logo -->
       <div class="logo">
-        <img src="../assets/logoconletrasamarillo.png" alt="Logo" />
+        <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
       </div>
 
       <!-- Buscador -->
       <div class="search">
         <input type="text" placeholder="Buscar productos" v-model="searchText" />
         <button  class="search-btn" @click="buscarProducto">
-          <img src="../assets/search.svg" alt="Buscar"/>
+          <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar"/>
         </button>
       </div>
 
       <!-- Opciones usuario -->
       <div class="user-options">
         <button class="user-btn" @click="login">
-          <img src="../assets/profile-svgrepo-com (1).svg"/>
+          <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
           Ingresar</button>
         <button class="cart-btn" @click="verCarrito">
-          <img src="../assets/cart-svgrepo-com (2).svg"/>
+          <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
         </button>
       </div>
     </div>

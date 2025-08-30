@@ -40,7 +40,7 @@
       <div class="footer-section">
         <h4>Medios de pago</h4>
         <div class="pagos-icons">
-          <img src="../assets/MERCADOPAGOHZ.svg" alt="MercadoPago" />
+          <img src="../assets/IconosNavBarFooter/MERCADOPAGOHZ.svg" alt="MercadoPago" />
         </div>
       </div>
 
@@ -53,9 +53,9 @@
           <p class="contact-horario">LUN A VIER DE 10 A 13 / 14 A 17 HS</p>
         </ul>
         <div class="social-icons">
-          <a href="#"><img src="../assets/twitter.svg" alt="Twitter" /></a>
-          <a href="#"><img src="../assets/instagram.svg" alt="Instagram" /></a>
-          <a href="#"><img src="../assets/facebook.svg" alt="Facebook" /></a>
+          <a href="#"><img src="../assets/IconosNavBarFooter/twitter.svg" alt="Twitter" /></a>
+          <a href="#"><img src="../assets/IconosNavBarFooter/instagram.svg" alt="Instagram" /></a>
+          <a href="#"><img src="../assets/IconosNavBarFooter/facebook.svg" alt="Facebook" /></a>
         </div>
       </div>
 
