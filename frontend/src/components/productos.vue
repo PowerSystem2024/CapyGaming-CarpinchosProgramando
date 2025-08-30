@@ -112,7 +112,7 @@ export default {
             const categoriaProducto = mapeoCategorias[categoriaExplorador];
             if (categoriaProducto) {
                 // Para categorías padre, buscar productos que comiencen con esa categoría
-                if (["Almacenamiento", "Refrigeracion", "Perifericos", "Conectividad"].includes(categoriaProducto)) {
+                if (["Notebook", "Kit Upgrade", "Procesadores", "Mothers", "Placas de Video", "Memorias RAM", "Almacenamiento", "Refrigeracion", "Gabinetes", "Fuentes", "Monitores", "Perifericos", "Silla", "Conectividad", "Estabilizadores",  "Consolas", "Impresoras"].includes(categoriaProducto)) {
                     this.productosFiltrados = this.productos.filter(producto => 
                         producto.categoria.startsWith(categoriaProducto)
                     );
