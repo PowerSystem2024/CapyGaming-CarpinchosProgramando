@@ -23,11 +23,13 @@
       <router-link to="/quienesSomos" class="quienes-link"></router-link>
       <router-link to="/ofertas" class="ofertas-link"></router-link>
       <router-link to="/marcas" class="marcas-link"></router-link>
+      <router-link to="/exploradorCategorias" class="exploradorCategorias-link"></router-link>
     </nav>
 
     <router-view />
   </div>
 
+  
   <footerPag />
 
 </template>

@@ -1,53 +1,75 @@
 <template>
-    <div class="catalogo">
-        <h2 class="titulo">Catálogo de productos</h2>
-        <div class="grid">
-        <div v-for="producto in productos" :key="producto.id" class="card">
-            <div class="imagenes">
-            <a
-                v-for="(img, index) in producto.imagenes"
-                :key="index"
-                :href="img"
-                :data-title="producto.nombre"
-            >
-                <img
-                :src="img"
-                :alt="`${producto.nombre} vista ${index + 1}`"
-                class="imagen"
-                @error="imagenError($event)"
-                />
-            </a>
-            </div>
-
-            <h3 class="nombre">{{ producto.nombre }}</h3>
-
-            <!-- Precio con $ -->
-            <p class="precio">$ {{ producto.precio }}</p>
-
-            <!-- Stock disponible -->
-            <p class="stock">Stock disponible: {{ producto.stock }}</p>
-
-            <!-- Botón agregar al carrito -->
-            <button class="btn-carrito" @click="agregarAlCarrito(producto)">
-            🛒 Agregar al carrito
-            </button>
+    <div class="catalogo-page">
+        <div class="sidebar">
+            <Categorias 
+                @categoria-seleccionada="filtrarProductosPorCategoria"
+                @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
+                @orden-cambiado="ordenarProductos"
+            />
         </div>
+    
+            <div class="catalogo">
+                <!-- Mostrar productos destacados o catálogo normal según el estado -->
+                <ProductosDestacados 
+                    v-if="mostrandoDestacados"
+                    @agregar-al-carrito="agregarAlCarrito"
+                />
+                
+                <div v-else>
+                    <h2 class="titulo">Catálogo de productos</h2>
+                    <div class="grid">
+                    <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
+                    <div class="imagenes">
+                        <a
+                        v-for="(img, index) in producto.imagenes"
+                        :key="index"
+                        :href="img"
+                        :data-title="producto.nombre"
+                        >
+                        <img
+                            :src="img"
+                            :alt="`${producto.nombre} vista ${index + 1}`"
+                            class="imagen"
+                            @error="imagenError($event)"
+                        />
+                        </a>
+                    </div>
+
+                    <h3 class="nombre">{{ producto.nombre }}</h3>
+                    <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
+                    <p class="stock">Stock disponible: {{ producto.stock }}</p>
+
+                    <button class="btn-carrito" @click="agregarAlCarrito(producto)">
+                        🛒 Agregar al carrito
+                    </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { productos } from "../assets/data/productsData";
-import { addToCart } from "../utils/cartUtils";
+import Categorias from "../components/exploradorCategorias.vue";
+
 export default {
     name: "Productos",
+    components: {
+        Categorias
+    },
     data() {
         return {
-        productos,
+            productos,
+            productosFiltrados: productos,
+            categoriaSeleccionada: null,
+            subcategoriaSeleccionada: null,
+            ordenSeleccionado: "todos",
+            mostrandoDestacados: false
         };
     },
     methods: {
-        imagenError(event) {
+    imagenError(event) {
         event.target.src =
             "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
@@ -60,65 +82,185 @@ export default {
             }
         },
     },
-};
-</script>
+    agregarAlCarrito(producto) {
+        console.log("Agregado al carrito:", producto);
+    },
+    filtrarProductosPorCategoria(categoriaExplorador) {
+        this.categoriaSeleccionada = categoriaExplorador;
+        this.subcategoriaSeleccionada = null;
+        
+        // Mapeo mejorado de categorías del explorador a categorías de productos
+        const mapeoCategorias = {
+            "Notebooks": "Notebook",
+            "Kits de actualización": "Kit Upgrade",
+            "Procesadores": "Procesadores",
+            "Mothers": "Mothers",
+            "Placas de Video": "Placas de Video",
+            "Memorias RAM": "Memorias RAM",
+            "Almacenamiento": "Almacenamiento",
+            "Refrigeración": "Refrigeracion",
+            "Gabinetes": "Gabinetes",
+            "Fuentes": "Fuentes",
+            "Monitores": "Monitores",
+            "Periféricos": "Perifericos",
+            "Sillas Gamer": "Silla",
+            "Conectividad": "Conectividad",
+            "Estabilizadores y UPS": "Estabilizadores",
+            "Consolas de Video Juego": "Consolas",
+            "Impresoras e Insumos": "Impresoras",
+            "Todos": "Todos"
+        };
+        
+        if (categoriaExplorador === "Todos") {
+            this.productosFiltrados = this.productos;
+        } else {
+            const categoriaProducto = mapeoCategorias[categoriaExplorador];
+            if (categoriaProducto) {
+                // Para categorías padre, buscar productos que comiencen con esa categoría
+                if (["Notebook", "Kit Upgrade", "Procesadores", "Mothers", "Placas de Video", "Memorias RAM", "Almacenamiento", "Refrigeracion", "Gabinetes", "Fuentes", "Monitores", "Perifericos", "Silla", "Conectividad", "Estabilizadores",  "Consolas", "Impresoras"].includes(categoriaProducto)) {
+                    this.productosFiltrados = this.productos.filter(producto => 
+                        producto.categoria.startsWith(categoriaProducto)
+                    );
+                } else {
+                    this.productosFiltrados = this.productos.filter(producto => 
+                        producto.categoria === categoriaProducto
+                    );
+                }
+            } else {
+                this.productosFiltrados = this.productos;
+            }
+        }
+    },
+    mostrarDestacados() {
+            this.mostrandoDestacados = true;
+    },
+    filtrarProductosPorSubcategoria(subcategoriaExplorador) {
+        this.subcategoriaSeleccionada = subcategoriaExplorador;
+        
+        // Mapeo mejorado de subcategorías a filtros específicos
+        const mapeoSubcategorias = {
+            // Subcategorías de Notebook
+            "Notebooks ACER": "Notebook/ACER",
+            "Notebooks ASUS": "Notebook/ASUS",
+            "Notebooks Lenovo": "Notebook/Lenovo",
 
+            // Subcategorías de Kits de actualización  
+            "CPU + Motherboard": "Kit Upgrade/CPU + Motherboard",
+            "CPU + RAM": "Kit Upgrade",
+            "Completos": "Kit Upgrade/Completos",
+
+            // Subcategorías de Procesadores
+            "Procesadores AMD": "Procesadores/AMD",
+            // "Procesadores Intel": "Procesadores/Intel"
+
+            // Subcategorías de Mothers
+            "Mother ASUS": "Mothers/ASUS",
+
+            // Subcategorías de Placas de Video
+            "Placas de Video Zotac": "Placas de Video/Zotac",
+            "Placas de Video ASUS": "Placas de Video/ASUS",
+
+            // Subcategorías de Memorias RAM
+            "Memorias RAM ADATA": "Memorias RAM/ADATA",
+            "Memorias RAM Team Group": "Memorias RAM/Team Group",
+            "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
+
+            // Subcategorías de Almacenamiento
+            "Discos Externos": "Almacenamiento/Disco Externo",
+            "Discos Rígidos": "Almacenamiento/Disco Rigido",
+            "Discos Sólidos SSD": "Almacenamiento/Disco Solido",
+
+            // Subcategorías de Refrigeración
+            "Coolers": "Refrigeracion/Coolers",
+            // "Water Cooler": "Refrigeracion/Water Cooler",
+
+            // Subcategorías de Periféricos
+            "Teclados": "Perifericos/Teclado",
+            "Mouse": "Perifericos/Mouse",
+            "Auriculares": "Perifericos/Auriculares",
+            "Micrófonos": "Perifericos/Microfono",
+            "Webcams": "Perifericos/Webcam",
+            "Joysticks": "Perifericos/Joystick",
+            "Volantes": "Volante",
+            "Mouse Pads": "Perifericos/MousePad",
+            "Stream Decks": "Perifericos/StreamDeck",
+            "Parlantes": "Perifericos/Parlante",
+            "Combos": "Perifericos/Combo",
+            
+            // Subcategorías de Gabinetes
+            "Gabinetes Cougar": "Gabinetes/Cougar",
+            "Gabinetes Corsair": "Gabinetes/Corsair",
+            "Gabinetes HYTE": "Gabinetes/HYTE",
+            
+            // Subcategorías de Fuentes
+            "Fuentes ADATA": "Fuentes/ADATA",
+            "Fuentes Be Quiet": "Fuentes/Be Quiet",
+            "Fuentes Corsair": "Fuentes/Corsair",
+
+            // Subcategorías de Monitores
+            "Monitores LG": "Monitores/LG",
+            "Monitores AsRock": "Monitores/AsRock",
+            "Monitores Samsung": "Monitores/Samsung",
+
+            // Subcategorías de Consolas
+            "Nintendo Switch": "Consolas/Nintendo Switch"
+        };
+        
+        const subcategoriaProducto = mapeoSubcategorias[subcategoriaExplorador];
+        if (subcategoriaProducto) {
+            // Si la subcategoría contiene una barra, buscar en la categoría del producto
+            if (subcategoriaProducto.includes('/')) {
+                this.productosFiltrados = this.productos.filter(producto => 
+                    producto.categoria === subcategoriaProducto
+                );
+            } else {
+                // Si no contiene barra, buscar productos de esa categoría general
+                this.productosFiltrados = this.productos.filter(producto => 
+                    producto.categoria === subcategoriaProducto
+                );
+            }
+        } else {
+            this.productosFiltrados = this.productos;
+        }
+    },
+    ordenarProductos(orden) {
+        this.ordenSeleccionado = orden;
+        
+        if (orden === "mayorPrecio") {
+            this.productosFiltrados.sort((a, b) => b.precio - a.precio);
+        } else if (orden === "menorPrecio") {
+            this.productosFiltrados.sort((a, b) => a.precio - b.precio);
+        } else {
+            // Por defecto o "destacados"
+            this.productosFiltrados = [...this.productos];
+        }
+    }
+    }
+
+</script>
 
 <style scoped>
 @import url(../assets/styles/base.css);
-    .catalogo {
+
+.catalogo-page {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    font-family: 'Roboto', sans-serif;
+    gap: 2rem;
     padding: 2rem;
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    }
+}
 
-    .card {
-    border-radius: 8px;
-    padding: 1rem;
-    width: 250px;
-    text-align: center;
-    transition: transform 0.2s ease;
-    background-color: var(--color-card);
-    color: var(--color-card-foreground);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+.sidebar {
+    flex: 0 0 300px;  
+}
 
-    .card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .imagenes {
+.catalogo {
     display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-    border-radius: 10px;
-    }
+    flex: 1;
+    flex-direction: column;
+}
 
-    .imagen {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .imagen:hover{
-        transform: scale(1.4);
-    }
-
-    .titulo {
-    grid-column: 1/-1;
+.titulo {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -129,28 +271,65 @@ export default {
     padding: 1rem;
     border-radius: 8px;
     width: 100%;
-    max-width: 1200px;
-    }
+}
 
-    .grid {
+.grid {
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     width: 100%;
-    max-width: 1200px;
     background-color: var(--color-background);
-    }
+    border-radius: 10px;
+}
 
-    .nombre {
+.card {
+    border-radius: 8px;
+    padding: 1rem;
+    width: 250px;
+    margin: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+    background-color: var(--color-card);
+    color: var(--color-card-foreground);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.imagenes {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+}
+
+.imagen {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imagen:hover{
+    transform: scale(1.4);
+}
+
+.nombre {
     font-size: 1rem;
     margin-top: 0.5rem;
     text-align: center;
     color: var(--color-primary);
     background-color: var(--color-card);
+}
 
-    }
-
-    .precio {
+.precio {
     font-weight: bold;
     color: var(--color-secondary);
     font-size: 1.2rem;
@@ -158,15 +337,15 @@ export default {
     color: var(--color-foreground);
     margin: 0.5rem 0;
     background-color: var(--color-card);
-    }
+}
 
-    .stock {
+.stock {
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
     background-color: var(--color-card);
-    }
+}
 
-    .btn-carrito {
+.btn-carrito {
     font-size: 1rem;
     font-weight: bold;
     margin-top: 0.5rem;
@@ -177,11 +356,11 @@ export default {
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s;
-    }
+}
 
-    .btn-carrito:hover {
+.btn-carrito:hover {
     background-color: var(--sidebar-ring);
     color: var(--color-foreground);
     transform: scale(1.1);
-    }
+}
 </style>
