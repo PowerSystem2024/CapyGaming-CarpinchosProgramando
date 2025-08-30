@@ -3,6 +3,7 @@ import carrito from "./components/carrito.vue";
 import Productos from "./components/productos.vue";
 import Marcas from "./components/marcas.vue";
 import Ofertas from "./components/ofertas.vue";
+import quienesSomos from "./components/quienesSomos.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import Ofertas from "./components/ofertas.vue";
 
       <Marcas />
       <Ofertas />
+      <quienesSomos />
 
 
   <!-- Menú de navegación opcional -->
