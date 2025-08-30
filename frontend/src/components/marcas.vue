@@ -23,7 +23,7 @@ export default {
     return {
       // lista completa de marcas con logo importado
       brands: [
-        { name: "Acer", logo: "/logos/acer.png" },
+        { name: "Acer", logo: "/src/assets/logos/acer.png" }, //probar
         //{ name: "Acer", logo: require("@/assets/logos/acer.png") },
         { name: "Asus", logo: "/logos/asus.png" },
         { name: "Lenovo", logo: "/logos/lenovo.png" },

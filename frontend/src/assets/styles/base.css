@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --color-background: #1C2833;
+    --color-background: #1C2833; 
     --color-foreground: #FDEBD0;
     --color-primary: #F39C12;
     --color-primary-foreground: #1C2833;
@@ -54,9 +54,9 @@
 }
 
 * {
-    background-color: #ffffff;
     color: var(--color-foreground);
     font-family: 'Roboto', sans-serif;
+    background-color: var(--color-background);
 }
 
 a {
@@ -71,7 +71,7 @@ a:hover {
 
 body {
     margin: 0;
-    display: flex;
+    /* display: flex; */
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
