@@ -69,9 +69,9 @@ export default {
                     id: 1, 
                     nombre: "Notebooks",
                     subcategorias: [
-                        { id: 101, nombre: "ACER" },
-                        { id: 201, nombre: "ASUS"},
-                        { id: 202, nombre: "Lenovo"}
+                        { id: 101, nombre: "Notebooks ACER" },
+                        { id: 201, nombre: "Notebooks ASUS"},
+                        { id: 202, nombre: "Notebooks Lenovo"}
                     ]
                 },
                 { 
@@ -85,13 +85,13 @@ export default {
                 },
                 { id: 3, nombre: "Procesadores",
                     subcategorias: [
-                        {id: 301, nombre: "AMD"},
-                        /*{id: 302, nombre: "Intel"}*/
+                        {id: 301, nombre: "Procesadores AMD"},
+                        /*{id: 302, nombre: "Procesadores Intel"}*/
                     ]
                 },
                 { id: 4, nombre: "Mothers",
                     subcategorias: [
-                        {id: 401, nombre: "ASUS"},
+                        {id: 401, nombre: "Mother ASUS"},
                         /*{id: 402, nombre: "MSI"},*/
                         /*{id: 403, nombre: "Gigabyte"},*/
                         /*{id: 404, nombre: "ASRock"},*/
@@ -99,15 +99,15 @@ export default {
                 },
                 { id: 5, nombre: "Placas de Video", 
                     subcategorias: [
-                        {id: 501, nombre: "Zotac"},
-                        {id: 502, nombre: "ASUS"}
+                        {id: 501, nombre: "Placas de Video Zotac"},
+                        {id: 502, nombre: "Placas de Video ASUS"}
                     ]
                 },
                 { id: 6, nombre: "Memorias RAM",
                     subcategorias: [
-                        {id: 601, nombre: "ADATA"},
-                        {id: 602, nombre: "Team Group"},
-                        {id: 603, id: 84, nombre: "G.Skill"}
+                        {id: 601, nombre: "Memorias RAM ADATA"},
+                        {id: 602, nombre: "Memorias RAM Team Group"},
+                        {id: 603, id: 84, nombre: "Memorias RAM G.Skill"}
                     ]
                 },
                 { 
@@ -128,23 +128,23 @@ export default {
                 },
                 { id: 9, nombre: "Gabinetes",
                     subcategorias: [
-                        {id: 901, nombre: "Cougar"},
-                        {id: 902, nombre: "Corsair"},
-                        {id: 903, nombre: "HYTE"}
+                        {id: 901, nombre: "Gabinetes Cougar"},
+                        {id: 902, nombre: "Gabinetes Corsair"},
+                        {id: 903, nombre: "Gabinetes HYTE"}
                     ]
                 },
                 { id: 10, nombre: "Fuentes",
                     subcategorias: [
-                        {id: 1001, nombre: "ADATA"},
-                        {id: 1002, nombre: "Be Quiet"},
-                        {id: 1003, nombre: "Corsair"}
+                        {id: 1001, nombre: "Fuentes ADATA"},
+                        {id: 1002, nombre: "Fuentes Be Quiet"},
+                        {id: 1003, nombre: "Fuentes Corsair"}
                     ]
                 },
                 { id: 11, nombre: "Monitores",
                     subcategorias: [
-                        {id: 1101, nombre: "LG"},
-                        {id: 1102, nombre: "AsRock"},
-                        {id: 1103, nombre: "Samsung"}
+                        {id: 1101, nombre: "Monitores LG"},
+                        {id: 1102, nombre: "Monitores AsRock"},
+                        {id: 1103, nombre: "Monitores Samsung"}
                     ]
                 },
                 { 

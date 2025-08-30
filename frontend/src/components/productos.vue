@@ -161,33 +161,33 @@ export default {
             "CPU + RAM": "Kit Upgrade",
             "Completos": "Kit Upgrade/Completos",
 
-            "AMD": "Procesadores/AMD",
-            // "Intel": "Procesadores/Intel"
+            "Procesadores AMD": "Procesadores/AMD",
+            // "Procesadores Intel": "Procesadores/Intel"
 
-            "ASUS": "Mothers/ASUS",
+            "Mother ASUS": "Mothers/ASUS",
 
-            "ADATA": "Memorias RAM/ADATA",
-            "Team Group": "Memorias RAM/Team Group",
-            "G.Skill": "Memorias RAM/G.Skill",
+            "Memorias RAM ADATA": "Memorias RAM/ADATA",
+            "Memorias RAM Team Group": "Memorias RAM/Team Group",
+            "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
 
-            "Zotac": "Placas de Video/Zotac",
-            "ASUS": "Placas de Video/ASUS",
+            "Placas de Video Zotac": "Placas de Video/Zotac",
+            "Placas de Video ASUS": "Placas de Video/ASUS",
 
-            "Cougar": "Gabinetes/Cougar",
-            "Corsair": "Gabinetes/Corsair",
-            "HYTE": "Gabinetes/HYTE",
+            "Gabinetes Cougar": "Gabinetes/Cougar",
+            "Gabinetes Corsair": "Gabinetes/Corsair",
+            "Gabinetes HYTE": "Gabinetes/HYTE",
 
-            "ACER": "Notebook/ACER",
-            "ASUS": "Notebook/ASUS",
-            "Lenovo": "Notebook/Lenovo",
+            "Notebooks ACER": "Notebook/ACER",
+            "Notebooks ASUS": "Notebook/ASUS",
+            "Notebooks Lenovo": "Notebook/Lenovo",
 
-            "ADATA": "Fuentes/ADATA",
-            "Be Quiet": "Fuentes/Be Quiet",
-            "Corsair": "Fuentes/Corsair",
+            "Fuentes ADATA": "Fuentes/ADATA",
+            "Fuentes Be Quiet": "Fuentes/Be Quiet",
+            "Fuentes Corsair": "Fuentes/Corsair",
 
-            "LG": "Monitores/LG",
-            "AsRock": "Monitores/AsRock",
-            "Samsung": "Monitores/Samsung",
+            "Monitores LG": "Monitores/LG",
+            "Monitores AsRock": "Monitores/AsRock",
+            "Monitores Samsung": "Monitores/Samsung",
 
             "Nintendo Switch": "Consolas/Nintendo Switch"
         };
