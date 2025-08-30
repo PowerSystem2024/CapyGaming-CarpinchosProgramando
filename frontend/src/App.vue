@@ -1,12 +1,6 @@
 <script setup>
-<<<<<<< HEAD
-=======
-import Productos from "./components/productos.vue";
-import NavBar from "./components/NavBar.vue";
-import footerPag from "./components/footerPag.vue";
-
->>>>>>> navbar
-
+  import NavBar from "./components/NavBar.vue";
+  import footerPag from "./components/footerPag.vue";
 </script>
 
 <template>

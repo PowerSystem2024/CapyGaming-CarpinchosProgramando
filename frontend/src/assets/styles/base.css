@@ -52,7 +52,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-<<<<<<< HEAD
 
 * {
     color: var(--color-foreground);
@@ -127,5 +126,3 @@ button:focus-visible {
         background-color: #f9f9f9;
     }
 }
-=======
->>>>>>> navbar
