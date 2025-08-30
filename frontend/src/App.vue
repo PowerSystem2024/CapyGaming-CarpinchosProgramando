@@ -1,9 +1,5 @@
 <script setup>
-import carrito from "./components/carrito.vue";
-import Productos from "./components/productos.vue";
-import Marcas from "./components/marcas.vue";
-import Ofertas from "./components/ofertas.vue";
-import quienesSomos from "./components/quienesSomos.vue";
+
 </script>
 
 <template>
@@ -18,12 +14,15 @@ import quienesSomos from "./components/quienesSomos.vue";
   <!-- Menú de navegación opcional -->
       <router-link to="/">Productos</router-link>
       <router-link to="/carrito" class="carrito-link">
-        Carrito 
         <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
-      </router-link>
+        </router-link>
+      <router-link to="/inicioSesion" class="inicio-link"></router-link>
+      <router-link to="/quienesSomos" class="quienes-link"></router-link>
+      <router-link to="/ofertas" class="ofertas-link"></router-link>
+      <router-link to="/marcas" class="marcas-link"></router-link>
     </nav>
-    <router-view></router-view> 
 
+    <router-view />
   </div>
 </template>
 
