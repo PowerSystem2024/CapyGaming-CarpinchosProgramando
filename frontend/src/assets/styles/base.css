@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --color-background: #1C2833;
+    --color-background: #1C2833; 
     --color-foreground: #FDEBD0;
     --color-primary: #F39C12;
     --color-primary-foreground: #1C2833;
@@ -52,6 +52,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+<<<<<<< HEAD
 
 * {
     color: var(--color-foreground);
@@ -126,3 +127,5 @@ button:focus-visible {
         background-color: #f9f9f9;
     }
 }
+=======
+>>>>>>> navbar
