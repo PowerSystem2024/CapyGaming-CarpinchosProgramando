@@ -17,10 +17,10 @@
       <!-- Opciones usuario -->
       <div class="user-options">
         <button class="user-btn" @click="login">
-          <img src="../assets/user.svg"/>
-          Ingresá</button>
+          <img src="../assets/profile-svgrepo-com (1).svg"/>
+          Ingresar</button>
         <button class="cart-btn" @click="verCarrito">
-          <img src="../assets/cart.svg"/>
+          <img src="../assets/cart-svgrepo-com (2).svg"/>
         </button>
       </div>
     </div>
@@ -122,32 +122,38 @@ export default {
   gap: 1rem;             /* espacio entre “Ingresá” y carrito */
 }
 
+.cart-btn{
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.user-btn{
+  background-color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
 
 .user-options button {
   display: flex;
   align-items: center;
   gap: 6px;
   margin-left: 1rem;
-  background: rgba(0, 0, 0, 0);
   border: none;
   color: rgb(255, 255, 255);
   cursor: pointer;
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
-  transition: background 0.2s ease, transform 0.1s ease;;
-}
-
-.user-options button:hover {
-  background: var(--color-accent); /* 👈 fondo naranja suave */
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
 .cart-btn img{
-
-  max-height: 25px;
+  max-height: 28px;
 }
 
 .user-btn img{
-
-  max-height: 25px;
+  max-height: 28px;
 }
+
+
+
 </style>
+

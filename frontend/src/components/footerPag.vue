@@ -40,7 +40,7 @@
       <div class="footer-section">
         <h4>Medios de pago</h4>
         <div class="pagos-icons">
-          <img src="../assets/mercadopago.svg" alt="MercadoPago" />
+          <img src="../assets/MERCADOPAGOHZ.svg" alt="MercadoPago" />
         </div>
       </div>
 
@@ -147,17 +147,20 @@
 }
 
 .social-icons {
-  margin-top: 10px;
+  margin-top: 25px;
 }
 .social-icons img {
-  width: 24px;
+  width: 35px;
   margin-right: 10px;
   cursor: pointer;
+  border-radius: 50%;
 }
 
-.pagos-icons img {
-  width: 40px;
-  margin-right: 10px;
+.pagos-icons {
+  width: 130px;
+  height: auto;
+  display: flex;
+  background-color: #fff;
 }
 
 .footer-bottom {
