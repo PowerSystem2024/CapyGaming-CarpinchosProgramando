@@ -702,7 +702,7 @@ export const productos = [
     nombre:
     "Cooler FAN XYZ VORTEX PRO 120mm White Reversed Airflow ARGB KIT X3",
     precio: 95000,
-    imagenes: ["https://imgur.com/gallery/Zi8VAPo.jpg"],
+    imagenes: ["https://imgur.com/Zi8VAPo.jpg"], 
     categoria: "Refrigeracion/Coolers",
     stock: 50,
     },
