@@ -52,7 +52,7 @@
 <script>
 import { productos } from "../assets/data/productsData";
 import Categorias from "../components/exploradorCategorias.vue";
-
+import { addToCart } from "../utils/cartUtils";
 export default {
     name: "Productos",
     components: {
