@@ -26,37 +26,37 @@ export default {
       teamMembers: [
         {
           name: 'Maria Mercedes Atim',
-          image: '/src/assets/imagesQuienesSomos/Maria Mercedes Atim.jpg',
+          image: '/src/assets/imagesQuienesSomos/María Mercedes Atim.png',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Ana Paula Ríos Garín',
-          image: '/src/assets/imagesQuienesSomos/AnaPaulaRíosGarín.jpg',
+          image: '/src/assets/imagesQuienesSomos/Ana Paula Ríos Garín.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Nicolas Exequiel Mercado',
-          image: '/images/Nicolas Mercado.jpg',
+          image: '/src/assets/imagesQuienesSomos/Nicolas Mercado.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Mariana Aguilera',
-          image: '/images/Mariana Aguilera.jpg',
+          image: '/src/assets/imagesQuienesSomos/Mariana Aguilera.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Melina Aguilar',
-          image: '/images/Melina Aguilar.jpg',
+          image: '/src/assets/imagesQuienesSomos/Melina Aguilar.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Ezequiel Quiroz',
-          image: '/src/assets/imagesQuienesSomos/EzequielQuiroz.jpg',
+          image: '/src/assets/imagesQuienesSomos/Ezequiel Quiroz.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Wanda Lanatta',
-          image: '/images/Wanda Lanatta.jpg',
+          image: '/src/assets/imagesQuienesSomos/Wanda Lanatta.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
       ],
