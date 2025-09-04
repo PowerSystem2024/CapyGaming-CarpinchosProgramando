@@ -76,6 +76,8 @@
 
 <style scoped>
 .footer {
+  width: 100%;
+  margin: 0;
   background: var(--color-background);
   color: white;
   font-family: "Roboto", sans-serif;
@@ -84,6 +86,8 @@
 
 /* Cinta amarilla de marcas */
 .footer-brands {
+  width: 100%;
+  padding: 0;
   background: var(--color-primary); /* Amarillo */
   display: flex;
   justify-content: space-around; /* distribuye las marcas horizontalmente */

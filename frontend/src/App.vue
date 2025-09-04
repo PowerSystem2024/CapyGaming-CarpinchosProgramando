@@ -29,8 +29,7 @@
     <router-view />
   </div>
 
-  
-  <footerPag />
+    <footerPag />
 
 </template>
 
