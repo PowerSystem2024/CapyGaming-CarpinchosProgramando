@@ -76,7 +76,7 @@
 
 <style scoped>
 .footer {
-  width: 100%;
+  width: 100%; /*Agrego esto */
   margin: 0;
   background: var(--color-background);
   color: white;
