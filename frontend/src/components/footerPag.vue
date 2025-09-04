@@ -87,7 +87,6 @@
 /* Cinta amarilla de marcas */
 .footer-brands {
   width: 100%;
-  padding: 0;
   background: var(--color-primary); /* Amarillo */
   display: flex;
   justify-content: space-around; /* distribuye las marcas horizontalmente */
@@ -97,11 +96,11 @@
 
 .footer-brands img {
   height: 100px; /* tamaño de los logos */
-  margin: 5px;
 }
 
 /* Footer principal */
 .footer-content {
+  padding-top: 30px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
