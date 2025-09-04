@@ -16,7 +16,7 @@
 
   <!-- Menú de navegación opcional -->
       <router-link to="/">Productos</router-link>
-      <router-link to="/carrito" class="carrito-link">
+      <router-link to="/carrito" class="carrito-link">Carrito
         <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
         </router-link>
       <router-link to="/inicioSesion" class="inicio-link"></router-link>
