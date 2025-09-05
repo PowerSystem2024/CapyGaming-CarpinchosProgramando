@@ -25,6 +25,7 @@
 
           <router-link to="carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
+          <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
          </router-link>
       </div>
     </div>
@@ -32,25 +33,34 @@
 </template>
 
 <script>
+import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuelve los productos que hay en el carrito
+
 export default {
   name: "NavBar",
   data() {
     return {
-      searchText: "" // lo que el usuario escribe en el buscador
-    }
+      searchText: "",
+      cartCount: 0, // 🔴 número de productos visible que se muestra en el carrito en el carrito
+    };
+  },
+  mounted() {
+    this.updateCartCount(); // inicializa el número
+    window.addEventListener("cartUpdated", this.updateCartCount); // escucha el evento "cartUpdated" Cada vez que alguien agrega/quita un producto, este evento dispara y automaticamente actualiza el numero del carrito.
+  },
+  beforeUnmount() {
+    window.removeEventListener("cartUpdated", this.updateCartCount); 
   },
   methods: {
     buscarProducto() {
       console.log("Buscando:", this.searchText);
     },
-    login() {
-      console.log("Ir a login");
-    },
-    verCarrito() {
-      console.log("Abrir carrito");
+    updateCartCount() {
+      const cart = getCart();
+      this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
     }
   }
-}
+};
+
 </script>
 
 <style scoped>
@@ -149,6 +159,7 @@ export default {
 }
 
 .cart-btn{
+  position: relative;
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -173,6 +184,18 @@ export default {
 
 .cart-btn img{
   max-height: 28px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
 }
 
 .user-btn img{
