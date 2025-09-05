@@ -29,7 +29,7 @@
       <div class="footer-section">
         <h4>Acerca de</h4>
         <ul>
-          <li><a href="#">Quiénes somos</a></li>
+          <li><router-link to="/quienessomos">Quiénes somos</router-link></li>
           <li><a href="#">Términos y condiciones</a></li>
           <li><a href="#">Contáctanos</a></li>
           <li><a href="#">Preguntas frecuentes</a></li>

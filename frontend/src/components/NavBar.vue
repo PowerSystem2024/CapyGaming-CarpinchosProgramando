@@ -3,7 +3,9 @@
     <div class="navbar-content">
       <!-- Logo -->
       <div class="logo">
-        <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
+        <router-link to="/">
+          <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
+        </router-link>
       </div>
 
       <!-- Buscador -->
@@ -16,12 +18,14 @@
 
       <!-- Opciones usuario -->
       <div class="user-options">
-        <button class="user-btn" @click="login">
-          <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
-          Ingresar</button>
-        <button class="cart-btn" @click="verCarrito">
+          <router-link to="/inicioSesion" class="user-btn">
+            <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
+            Ingresar
+          </router-link>
+
+          <router-link to="carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
-        </button>
+         </router-link>
       </div>
     </div>
   </nav>
@@ -85,6 +89,11 @@ export default {
     max-height: 78px;
 }
 
+.logo a:hover {
+  background: none;  /* evita el fondo en hover */
+  color: inherit;    /* mantiene el color */
+}
+
 .search {
   position: relative;
   display: flex;
@@ -122,6 +131,23 @@ export default {
   gap: 1rem;             /* espacio entre “Ingresá” y carrito */
 }
 
+.user-options .user-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 1rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-decoration: none; /* 👈 saca subrayado */
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
 .cart-btn{
   background-color: rgba(0, 0, 0, 0);
 }
@@ -153,6 +179,18 @@ export default {
   max-height: 28px;
 }
 
+/* Elimina cualquier estilo que Vue Router agregue */
+.router-link-active,
+.router-link-exact-active {
+  background: none !important;
+  color: inherit !important;
+}
+
+.user-options .user-btn.router-link-active,
+.user-options .user-btn.router-link-exact-active {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
 
 
 </style>
