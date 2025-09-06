@@ -3,7 +3,9 @@
     <div class="navbar-content">
       <!-- Logo -->
       <div class="logo">
-        <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
+        <router-link to="/">
+          <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
+        </router-link>
       </div>
 
       <!-- Buscador -->
@@ -16,37 +18,49 @@
 
       <!-- Opciones usuario -->
       <div class="user-options">
-        <button class="user-btn" @click="login">
-          <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
-          Ingresar</button>
-        <button class="cart-btn" @click="verCarrito">
+          <router-link to="/inicioSesion" class="user-btn">
+            <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
+            Ingresar
+          </router-link>
+
+          <router-link to="carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
-        </button>
+          <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+         </router-link>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuelve los productos que hay en el carrito
+
 export default {
   name: "NavBar",
   data() {
     return {
-      searchText: "" // lo que el usuario escribe en el buscador
-    }
+      searchText: "",
+      cartCount: 0, // 🔴 número de productos visible que se muestra en el carrito en el carrito
+    };
+  },
+  mounted() {
+    this.updateCartCount(); // inicializa el número
+    window.addEventListener("cartUpdated", this.updateCartCount); // escucha el evento "cartUpdated" Cada vez que alguien agrega/quita un producto, este evento dispara y automaticamente actualiza el numero del carrito.
+  },
+  beforeUnmount() {
+    window.removeEventListener("cartUpdated", this.updateCartCount); 
   },
   methods: {
     buscarProducto() {
       console.log("Buscando:", this.searchText);
     },
-    login() {
-      console.log("Ir a login");
-    },
-    verCarrito() {
-      console.log("Abrir carrito");
+    updateCartCount() {
+      const cart = getCart();
+      this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
     }
   }
-}
+};
+
 </script>
 
 <style scoped>
@@ -83,6 +97,11 @@ export default {
 
 .logo img{
     max-height: 78px;
+}
+
+.logo a:hover {
+  background: none;  /* evita el fondo en hover */
+  color: inherit;    /* mantiene el color */
 }
 
 .search {
@@ -122,7 +141,25 @@ export default {
   gap: 1rem;             /* espacio entre “Ingresá” y carrito */
 }
 
+.user-options .user-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 1rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-decoration: none; /* 👈 saca subrayado */
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
 .cart-btn{
+  position: relative;
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -149,10 +186,34 @@ export default {
   max-height: 28px;
 }
 
+.cart-badge {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
 .user-btn img{
   max-height: 28px;
 }
 
+/* Elimina cualquier estilo que Vue Router agregue */
+.router-link-active,
+.router-link-exact-active {
+  background: none !important;
+  color: inherit !important;
+}
+
+.user-options .user-btn.router-link-active,
+.user-options .user-btn.router-link-exact-active {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
 
 
 </style>

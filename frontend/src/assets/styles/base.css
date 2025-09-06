@@ -52,7 +52,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 * {
     color: var(--color-foreground);
     font-family: 'Roboto', sans-serif;
@@ -69,10 +68,14 @@ a:hover {
     color: var(--sidebar-accent);
 }
 
+img {
+  background-color: transparent !important;
+}
+
 body {
     margin: 0;
     /* display: flex; */
-    place-items: center;
+    /*place-items: center;*/
     min-width: 320px;
     min-height: 100vh;
 }
@@ -108,9 +111,7 @@ button:focus-visible {
 }
 
 #app {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 100%;
     text-align: center;
 }
 

@@ -44,7 +44,11 @@ const routes = [
 //Crear el router
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+    // Siempre vuelve arriba cuando cambiás de ruta
+    return { top: 0 }
+    }
 });
 
 export default router;
