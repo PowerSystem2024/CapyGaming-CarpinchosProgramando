@@ -16,9 +16,6 @@
 
   <!-- Menú de navegación opcional -->
       <router-link to="/">Productos</router-link>
-      <router-link to="/carrito" class="carrito-link">Carrito
-        <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
-        </router-link>
       <router-link to="/inicioSesion" class="inicio-link"></router-link>
       <router-link to="/quienesSomos" class="quienes-link"></router-link>
       <router-link to="/ofertas" class="ofertas-link"></router-link>
@@ -107,31 +104,5 @@
     color: var(--color-primary-foreground);
   }
 
-  /* Badge del carrito */
-  .carrito-link {
-    position: relative;
-  }
-
-  .cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background-color: var(--color-destructive);
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-  }
-
-  /* Ajustar padding del link para el badge */
-  nav a.carrito-link {
-    position: relative;
-    padding-right: 1.5rem;
-  }
   
   </style>
