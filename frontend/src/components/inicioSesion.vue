@@ -11,7 +11,7 @@
             id="email"
             type="email"
             v-model.trim="form.email"
-            placeholder="ej: ejemplo@mail.com"
+            placeholder="ejemplo@mail.com"
             required
           />
           <p v-if="errors.email" class="error">{{ errors.email }}</p>
@@ -46,6 +46,10 @@
           <span v-if="loading">Ingresando...</span>
           <span v-else>Ingresar</span>
         </button>
+        <p class="alt">
+          ¿No tenés cuenta?
+          <router-link class="link" to="/registro">Regístrate</router-link>
+        </p>
       </form>
     </div>
   </div>
@@ -123,7 +127,7 @@ h1{
 label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card);}
 
 input{
-  width:90%;
+  width:100%;
   padding:.75rem .9rem;
   border-radius:10px;
   border:1px solid var(--color-input);        /* #2C3E50 */
@@ -169,6 +173,13 @@ button.ghost{
 }
 
 form {
+  background-color: var(--color-card);
+}
+
+p.alt{
+  text-align: center;
+  margin: 1rem 0 0;
+  color: var(--color-popover-foreground);       /* #AAB7B8 */
   background-color: var(--color-card);
 }
 

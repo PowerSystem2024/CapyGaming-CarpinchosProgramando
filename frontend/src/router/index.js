@@ -7,6 +7,7 @@ import inicioSesion from '../components/inicioSesion.vue';
 import marcas from '../components/marcas.vue';
 import ofertas from '../components/ofertas.vue';
 import quienesSomos from '../components/quienesSomos.vue';
+import registro from '../components/registro.vue';
 
 //Definir las rutas de tu aplicacion 
 const routes = [
@@ -24,6 +25,11 @@ const routes = [
         path: '/inicioSesion',
         name: 'inicioSesion',
         component: inicioSesion
+    },
+    {
+      path: '/registro',
+      name: 'registro',
+      component: registro
     },
     {
         path: '/marcas',
@@ -50,5 +56,12 @@ const router = createRouter({
     return { top: 0 }
     }
 });
+
+router.beforeEach((to) => {
+  const isAuth = !!localStorage.getItem('auth')
+  if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro')) {
+    return { name: 'Home' } // manda al catálogo
+  }
+})
 
 export default router;
