@@ -93,16 +93,19 @@ export default {
   width: auto;
   max-height: 100%;
   gap: 0.5rem;
+  background: none;
 }
 
 .logo img{
     max-height: 78px;
+    background: none;
 }
 
 .logo a:hover {
   background: none;  /* evita el fondo en hover */
   color: inherit;    /* mantiene el color */
 }
+
 
 .search {
   position: relative;
@@ -208,7 +211,11 @@ export default {
   background: none !important;
   color: inherit !important;
 }
-
+.logo a,
+.logo a:hover,
+.logo a:focus{
+  background-color: rgba(245, 245, 220, 0);
+}
 .user-options .user-btn.router-link-active,
 .user-options .user-btn.router-link-exact-active {
   background-color: var(--color-primary) !important;
