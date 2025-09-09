@@ -11,22 +11,24 @@
                 </li>
                 <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
                     <div class="categoria-main" @click="toggleSubcategorias(categoria.id)">
-                        <span class="categoria-nombre">{{ categoria.nombre }}</span>
+                        <a href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-nombre">
+                            {{ categoria.nombre }}
+                        </a>
                         <span class="categoria-toggle" v-if="categoria.subcategorias && categoria.subcategorias.length">
                             {{ categoriaAbierta === categoria.id ? '−' : '+' }}
                         </span>
                     </div>
+                    
+                    <!-- Mostrar subcategorías si las tiene -->
                     <ul v-if="categoriaAbierta === categoria.id && categoria.subcategorias && categoria.subcategorias.length" 
                         class="subcategorias-list">
                         <li v-for="subcategoria in categoria.subcategorias" :key="subcategoria.id" 
                             class="subcategoria-item">
-                            <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria.nombre)" class="subcategoria-link">
+                            <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria)" class="subcategoria-link">
                                 {{ subcategoria.nombre }}
                             </a>
                         </li>
                     </ul>
-                    <a v-else href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-link">
-                    </a>
                 </li>
             </ul>
         </div>
@@ -177,7 +179,7 @@ export default {
             this.$emit('categoria-seleccionada', categoria);
         },
         filtrarPorSubcategoria(subcategoria) {
-            this.$emit('subcategoria-seleccionada', subcategoria);
+            this.$emit('subcategoria-seleccionada', subcategoria.nombre);
         },
         aplicarOrden() {
             this.$emit('orden-cambiado', this.ordenSeleccionado);
