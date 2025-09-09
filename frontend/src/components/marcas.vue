@@ -66,7 +66,7 @@ export default {
   display: flex;
   gap: 2rem;
   width: max-content;
-  animation: scroll 25s linear infinite;
+  animation: scroll 50s linear infinite; /* velocidad del carrusel*/ 
 }
 
 .brand-item {
