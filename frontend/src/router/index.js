@@ -9,6 +9,7 @@ import ofertas from '../components/ofertas.vue';
 import quienesSomos from '../components/quienesSomos.vue';
 import registro from '../components/registro.vue';
 import recuperarContra from '../components/recuperarContra.vue';
+import NotFound from "../components/notFound.vue";
 
 //Definir las rutas de tu aplicacion 
 const routes = [
@@ -52,7 +53,13 @@ const routes = [
         name: 'quienesSomos',
         component: quienesSomos
     },
+    { 
+        path: "/:pathMatch(.*)*", 
+        name: "NotFound", 
+        component: NotFound 
+    }, 
 ]
+
 //Crear el router
 const router = createRouter({
     history: createWebHistory(),
