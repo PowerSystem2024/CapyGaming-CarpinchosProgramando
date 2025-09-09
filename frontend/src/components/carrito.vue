@@ -18,8 +18,8 @@
             <p>Subtotal: ${{ product.quantity * product.precio }}</p>
       
             <div class="cantidad-controls">
-             <button @click="decrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity <= 1">-</button>
-              <span class="cantidad">{{ product.quantity }}</span>
+              <button @click="decrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity <= 1">-</button>
+                <span class="cantidad">{{ product.quantity }}</span>
               <button @click="incrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity >= product.stock">+</button>
             </div>
 
