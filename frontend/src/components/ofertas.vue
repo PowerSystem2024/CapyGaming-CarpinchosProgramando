@@ -18,6 +18,15 @@
 </template>
 
 <script>
+import mouseLogitech from "../assets/imagenesOfertas/mouseLogitech.png";
+import tecladoRedragon from "../assets/imagenesOfertas/tecladoRedragon.png";
+import auricularesHyper from "../assets/imagenesOfertas/auricularesHyper.png";
+import discoSSD from "../assets/imagenesOfertas/discoSolido.png";
+import auricularesLogitech from "../assets/imagenesOfertas/auricularesLogitech.png";
+import Pad from "../assets/imagenesOfertas/Pad.png";
+import tecladoRedragon2 from "../assets/imagenesOfertas/tecladoRedragon2.png";
+import sillaGamer from "../assets/imagenesOfertas/sillaGamer.png";
+
 export default {
   name: "Ofertas",
   data() {
@@ -30,7 +39,7 @@ export default {
           description: "Sensor HERO 25K, RGB LIGHTSYNC, 11 botones programables.",
           oldPrice: "$45.000",
           newPrice: "$35.000",
-          image: "https://via.placeholder.com/200x150.png?text=Mouse+Logitech"
+          image: mouseLogitech,
         },
         {
           id: 2,
@@ -38,7 +47,7 @@ export default {
           description: "Switches Blue, retroiluminación RGB, compacto 87 teclas.",
           oldPrice: "$38.000",
           newPrice: "$28.500",
-          image: "https://via.placeholder.com/200x150.png?text=Teclado+Redragon"
+          image: tecladoRedragon,
         },
         {
           id: 3,
@@ -46,8 +55,50 @@ export default {
           description: "Sonido 7.1 Virtual Surround, micrófono desmontable.",
           oldPrice: "$60.000",
           newPrice: "$48.000",
-          image: "https://via.placeholder.com/200x150.png?text=Auriculares+HyperX"
-        }
+          image: auricularesHyper,
+        },
+        {
+          id: 12,
+          title: "Disco Solido SSD 256GB",
+          description: "Disco Solido SSD M.2 Team 256GB MP33 1600MB/s NVMe PCI-E Gen3 x4",
+          oldPrice: "$55.000",
+          newPrice: "$35.000",
+          image: discoSSD,
+        },
+        {
+          id: 21,
+          title: "Auriculares Logitech G733",
+          description:"Auriculares Logitech G733 Wireless Lightspeed LightSync RGB Blue 29Hs",
+          oldPrice: "$300.300",
+          newPrice: "$290.900",
+          image: auricularesLogitech,
+        },
+
+        {
+          id: 25,
+          title: "Mouse Pad Logitech",
+          description: "Mouse Pad Logitech G Powerplay Carga Inalambrica 321x344mm",
+          oldPrice: "$200.000",
+          newPrice: "$175.000",
+          image: Pad,
+        },
+        {
+          id: 27,
+          title: "Teclado Redragon K509 Dyaus",
+          description: "Teclado Redragon K509 Dyaus Español Retroiluminado 7 Colores",
+          oldPrice: "$100.548",
+          newPrice: "$89.900",
+          image: tecladoRedragon2,
+        },
+        {
+          id: 47,
+          title: "Silla Gamer Noblechairs EPIC Cola Edition",
+          description:"Silla Gamer Noblechairs EPIC Fallout Nuka Cola Edition (sin almohadones) (Peso MAX. 120kg)",
+          oldPrice: "680.000",
+          newPrice: "620.000",
+          image: sillaGamer,
+  
+         },
       ]
     };
   }
