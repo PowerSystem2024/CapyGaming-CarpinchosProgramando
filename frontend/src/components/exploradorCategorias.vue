@@ -1,41 +1,52 @@
 <template>
     <div class="categorias-container">
-        <!-- Categorías -->
+        <!-- Sección de Categorías -->
         <div class="categorias-section">
             <h2 class="section-title">Categorías</h2>
             <ul class="categorias-list">
+                <!-- Enlace para mostrar todos los productos -->
                 <li class="categoria-item">
                     <a href="#" @click.prevent="filtrarPorCategoria('Todos')" class="categoria-link">
                         Todos los productos
                     </a>
                 </li>
+                <!-- Iteración sobre cada categoría -->
                 <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
-                    <div class="categoria-main" @click="toggleSubcategorias(categoria.id)">
-                        <span class="categoria-nombre">{{ categoria.nombre }}</span>
-                        <span class="categoria-toggle" v-if="categoria.subcategorias && categoria.subcategorias.length">
+                    <div class="categoria-main">
+                        <!-- Enlace para filtrar por categoría -->
+                        <a href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-nombre">
+                            {{ categoria.nombre }}
+                        </a>
+                        <!-- Botón para expandir/colapsar subcategorías (solo visible si hay subcategorías) -->
+                        <span class="categoria-toggle" 
+                                v-if="categoria.subcategorias && categoria.subcategorias.length"
+                                @click="toggleSubcategorias(categoria.id)">
                             {{ categoriaAbierta === categoria.id ? '−' : '+' }}
                         </span>
                     </div>
+                    
+                    <!-- Lista de subcategorías (solo visible si la categoría está expandida y tiene subcategorías) -->
                     <ul v-if="categoriaAbierta === categoria.id && categoria.subcategorias && categoria.subcategorias.length" 
                         class="subcategorias-list">
                         <li v-for="subcategoria in categoria.subcategorias" :key="subcategoria.id" 
                             class="subcategoria-item">
-                            <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria.nombre)" class="subcategoria-link">
+                            <!-- Enlace para filtrar por subcategoría -->
+                            <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria)" class="subcategoria-link">
                                 {{ subcategoria.nombre }}
                             </a>
                         </li>
                     </ul>
-                    <a v-else href="#" @click.prevent="filtrarPorCategoria(categoria.nombre)" class="categoria-link">
-                    </a>
                 </li>
             </ul>
         </div>
 
+        <!-- Separador visual entre secciones -->
         <hr class="separador">
 
-        <!-- Filtros -->
+        <!-- Sección de Filtros -->
         <div class="filtros-section">
             <h2 class="section-title">Filtros</h2>
+            <!-- Selector para ordenar productos -->
             <div class="ordenar-por">
                 <span>Ordenar por</span>
                 <select v-model="ordenSeleccionado" @change="aplicarOrden" class="orden-select">
@@ -53,6 +64,7 @@ export default {
     name: "Categorias",
     data() {
         return {
+            // Array de categorías y subcategorías con datos de ejemplo
             categorias: [
                 { 
                     id: 1, 
@@ -154,7 +166,12 @@ export default {
                     ]
                 },
                 { id: 13, nombre: "Sillas Gamer" },
-                { id: 14, nombre: "Conectividad" },
+                { id: 14, nombre: "Conectividad",
+                    subcategorias: [
+                        { id: 1401, nombre: "Placas de Red" },
+                        { id: 1402, nombre: "Adaptadores WiFi" }
+                    ]
+                },
                 { id: 15, nombre: "Estabilizadores y UPS" },
                 { id: 16, nombre: "Consolas de Video Juego",
                     subcategorias: [
@@ -165,27 +182,36 @@ export default {
                 },
                 { id: 17, nombre: "Impresoras e Insumos" }
             ],
+            // Valor seleccionado en el dropdown de ordenamiento
             ordenSeleccionado: "todos",
+            // ID de la categoría actualmente expandida (null si ninguna está expandida)
             categoriaAbierta: null
         };
     },
     methods: {
+        // Emite evento para mostrar productos destacados
         verDestacados() {
             this.$emit('ver-destacados');
         },
+        // Emite evento cuando se selecciona una categoría
         filtrarPorCategoria(categoria) {
             this.$emit('categoria-seleccionada', categoria);
         },
+        // Emite evento cuando se selecciona una subcategoría
         filtrarPorSubcategoria(subcategoria) {
-            this.$emit('subcategoria-seleccionada', subcategoria);
+            this.$emit('subcategoria-seleccionada', subcategoria.nombre);
         },
+        // Emite evento cuando cambia el criterio de ordenamiento
         aplicarOrden() {
             this.$emit('orden-cambiado', this.ordenSeleccionado);
         },
+        // Alterna la visualización de subcategorías (expandir/colapsar)
         toggleSubcategorias(categoriaId) {
             if (this.categoriaAbierta === categoriaId) {
+                // Colapsar si ya está expandida
                 this.categoriaAbierta = null;
             } else {
+                // Expandir si está colapsada
                 this.categoriaAbierta = categoriaId;
             }
         }
@@ -194,8 +220,10 @@ export default {
 </script>
 
 <style scoped>
+/* Importación de estilos base */
 @import url(../assets/styles/base.css);
 
+/* Contenedor principal */
 .categorias-container {
     padding: 1rem;
     background-color: var(--color-background);
@@ -208,6 +236,7 @@ export default {
     border: 1px solid var(--color-border);
 }
 
+/* Estilo para títulos de sección */
 .section-title {
     font-size: 1.2rem;
     font-weight: bold;
@@ -219,6 +248,7 @@ export default {
     text-align: center;
 }
 
+/* Separador visual entre secciones */
 .separador {
     border: none;
     height: 1px;
@@ -230,12 +260,15 @@ export default {
 .categorias-section {
     background-color: var(--sidebar-accent-foreground);
 }
+
+/* Estilos para la lista de categorías */
 .categorias-list {
     background-color: var(--color-background);
     list-style: none;
     padding: 0;
 }
 
+/* Estilos para cada ítem de categoría */
 .categoria-item {
     margin-bottom: 0.5rem;
     background-color: var(--color-card);
@@ -245,34 +278,56 @@ export default {
     overflow: hidden;
 }
 
+/* Efecto hover en ítems de categoría */
 .categoria-item:hover {
     transform: translateX(5px);
 }
 
+/* Contenedor principal de cada categoría (nombre + toggle) */
 .categoria-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem;
-    cursor: pointer;
     background-color: var(--color-accent);
     color: var(--color-foreground);
-    transition: background-color 0.2s;
 }
 
+/* Estilos para el enlace de nombre de categoría */
 .categoria-nombre {
     color: var(--chart-2);
     background-color: var(--color-accent);
     font-weight: bold;
+    text-decoration: none;
+    flex-grow: 1;
+    padding: 0.5rem;
+    cursor: pointer;
 }   
 
+/* Efecto hover en enlace de categoría */
+.categoria-nombre:hover {
+    color: var(--color-primary);
+    background-color: var(--color-accent-hover);
+}
+
+/* Estilos para el botón de expandir/colapsar */
 .categoria-toggle {
     background-color: var(--color-accent);
     color: var(--chart-2);
     font-weight: bold;
     font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 }
 
+/* Efecto hover en botón de expandir/colapsar */
+.categoria-toggle:hover {
+    background-color: var(--color-accent-hover);
+}
+
+/* Lista de subcategorías */
 .subcategorias-list {
     list-style: none;
     padding: 0;
@@ -280,10 +335,12 @@ export default {
     background-color: var(--color-background);
 }
 
+/* Estilos para cada ítem de subcategoría */
 .subcategoria-item {
     border-top: 1px solid var(--color-border);
 }
 
+/* Estilos para enlaces de subcategoría */
 .subcategoria-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -291,14 +348,17 @@ export default {
     color: var(--color-muted-foreground);
     background-color: var(--color-card);
     transition: color 0.2s, background-color 0.2s;
+    cursor: pointer;
 }
 
+/* Efecto hover en enlaces de subcategoría */
 .subcategoria-link:hover {
     color: var(--color-primary);
     background-color: var(--color-accent);
     padding-left: 1.5rem;
 }
 
+/* Estilos para el enlace "Todos los productos" */
 .categoria-link {
     background-color: var(--color-accent);
     color: var(--color-foreground);
@@ -306,22 +366,26 @@ export default {
     display: block;
     padding: 0.5rem;
     transition: color 0.2s, background-color 0.2s;
+    cursor: pointer;
 }
 
+/* Efecto hover en enlace "Todos los productos" */
 .categoria-link:hover {
     color: var(--color-primary);
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-hover);
 }
 
-/* Filtros */
+/* Sección Filtros */
 .filtros-section {
     background-color: var(--sidebar-accent-foreground);
 }
 
+/* Fondo para contenedores de información de filtros */
 .filtro-info {
     background-color: var(--color-card);
 }
 
+/* Contenedor individual para cada filtro con bordes redondeados y sombra */
 .filtro-item {
     margin-bottom: 1.5rem;
     padding: 0.75rem;
@@ -331,6 +395,7 @@ export default {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Encabezado de cada filtro con diseño flexible */
 .filtro-header {
     background-color: var(--color-border);
     border-radius: 5px;
@@ -341,18 +406,21 @@ export default {
     padding: 0.5rem;
 }
 
+/* Estilo para el título del filtro */
 .filtro-titulo {
     background-color: var(--color-border);
     font-weight: bold;
     color: var(--color-primary);
 }
 
+/* Estilo para los valores mostrados en el filtro */
 .filtro-valor {
     background-color: var(--color-border);
     font-weight: bold;
     color: var(--color-secondary);
 }
 
+/* Estilo para los nombres de elementos filtrados */
 .filtro-nombre {
     background-color: var(--color-card);
     font-size: 0.9rem;
@@ -360,6 +428,7 @@ export default {
     color: var(--color-foreground);
 }
 
+/* Estilo para los precios en los filtros */
 .filtro-precio {
     background-color: var(--color-card);
     font-size: 0.9rem;
@@ -368,12 +437,14 @@ export default {
     margin-bottom: 0.25rem;
 }
 
+/* Estilo para información total o resumen en filtros */
 .filtro-total {
     background-color: var(--color-card);
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
 }
 
+/* Estilos para la sección de filtros */
 .ordenar-por {
     background-color: var(--color-card);
     display: flex;
@@ -381,6 +452,7 @@ export default {
     gap: 0.5rem;
 }
 
+/* Estilos para el texto del selector de ordenamiento */
 .ordenar-por span {
     margin-top: 10px;
     background-color: var(--color-card);
@@ -388,6 +460,7 @@ export default {
     color: var(--color-primary);
 }
 
+/* Estilos para el dropdown de ordenamiento */
 .orden-select {
     padding: 0.5rem;
     border-radius: 4px;
@@ -397,11 +470,13 @@ export default {
     cursor: pointer;
 }
 
+/* Estilo de foco para el dropdown */
 .orden-select:focus {
     outline: none;
     border-color: var(--color-primary);
 }
 
+/* Estilos para las opciones del dropdown */
 .orden-select option {
     background-color: var(--color-background);
 }

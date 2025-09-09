@@ -69,174 +69,168 @@ export default {
         };
     },
     methods: {
-    imagenError(event) {
-        event.target.src =
-            "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
+        imagenError(event) {
+            event.target.src = "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
         agregarAlCarrito(producto) {
-            const result = addToCart(producto);
-            if (result.success) {
-                alert(`✅ ${producto.nombre} agregado al carrito!`);
-            } else {
-                alert(`⚠️ ${result.message}`);
-            }
+            console.log("Agregado al carrito:", producto);
         },
-    },
-    agregarAlCarrito(producto) {
-        console.log("Agregado al carrito:", producto);
-    },
-    filtrarProductosPorCategoria(categoriaExplorador) {
-        this.categoriaSeleccionada = categoriaExplorador;
-        this.subcategoriaSeleccionada = null;
-        
-        // Mapeo mejorado de categorías del explorador a categorías de productos
-        const mapeoCategorias = {
-            "Notebooks": "Notebook",
-            "Kits de actualización": "Kit Upgrade",
-            "Procesadores": "Procesadores",
-            "Mothers": "Mothers",
-            "Placas de Video": "Placas de Video",
-            "Memorias RAM": "Memorias RAM",
-            "Almacenamiento": "Almacenamiento",
-            "Refrigeración": "Refrigeracion",
-            "Gabinetes": "Gabinetes",
-            "Fuentes": "Fuentes",
-            "Monitores": "Monitores",
-            "Periféricos": "Perifericos",
-            "Sillas Gamer": "Silla",
-            "Conectividad": "Conectividad",
-            "Estabilizadores y UPS": "Estabilizadores",
-            "Consolas de Video Juego": "Consolas",
-            "Impresoras e Insumos": "Impresoras",
-            "Todos": "Todos"
-        };
-        
-        if (categoriaExplorador === "Todos") {
-            this.productosFiltrados = this.productos;
-        } else {
-            const categoriaProducto = mapeoCategorias[categoriaExplorador];
-            if (categoriaProducto) {
-                // Para categorías padre, buscar productos que comiencen con esa categoría
-                if (["Notebook", "Kit Upgrade", "Procesadores", "Mothers", "Placas de Video", "Memorias RAM", "Almacenamiento", "Refrigeracion", "Gabinetes", "Fuentes", "Monitores", "Perifericos", "Silla", "Conectividad", "Estabilizadores",  "Consolas", "Impresoras"].includes(categoriaProducto)) {
+        filtrarProductosPorCategoria(categoriaExplorador) {
+            this.categoriaSeleccionada = categoriaExplorador;
+            this.subcategoriaSeleccionada = null;
+            
+            const mapeoCategorias = {
+                "Notebooks": "Notebook",
+                "Kits de actualización": "Kit Upgrade",
+                "Procesadores": "Procesadores",
+                "Mothers": "Mothers",
+                "Placas de Video": "Placas de Video",
+                "Memorias RAM": "Memorias RAM",
+                "Almacenamiento": "Almacenamiento",
+                "Refrigeración": "Refrigeracion",
+                "Gabinetes": "Gabinetes",
+                "Fuentes": "Fuentes",
+                "Monitores": "Monitores",
+                "Periféricos": "Perifericos",
+                "Sillas Gamer": "Silla",
+                "Conectividad": "Conectividad",
+                "Estabilizadores y UPS": "Estabilizadores",
+                "Consolas de Video Juego": "Consolas",
+                "Impresoras e Insumos": "Impresoras",
+                "Todos": "Todos"
+            };
+            
+            if (categoriaExplorador === "Todos") {
+                this.productosFiltrados = this.productos;
+            } else {
+                const categoriaProducto = mapeoCategorias[categoriaExplorador];
+                if (categoriaProducto) {
+                    // Filtrar productos que comiencen con la categoría principal
+                    // Esto incluirá todas las subcategorías
                     this.productosFiltrados = this.productos.filter(producto => 
                         producto.categoria.startsWith(categoriaProducto)
                     );
                 } else {
-                    this.productosFiltrados = this.productos.filter(producto => 
-                        producto.categoria === categoriaProducto
-                    );
+                    this.productosFiltrados = this.productos;
                 }
+            }
+            
+            console.log(`Filtrando por categoría: ${categoriaExplorador}`);
+            console.log(`Productos encontrados: ${this.productosFiltrados.length}`);
+        },
+        mostrarDestacados() {
+            this.mostrandoDestacados = true;
+        },
+        filtrarProductosPorSubcategoria(subcategoriaExplorador) {
+            this.subcategoriaSeleccionada = subcategoriaExplorador;
+            
+            const mapeoSubcategorias = {
+                // Notebooks
+                "Notebooks ACER": "Notebook/ACER",
+                "Notebooks ASUS": "Notebook/ASUS",
+                "Notebooks Lenovo": "Notebook/Lenovo",
+
+                // Kits de actualización
+                "CPU + Motherboard": "Kit Upgrade/CPU + Motherboard",
+                "CPU + RAM": "Kit Upgrade/CPU + RAM",
+                "Completos": "Kit Upgrade/Completos",
+
+                // Procesadores
+                "Procesadores AMD": "Procesadores/AMD",
+                "Procesadores Intel": "Procesadores/Intel",
+
+                // Mothers
+                "Mother ASUS": "Mothers/ASUS",
+                "MSI": "Mothers/MSI",
+                "Gigabyte": "Mothers/Gigabyte",
+                "ASRock": "Mothers/ASRock",
+
+                // Placas de Video
+                "Placas de Video Zotac": "Placas de Video/Zotac",
+                "Placas de Video ASUS": "Placas de Video/ASUS",
+
+                // Memorias RAM
+                "Memorias RAM ADATA": "Memorias RAM/ADATA",
+                "Memorias RAM Team Group": "Memorias RAM/Team Group",
+                "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
+
+                // Almacenamiento
+                "Discos Rígidos": "Almacenamiento/Disco Rigido",
+                "Discos Sólidos SSD": "Almacenamiento/Disco Solido",
+
+                // Refrigeración
+                "Coolers": "Refrigeracion/Coolers",
+                "Water Cooler": "Refrigeracion/Water Cooler",
+
+                // Gabinetes
+                "Gabinetes Cougar": "Gabinetes/Cougar",
+                "Gabinetes Corsair": "Gabinetes/Corsair",
+                "Gabinetes HYTE": "Gabinetes/HYTE",
+
+                // Fuentes
+                "Fuentes ADATA": "Fuentes/ADATA",
+                "Fuentes Be Quiet": "Fuentes/Be Quiet",
+                "Fuentes Corsair": "Fuentes/Corsair",
+
+                // Monitores
+                "Monitores LG": "Monitores/LG",
+                "Monitores AsRock": "Monitores/AsRock",
+                "Monitores Samsung": "Monitores/Samsung",
+
+                // Periféricos
+                "Teclados": "Perifericos/Teclado",
+                "Mouse": "Perifericos/Mouse",
+                "Auriculares": "Perifericos/Auriculares",
+                "Micrófonos": "Perifericos/Microfono",
+                "Webcams": "Perifericos/Webcam",
+                "Joysticks": "Perifericos/Joystick",
+                "Volantes": "Perifericos/Volante",
+                "Mouse Pads": "Perifericos/MousePad",
+                "Stream Decks": "Perifericos/StreamDeck",
+                "Parlantes": "Perifericos/Parlante",
+                "Combos": "Perifericos/Combo",
+
+                // Conectividad
+                "Placas de Red": "Conectividad/Placas de Red",
+                "Adaptadores WiFi": "Conectividad/Adaptador WiFi",
+
+                // Consolas
+                "Nintendo Switch": "Consolas/Nintendo Switch",
+                "PlayStation": "Consolas/PlayStation",
+                "Xbox": "Consolas/Xbox"
+            };
+            
+            const subcategoriaProducto = mapeoSubcategorias[subcategoriaExplorador];
+            
+            if (subcategoriaProducto) {
+                this.productosFiltrados = this.productos.filter(producto => 
+                    producto.categoria === subcategoriaProducto
+                );
+                console.log(`Filtrando por subcategoría: ${subcategoriaExplorador}`);
+                console.log(`Buscando categoría: ${subcategoriaProducto}`);
+                console.log(`Productos encontrados: ${this.productosFiltrados.length}`);
+                
+                // Debug: mostrar todas las categorías disponibles
+                const categoriasUnicas = [...new Set(this.productos.map(p => p.categoria))];
+                console.log("Categorías disponibles:", categoriasUnicas);
             } else {
+                console.warn(`Subcategoría no mapeada: ${subcategoriaExplorador}`);
                 this.productosFiltrados = this.productos;
             }
-        }
-    },
-    mostrarDestacados() {
-            this.mostrandoDestacados = true;
-    },
-    filtrarProductosPorSubcategoria(subcategoriaExplorador) {
-        this.subcategoriaSeleccionada = subcategoriaExplorador;
-        
-        // Mapeo mejorado de subcategorías a filtros específicos
-        const mapeoSubcategorias = {
-            // Subcategorías de Notebook
-            "Notebooks ACER": "Notebook/ACER",
-            "Notebooks ASUS": "Notebook/ASUS",
-            "Notebooks Lenovo": "Notebook/Lenovo",
-
-            // Subcategorías de Kits de actualización  
-            "CPU + Motherboard": "Kit Upgrade/CPU + Motherboard",
-            "CPU + RAM": "Kit Upgrade",
-            "Completos": "Kit Upgrade/Completos",
-
-            // Subcategorías de Procesadores
-            "Procesadores AMD": "Procesadores/AMD",
-            // "Procesadores Intel": "Procesadores/Intel"
-
-            // Subcategorías de Mothers
-            "Mother ASUS": "Mothers/ASUS",
-
-            // Subcategorías de Placas de Video
-            "Placas de Video Zotac": "Placas de Video/Zotac",
-            "Placas de Video ASUS": "Placas de Video/ASUS",
-
-            // Subcategorías de Memorias RAM
-            "Memorias RAM ADATA": "Memorias RAM/ADATA",
-            "Memorias RAM Team Group": "Memorias RAM/Team Group",
-            "Memorias RAM G.Skill": "Memorias RAM/G.Skill",
-
-            // Subcategorías de Almacenamiento
-            "Discos Externos": "Almacenamiento/Disco Externo",
-            "Discos Rígidos": "Almacenamiento/Disco Rigido",
-            "Discos Sólidos SSD": "Almacenamiento/Disco Solido",
-
-            // Subcategorías de Refrigeración
-            "Coolers": "Refrigeracion/Coolers",
-            // "Water Cooler": "Refrigeracion/Water Cooler",
-
-            // Subcategorías de Periféricos
-            "Teclados": "Perifericos/Teclado",
-            "Mouse": "Perifericos/Mouse",
-            "Auriculares": "Perifericos/Auriculares",
-            "Micrófonos": "Perifericos/Microfono",
-            "Webcams": "Perifericos/Webcam",
-            "Joysticks": "Perifericos/Joystick",
-            "Volantes": "Volante",
-            "Mouse Pads": "Perifericos/MousePad",
-            "Stream Decks": "Perifericos/StreamDeck",
-            "Parlantes": "Perifericos/Parlante",
-            "Combos": "Perifericos/Combo",
+        },
+        ordenarProductos(orden) {
+            this.ordenSeleccionado = orden;
             
-            // Subcategorías de Gabinetes
-            "Gabinetes Cougar": "Gabinetes/Cougar",
-            "Gabinetes Corsair": "Gabinetes/Corsair",
-            "Gabinetes HYTE": "Gabinetes/HYTE",
-            
-            // Subcategorías de Fuentes
-            "Fuentes ADATA": "Fuentes/ADATA",
-            "Fuentes Be Quiet": "Fuentes/Be Quiet",
-            "Fuentes Corsair": "Fuentes/Corsair",
-
-            // Subcategorías de Monitores
-            "Monitores LG": "Monitores/LG",
-            "Monitores AsRock": "Monitores/AsRock",
-            "Monitores Samsung": "Monitores/Samsung",
-
-            // Subcategorías de Consolas
-            "Nintendo Switch": "Consolas/Nintendo Switch"
-        };
-        
-        const subcategoriaProducto = mapeoSubcategorias[subcategoriaExplorador];
-        if (subcategoriaProducto) {
-            // Si la subcategoría contiene una barra, buscar en la categoría del producto
-            if (subcategoriaProducto.includes('/')) {
-                this.productosFiltrados = this.productos.filter(producto => 
-                    producto.categoria === subcategoriaProducto
-                );
+            if (orden === "mayorPrecio") {
+                this.productosFiltrados.sort((a, b) => b.precio - a.precio);
+            } else if (orden === "menorPrecio") {
+                this.productosFiltrados.sort((a, b) => a.precio - b.precio);
             } else {
-                // Si no contiene barra, buscar productos de esa categoría general
-                this.productosFiltrados = this.productos.filter(producto => 
-                    producto.categoria === subcategoriaProducto
-                );
+                this.productosFiltrados = [...this.productos];
             }
-        } else {
-            this.productosFiltrados = this.productos;
-        }
-    },
-    ordenarProductos(orden) {
-        this.ordenSeleccionado = orden;
-        
-        if (orden === "mayorPrecio") {
-            this.productosFiltrados.sort((a, b) => b.precio - a.precio);
-        } else if (orden === "menorPrecio") {
-            this.productosFiltrados.sort((a, b) => a.precio - b.precio);
-        } else {
-            // Por defecto o "destacados"
-            this.productosFiltrados = [...this.productos];
         }
     }
-    }
-
+}
 </script>
 
 <style scoped>
