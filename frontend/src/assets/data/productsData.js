@@ -686,7 +686,7 @@ export const productos = [
     nombre: "Adaptador de Red Archer T4U Tp-Link AC1300 Dual Band USB",
     precio: 31000,
     imagenes: ["https://imgur.com/gYQBCp0.jpg"],
-    categoria: "Conectividad/Placas de Red",
+    categoria: "Conectividad/Adaptador WiFi",
     stock: 255,
     },
     {
@@ -694,7 +694,7 @@ export const productos = [
     nombre: "Adaptador WiFi Tp-Link Archer T2U AC600 Nano USB 2.0",
     precio: 16000,
     imagenes: ["https://imgur.com/GpvcEKl.jpg"],
-    categoria: "Conectividad/Placas de Red",
+    categoria: "Conectividad/Adaptador WiFi",
     stock: 1200,
     },
     {
@@ -712,7 +712,7 @@ export const productos = [
     "Disco Solido SSD M.2 ADATA 2TB XPG MARS 980 STORM 14000MB/s NVMe PCIe Gen5 x4 Water Cooled Heatsink",
     precio: 382000,
     imagenes: ["https://imgur.com/EajSexF.jpg"],
-    categoria: "Almacenamiento/Discos Solidos",
+    categoria: "Almacenamiento/Disco Solido",
     stock: 450,
     },
     {
