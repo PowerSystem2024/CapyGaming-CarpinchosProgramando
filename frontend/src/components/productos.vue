@@ -190,6 +190,10 @@ export default {
                 "Parlantes": "Perifericos/Parlante",
                 "Combos": "Perifericos/Combo",
 
+                // Conectividad
+                "Placas de Red": "Conectividad/Placas de Red",
+                "Adaptadores WiFi": "Conectividad/Adaptador WiFi",
+
                 // Consolas
                 "Nintendo Switch": "Consolas/Nintendo Switch",
                 "PlayStation": "Consolas/PlayStation",
