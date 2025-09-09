@@ -39,7 +39,8 @@
             <input type="checkbox" v-model="form.remember" />
             Recordarme
           </label>
-          <a class="link" href="#" @click.prevent="onForgot">¿Olvidaste tu contraseña?</a>
+          <!-- <a class="link" href="/recuperarContra">¿Olvidaste tu contraseña?</a> -->
+          <router-link class="link" to="/recuperarContra">¿Olvidaste tu contraseña?</router-link>
         </div>
 
         <button class="btn primary" :disabled="loading">
@@ -187,11 +188,11 @@ p.alt{
 .row{
   display:flex; justify-content:space-between; align-items:center;
   gap:1rem; margin:.25rem 0 1rem;
- background-color: var(--color-card);
+  background-color: var(--color-card);
 }
 .link{ color: var(--color-secondary); text-decoration: none; background-color: var(--color-card); } /* Azul */
 .link:hover{ text-decoration: underline; }
 
 /* Errores */
-.error{ margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; }
+.error{ margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card);}
 </style>

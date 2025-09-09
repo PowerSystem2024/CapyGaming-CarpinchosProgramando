@@ -8,6 +8,7 @@ import marcas from '../components/marcas.vue';
 import ofertas from '../components/ofertas.vue';
 import quienesSomos from '../components/quienesSomos.vue';
 import registro from '../components/registro.vue';
+import recuperarContra from '../components/recuperarContra.vue';
 
 //Definir las rutas de tu aplicacion 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
       path: '/registro',
       name: 'registro',
       component: registro
+    },
+    {
+      path: '/recuperarContra',
+      name: 'recuperarContra',
+      component: recuperarContra
     },
     {
         path: '/marcas',

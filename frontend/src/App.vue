@@ -18,6 +18,7 @@
       <router-link to="/">Productos</router-link>
       <router-link to="/inicioSesion" class="inicio-link"></router-link>
       <router-link to="/registro">Registrarme</router-link>
+      <router-link to="/recuperarContra">Recuperar contraseña</router-link>
       <router-link to="/quienesSomos" class="quienes-link"></router-link>
       <router-link to="/ofertas" class="ofertas-link"></router-link>
       <router-link to="/marcas" class="marcas-link"></router-link>

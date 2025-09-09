@@ -23,7 +23,7 @@
               id="email"
               type="email"
               v-model.trim="form.email"
-              placeholder="ej: ejemplo@mail.com"
+              placeholder="ejemplo@mail.com"
               autocomplete="email"
               required
             />
@@ -157,14 +157,15 @@ h1{
   font-weight:700; font-size:1.7rem;
   color: var(--color-primary);       /* naranja del proyecto */
   text-align:center;
+  background-color: var(--color-card);
 }
 
 /* Campos */
-.field{ margin-bottom: 1rem; text-align:left; }
-label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); }
+.field{ margin-bottom: 1rem; text-align:left; background-color: var(--color-card);}
+label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card); }
 
 .input-row,
-.password-row{ display:flex; gap:.5rem; align-items:center; }
+.password-row{ display:flex; gap:.5rem; align-items:center; background: var(--color-card); }
 
 input{
   width:100%;
@@ -185,6 +186,7 @@ input:focus{
   display:flex; align-items:center; gap:.5rem;
   margin:.25rem 0 1rem; user-select:none;
   color: var(--color-accent-foreground);
+  font-size: small;
 }
 
 /* Botones */
@@ -209,9 +211,17 @@ button.ghost{
   cursor:pointer;
 }
 
-.link{ color: var(--color-secondary); text-decoration:none; }
+form {
+  background-color: var(--color-card);
+}
+
+span {
+  background-color: var(--color-primary);
+}
+
+.link{ color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
 .link:hover{ text-decoration: underline; }
 
-.error{ margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; }
-.alt{ margin-top: 1rem; text-align:center; }
+.error{ margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card); }
+.alt{ margin-top: 1rem; text-align:center; background-color: var(--color-card); }
 </style>
