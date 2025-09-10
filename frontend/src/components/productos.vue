@@ -73,7 +73,14 @@ export default {
             event.target.src = "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
         agregarAlCarrito(producto) {
-            console.log("Agregado al carrito:", producto);
+            const resultado = addToCart(producto);
+            if (resultado.success) {
+                alert(`✅ ${resultado.message}`);
+                console.log("Producto agregado:", producto);
+            } else {
+                alert(`⚠️ ${resultado.message}`);
+                console.log("Error al agregar:", resultado.message);
+            }
         },
         filtrarProductosPorCategoria(categoriaExplorador) {
             this.categoriaSeleccionada = categoriaExplorador;

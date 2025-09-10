@@ -66,23 +66,32 @@ export default {
 </script>
 
 <style scoped>
+@import url(../assets/styles/base.css);
+
 .about-us-container {
   padding: 20px;
+  background-color: var(--color-background);
 }
+
 .about-us {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
 }
+
 .about-us h2 {
   font-size: 2.5em;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
 }
+
 .about-us p {
   font-size: 1.2em;
-  color: #000000;
+  color: var(--color-foreground);
+  margin-bottom: 30px;
 }
+
 .team {
   display: flex;
   flex-wrap: wrap;
@@ -90,30 +99,60 @@ export default {
   gap: 20px;
   margin-top: 30px;
 }
+
 .team-member {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 15px;
+  background-color: var(--color-card);
+  border-radius: 12px;
+  padding: 20px;
   width: 250px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(243, 156, 18, 0.2);
+}
+
 .team-member img {
-  width: 100%;
-  height: auto;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+  margin: 0 auto 15px;
+  display: block;
+  background-color: transparent;
 }
+
 .team-member h3 {
-  font-size: 1.5em;
+  font-size: 1.4em;
   margin-top: 15px;
-  color: #333;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
 }
+
 .team-member p {
-  font-size: 1em;
-  color: #666;
+  font-size: 0.95em;
+  color: var(--color-muted-foreground);
+  line-height: 1.4;
 }
+
 @media (max-width: 600px) {
   .team-member {
     width: 100%;
+    max-width: 300px;
+  }
+  
+  .about-us h2 {
+    font-size: 2em;
+  }
+  
+  .about-us p {
+    font-size: 1.1em;
   }
 }
 </style>
