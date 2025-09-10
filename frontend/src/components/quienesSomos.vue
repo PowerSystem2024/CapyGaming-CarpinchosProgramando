@@ -86,7 +86,7 @@ export default {
   font-size: 2.5em;
   margin-bottom: 20px;
   color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .about-us p {
@@ -136,7 +136,7 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 15px;
   margin-bottom: 10px;
   color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
 }
 

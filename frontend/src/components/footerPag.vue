@@ -80,7 +80,7 @@
   margin: 0;
   background: var(--color-background);
   color: white;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   padding: 8px 0 10px 0;
 }
 

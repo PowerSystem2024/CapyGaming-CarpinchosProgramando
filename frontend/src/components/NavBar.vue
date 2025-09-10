@@ -74,7 +74,7 @@ export default {
   height: 88px;
   background: var(--color-background);
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar-content {
@@ -155,7 +155,7 @@ export default {
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
   background-color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
   text-decoration: none; /* 👈 saca subrayado */
   transition: background 0.2s ease, transform 0.1s ease;
@@ -168,7 +168,7 @@ export default {
 
 .user-btn{
   background-color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
 }
 

@@ -70,7 +70,7 @@
   html, body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
   }
 
