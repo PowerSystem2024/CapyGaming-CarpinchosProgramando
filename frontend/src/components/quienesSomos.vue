@@ -26,40 +26,38 @@ export default {
       teamMembers: [
         {
           name: 'Maria Mercedes Atim',
-<<<<<<< Updated upstream
-          image: '/src/assets/imagesQuienesSomos/Maria Mercedes Atim.jpg',
+          image: '../src/assets/imagesQuienesSomos/María Mercedes Atim.png',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Ana Paula Ríos Garín',
-          image: '/src/assets/imagesQuienesSomos/AnaPaulaRíosGarín.jpg',
+          image: '../src/assets/imagesQuienesSomos/Ana Paula Ríos Garín.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Nicolas Exequiel Mercado',
-          image: '/images/Nicolas Mercado.jpg',
+          image: '../src/assets/imagesQuienesSomos/Nicolas Mercado.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Mariana Aguilera',
-          image: '/images/Mariana Aguilera.jpg',
+          image: '../src/assets/imagesQuienesSomos/Mariana Aguilera.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Melina Aguilar',
-          image: '/images/Melina Aguilar.jpg',
+          image: '../src/assets/imagesQuienesSomos/Melina Aguilar.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Ezequiel Quiroz',
-          image: '/src/assets/imagesQuienesSomos/EzequielQuiroz.jpg',
+          image: '../src/assets/imagesQuienesSomos/Ezequiel Quiroz.jpg',
           description: 'Descripción breve del miembro del equipo.',
         },
         {
           name: 'Wanda Lanatta',
-          image: '/images/Wanda Lanatta.jpg',
+          image: "../src/assets/imagesQuienesSomos/Wanda Lanatta.jpg",
           description: 'Descripción breve del miembro del equipo.',
-=======
           image: '/src/assets/imagesQuienesSomos/María Mercedes Atim.png',
           description: 'Descripción breve del miembro del equipo',
         },
@@ -92,7 +90,6 @@ export default {
           name: 'Wanda Lanatta',
           image: '/src/assets/imagesQuienesSomos/Wanda Lanatta.jpg',
           description: 'Descripción breve del miembro del equipo',
->>>>>>> Stashed changes
         },
       ],
     };
@@ -102,16 +99,10 @@ export default {
 
 <style scoped>
 @import url(../assets/styles/base.css);
-<<<<<<< Updated upstream
 
 .about-us-container {
   padding: 20px;
   background-color: var(--color-background);
-=======
-.about-us-container {
-  padding: 20px;
-background-color: var(--background-color);
->>>>>>> Stashed changes
 }
 
 .about-us {
@@ -146,22 +137,13 @@ background-color: var(--background-color);
 }
 
 .team-member {
-<<<<<<< Updated upstream
-  background-color: var(--color-card);
-  border-radius: 12px;
-  padding: 20px;
-  width: 250px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--color-border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-=======
   background-color: var(--background-color);
   border-radius: 8px;
   padding: 15px;
   width: 250px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   color: #f9f9f9;
->>>>>>> Stashed changes
 }
 
 .team-member:hover {
