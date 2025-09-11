@@ -130,7 +130,7 @@ export default {
           stock: 3,
           image: sillaGamer,
           imagenes: [sillaGamer],
-         },
+        },
       ]
     };
   },
@@ -140,6 +140,8 @@ export default {
       if (resultado.success) {
         alert(`✅ ${resultado.message}`);
         console.log("Oferta agregada al carrito:", oferta);
+        window.dispatchEvent(new Event("cartUpdated"));
+        window.dispatchEvent(new Event("abrirPreview"));
       } else {
         alert(`⚠️ ${resultado.message}`);
         console.log("Error al agregar oferta:", resultado.message);
@@ -160,6 +162,7 @@ export default {
 h2 {
   color: var(--color-primary); /* Naranja destacado */
   margin-bottom: 1.5rem;
+  margin-top: 6%;
 }
 
 .offers-grid {

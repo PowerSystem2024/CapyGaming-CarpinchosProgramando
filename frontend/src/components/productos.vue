@@ -1,7 +1,7 @@
 <template>
     <div class="catalogo-page">
         <div class="sidebar">
-            <Categorias 
+            <Categorias
                 @categoria-seleccionada="filtrarProductosPorCategoria"
                 @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
                 @orden-cambiado="ordenarProductos"
@@ -10,7 +10,7 @@
     
             <div class="catalogo">
                 <!-- Mostrar productos destacados o catálogo normal según el estado -->
-                <ProductosDestacados 
+                <ProductosDestacados
                     v-if="mostrandoDestacados"
                     @agregar-al-carrito="agregarAlCarrito"
                 />
@@ -114,7 +114,7 @@ export default {
                 if (categoriaProducto) {
                     // Filtrar productos que comiencen con la categoría principal
                     // Esto incluirá todas las subcategorías
-                    this.productosFiltrados = this.productos.filter(producto => 
+                    this.productosFiltrados = this.productos.filter(producto =>
                         producto.categoria.startsWith(categoriaProducto)
                     );
                 } else {
@@ -252,7 +252,7 @@ export default {
 }
 
 .sidebar {
-    flex: 0 0 300px;  
+    flex: 0 0 300px;
 }
 
 .catalogo {
