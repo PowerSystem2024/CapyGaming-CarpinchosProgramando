@@ -7,7 +7,7 @@ export const productos = [
     "https://imgur.com/7NMbCj1.jpg",
     "https://imgur.com/7GsShZt.jpg",
     ],
-    categoria: "Notebook/ACER", 
+    categoria: "Notebook/ACER",
     stock: 30,
     },
     {
