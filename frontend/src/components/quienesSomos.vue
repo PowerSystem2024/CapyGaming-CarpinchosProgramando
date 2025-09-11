@@ -71,6 +71,7 @@ export default {
 
 .about-us-container {
   padding: 20px;
+  padding-top: calc(30px + 60px);  /* 60px = altura del navbar */
   background-color: var(--color-background);
 }
 

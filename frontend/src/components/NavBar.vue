@@ -191,11 +191,11 @@ export default {
 
 .cart-badge {
   position: absolute;
-  top: -1px;
-  right: -1px;
+  top: -10px;
+  right: -10px;
   background-color: red;
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   border-radius: 50%;
   padding: 2px 6px;

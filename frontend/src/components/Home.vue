@@ -1,7 +1,6 @@
 <template>
     <div class="home-page">
         <Ofertas @abrirPreview="$emit('abrirPreview')" />
-        <Marcas />
         <quienesSomos />
         <!-- Acá podrías agregar productos destacados o categorías -->
     </div>
@@ -9,7 +8,6 @@
 
 <script setup>
 import Ofertas from '../components/Ofertas.vue';
-import Marcas from '../components/Marcas.vue';
 import quienesSomos from '../components/quienesSomos.vue';
 </script>
 
