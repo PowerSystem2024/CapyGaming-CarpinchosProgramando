@@ -26,7 +26,7 @@
           <router-link to="carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
           <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
-         </router-link>
+          </router-link>
       </div>
     </div>
   </nav>
@@ -74,7 +74,7 @@ export default {
   height: 88px;
   background: var(--color-background);
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar-content {
@@ -93,16 +93,19 @@ export default {
   width: auto;
   max-height: 100%;
   gap: 0.5rem;
+  background: none;
 }
 
 .logo img{
     max-height: 78px;
+    background: none;
 }
 
 .logo a:hover {
   background: none;  /* evita el fondo en hover */
   color: inherit;    /* mantiene el color */
 }
+
 
 .search {
   position: relative;
@@ -152,7 +155,7 @@ export default {
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
   background-color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
   text-decoration: none; /* 👈 saca subrayado */
   transition: background 0.2s ease, transform 0.1s ease;
@@ -165,7 +168,7 @@ export default {
 
 .user-btn{
   background-color: var(--color-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
 }
 
@@ -188,11 +191,11 @@ export default {
 
 .cart-badge {
   position: absolute;
-  top: -1px;
-  right: -1px;
+  top: -10px;
+  right: -10px;
   background-color: red;
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   border-radius: 50%;
   padding: 2px 6px;
@@ -208,7 +211,11 @@ export default {
   background: none !important;
   color: inherit !important;
 }
-
+.logo a,
+.logo a:hover,
+.logo a:focus{
+  background-color: rgba(245, 245, 220, 0);
+}
 .user-options .user-btn.router-link-active,
 .user-options .user-btn.router-link-exact-active {
   background-color: var(--color-primary) !important;

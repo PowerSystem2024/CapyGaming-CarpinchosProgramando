@@ -1,110 +1,71 @@
 <script setup>
-  import NavBar from "./components/NavBar.vue";
-  import footerPag from "./components/footerPag.vue";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import NavBar from "./components/NavBar.vue";
+import footerPag from "./components/footerPag.vue";
+import CarritoModalPreview from "./components/CarritoModalPreview.vue";
+import { getCartCount, getCart } from "./utils/cartUtils";
+
+// Estado reactivo
+const cartCount = ref(0);
+const mostrarCarrito = ref(false);
+const carrito = ref([]);
+
+// Función para actualizar el contador y el contenido del carrito
+function updateCartCount() {
+  const cart = getCart();
+  cartCount.value = cart.reduce((total, item) => total + item.quantity, 0);
+  carrito.value = cart;
+}
+
+const router = useRouter();
+
+onMounted(() => {
+  updateCartCount();
+  window.addEventListener("cartUpdated", updateCartCount);
+  window.addEventListener("abrirPreview", () => {
+    mostrarCarrito.value = true;
+  });
+
+  // Cierra el modal al cambiar de ruta
+  router.afterEach(() => {
+    mostrarCarrito.value = false;
+  });
+});
 </script>
 
 <template>
-    <NavBar />
+  <NavBar :cart-count="cartCount" @abrirPreview="mostrarCarrito = true" />
 
-  <div id="app">
-    <nav>
+  <router-view /> <!-- Aquí se renderiza la vista actual -->
 
-      <Marcas />
-      <Ofertas />
-      <quienesSomos />
+  <CarritoModalPreview
+    :visible="mostrarCarrito"
+    :carrito="carrito"
+    @close="mostrarCarrito = false"
+  />
 
-
-  <!-- Menú de navegación opcional -->
-      <router-link to="/">Productos</router-link>
-      <router-link to="/inicioSesion" class="inicio-link"></router-link>
-      <router-link to="/registro">Registrarme</router-link>
-      <router-link to="/recuperarContra">Recuperar contraseña</router-link>
-      <router-link to="/quienesSomos" class="quienes-link"></router-link>
-      <router-link to="/ofertas" class="ofertas-link"></router-link>
-      <router-link to="/marcas" class="marcas-link"></router-link>
-      <router-link to="/exploradorCategorias" class="exploradorCategorias-link"></router-link>
-    </nav>
-
-    <router-view />
-  </div>
-
-    <footerPag />
-
+  <footerPag />
 </template>
 
-<script>
-  import { getCartCount } from "./utils/cartUtils"; // ← AGREGAR IMPORT
-
-  export default {
-    name: "App",
-    data() {
-      return {
-        cartCount: 0  // ← AGREGAR VARIABLE
-      }
-    },
-    mounted() {
-      // Cargar contador al iniciar
-      this.updateCartCount();
-
-      // Escuchar cambios en el carrito
-      window.addEventListener('cartUpdated', this.updateCartCount);
-    },
-    methods: {
-      updateCartCount() {
-        this.cartCount = getCartCount();
-      }
-    }
-  };
-  </script>
-
 <style>
-  /* Estilos globales para toda la aplicación */
-  @import url('./assets/styles/base.css');
+@import url('./assets/styles/base.css');
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  html, body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: 'Roboto', sans-serif;
-    min-height: 100vh;
-  }
+html, body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+}
 
-  #app {
-    background-color: var(--color-background);
-    min-height: 100vh;
-  }
-
-  nav {
-    background-color: var(--color-accent);
-    padding: 1rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  nav a {
-    color: var(--color-primary);
-    text-decoration: none;
-    margin: 0 1rem;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: all 0.3s;
-  }
-
-  nav a:hover {
-    background-color: var(--color-primary);
-    color: var(--color-primary-foreground);
-  }
-
-  nav a.router-link-active {
-    background-color: var(--color-primary);
-    color: var(--color-primary-foreground);
-  }
-
-  
-  </style>
+#app {
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+</style>

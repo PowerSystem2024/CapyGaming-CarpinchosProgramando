@@ -26,9 +26,9 @@
                     </div>
                     
                     <!-- Lista de subcategorías (solo visible si la categoría está expandida y tiene subcategorías) -->
-                    <ul v-if="categoriaAbierta === categoria.id && categoria.subcategorias && categoria.subcategorias.length" 
+                    <ul v-if="categoriaAbierta === categoria.id && categoria.subcategorias && categoria.subcategorias.length"
                         class="subcategorias-list">
-                        <li v-for="subcategoria in categoria.subcategorias" :key="subcategoria.id" 
+                        <li v-for="subcategoria in categoria.subcategorias" :key="subcategoria.id"
                             class="subcategoria-item">
                             <!-- Enlace para filtrar por subcategoría -->
                             <a href="#" @click.prevent="filtrarPorSubcategoria(subcategoria)" class="subcategoria-link">

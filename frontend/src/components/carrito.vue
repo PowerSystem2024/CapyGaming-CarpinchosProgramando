@@ -172,7 +172,7 @@ export default {
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     padding: 2rem;
     background-color: var(--color-background) !important;
     color: var(--color-foreground);
@@ -199,6 +199,7 @@ export default {
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-top: 7%;
   }
 
   .carrito-vacio {

@@ -1,7 +1,7 @@
 <template>
     <div class="catalogo-page">
         <div class="sidebar">
-            <Categorias 
+            <Categorias
                 @categoria-seleccionada="filtrarProductosPorCategoria"
                 @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
                 @orden-cambiado="ordenarProductos"
@@ -10,7 +10,7 @@
     
             <div class="catalogo">
                 <!-- Mostrar productos destacados o catálogo normal según el estado -->
-                <ProductosDestacados 
+                <ProductosDestacados
                     v-if="mostrandoDestacados"
                     @agregar-al-carrito="agregarAlCarrito"
                 />
@@ -73,7 +73,14 @@ export default {
             event.target.src = "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
         },
         agregarAlCarrito(producto) {
-            console.log("Agregado al carrito:", producto);
+            const resultado = addToCart(producto);
+            if (resultado.success) {
+                alert(`✅ ${resultado.message}`);
+                console.log("Producto agregado:", producto);
+            } else {
+                alert(`⚠️ ${resultado.message}`);
+                console.log("Error al agregar:", resultado.message);
+            }
         },
         filtrarProductosPorCategoria(categoriaExplorador) {
             this.categoriaSeleccionada = categoriaExplorador;
@@ -107,7 +114,7 @@ export default {
                 if (categoriaProducto) {
                     // Filtrar productos que comiencen con la categoría principal
                     // Esto incluirá todas las subcategorías
-                    this.productosFiltrados = this.productos.filter(producto => 
+                    this.productosFiltrados = this.productos.filter(producto =>
                         producto.categoria.startsWith(categoriaProducto)
                     );
                 } else {
@@ -242,10 +249,11 @@ export default {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    padding-top: calc(30px + 60px); /* 60px = altura del navbar */
 }
 
 .sidebar {
-    flex: 0 0 300px;  
+    flex: 0 0 300px;
 }
 
 .catalogo {

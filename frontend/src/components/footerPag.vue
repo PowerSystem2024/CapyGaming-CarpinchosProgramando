@@ -1,14 +1,12 @@
+<script setup>
+import Marcas from '../components/marcas.vue';
+</script>
+
 <template>
   <footer class="footer">
 
-    <!-- Cinta amarilla con marcas -->
     <div class="footer-brands">
-      <img src="../assets/marcas/logo1.png" alt="Marca 1" />
-      <img src="../assets/marcas/logo3.png" alt="Marca 2" />
-      <img src="../assets/marcas/logo4.png" alt="Marca 3" />
-      <img src="../assets/marcas/logo5.png" alt="Marca 4" />
-      <img src="../assets/marcas/logo6.png" alt="Marca 5" />
-      <img src="../assets/marcas/logo7.png" alt="Marca 6" />
+    <Marcas />
     </div>
 
     <div class="footer-content">
@@ -80,23 +78,23 @@
   margin: 0;
   background: var(--color-background);
   color: white;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   padding: 8px 0 10px 0;
 }
 
 /* Cinta amarilla de marcas */
-.footer-brands {
+/*.footer-brands {
   width: 100%;
-  background: var(--color-primary); /* Amarillo */
+  background: var(--color-primary);
   display: flex;
-  justify-content: space-around; /* distribuye las marcas horizontalmente */
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .footer-brands img {
-  height: 100px; /* tamaño de los logos */
-}
+  height: 100px;
+}*/
 
 /* Footer principal */
 .footer-content {

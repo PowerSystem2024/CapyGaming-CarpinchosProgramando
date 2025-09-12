@@ -1,3 +1,4 @@
+import { toRaw } from 'vue';
 const CART_KEY = 'capygaming_cart';
 
   export function getCart() {
@@ -21,7 +22,9 @@ const CART_KEY = 'capygaming_cart';
 
   export function addToCart(product) {
     const cart = getCart();
-    const existingItemIndex = cart.findIndex(item => item.id === product.id);
+    const rawProduct = toRaw(product)
+
+    const existingItemIndex = cart.findIndex(item => item.id === rawProduct.id);
 
     if (existingItemIndex !== -1) {
       // Si existe, verificar stock antes de aumentar
@@ -29,6 +32,7 @@ const CART_KEY = 'capygaming_cart';
       if (currentQuantity < product.stock) {
         cart[existingItemIndex].quantity += 1;
         saveCart(cart);
+        window.dispatchEvent(new Event('abrirPreview'))
         return { success: true, message: 'Producto agregado al carrito' };
       } else {
         return { success: false, message: `Stock máximo alcanzado (${product.stock} unidades)` };
@@ -36,10 +40,12 @@ const CART_KEY = 'capygaming_cart';
     } else {
       // Si no existe, agregarlo con cantidad 1
       cart.push({
-        ...product,
+        ...rawProduct,
         quantity: 1
       });
       saveCart(cart);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('cartUpdated'));
       return { success: true, message: 'Producto agregado al carrito' };
     }
   }
@@ -85,6 +91,6 @@ const CART_KEY = 'capygaming_cart';
   }
 
   export function getCartTotal() {
-    const cart = getCart();
-    return cart.reduce((total, item) => total + (item.precio * item.quantity), 0);
+  const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  return cart.reduce((total, item) => total + item.cantidad, 0);
   }
