@@ -62,6 +62,18 @@
           <p v-if="errors.confirm" class="error">{{ errors.confirm }}</p>
         </div>
 
+        <div class="form-group">
+          <label for="dni">DNI</label>
+          <input
+            type="text"
+            id="dni"
+            v-model="form.dni"
+            required
+            placeholder="Ingrese su DNI"
+          />
+        </div>
+
+
         <label class="checkbox">
           <input type="checkbox" v-model="form.accept" />
           Acepto los términos y condiciones
@@ -91,6 +103,7 @@ const router = useRouter()
 const form = reactive({
   name: '',
   email: '',
+  dni: '',        // nuevo campo
   password: '',
   confirm: '',
   accept: false
@@ -121,8 +134,13 @@ async function onSubmit () {
     // Simulación de registro (frontend only)
     await new Promise(r => setTimeout(r, 600))
 
-    // Guardamos un "usuario" mínimo en localStorage
-    const user = { name: form.name, email: form.email, createdAt: new Date().toISOString() }
+    // Guardamos el usuario en localStorage
+    const user = { 
+      name: form.name, 
+      email: form.email, 
+      dni: form.dni,        // guardamos el DNI
+      createdAt: new Date().toISOString() 
+    }
     localStorage.setItem('auth', JSON.stringify(user))
 
     // Redirigimos al home (catálogo)
@@ -142,13 +160,14 @@ async function onSubmit () {
   padding: 2rem;
 }
 .auth-card{
-  width:100%; max-width: 520px;
+  width:100%; max-width: 420px;
   background: var(--color-card);
   color: var(--color-card-foreground);
   border:1px solid var(--color-border);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
   padding: 2rem;
+  margin: 5rem auto 3rem;
 }
 
 /* Titular */
@@ -163,6 +182,12 @@ h1{
 /* Campos */
 .field{ margin-bottom: 1rem; text-align:left; background-color: var(--color-card);}
 label{ display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card); }
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+  background-color: var(--color-card);
+}
 
 .input-row,
 .password-row{ display:flex; gap:.5rem; align-items:center; background: var(--color-card); }
