@@ -75,6 +75,7 @@ export default {
   background: var(--color-background);
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  z-index: 1000; /*Para que el navbar siempre este por arriba de los elementos */
 }
 
 .navbar-content {
@@ -94,6 +95,7 @@ export default {
   max-height: 100%;
   gap: 0.5rem;
   background: none;
+  padding-top: 5px;
 }
 
 .logo img{

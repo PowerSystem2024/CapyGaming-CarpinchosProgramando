@@ -181,8 +181,8 @@ h2 {
 }
 
 .offer-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+  transform: scale(1.01);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.233);
 }
 
 .offer-image {
