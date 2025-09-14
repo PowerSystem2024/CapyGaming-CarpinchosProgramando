@@ -47,7 +47,7 @@ export default {
 
 .link {
   color: var(--color-secondary);
-  text-decoration: none; /* quita subrayado */
+  text-decoration: none;
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-secondary);
   border-radius: 5px;
