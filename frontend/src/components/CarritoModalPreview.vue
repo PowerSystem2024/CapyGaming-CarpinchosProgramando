@@ -50,6 +50,9 @@
 <script setup>
     import { computed } from "vue";
     import {toRefs } from 'vue';
+    import { useRouter } from "vue-router";
+
+    const router = useRouter();
 
     // Props recibidos desde el padre
     const props = defineProps({
@@ -86,7 +89,9 @@
 
     // Función para finalizar compra (puedes personalizarla según tus necesidades)
     const finalizarCompra = () => {
-    alert("Redirigiendo al proceso de compra...");
+    cerrar(); // cierra el modal
+    router.push("/carrito"); // redirige al carrito
+    //alert("Redirigiendo al proceso de compra...");
     // Aquí podrías redirigir al checkout, por ejemplo:
     // router.push('/checkout');
     };
