@@ -48,7 +48,7 @@ export default {
     window.addEventListener("cartUpdated", this.updateCartCount); // escucha el evento "cartUpdated" Cada vez que alguien agrega/quita un producto, este evento dispara y automaticamente actualiza el numero del carrito.
   },
   beforeUnmount() {
-    window.removeEventListener("cartUpdated", this.updateCartCount); 
+    window.removeEventListener("cartUpdated", this.updateCartCount);
   },
   methods: {
     buscarProducto() {
@@ -57,12 +57,12 @@ export default {
     updateCartCount() {
       const cart = getCart();
       this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+      //cart.value = cart;
     }
   }
 };
 
 </script>
-
 <style scoped>
 @import url(../assets/styles/base.css);
 

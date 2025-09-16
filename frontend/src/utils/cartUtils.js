@@ -1,10 +1,12 @@
 import { toRaw } from 'vue';
-const CART_KEY = 'capygaming_cart';
+const CART_KEY = 'cart';
 
   export function getCart() {
     try {
       const cart = localStorage.getItem(CART_KEY);
-      return cart ? JSON.parse(cart) : [];
+      const parsedCart = cart ? JSON.parse(cart) : [];
+      console.log("getCart devuelve:", parsedCart); // Mover antes del return
+      return parsedCart;
     } catch (error) {
       console.error('Error al obtener el carrito:', error);
       return [];
@@ -22,17 +24,15 @@ const CART_KEY = 'capygaming_cart';
 
   export function addToCart(product) {
     const cart = getCart();
-    const rawProduct = toRaw(product)
-
-    const existingItemIndex = cart.findIndex(item => item.id === rawProduct.id);
-
+    //const rawProduct = toRaw(product)
+    const existingItemIndex = cart.findIndex(item => item.id === product.id);
     if (existingItemIndex !== -1) {
       // Si existe, verificar stock antes de aumentar
       const currentQuantity = cart[existingItemIndex].quantity;
       if (currentQuantity < product.stock) {
         cart[existingItemIndex].quantity += 1;
         saveCart(cart);
-        window.dispatchEvent(new Event('abrirPreview'))
+        //window.dispatchEvent(new Event('abrirPreview'))
         return { success: true, message: 'Producto agregado al carrito' };
       } else {
         return { success: false, message: `Stock máximo alcanzado (${product.stock} unidades)` };
@@ -40,10 +40,10 @@ const CART_KEY = 'capygaming_cart';
     } else {
       // Si no existe, agregarlo con cantidad 1
       cart.push({
-        ...rawProduct,
+        //...rawProduct,
+        ...product,
         quantity: 1
       });
-      saveCart(cart);
       localStorage.setItem('cart', JSON.stringify(cart));
       window.dispatchEvent(new Event('cartUpdated'));
       return { success: true, message: 'Producto agregado al carrito' };
@@ -92,5 +92,5 @@ const CART_KEY = 'capygaming_cart';
 
   export function getCartTotal() {
   const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  return cart.reduce((total, item) => total + item.cantidad, 0);
+  return cart.reduce((total, item) => total + item.precio * item.quantity, 0);
   }

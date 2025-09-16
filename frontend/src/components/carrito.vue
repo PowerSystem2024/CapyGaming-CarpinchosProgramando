@@ -3,7 +3,7 @@
     <h1>Carrito de Compras</h1>
     <div v-if="cartItems.length === 0" class="carrito-vacio">
       <p>El carrito está vacío</p>
-      <router-link to="/">Ir a comprar</router-link>
+        <router-link to="/">Ir a comprar</router-link>
     </div>
 
     <div v-else>
@@ -116,6 +116,7 @@ export default {
   mounted() {
     this.loadCart();
     window.addEventListener('cartUpdated', this.loadCart);
+    console.log(getCartTotal());
   },
   methods: {
     loadCart() {
@@ -153,18 +154,15 @@ export default {
       if (confirm("¿Estás seguro de que quieres vaciar todo el carrito?")) {
         clearCart();
         this.loadCart();
-        alert("✅ Carrito vaciado correctamente");
+        console.log("✅ Carrito vaciado correctamente");
       }
     }
-
-
   }
 };
 </script>
 
 <style scoped>
   @import url(../assets/styles/base.css);
-
 
   .carrito-container {
     display: flex;
@@ -257,12 +255,12 @@ export default {
   }
   
   .product-grid * {
-      background-color: transparent;
-  } 
+    background-color: transparent;
+  }
 
-   .product-card {
+  .product-card {
     display: flex;
-    align-items: center;  
+    align-items: center;
     gap: 20px;
     border-radius: 8px;
     padding: 1rem;
@@ -275,7 +273,7 @@ export default {
   }
   .product-card * {
     background-color: transparent !important;
-  } 
+  }
 
   /* Sin efecto hover que levanta la tarjeta */
   .product-card:hover {
@@ -302,7 +300,6 @@ export default {
     margin: 0 0 10px 0;
     font-size: 1rem;
     color: var(--color-primary);
-   
   }
 
   .precio {
@@ -310,7 +307,6 @@ export default {
     color: var(--color-foreground);
     font-size: 1.2rem;
     margin: 0.5rem 0;
-   
   }
 
   .cantidad-controls {
