@@ -287,4 +287,35 @@
     h2{
         color: var(--sidebar-primary);
     }
+
+    @media (max-width: 768px) {
+        .modal-body{
+            flex-direction: column;
+        }
+
+        .modal-header{
+            font-size: smaller;
+            padding: 8%;
+        }
+
+        .producto-agregado{
+            display: flex;
+            margin-top: 3%;
+            gap: 0.5rem;
+        }
+
+        .btn-finalizar, .btn-continuar {
+            margin-top: 3%;
+            font-size: 12px;
+            flex: 1;
+        }
+
+        .carrito-resumen{
+            margin-top: -5%;
+        }
+
+        .close-button {
+            margin-right: -8%;
+        }
+    }
 </style>
