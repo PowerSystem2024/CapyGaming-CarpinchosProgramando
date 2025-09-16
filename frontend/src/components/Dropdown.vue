@@ -66,7 +66,7 @@
 
     /* Letra más fina */
     nav .sub-menu .menu-item a {
-    font-weight: 350; /* más liviano que normal (400) */
+    font-weight: 380; /* más liviano que normal (400) */
     }
 
     nav .menu-item .sub-menu {

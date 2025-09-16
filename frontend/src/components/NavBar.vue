@@ -35,14 +35,13 @@
 <!-- Menu de productos-->
     <div class="sub-navbar">
       <div class="menu-item"><a href="#">Ofertas</a></div>
-      <Dropdown title="Hardware" :items="Hardware"/>
-      <Dropdown title="Hardware" :items="Hardware"/>
       <div class="menu-item"><a href="#">Notebooks</a></div>
       <div class="menu-item"><a href="#">Monitores</a></div>
-      <div class="menu-item"><a href="#">Periféricos</a></div>
-      <div class="menu-item"><a href="#">Gameroom</a></div>
+      <Dropdown title="Hardware" :items="Hardware"/>
+      <Dropdown title="Periféricos" :items="Periféricos"/>
+      <Dropdown title="Gameroom" :items="Gameroom"/>
+      <Dropdown title="Conectividad" :items="Conectividad"/>
       <div class="menu-item"><a href="#">Impresoras</a></div>
-      <div class="menu-item"><a href="#">Conectividad</a></div>
     </div>
  
 
@@ -65,7 +64,7 @@ export default {
       Hardware: [
         {
           title: 'Procesadores',
-          link: '#'
+          link: '/categoria/procesadores'
         },
         {
           title: 'Placas de Video',
@@ -99,6 +98,72 @@ export default {
           title: 'Kits de Actualización',
           link: '#'
         }
+    ],
+    Periféricos: [
+        {
+          title: 'Mouse',
+          link: '#'
+        },
+        {
+          title: 'Teclados',
+          link: '#'
+        },
+        {
+          title: 'Auriculares',
+          link: '#'
+        },
+        {
+          title: 'Micrófonos',
+          link: '#'
+        },
+        {
+          title: 'Webcams',
+          link: '#'
+        },
+        {
+          title: 'Joysticks',
+          link: '#'
+        },
+        {
+          title: 'Volantes',
+          link: '#'
+        },
+        {
+          title: 'Mouse Pads',
+          link: '#'
+        },
+        {
+          title: 'Stream Decks',
+          link: '#'
+        },
+        {
+          title: 'Parlantes',
+          link: '#'
+        },
+        {
+          title: 'Combos',
+          link: '#'
+        }
+    ],
+    Gameroom: [
+        {
+          title: 'Consolas',
+          link: '#'
+        },
+        {
+          title: 'Sillas Gamer',
+          link: '#'
+        }
+    ],
+    Conectividad: [
+      {
+        title: 'Placas de Red',
+        link: '#'
+      },
+      {
+        title: 'Adaptadores WiFi',
+        link: '#'
+      }
     ]
     };
   },
