@@ -1,5 +1,7 @@
 <template>
   <nav class="navbar">
+
+    <!-- Barra de navegacion, con buscador, ingreso y carrito-->
     <div class="navbar-content">
       <!-- Logo -->
       <div class="logo">
@@ -29,20 +31,78 @@
           </router-link>
       </div>
     </div>
+
+<!-- Menu de productos-->
+    <div class="sub-navbar">
+      <div class="menu-item"><a href="#">Ofertas</a></div>
+      <Dropdown title="Hardware" :items="Hardware"/>
+      <Dropdown title="Hardware" :items="Hardware"/>
+      <div class="menu-item"><a href="#">Notebooks</a></div>
+      <div class="menu-item"><a href="#">Monitores</a></div>
+      <div class="menu-item"><a href="#">Periféricos</a></div>
+      <div class="menu-item"><a href="#">Gameroom</a></div>
+      <div class="menu-item"><a href="#">Impresoras</a></div>
+      <div class="menu-item"><a href="#">Conectividad</a></div>
+    </div>
+ 
+
   </nav>
 </template>
 
 <script>
 import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuelve los productos que hay en el carrito
+import Dropdown from "./Dropdown.vue";
 
 export default {
   name: "NavBar",
+  components: {
+    Dropdown
+  },
   data() {
     return {
       searchText: "",
       cartCount: 0, // 🔴 número de productos visible que se muestra en el carrito en el carrito
+      Hardware: [
+        {
+          title: 'Procesadores',
+          link: '#'
+        },
+        {
+          title: 'Placas de Video',
+          link: '#'
+        },
+        {
+          title: 'Refrigeración',
+          link: '#'
+        },
+        {
+          title: 'Motherboards',
+          link: '#'
+        },
+        {
+          title: 'Memorias Ram',
+          link: '#'
+        },
+        {
+          title: 'Almacenamiento',
+          link: '#'
+        },
+        {
+          title: 'Gabinetes',
+          link: '#'
+        },
+        {
+          title: 'Fuentes',
+          link: '#'
+        },
+        {
+          title: 'Kits de Actualización',
+          link: '#'
+        }
+    ]
     };
   },
+
   mounted() {
     this.updateCartCount(); // inicializa el número
     window.addEventListener("cartUpdated", this.updateCartCount); // escucha el evento "cartUpdated" Cada vez que alguien agrega/quita un producto, este evento dispara y automaticamente actualiza el numero del carrito.
@@ -133,11 +193,17 @@ export default {
 
 .search button {
   position: absolute;
-  right: 5px;
+  right: 0px;
+  padding-right: 10px;
+  padding-top: 2.5%;
   margin-left: 0.5rem;
   cursor: pointer;
   background-color: #00103100;
   border: rgba(245, 245, 220, 0);
+}
+
+.search button:focus{
+  outline: none;
 }
 
 .user-options {
@@ -224,6 +290,35 @@ export default {
   color: white !important;
 }
 
+/* Estilos para subnavbar */
+.sub-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-navbar a{
+  color: inherit;
+  text-decoration: none;
+}
+
+.menu-item {
+  color: #fff;
+  padding: 5px 20px;
+  padding-top: 10px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s;
+}
+
+.menu-item.active,
+.menu-item:hover {
+  color: var(--color-primary);
+  background-color: none;
+  border-bottom-color: var(--color-primary) ;
+}
 
 </style>
 
