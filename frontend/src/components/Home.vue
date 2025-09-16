@@ -3,7 +3,6 @@
         <Ofertas @abrirPreview="$emit('abrirPreview')" />
         <Marcas />
         <quienesSomos />
-        <!-- Acá podrías agregar productos destacados o categorías -->
     </div>
 </template>
 
@@ -15,6 +14,7 @@ import quienesSomos from '../components/quienesSomos.vue';
 
 <style scoped>
 @import url(../assets/styles/base.css);
+
 .home-page {
     display: flex;
     flex-direction: column;
