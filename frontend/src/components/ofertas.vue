@@ -141,7 +141,7 @@ export default {
       if (resultado.success) {
         console.log("Oferta agregada al carrito:", oferta);
         window.dispatchEvent(new Event("cartUpdated"));
-        setUltimoProducto(oferta);
+        setUltimoProducto({...oferta, quantity : 1});
         window.dispatchEvent(new Event("abrirPreview"));
         console.log("Evento abrirPreview emitido");
         //mostrarCarrito.value = true;
