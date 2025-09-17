@@ -1193,6 +1193,11 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 15px;
+  background: var(--color-accent);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin: 10px 0;
 }
 
 .checkbox-group label {
@@ -1202,10 +1207,13 @@ export default {
   cursor: pointer;
   color: var(--color-foreground);
   background: transparent;
+  padding: 5px 0;
 }
 
 .checkbox-group label span {
   background: transparent;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -1214,14 +1222,20 @@ export default {
   height: 18px;
   accent-color: var(--color-primary);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .checkbox-group small {
   color: var(--color-muted-foreground);
   font-size: 0.85rem;
-  margin-left: 28px;
-  background: transparent;
+  margin: 8px 0 0 0;
+  padding: 8px 12px;
+  background: var(--color-background);
+  border-radius: 6px;
   display: block;
+  line-height: 1.4;
+  text-align: center;
+  border: 1px solid var(--color-border);
 }
 
 .form-group small {
