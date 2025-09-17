@@ -10,7 +10,7 @@ import registro from '../components/registro.vue';
 import recuperarContra from '../components/recuperarContra.vue';
 import NotFound from "../components/notFound.vue";
 import Home from '../components/Home.vue';
-import ofertas from '../components/ofertas.vue';
+import Ofertas from '../components/Ofertas.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -63,7 +63,7 @@ const routes = [
     {
         path: "/ofertas",
         name: "ofertas",
-        component: ofertas
+        component: Ofertas
     }
 ]
 

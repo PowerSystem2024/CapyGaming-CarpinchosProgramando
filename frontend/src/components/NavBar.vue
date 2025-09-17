@@ -28,23 +28,26 @@
           <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
           </router-link>
       </div>
+
     </div>
 
-    <!-- Sub menu -->
-    <div class="sub-navbar">
-      <div class="menu-item">
-        <router-link to="/">Home</router-link>
+      <!-- Sub menu -->
+      <div class="sub-navbar">
+        <div class="menu-item">
+          <router-link to="/">Home</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/ofertas">Ofertas</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/productos">Productos</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/ayuda">Ayuda</router-link>
+        </div>
       </div>
-      <div class="menu-item">
-        <router-link to="/ofertas">Ofertas</router-link>
-      </div>
-      <div class="menu-item">
-        <router-link to="/productos">Productos</router-link>
-      </div>
-      <div class="menu-item">
-        <router-link to="/ayuda">Ayuda</router-link>
-      </div>
-    </div>
+
+
 
  
   </nav>
@@ -83,13 +86,12 @@ export default {
 </script>
 <style scoped>
 @import url(../assets/styles/base.css);
-
 .navbar {
   position: fixed;
   top: 0px;
   left: 0;
   width: 100%;
-  height: 88px;
+  height: 90px;
   background: var(--color-background);
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
@@ -98,6 +100,7 @@ export default {
 
 .navbar-content {
   display: flex;
+  background: var(--color-background);
   justify-content: space-between;
   align-items: center;
   max-width: 1250px; /* 👈 limita el ancho */
@@ -225,12 +228,12 @@ export default {
   max-height: 28px;
 }
 
-/* Elimina cualquier estilo que Vue Router agregue */
-.router-link-active,
-.router-link-exact-active {
-  background: none !important;
-  color: inherit !important;
+.sub-navbar .router-link-exact-active {
+  color: var(--color-primary);                 /* letras en naranja */
+  border-bottom: 3px solid var(--color-primary); /* línea en naranja */
 }
+
+
 .logo a,
 .logo a:hover,
 .logo a:focus{
@@ -243,36 +246,37 @@ export default {
 }
 
 /* Estilos para subnavbar */
+/* Sub-navbar */
 .sub-navbar {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.17rem;
+  background-color: var(--color-background);
+  height: 35px;
 }
 
-.sub-navbar a{
-  color: inherit;
-  text-decoration: none;
+.sub-navbar .menu-item {
+  margin: 0 10px;
 }
 
-.menu-item {
+.sub-navbar a {
   color: #fff;
-  padding: 5px 20px;
-  padding-top: 10px;
-  position: relative;
-  text-align: center;
-  display: flex;
-  border-bottom: 3px solid transparent;
-  transition: 0.3s;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 3px solid transparent; /* base invisible */
+  transition: color 0.3s, border-bottom-color 0.3s;
 }
 
-.menu-item.active,
-.menu-item:hover {
+.sub-navbar a:hover {
   color: var(--color-primary);
-  background-color: none;
-  border-bottom-color: var(--color-primary) ;
+  border-bottom-color: var(--color-primary);
 }
 
+.sub-navbar a.router-link-exact-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
 
 </style>
 
