@@ -44,8 +44,7 @@ const CART_KEY = 'cart';
         ...product,
         quantity: 1
       });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      window.dispatchEvent(new Event('cartUpdated'));
+      saveCart(cart);
       return { success: true, message: 'Producto agregado al carrito' };
     }
   }
@@ -91,6 +90,6 @@ const CART_KEY = 'cart';
   }
 
   export function getCartTotal() {
-  const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  const cart = getCart();
   return cart.reduce((total, item) => total + item.precio * item.quantity, 0);
   }

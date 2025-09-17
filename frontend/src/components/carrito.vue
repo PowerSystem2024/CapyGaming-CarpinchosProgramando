@@ -111,6 +111,10 @@ export default {
     loadCart() {
       this.cartItems = getCart();
       this.total = getCartTotal();
+      console.log("🛒 CART - Cart items loaded:", this.cartItems);
+      console.log("🛒 CART - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
+      console.log("🛒 CART - getCartTotal():", this.total);
+      console.log("🛒 CART - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
 
       // Auto-seleccionar envío gratis si califica
       if (this.total >= this.envioGratisMinimo) {

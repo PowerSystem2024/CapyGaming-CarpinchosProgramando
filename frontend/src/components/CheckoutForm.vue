@@ -743,6 +743,10 @@ export default {
   methods: {
     loadCart() {
       this.cartItems = getCart();
+      console.log("🔍 CHECKOUT - Cart items loaded:", this.cartItems);
+      console.log("🔍 CHECKOUT - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
+      console.log("🔍 CHECKOUT - getCartTotal():", getCartTotal());
+      console.log("🔍 CHECKOUT - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
     },
     closeModal() {
       this.$emit('close');
