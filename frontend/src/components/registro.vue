@@ -71,6 +71,7 @@
             required
             placeholder="Ingrese su DNI"
           />
+          <p v-if="errors.accept" class="error">{{ errors.dni }}</p>
         </div>
 
 
@@ -113,7 +114,8 @@ const errors = reactive({
   email: '',
   password: '',
   confirm: '',
-  accept: ''
+  accept: '',
+  dni: ''
 })
 
 const showPass = ref(false)
@@ -124,7 +126,8 @@ function validate () {
   errors.password = form.password.length >= 6 ? '' : 'Mínimo 6 caracteres'
   errors.confirm  = form.confirm === form.password ? '' : 'Las contraseñas no coinciden'
   errors.accept   = form.accept ? '' : 'Debés aceptar los términos'
-  return !errors.email && !errors.password && !errors.confirm && !errors.accept
+  errors.dni      = form.dni.length === 8 ? '' : 'El DNI debe tener 8 caracteres'
+  return !errors.email && !errors.password && !errors.confirm && !errors.accept && !errors.dni
 }
 
 async function onSubmit () {

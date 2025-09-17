@@ -133,7 +133,7 @@ span {
   background-color: var(--color-primary);
 }
 
-.error { margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; }
+.error { margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card);}
 .alt { margin-top:1rem; text-align:center; background-color: var(--color-card);}
 .link { color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
 .link:hover { text-decoration: underline; }
