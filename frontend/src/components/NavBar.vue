@@ -29,6 +29,24 @@
           </router-link>
       </div>
     </div>
+
+    <!-- Sub menu -->
+    <div class="sub-navbar">
+      <div class="menu-item">
+        <router-link to="/">Home</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link to="/ofertas">Ofertas</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link to="/productos">Productos</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link to="/ayuda">Ayuda</router-link>
+      </div>
+    </div>
+
+ 
   </nav>
 </template>
 
@@ -222,6 +240,37 @@ export default {
 .user-options .user-btn.router-link-exact-active {
   background-color: var(--color-primary) !important;
   color: white !important;
+}
+
+/* Estilos para subnavbar */
+.sub-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.17rem;
+}
+
+.sub-navbar a{
+  color: inherit;
+  text-decoration: none;
+}
+
+.menu-item {
+  color: #fff;
+  padding: 5px 20px;
+  padding-top: 10px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s;
+}
+
+.menu-item.active,
+.menu-item:hover {
+  color: var(--color-primary);
+  background-color: none;
+  border-bottom-color: var(--color-primary) ;
 }
 
 
