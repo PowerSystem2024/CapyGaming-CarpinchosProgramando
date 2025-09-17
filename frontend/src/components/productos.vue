@@ -287,7 +287,7 @@ methods: {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: calc(30px + 60px); /* 60px = altura del navbar */
+    padding-top: calc(80px + 60px); /* 60px = altura del navbar */
 }
 
 .sidebar {
