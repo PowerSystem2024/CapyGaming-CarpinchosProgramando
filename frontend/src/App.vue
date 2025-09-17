@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar.vue";
 import footerPag from "./components/footerPag.vue";
 import CarritoModalPreview from "./components/CarritoModalPreview.vue";
 import { getCartCount, getCart } from "./utils/cartUtils";
+import { ultimoProducto } from "./composables/ultimoProducto";
 
 // Estado reactivo
 const cartCount = ref(0);
@@ -32,16 +33,20 @@ onMounted(() => {
     mostrarCarrito.value = false;
   });
 });
+
+
 </script>
 
 <template>
+  <!-- Barra de navegación -->
   <NavBar :cart-count="cartCount" @abrirPreview="mostrarCarrito = true" />
 
-  <router-view /> <!-- Aquí se renderiza la vista actual -->
-
+  <!-- Renderizado de la ruta correspondiente -->
+  <router-view @abrirPreview="mostrarCarrito = true" />
   <CarritoModalPreview
     :visible="mostrarCarrito"
     :carrito="carrito"
+    :ultimoProducto="ultimoProducto"
     @close="mostrarCarrito = false"
   />
 
@@ -49,7 +54,7 @@ onMounted(() => {
 </template>
 
 <style>
-@import url('./assets/styles/base.css');
+@import url(./assets/styles/base.css);
 
 * {
   margin: 0;

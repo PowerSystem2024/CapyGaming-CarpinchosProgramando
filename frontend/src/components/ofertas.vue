@@ -27,6 +27,7 @@ import Pad from "../assets/imagenesOfertas/Pad.png";
 import tecladoRedragon2 from "../assets/imagenesOfertas/tecladoRedragon2.png";
 import sillaGamer from "../assets/imagenesOfertas/sillaGamer.png";
 import { addToCart } from "../utils/cartUtils";
+import { ultimoProducto, setUltimoProducto } from "../composables/ultimoProducto";
 
 export default {
   name: "Ofertas",
@@ -138,12 +139,13 @@ export default {
     agregarAlCarrito(oferta) {
       const resultado = addToCart(oferta);
       if (resultado.success) {
-        alert(`✅ ${resultado.message}`);
         console.log("Oferta agregada al carrito:", oferta);
         window.dispatchEvent(new Event("cartUpdated"));
+        setUltimoProducto(oferta);
         window.dispatchEvent(new Event("abrirPreview"));
+        console.log("Evento abrirPreview emitido");
+        //mostrarCarrito.value = true;
       } else {
-        alert(`⚠️ ${resultado.message}`);
         console.log("Error al agregar oferta:", resultado.message);
       }
     }
@@ -181,8 +183,8 @@ h2 {
 }
 
 .offer-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+  transform: scale(1.01);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.233);
 }
 
 .offer-image {

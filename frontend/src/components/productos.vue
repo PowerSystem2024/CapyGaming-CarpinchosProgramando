@@ -1,50 +1,56 @@
 <template>
     <div class="catalogo-page">
         <div class="sidebar">
-            <Categorias
-                @categoria-seleccionada="filtrarProductosPorCategoria"
-                @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
-                @orden-cambiado="ordenarProductos"
-            />
+        <Categorias
+            @categoria-seleccionada="filtrarProductosPorCategoria"
+            @subcategoria-seleccionada="filtrarProductosPorSubcategoria"
+            @orden-cambiado="ordenarProductos"
+        />
+        <CarritoModalPreview
+            :visible="mostrarCarritoPreview"
+            :carrito="carrito"
+            :ultimoProducto="ultimoProducto"
+            @close="cerrarPreview"
+        />
         </div>
-    
-            <div class="catalogo">
-                <!-- Mostrar productos destacados o catálogo normal según el estado -->
-                <ProductosDestacados
-                    v-if="mostrandoDestacados"
-                    @agregar-al-carrito="agregarAlCarrito"
-                />
-                
-                <div v-else>
-                    <h2 class="titulo">Catálogo de productos</h2>
-                    <div class="grid">
-                    <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
-                    <div class="imagenes">
-                        <a
-                        v-for="(img, index) in producto.imagenes"
-                        :key="index"
-                        :href="img"
-                        :data-title="producto.nombre"
-                        >
-                        <img
-                            :src="img"
-                            :alt="`${producto.nombre} vista ${index + 1}`"
-                            class="imagen"
-                            @error="imagenError($event)"
-                        />
-                        </a>
-                    </div>
 
-                    <h3 class="nombre">{{ producto.nombre }}</h3>
-                    <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
-                    <p class="stock">Stock disponible: {{ producto.stock }}</p>
+        <div class="catalogo">
+        <!-- Mostrar productos destacados o catálogo normal según el estado -->
+        <ProductosDestacados
+            v-if="mostrandoDestacados"
+            @agregar-al-carrito="agregarAlCarrito"
+        />
 
-                    <button class="btn-carrito" @click="agregarAlCarrito(producto)">
-                        🛒 Agregar al carrito
-                    </button>
-                    </div>
+        <div v-else>
+            <h2 class="titulo">Catálogo de productos</h2>
+            <div class="grid">
+            <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
+                <div class="imagenes">
+                <a
+                    v-for="(img, index) in producto.imagenes"
+                    :key="index"
+                    :href="img"
+                    :data-title="producto.nombre"
+                >
+                    <img
+                    :src="img"
+                    :alt="`${producto.nombre} vista ${index + 1}`"
+                    class="imagen"
+                    @error="imagenError($event)"
+                    />
+                </a>
                 </div>
+
+                <h3 class="nombre">{{ producto.nombre }}</h3>
+                <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
+                <p class="stock">Stock disponible: {{ producto.stock }}</p>
+
+                <button class="btn-carrito" @click="agregarAlCarrito(producto)">
+                🛒 Agregar al carrito
+                </button>
             </div>
+            </div>
+        </div>
         </div>
     </div>
 </template>
@@ -53,10 +59,12 @@
 import { productos } from "../assets/data/productsData";
 import Categorias from "../components/exploradorCategorias.vue";
 import { addToCart } from "../utils/cartUtils";
+import CarritoModalPreview from '../components/CarritoModalPreview.vue';
+import { getCart } from "../utils/cartUtils";
 export default {
     name: "Productos",
     components: {
-        Categorias
+        Categorias, CarritoModalPreview
     },
     data() {
         return {
@@ -65,26 +73,52 @@ export default {
             categoriaSeleccionada: null,
             subcategoriaSeleccionada: null,
             ordenSeleccionado: "todos",
-            mostrandoDestacados: false
+            mostrandoDestacados: false,
+            mostrarCarritoPreview: false, // Estado del modal
+            carrito: getCart(), // Carga inicial del carrito
+           ultimoProducto: {} // Producto agregado más reciente
         };
     },
-    methods: {
+methods: {
+        /**
+         * Maneja el error al cargar imágenes.
+         */
         imagenError(event) {
-            event.target.src = "https://via.placeholder.com/250x150?text=Imagen+no+disponible";
+        event.target.src = "../assets/IconosNavBarFooter/nodisponible.jpg";
         },
-        agregarAlCarrito(producto) {
-            const resultado = addToCart(producto);
-            if (resultado.success) {
-                alert(`✅ ${resultado.message}`);
-                console.log("Producto agregado:", producto);
-            } else {
-                alert(`⚠️ ${resultado.message}`);
-                console.log("Error al agregar:", resultado.message);
-            }
+
+        /**
+         * Agregar producto al carrito y mostrar el modal.
+         */
+        agregarAlCarrito(p) {
+        const resultado = addToCart(p);
+        if (resultado.success) {
+            this.ultimoProducto = {...p,quantity: 1 };
+            console.log("ultimo producto: ");
+            console.log(this.ultimoProducto);
+            this.carrito = getCart(); // Actualizamos el carrito
+            console.log("ahora voy a mostrar carito")
+            this.mostrarCarritoPreview = true; // Mostramos el modal
+            console.log("Producto agregado:", p);
+            // this.$emit("abrirPreview"); // Emite evento si es necesario
+        } else {
+            console.log("Error al agregar:", resultado.message);
+        }
         },
+
+        /**
+         * Cerrar el modal de resumen del carrito.
+         */
+        cerrarPreview() {
+        this.mostrarCarritoPreview = false;
+        },
+
+        /**
+         * Filtrar productos por categoría seleccionada.
+         */
         filtrarProductosPorCategoria(categoriaExplorador) {
-            this.categoriaSeleccionada = categoriaExplorador;
-            this.subcategoriaSeleccionada = null;
+        this.categoriaSeleccionada = categoriaExplorador;
+        this.subcategoriaSeleccionada = null;
             
             const mapeoCategorias = {
                 "Notebooks": "Notebook",
@@ -108,28 +142,34 @@ export default {
             };
             
             if (categoriaExplorador === "Todos") {
-                this.productosFiltrados = this.productos;
+            this.productosFiltrados = this.productos;
+        } else {
+            const categoriaProducto = mapeoCategorias[categoriaExplorador];
+            if (categoriaProducto) {
+            this.productosFiltrados = this.productos.filter(producto =>
+                producto.categoria.startsWith(categoriaProducto)
+            );
             } else {
-                const categoriaProducto = mapeoCategorias[categoriaExplorador];
-                if (categoriaProducto) {
-                    // Filtrar productos que comiencen con la categoría principal
-                    // Esto incluirá todas las subcategorías
-                    this.productosFiltrados = this.productos.filter(producto =>
-                        producto.categoria.startsWith(categoriaProducto)
-                    );
-                } else {
-                    this.productosFiltrados = this.productos;
-                }
+            this.productosFiltrados = this.productos;
             }
-            
-            console.log(`Filtrando por categoría: ${categoriaExplorador}`);
-            console.log(`Productos encontrados: ${this.productosFiltrados.length}`);
+        }
+
+        console.log(`Filtrando por categoría: ${categoriaExplorador}`);
+        console.log(`Productos encontrados: ${this.productosFiltrados.length}`);
         },
+
+        /**
+         * Cambiar el estado para mostrar destacados.
+         */
         mostrarDestacados() {
-            this.mostrandoDestacados = true;
+        this.mostrandoDestacados = true;
         },
+
+        /**
+         * Filtrar productos según la subcategoría seleccionada.
+         */
         filtrarProductosPorSubcategoria(subcategoriaExplorador) {
-            this.subcategoriaSeleccionada = subcategoriaExplorador;
+        this.subcategoriaSeleccionada = subcategoriaExplorador;
             
             const mapeoSubcategorias = {
                 // Notebooks
@@ -208,36 +248,34 @@ export default {
             };
             
             const subcategoriaProducto = mapeoSubcategorias[subcategoriaExplorador];
-            
-            if (subcategoriaProducto) {
-                this.productosFiltrados = this.productos.filter(producto => 
-                    producto.categoria === subcategoriaProducto
-                );
-                console.log(`Filtrando por subcategoría: ${subcategoriaExplorador}`);
-                console.log(`Buscando categoría: ${subcategoriaProducto}`);
-                console.log(`Productos encontrados: ${this.productosFiltrados.length}`);
-                
-                // Debug: mostrar todas las categorías disponibles
-                const categoriasUnicas = [...new Set(this.productos.map(p => p.categoria))];
-                console.log("Categorías disponibles:", categoriasUnicas);
-            } else {
-                console.warn(`Subcategoría no mapeada: ${subcategoriaExplorador}`);
-                this.productosFiltrados = this.productos;
-            }
+
+        if (subcategoriaProducto) {
+            this.productosFiltrados = this.productos.filter(
+            producto => producto.categoria === subcategoriaProducto
+            );
+            console.log(`Filtrando por subcategoría: ${subcategoriaExplorador}`);
+        } else {
+            console.warn(`Subcategoría no mapeada: ${subcategoriaExplorador}`);
+            this.productosFiltrados = this.productos;
+        }
         },
+
+        /**
+         * Ordenar productos por precio.
+         */
         ordenarProductos(orden) {
-            this.ordenSeleccionado = orden;
-            
-            if (orden === "mayorPrecio") {
-                this.productosFiltrados.sort((a, b) => b.precio - a.precio);
-            } else if (orden === "menorPrecio") {
-                this.productosFiltrados.sort((a, b) => a.precio - b.precio);
-            } else {
-                this.productosFiltrados = [...this.productos];
-            }
+        this.ordenSeleccionado = orden;
+
+        if (orden === "mayorPrecio") {
+            this.productosFiltrados.sort((a, b) => b.precio - a.precio);
+        } else if (orden === "menorPrecio") {
+            this.productosFiltrados.sort((a, b) => a.precio - b.precio);
+        } else {
+            this.productosFiltrados = [...this.productos];
+        }
         }
     }
-}
+};
 </script>
 
 <style scoped>
