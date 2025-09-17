@@ -34,11 +34,20 @@
 
     <!-- Solo mostrar la sección de totales si hay productos -->
     <div class="total-carrito" v-if="cartItems.length > 0">
+
       <!-- Resumen de totales -->
       <div class="resumen-totales">
+        <div class="total-line">
+          <span>Subtotal:</span>
+          <span>${{ total }}</span>
+        </div>
+        <div class="total-line">
+          <span>Envío:</span>
+          <span>${{ costoEnvio }}</span>
+        </div>
         <div class="total-line total-final">
           <span>TOTAL:</span>
-          <span>${{ total }}</span>
+          <span>${{ totalConEnvio }}</span>
         </div>
       </div>
       
@@ -67,7 +76,30 @@ export default {
     return {
       cartItems: [],
       total: 0,
-      showCheckout: false
+      showCheckout: false,
+      // Configuración de envío
+      envioSeleccionado: 'standard',
+      envioStandard: 5000,
+      envioExpress: 10000,
+      envioGratisMinimo: 100000
+    }
+  },
+  computed: {
+    costoEnvio() {
+      if (this.cartItems.length === 0) return 0;
+
+      switch(this.envioSeleccionado) {
+        case 'gratis':
+          return 0;
+        case 'express':
+          return this.envioExpress;
+        case 'standard':
+        default:
+          return this.envioStandard;
+      }
+    },
+    totalConEnvio() {
+      return this.total + this.costoEnvio;
     }
   },
   mounted() {
@@ -79,6 +111,11 @@ export default {
     loadCart() {
       this.cartItems = getCart();
       this.total = getCartTotal();
+
+      // Auto-seleccionar envío gratis si califica
+      if (this.total >= this.envioGratisMinimo) {
+        this.envioSeleccionado = 'gratis';
+      }
     },
     removeItem(productId) {
       removeFromCart(productId);
