@@ -237,6 +237,7 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
+
 }
 
 .search img{
@@ -245,14 +246,15 @@ export default {
 }
 
 .search input {
-  width: 450px;
-  height: 40px;
+  width: 500px;
+  height: 45px;
   padding-left: 10px;
   padding-right: 40px;
   border-radius: 5px;
   border: 1.9px solid var(--color-primary);
   background-color: #00103100;
   outline: none;
+  font-size: 15px;
 }
 
 .search button {
@@ -359,6 +361,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 10px;
+
 }
 
 .sub-navbar a{
@@ -368,6 +372,7 @@ export default {
 
 .menu-item {
   color: #fff;
+  font-size: 1.17em;
   padding: 5px 20px;
   padding-top: 10px;
   position: relative;
@@ -375,6 +380,7 @@ export default {
   display: flex;
   border-bottom: 3px solid transparent;
   transition: 0.3s;
+
 }
 
 .menu-item.active,
