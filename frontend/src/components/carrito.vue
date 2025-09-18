@@ -1,5 +1,7 @@
 <template>
   <div class="carrito-container">
+    <!-- Modal de Checkout -->
+    <CheckoutForm :isOpen="showCheckout" @close="showCheckout = false" />
     <h1>Carrito de Compras</h1>
     <div v-if="cartItems.length === 0" class="carrito-vacio">
       <p>El carrito está vacío</p>
@@ -32,24 +34,6 @@
 
     <!-- Solo mostrar la sección de totales si hay productos -->
     <div class="total-carrito" v-if="cartItems.length > 0">
-      <!-- Sección de envío -->
-      <div class="envio-section">
-        <h3>Opciones de envío:</h3>
-        <div class="envio-options">
-          <label class="envio-option">
-            <input type="radio" v-model="envioSeleccionado" value="standard" />
-            <span>Envío Estándar (5-7 días) - ${{ envioStandard }}</span>
-          </label>
-          <label class="envio-option">
-            <input type="radio" v-model="envioSeleccionado" value="express" />
-            <span>Envío Express (2-3 días) - ${{ envioExpress }}</span>
-          </label>
-          <label class="envio-option" v-if="total >= envioGratisMinimo">
-            <input type="radio" v-model="envioSeleccionado" value="gratis" />
-            <span>✨ Envío GRATIS (compras sobre ${{ envioGratisMinimo }})</span>
-          </label>
-        </div>
-      </div>
 
       <!-- Resumen de totales -->
       <div class="resumen-totales">
@@ -71,7 +55,7 @@
         <button @click="emptyCart" class="btn-eliminar btn-vaciar">
           🗑️ Vaciar carrito
         </button>
-        <button class="btn-comprar">Proceder al pago</button>
+        <button @click="abrirCheckout" class="btn-comprar">Proceder al pago</button>
       </div>
     </div>
   </div>
@@ -81,13 +65,18 @@
 // Importamos los productos desde el archivo de datos
 
 import { getCart, removeFromCart, updateQuantity, getCartTotal, clearCart } from "../utils/cartUtils";
+import CheckoutForm from "./CheckoutForm.vue";
 
 export default {
   name: "Carrito",
+  components: {
+    CheckoutForm
+  },
   data() {
     return {
       cartItems: [],
       total: 0,
+      showCheckout: false,
       // Configuración de envío
       envioSeleccionado: 'standard',
       envioStandard: 5000,
@@ -98,7 +87,7 @@ export default {
   computed: {
     costoEnvio() {
       if (this.cartItems.length === 0) return 0;
-      
+
       switch(this.envioSeleccionado) {
         case 'gratis':
           return 0;
@@ -122,7 +111,11 @@ export default {
     loadCart() {
       this.cartItems = getCart();
       this.total = getCartTotal();
-      
+      console.log("🛒 CART - Cart items loaded:", this.cartItems);
+      console.log("🛒 CART - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
+      console.log("🛒 CART - getCartTotal():", this.total);
+      console.log("🛒 CART - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
+
       // Auto-seleccionar envío gratis si califica
       if (this.total >= this.envioGratisMinimo) {
         this.envioSeleccionado = 'gratis';
@@ -155,6 +148,13 @@ export default {
         clearCart();
         this.loadCart();
         console.log("✅ Carrito vaciado correctamente");
+      }
+    },
+    abrirCheckout() {
+      if (this.cartItems.length > 0) {
+        this.showCheckout = true;
+      } else {
+        alert("El carrito está vacío. Agrega productos antes de proceder al pago.");
       }
     }
   }

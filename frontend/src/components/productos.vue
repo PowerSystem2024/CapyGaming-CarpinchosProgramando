@@ -287,7 +287,7 @@ methods: {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: calc(30px + 60px); /* 60px = altura del navbar */
+    padding-top: calc(80px + 60px); /* 60px = altura del navbar */
 }
 
 .sidebar {
@@ -324,20 +324,21 @@ methods: {
 }
 
 .card {
-    border-radius: 8px;
-    padding: 1rem;
-    width: 250px;
-    margin: 15px;
-    text-align: center;
-    transition: transform 0.2s ease;
-    background-color: var(--color-card);
-    color: var(--color-card-foreground);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1.2rem;
     border: 1px solid var(--color-border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    background-color: var(--color-card);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.233);
 }
 
 .imagenes {
@@ -347,33 +348,46 @@ methods: {
     flex-wrap: wrap;
     margin-bottom: 0.5rem;
     border-radius: 10px;
+    background-color: var(--color-card);
 }
 
 .imagen {
     width: 100px;
     height: auto;
-    object-fit: contain;
-    border-radius: 4px;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    background-color: var(--color-card);
 }
 
 .imagen:hover{
     transform: scale(1.4);
 }
 
+a{
+    background-color: var(--color-card);
+}
+
 .nombre {
     font-size: 1rem;
+    font-weight: 700;
     margin-top: 0.5rem;
     text-align: center;
     color: var(--color-primary);
     background-color: var(--color-card);
+
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .precio {
     font-weight: bold;
-    color: var(--color-secondary);
     font-size: 1.2rem;
-    font-weight: bold;
     color: var(--color-foreground);
     margin: 0.5rem 0;
     background-color: var(--color-card);

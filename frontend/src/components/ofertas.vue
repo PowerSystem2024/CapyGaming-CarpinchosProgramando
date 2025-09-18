@@ -2,16 +2,26 @@
   <div class="offers-container">
     <h2>Ofertas destacadas</h2>
     <div class="offers-grid">
-      <!-- Iteramos la lista de ofertas -->
-      <div v-for="offer in offers" :key="offer.id" class="offer-card">
-        <img :src="offer.image" :alt="offer.title" class="offer-image" />
-        <h3>{{ offer.title }}</h3>
-        <p class="offer-description">{{ offer.description }}</p>
-        <div class="offer-prices">
-          <span class="old-price">{{ offer.oldPrice }}</span>
-          <span class="new-price">{{ offer.newPrice }}</span>
+      <div v-for="offer in offers" :key="offer.id" class="offer-card card">
+        <!-- Bloque de imagen con altura mínima -->
+        <div class="offer-media">
+          <img :src="offer.image" :alt="offer.title" class="offer-image" />
         </div>
-        <button class="offer-btn" @click="agregarAlCarrito(offer)">🛒 Agregar al carrito</button>
+
+        <!-- Bloque de contenido textual -->
+        <div class="offer-content">
+          <h3 class="offer-title" :title="offer.title">{{ offer.title }}</h3>
+          <p class="offer-description">{{ offer.description }}</p>
+          <div class="offer-prices">
+            <span class="old-price">{{ offer.oldPrice }}</span>
+            <span class="new-price">{{ offer.newPrice }}</span>
+          </div>
+        </div>
+
+        <!-- Botón al final -->
+        <button class="offer-btn" @click="agregarAlCarrito(offer)">
+          🛒 Agregar al carrito
+        </button>
       </div>
     </div>
   </div>
@@ -141,7 +151,7 @@ export default {
       if (resultado.success) {
         console.log("Oferta agregada al carrito:", oferta);
         window.dispatchEvent(new Event("cartUpdated"));
-        setUltimoProducto(oferta);
+        setUltimoProducto({...oferta, quantity : 1});
         window.dispatchEvent(new Event("abrirPreview"));
         console.log("Evento abrirPreview emitido");
         //mostrarCarrito.value = true;
@@ -154,6 +164,23 @@ export default {
 </script>
 
 <style scoped>
+@import url(../assets/styles/base.css);
+.offer-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    text-align: center;
+    color: var(--color-primary);
+    background-color: var(--color-card);
+
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .offers-container {
   padding: 1.5rem;
   background: var(--color-card);
@@ -165,21 +192,48 @@ h2 {
   color: var(--color-primary); /* Naranja destacado */
   margin-bottom: 1.5rem;
   margin-top: 6%;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .offers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    background-color: var(--color-background);
+    border-radius: 10px;
 }
 
 .offer-card {
-  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1.2rem;
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 12px;
+  background-color: var(--color-card);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.offer-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 160px;
+  margin-bottom: 1rem;
+  background: var(--color-card);
+}
+
+.offer-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  background: var(--color-card);
 }
 
 .offer-card:hover {
@@ -188,43 +242,69 @@ h2 {
 }
 
 .offer-image {
-  width: 100%;
+  width: 100px;
+  height: auto;
+  max-height: 160px;
+  object-fit: cover;
   border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
+  background-color: var(--color-card);
+  align-self: center;
+}
+
+.offer-image:hover{
+  transform: scale(1.4);
 }
 
 .offer-description {
   font-size: 0.9rem;
   color: var(--color-muted-foreground);
   margin: 0.5rem 0 1rem;
+  background: var(--color-card);
+  line-clamp: 2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .offer-prices {
   margin-bottom: 1rem;
+  background: var(--color-card);
 }
 
 .old-price {
   text-decoration: line-through;
-  color: var(--color-muted-foreground);
+  color: var(--color-foreground);
   margin-right: 0.5rem;
+  background: var(--color-card);
 }
 
 .new-price {
-  color: var(--color-secondary); /* Celeste destacado */
+  color: var(--color-secondary);
   font-weight: bold;
+  font-size: 1.2rem;
+  background: var(--color-card);
 }
 
 .offer-btn {
-  background: var(--color-primary);
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  background-color: var(--color-primary);
   color: var(--color-primary-foreground);
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .offer-btn:hover {
-  background: var(--color-secondary); /* Cambia a celeste */
+    background-color: var(--sidebar-ring);
+    color: var(--color-foreground);
+    transform: scale(1.1);
 }
 </style>

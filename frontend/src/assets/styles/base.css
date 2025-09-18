@@ -107,8 +107,19 @@ button:focus-visible {
 }
 
 .card {
-    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background-color: var(--color-card);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+
 
 #app {
     max-width: 100%;

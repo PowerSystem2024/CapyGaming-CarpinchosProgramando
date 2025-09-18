@@ -10,6 +10,7 @@ import registro from '../components/registro.vue';
 import recuperarContra from '../components/recuperarContra.vue';
 import NotFound from "../components/notFound.vue";
 import Home from '../components/Home.vue';
+import Ofertas from '../components/Ofertas.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -59,6 +60,11 @@ const routes = [
         name: "Productos",
         component: productos
     },
+    {
+        path: "/ofertas",
+        name: "ofertas",
+        component: Ofertas
+    }
 ]
 
 //Crear el router
