@@ -9,7 +9,7 @@
 
 
         <div class="sub-menu" v-if="isOpen">
-            <div v-for="(item, i) in items" :key="i" class="menu-item">
+            <div v-for="(item, i) in items" :key="i" class="menu-drop">
                 <a :href="item.link">{{ item.title }}</a>
             </div>
         </div>
@@ -40,13 +40,22 @@
         margin-left: 10px;
     }
 
-    /* El texto y el svg heredan el color del contenedor */
-    .menu-item {
+    .menu-drop {
         color: #fff; /* color base */
+        display: block;             /* se comporta como bloque completo */
+        padding: 10px 20px;         /* espacio dentro de la casilla */
+        border-radius: 5px;         /* esquinas redondeadas */
+        cursor: pointer;            /* indica que es clickeable */
     }
 
     .menu-item:hover {
         color: var(--color-primary); /* cambia texto*/
+    }
+
+    .menu-drop:hover {
+        color: #fff;
+        background: var(--color-primary);
+        background-color: none;
     }
 
 
@@ -55,23 +64,28 @@
     }
 
     /* Espaciado entre los links */
-    nav .sub-menu .menu-item {
-    margin-bottom: 12px; /* separa cada item del siguiente */
+    nav .sub-menu .menu-drop {
+    margin: 0px; /* separa cada item del siguiente */
+
+
     }
     
     /* Opcional: quitar el margen del último item */
-    nav .sub-menu .menu-item:last-child {
+    nav .sub-menu .menu-drop:last-child {
     margin-bottom: 0;
     }
 
     /* Letra más fina */
-    nav .sub-menu .menu-item a {
-    font-weight: 380; /* más liviano que normal (400) */
+    nav .sub-menu .menu-drop a {
+    font-weight: 350; /* más liviano que normal (400) */
+    background: none;
+    color: #fff;
+    display: block;
+
     }
 
     nav .menu-item .sub-menu {
         position: absolute;
-        background-color: none;
         text-align: left;
         top: calc(100% + 2px);
         padding: 15px;

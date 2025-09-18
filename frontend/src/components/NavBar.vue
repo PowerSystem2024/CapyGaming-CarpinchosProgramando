@@ -124,10 +124,6 @@ export default {
           link: '#'
         },
         {
-          title: 'Volantes',
-          link: '#'
-        },
-        {
           title: 'Mouse Pads',
           link: '#'
         },
