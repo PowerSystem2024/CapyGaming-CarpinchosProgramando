@@ -34,7 +34,6 @@
 
 <!-- Menu de productos-->
     <div class="sub-navbar">
-      <div class="menu-item"><a href="#">Ofertas</a></div>
       <div class="menu-item"><a href="#">Notebooks</a></div>
       <div class="menu-item"><a href="#">Monitores</a></div>
       <Dropdown title="Hardware" :items="Hardware"/>

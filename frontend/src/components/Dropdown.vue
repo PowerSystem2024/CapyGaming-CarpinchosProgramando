@@ -73,8 +73,8 @@
         position: absolute;
         background-color: none;
         text-align: left;
-        top: calc(100% + 3px);
-        padding: 20px;
+        top: calc(100% + 2px);
+        padding: 15px;
         left: 50%;
         transform: translateX(-50%);
         width: max-content;
