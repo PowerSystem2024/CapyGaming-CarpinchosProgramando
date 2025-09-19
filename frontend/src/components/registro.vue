@@ -63,6 +63,20 @@
         </div>
 
         <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input
+            type="text"
+            id="telefono"
+            class="phone-number-input"
+            v-model="form.telefono"
+            required
+            placeholder="Ingrese su número de teléfono"
+            @input="validatePhone"
+          />
+          <p v-if="errors.accept" class="error">{{ errors.telefono }}</p>
+        </div>
+
+        <div class="form-group">
           <label for="dni">DNI</label>
           <input
             type="text"
@@ -73,7 +87,6 @@
           />
           <p v-if="errors.accept" class="error">{{ errors.dni }}</p>
         </div>
-
 
         <label class="checkbox">
           <input type="checkbox" v-model="form.accept" />
@@ -104,6 +117,7 @@ const router = useRouter()
 const form = reactive({
   name: '',
   email: '',
+  telefono: '',
   dni: '',        // nuevo campo
   password: '',
   confirm: '',
@@ -115,6 +129,7 @@ const errors = reactive({
   password: '',
   confirm: '',
   accept: '',
+  telefono: '',
   dni: ''
 })
 
@@ -127,7 +142,8 @@ function validate () {
   errors.confirm  = form.confirm === form.password ? '' : 'Las contraseñas no coinciden'
   errors.accept   = form.accept ? '' : 'Debés aceptar los términos'
   errors.dni      = form.dni.length === 8 ? '' : 'El DNI debe tener 8 caracteres'
-  return !errors.email && !errors.password && !errors.confirm && !errors.accept && !errors.dni
+  errors.telefono = form.telefono.length === 9 ? '' : 'El teléfono debe tener 9 caracteres'
+  return !errors.email && !errors.password && !errors.confirm && !errors.accept && !errors.dni && !errors.telefono
 }
 
 async function onSubmit () {
