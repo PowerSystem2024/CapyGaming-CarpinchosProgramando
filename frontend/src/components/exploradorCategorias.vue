@@ -18,7 +18,7 @@
                             {{ categoria.nombre }}
                         </a>
                         <!-- Botón para expandir/colapsar subcategorías (solo visible si hay subcategorías) -->
-                        <span class="categoria-toggle" 
+                        <span class="categoria-toggle"
                                 v-if="categoria.subcategorias && categoria.subcategorias.length"
                                 @click="toggleSubcategorias(categoria.id)">
                             {{ categoriaAbierta === categoria.id ? '−' : '+' }}
@@ -66,8 +66,8 @@ export default {
         return {
             // Array de categorías y subcategorías con datos de ejemplo
             categorias: [
-                { 
-                    id: 1, 
+                {
+                    id: 1,
                     nombre: "Notebooks",
                     subcategorias: [
                         { id: 101, nombre: "Notebooks ACER" },
@@ -75,8 +75,8 @@ export default {
                         { id: 202, nombre: "Notebooks Lenovo"}
                     ]
                 },
-                { 
-                    id: 2, 
+                {
+                    id: 2,
                     nombre: "Kits de actualización",
                     subcategorias: [
                         { id: 201, nombre: "CPU + Motherboard" },
@@ -98,7 +98,7 @@ export default {
                         /*{id: 404, nombre: "ASRock"},*/
                     ]
                 },
-                { id: 5, nombre: "Placas de Video", 
+                { id: 5, nombre: "Placas de Video",
                     subcategorias: [
                         {id: 501, nombre: "Placas de Video Zotac"},
                         {id: 502, nombre: "Placas de Video ASUS"}
@@ -108,19 +108,19 @@ export default {
                     subcategorias: [
                         {id: 601, nombre: "Memorias RAM ADATA"},
                         {id: 602, nombre: "Memorias RAM Team Group"},
-                        {id: 603, id: 84, nombre: "Memorias RAM G.Skill"}
+                        {id: 603, nombre: "Memorias RAM G.Skill"}
                     ]
                 },
-                { 
-                    id: 7, 
+                {
+                    id: 7,
                     nombre: "Almacenamiento",
                     subcategorias: [
                         { id: 702, nombre: "Discos Rígidos" },
                         { id: 703, nombre: "Discos Sólidos SSD" }
                     ]
                 },
-                { 
-                    id: 8, 
+                {
+                    id: 8,
                     nombre: "Refrigeración",
                     subcategorias: [
                         { id: 801, nombre: "Coolers" }
@@ -148,8 +148,8 @@ export default {
                         {id: 1103, nombre: "Monitores Samsung"}
                     ]
                 },
-                { 
-                    id: 12, 
+                {
+                    id: 12,
                     nombre: "Periféricos",
                     subcategorias: [
                         { id: 1201, nombre: "Teclados" },
@@ -175,7 +175,7 @@ export default {
                 { id: 15, nombre: "Estabilizadores y UPS" },
                 { id: 16, nombre: "Consolas de Video Juego",
                     subcategorias: [
-                        {id: 1601, nombre: "Nintendo Switch"} 
+                        {id: 1601, nombre: "Nintendo Switch"}
                         /*{id: 1602, nombre: "PlayStation"},
                         {id: 1603, nombre: "Xbox"}*/
                     ]
