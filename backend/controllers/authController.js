@@ -8,6 +8,7 @@ export const register = async (req, res) => {
   
   try {
     // Verificar si el usuario ya existe
+<<<<<<< HEAD
       console.log("Iniciando proceso de registro...");
       const userExists = await pool.query(
       'SELECT * FROM usuario WHERE email = $1 OR dni = $2',
@@ -18,22 +19,40 @@ export const register = async (req, res) => {
     if (userExists.rows.length > 0) {
       return res.status(400).json({
         error: 'El usuario ya existe con este email o DNI'
+=======
+    const userExists = await pool.query(
+      'SELECT * FROM usuario WHERE email = $1 OR dni = $2',
+      [email, dni]
+    );
+
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ 
+        error: 'El usuario ya existe con este email o DNI' 
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
       });
     }
 
     // Hash de la contraseña
+<<<<<<< HEAD
     console.log("Generando hash de contraseña...");
+=======
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insertar nuevo usuario
+<<<<<<< HEAD
       console.log("Insertando nuevo usuario en la base de datos...");
       const newUser = await pool.query(
+=======
+    const newUser = await pool.query(
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
       `INSERT INTO usuario (nombre, apellido, telefono, direccion, email, contraseña, dni)
        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
       [nombre, apellido, telefono, direccion, email, hashedPassword, dni]
     );
 
+<<<<<<< HEAD
     // Veamos que el nuevo usuario contenga datos validos
     if (!newUser.rows || newUser.rows.length === 0) {
   console.error("No se pudo insertar el usuario.");
@@ -64,6 +83,15 @@ try {
 }
 
     console.log("Registro exitoso. Respondiendo al cliente...");
+=======
+    // Generar token JWT
+    const token = jwt.sign(
+      { userId: newUser.rows[0].dni, email: newUser.rows[0].email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
     res.status(201).json({
       message: 'Usuario registrado exitosamente',
       user: {
@@ -145,12 +173,21 @@ export const requestPasswordReset = async (req, res) => {
 
     if (userResult.rows.length === 0) {
       // Por seguridad, no revelamos si el email existe o no
+<<<<<<< HEAD
       return res.json({
         message: 'Si el email existe, se enviarán instrucciones de recuperación'
       });
     }
 
     res.json({
+=======
+      return res.json({ 
+        message: 'Si el email existe, se enviarán instrucciones de recuperación' 
+      });
+    }
+
+    res.json({ 
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
       message: 'Si el email existe, se enviarán instrucciones de recuperación',
       resetToken: 'simulated-reset-token-' + Date.now()
     });

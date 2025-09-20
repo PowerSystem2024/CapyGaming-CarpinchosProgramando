@@ -1,4 +1,5 @@
 import express from 'express';
+<<<<<<< HEAD
 import {
   register,
   login,
@@ -10,6 +11,19 @@ import {
   registerValidation,
   loginValidation,
   recoveryValidation
+=======
+import { 
+  register, 
+  login, 
+  requestPasswordReset, 
+  getProfile 
+} from '../controllers/authController.js';
+import { authenticateToken } from '../middleware/auth.js';
+import { 
+  registerValidation, 
+  loginValidation, 
+  recoveryValidation 
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
 } from '../middleware/validation.js';
 
 const router = express.Router();

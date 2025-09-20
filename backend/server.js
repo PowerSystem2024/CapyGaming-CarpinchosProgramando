@@ -32,7 +32,11 @@ app.use((err, req, res, next) => {
 
 // Middleware para rutas no encontradas (sin usar comodín *)
 app.use((req, res) => {
+<<<<<<< HEAD
   res.status(404).json({
+=======
+  res.status(404).json({ 
+>>>>>>> 5beacc4079cd22d27b035928717b8d98d456a4ce
     error: 'Endpoint no encontrado',
     path: req.originalUrl,
     method: req.method

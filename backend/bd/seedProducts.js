@@ -75,8 +75,9 @@ const productos = require('../frontend/src/assets/data/productsData');
     await pool.end();
 })();*/
 
-const pool = require('./pool');
-const { productos } = require('../../frontend/src/assets/data/productsData');
+import pool from './pool.js';
+import { productos } from '../../frontend/src/assets/data/productsData.js';
+
 const subset = productos.slice(0, 5); // Solo los primeros 5
 
 (async () => {
