@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import NavBar from "./components/NavBar.vue";
-import footerPag from "./components/footerPag.vue";
+import FooterPag from "./components/FooterPag.vue";
 import CarritoModalPreview from "./components/CarritoModalPreview.vue";
 import { getCartCount, getCart } from "./utils/cartUtils";
 import { ultimoProducto } from "./composables/ultimoProducto";

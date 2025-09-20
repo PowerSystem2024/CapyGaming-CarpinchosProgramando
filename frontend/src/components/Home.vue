@@ -1,9 +1,6 @@
 <template>
   <div class="home-page">
-    <!-- Ofertas arriba -->
-    <Ofertas @abrirPreview="$emit('abrirPreview')" />
-
-    <!-- ===== Hero (Carrusel + Secundarios) ===== -->
+     <!-- ===== Hero (Carrusel + Secundarios) ===== -->
     <section class="hero">
       <!-- Carrusel -->
       <div class="carousel">
@@ -14,10 +11,7 @@
           :class="{ active: i === currentSlide }"
         >
           <img :src="slide.img" :alt="slide.titulo" />
-          <div class="caption">
-            <h2>{{ slide.titulo }}</h2>
-            <p>{{ slide.texto }}</p>
-          </div>
+   
         </div>
 
         <!-- Controles -->
@@ -35,19 +29,10 @@
         </div>
       </div>
 
-      <!-- Secundarios a la derecha -->
-      <div class="side-cards">
-        <div
-          v-for="(cat, i) in categorias.filter(c => c.tipo === 'secundario')"
-          :key="i"
-          class="cat-card secundario"
-        >
-          <img :src="cat.img" :alt="cat.nombre" />
-          <h3>{{ cat.nombre }}</h3>
-          <small>{{ cat.productos }} productos</small>
-        </div>
-      </div>
     </section>
+    
+    <!-- Ofertas arriba -->
+    <Ofertas @abrirPreview="$emit('abrirPreview')" />
 
     <!-- ===== Categorías principales ===== -->
     <section class="categorias">
@@ -100,7 +85,7 @@ import Ofertas from "../components/Ofertas.vue";
 import quienesSomos from "../components/quienesSomos.vue";
 
 // ✅ Carrusel
-import imgProc from "../assets/imagenesHome/homeProcesadores.jpg";
+import imgProc from "../assets/imagenesHome/banner-web-bordeland-iso.jpg";
 import imgVideo from "../assets/imagenesHome/placasDeVideoHome.jpg";
 import imgMother from "../assets/imagenesHome/placaMadreHome.jpg";
 
@@ -175,21 +160,21 @@ const recientes = ref([
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding: 1rem;
+  padding-top: calc(66px + 60px); /* 60px = altura del navbar */
 }
 
 /* ===== Hero (Carrusel + Secundarios) ===== */
 .hero {
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* carrusel 2/3 - secundarios 1/3 */
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: stretch;
+  display: flex;
+  width: 100%;
+  margin: 0;       /* pegado al navbar */
+  padding: 0;      /* sin padding extra */
+  height: 500px;   /* puedes ajustar la altura */
 }
+
 .hero .carousel,
 .hero .side-cards {
-  height: 400px;
+  height: 550px;
 }
 
 /* ===== Carousel ===== */
@@ -198,7 +183,6 @@ const recientes = ref([
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 1rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   background: var(--color-card);
 }
@@ -215,18 +199,6 @@ const recientes = ref([
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 1rem;
-}
-.caption {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: var(--color-foreground);
-  background: rgba(0, 0, 0, 0.4);
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
 }
 
 /* Controles */
@@ -254,6 +226,7 @@ const recientes = ref([
   transform: translateX(-50%);
   display: flex;
   gap: 8px;
+  background: none;
 }
 .indicators span {
   width: 12px;
@@ -264,19 +237,6 @@ const recientes = ref([
 }
 .indicators span.active {
   background: var(--color-primary);
-}
-
-/* ===== Secundarios (a la derecha) ===== */
-.side-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.side-cards .cat-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 /* ===== Categorías / Productos ===== */
@@ -345,8 +305,3 @@ section {
 }
 
 </style>
-
-
-
-
-
