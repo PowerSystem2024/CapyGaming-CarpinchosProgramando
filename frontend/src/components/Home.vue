@@ -31,12 +31,9 @@
 
     </section>
     
-    <!-- Ofertas arriba -->
-    <Ofertas @abrirPreview="$emit('abrirPreview')" />
-
-    <!-- ===== Categorías principales ===== -->
+      <!-- ===== Categorías principales ===== -->
     <section class="categorias">
-      <h2>Categorías</h2>
+      <h2>Categorías Destacadas</h2>
       <div class="grid">
         <div
           v-for="(cat, i) in categorias.filter(c => c.tipo === 'principal')"
@@ -50,6 +47,11 @@
       </div>
     </section>
 
+
+    <!-- Ofertas arriba -->
+    <Ofertas @abrirPreview="$emit('abrirPreview')" />
+
+  
     <!-- ===== Productos Destacados ===== -->
     <section class="productos">
       <h2>Productos destacados</h2>
@@ -85,14 +87,17 @@ import Ofertas from "../components/Ofertas.vue";
 import quienesSomos from "../components/quienesSomos.vue";
 
 // ✅ Carrusel
-import imgProc from "../assets/imagenesHome/banner-web-bordeland-iso.jpg";
-import imgVideo from "../assets/imagenesHome/placasDeVideoHome.jpg";
-import imgMother from "../assets/imagenesHome/placaMadreHome.jpg";
+import imgProc from "../assets/imagenesHome/banner5.jpg";
+import imgVideo from "../assets/imagenesHome/banner4.1.jpg";
+import imgMother from "../assets/imagenesHome/banner4.3.jpg";
+import img1 from "../assets/imagenesHome/banner2.3.jpg";
+
 
 const slides = ref([
   { img: imgProc, titulo: "Procesadores", texto: "Velocidad y rendimiento." },
   { img: imgVideo, titulo: "Placas de Video", texto: "Gráficos de alto nivel." },
   { img: imgMother, titulo: "Mothers", texto: "Conectividad y estabilidad." },
+  { img: img1, titulo: "Banner", texto: "BANNER"}
 ]);
 
 const currentSlide = ref(0);
@@ -232,7 +237,7 @@ const recientes = ref([
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--color-muted);
+  background: #ffffff18;
   cursor: pointer;
 }
 .indicators span.active {
@@ -270,7 +275,7 @@ section {
 /* Estilo principal (N°1) */
 .cat-card.principal {
   grid-column: span 2;
-  background: linear-gradient(145deg, var(--color-card), var(--color-muted));
+
 }
 .cat-card.principal img {
   height: 200px;
