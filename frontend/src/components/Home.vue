@@ -28,12 +28,60 @@
           ></span>
         </div>
       </div>
-
     </section>
-    
-      <!-- ===== Categorías principales ===== -->
+
     <section class="categorias">
-      <h2>Categorías Destacadas</h2>
+  <div class="separator">
+    <h2>Explora nuestros productos</h2>
+  </div>
+
+  <div class="card-container">
+      <div class="card">
+        <img src="../assets/imagenesHome/Categorias/procesadores.jpg" alt="Procesadores" />
+        <div class="overlay">
+          <h3>PROCESADORES</h3>
+          <button>Ver productos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../assets/imagenesHome/Categorias/motherboards.jpg" alt="Motherboards" />
+        <div class="overlay">
+          <h3>PLACAS MADRE</h3>
+          <button>Ver productos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../assets/imagenesHome/Categorias/ram.jpg" alt="Memoria RAM" />
+        <div class="overlay">
+          <h3>MEMORIAS RAM</h3>
+          <button>Ver productos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../assets/imagenesHome/Categorias/videocard.jpg" alt="Placas de Video" />
+        <div class="overlay">
+          <h3>PLACAS DE VIDEO</h3>
+          <button>Ver productos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Periféricos" />
+        <div class="overlay">
+          <h3>PERIFÉRICOS</h3>
+          <button>Ver productos</button>
+        </div>
+      </div>
+    </div>
+</section>
+
+    
+      <!-- ===== Categorías principales 
+ 
+      <section class="categorias">
       <div class="grid">
         <div
           v-for="(cat, i) in categorias.filter(c => c.tipo === 'principal')"
@@ -46,7 +94,7 @@
         </div>
       </div>
     </section>
-
+===== -->
 
     <!-- Ofertas arriba -->
     <Ofertas @abrirPreview="$emit('abrirPreview')" />
@@ -76,8 +124,6 @@
       </div>
     </section>
 
-    <!-- quienesSomos -->
-    <quienesSomos />
   </div>
 </template>
 
@@ -165,7 +211,7 @@ const recientes = ref([
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding-top: calc(66px + 60px); /* 60px = altura del navbar */
+  padding-top: calc(75px + 60px); /* 60px = altura del navbar */
 }
 
 /* ===== Hero (Carrusel + Secundarios) ===== */
@@ -188,7 +234,6 @@ const recientes = ref([
   width: 100%;
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   background: var(--color-card);
 }
 .carousel-item {
@@ -245,12 +290,9 @@ const recientes = ref([
 }
 
 /* ===== Categorías / Productos ===== */
-section {
-  padding: 1rem;
-}
+
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
   gap: 1rem;
   justify-content: center;
   max-width: 1200px;
@@ -297,6 +339,9 @@ section {
   object-fit: cover;
   border-radius: 1rem;
 }
+.productos img{
+  width: 300px;
+}
 .cat-card.secundario h3,
 .cat-card.secundario small {
   position: absolute;    /* 🔹 si querés texto sobre la imagen */
@@ -307,6 +352,111 @@ section {
   background: rgba(0,0,0,0.4);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+}
+
+/* PROBANDO */
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  margin: 0;           /* quitar margen externo */
+  padding: 0.92rem 0;   /* pequeño espacio para que respire */
+}
+
+.separator h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+  color: var(--color-secondary-foreground);        /* color del texto, cambia si querés */
+  background-color: transparent;
+}
+
+.categorias {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+/* Contenedor de tarjetas */
+.card-container {
+  display: flex;
+  gap: 0;
+}
+
+.card {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.card img {
+  width: 100%;
+  height: 100%; /* ajusta el alto que quieras */
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.6s ease;
+  display: block;
+}
+
+
+.card:hover img {
+  transform: scale(1.05); /* pequeño zoom */
+  filter: brightness(0.4); /* se oscurece */
+}
+
+.card:hover::before {
+  border-color: orange; /* borde animado */
+}
+
+.overlay {
+  position: absolute;
+  bottom: -100%;
+  left: 0; 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  text-align: center;
+  background: transparent;
+  transition: bottom 0.6s ease;
+}
+
+.card:hover .overlay {
+  bottom: 0; /* entra desde la izquierda */
+}
+
+.overlay h3 {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  background: none;
+}
+
+.overlay button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: var(--color-primary);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.overlay button:hover {
+  background: var(--chart-3);
 }
 
 </style>

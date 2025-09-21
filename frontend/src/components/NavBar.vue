@@ -116,11 +116,11 @@ export default {
   max-height: 100%;
   gap: 0.5rem;
   background: none;
-  padding-top: 5px;
+  padding-top: 1rem;
 }
 
 .logo img{
-    max-height: 78px;
+    max-height: 85px;
     background: none;
 }
 
@@ -142,14 +142,15 @@ export default {
 }
 
 .search input {
-  width: 450px;
-  height: 40px;
+  width: 550px;
+  height: 45px;
   padding-left: 10px;
   padding-right: 40px;
   border-radius: 5px;
   border: 1.9px solid var(--color-primary);
-  background-color: #00103100;
+  background-color: none;
   outline: none;
+  font-size: 0.9rem;
 }
 
 .search button {
@@ -253,11 +254,11 @@ export default {
   justify-content: center;
   font-size: 1.17rem;
   background-color: var(--color-background);
-  height: 35px;
+  height: 45px;
 }
 
 .sub-navbar .menu-item {
-  margin: 0 10px;
+  margin: 0 2rem;
 }
 
 .sub-navbar a {
