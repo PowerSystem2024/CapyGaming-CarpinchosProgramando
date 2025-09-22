@@ -30,7 +30,7 @@
       </div>
 
     </div>
-
+<div class="linea"></div>
       <!-- Sub menu -->
       <div class="sub-navbar">
         <div class="menu-item">
@@ -116,11 +116,11 @@ export default {
   max-height: 100%;
   gap: 0.5rem;
   background: none;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
 .logo img{
-    max-height: 85px;
+    max-height: 80px;
     background: none;
 }
 
@@ -217,7 +217,7 @@ export default {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: red;
+  background-color: var(--color-destructive);
   color: white;
   font-size: 10px;
   font-weight: bold;
@@ -234,6 +234,11 @@ export default {
   border-bottom: 3px solid var(--color-primary); /* línea en naranja */
 }
 
+.linea {
+  border-top: 1px solid var(--color-card);
+  margin: 0px auto;
+  width: 100%;
+}
 
 .logo a,
 .logo a:hover,

@@ -32,7 +32,7 @@
 
     <section class="categorias">
   <div class="separator">
-    <h2>Explora nuestros productos</h2>
+    <h2>EXPLORA NUESTROS PRODUCTOS</h2>
   </div>
 
   <div class="card-container">
@@ -99,7 +99,34 @@
     <!-- Ofertas arriba -->
     <Ofertas @abrirPreview="$emit('abrirPreview')" />
 
-  
+    <!-- Beneficios-->
+  <div class="benefits-bar">
+    <div class="benefit-item">
+      <span class="benefit-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 14 14">
+          <path fill="#FDEBD0" fill-rule="evenodd" d="M6.375 0H3.489a2.189 2.189 0 0 0-1.874 1.195L0 4.308v.016h6.375zM0 12.923V5.574h14v7.35A1.077 1.077 0 0 1 12.923 14H1.077A1.077 1.077 0 0 1 0 12.923m14-8.615v.016H7.625V0h2.886a2.19 2.19 0 0 1 1.928 1.195zM9.437 8.636a.625.625 0 1 0-1-.75L6.488 10.49l-1.05-.79a.625.625 0 1 0-.75 1l1.55 1.163a.625.625 0 0 0 .876-.126z" clip-rule="evenodd"/>
+        </svg>
+      </span>
+      <span class="benefit-text">Envíos a todo el país</span>
+    </div>
+    <div class="benefit-item">
+      <span class="benefit-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 288 512">
+        <path fill="#FDEBD0" d="m209.2 233.4l-108-31.6C88.7 198.2 80 186.5 80 173.5c0-16.3 13.2-29.5 29.5-29.5h66.3c12.2 0 24.2 3.7 34.2 10.5c6.1 4.1 14.3 3.1 19.5-2l34.8-34c7.1-6.9 6.1-18.4-1.8-24.5C238 74.8 207.4 64.1 176 64V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48h-2.5C45.8 64-5.4 118.7.5 183.6c4.2 46.1 39.4 83.6 83.8 96.6l102.5 30c12.5 3.7 21.2 15.3 21.2 28.3c0 16.3-13.2 29.5-29.5 29.5h-66.3C100 368 88 364.3 78 357.5c-6.1-4.1-14.3-3.1-19.5 2l-34.8 34c-7.1 6.9-6.1 18.4 1.8 24.5c24.5 19.2 55.1 29.9 86.5 30v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-48.2c46.6-.9 90.3-28.6 105.7-72.7c21.5-61.6-14.6-124.8-72.5-141.7z"/>
+      </svg>
+      </span>
+      <span class="benefit-text">Garantía de reembolso</span>
+    </div>
+    <div class="benefit-item">
+      <span class="benefit-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 512 512">
+          <path fill="#FDEBD0" d="M32 376a56 56 0 0 0 56 56h336a56 56 0 0 0 56-56V222H32Zm66-76a30 30 0 0 1 30-30h48a30 30 0 0 1 30 30v20a30 30 0 0 1-30 30h-48a30 30 0 0 1-30-30ZM424 80H88a56 56 0 0 0-56 56v26h448v-26a56 56 0 0 0-56-56Z"/>
+        </svg>
+      </span>
+      <span class="benefit-text">Pago seguro</span>
+    </div>
+  </div>
+
     <!-- ===== Productos Destacados ===== -->
     <section class="productos">
       <h2>Productos destacados</h2>
@@ -458,5 +485,34 @@ const recientes = ref([
 .overlay button:hover {
   background: var(--chart-3);
 }
+
+/* ESTILOS PARA BENEFICIOS */
+.benefits-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--color-primary); /* o un color suave como #f5f5f5 */
+  color: var(--color-primary-foreground);
+  width: 100%;
+  height: 220px;
+  padding: 1rem 2rem;
+  margin: 2rem 0;
+  margin-top: 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.benefit-icon {
+  font-size: 1.5rem;
+}
+
 
 </style>
