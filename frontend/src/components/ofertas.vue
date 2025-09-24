@@ -3,7 +3,6 @@
     <h2 class="section-title">OFERTAS DEL DÍA</h2>
     <div class="offers-grid">
       <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card">
-
           <!-- Badge con flip -->
           <div class="flip-container">
             <div class="flipper">
@@ -205,6 +204,7 @@ export default {
 <style scoped>
 @import url(../assets/styles/base.css);
 
+/* TITULO: OFERTAS DEL DIA */
 h2 {
   color: var(--color-primary); /* Naranja destacado */
   padding: 5px;
@@ -233,6 +233,7 @@ h2 {
   opacity: 0.5;
 }
 
+/* PRODUCTOS EN OFERTA */
 .offers-container {
   padding: 1.8rem;
 }
@@ -240,8 +241,10 @@ h2 {
 .offers-grid {
     display: grid;
     justify-items: center;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.8rem;
+    grid-template-columns: repeat(5, 1fr); /* 👈 fuerza 5 columnas exactas */
+    margin: 0 auto; /* 👈 centra el grid */
+    padding: 0 12rem; /* 👈 espacio a los lados */
+    gap: 0.5rem;
     width: 100%;
     background-color: var(--color-background);
     border-radius: 10px;
@@ -258,14 +261,14 @@ h2 {
   background-color: var(--color-card);
   position: relative;
   overflow: hidden;
-  min-height: 480px;
-  max-height: 480px;
+  min-height: 440px;
+  max-height: 440px;
   padding: 1rem;
 }
 
 .offer-card:hover {
   transform: scale(1.01);
-  box-shadow: 0 2px 10px #050224d2;
+  box-shadow: 0 2px 10px #111920;
 }
 
 .offer-media {
@@ -284,6 +287,12 @@ h2 {
   object-fit: contain;
   box-shadow: 0 1px 4px rgba(194, 36, 36, 0);
   align-self: center;
+  transition: transform 0.3s ease;
+}
+
+.offer-card:hover .offer-image {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
 
 .offer-content {
@@ -321,15 +330,15 @@ h2 {
   text-decoration: line-through;
   color: #ffffff59;
   background: var(--color-card);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .new-price {
   color: var(--color-secondary);
   font-weight: 600;
-  font-size: 23px;
+  font-size: 21px;
   background: var(--color-card);
-  margin-bottom: 9px;
+  margin-bottom: 5px;
 }
 
 .offer-btn {
@@ -351,6 +360,7 @@ h2 {
     color: var(--color-foreground);
 }
 
+/* Para que el icono del carrito del boton cambie de color */
 .icon-wrapper {
   position: relative;
   display: inline-block;
@@ -458,6 +468,15 @@ h2 {
   font-weight: bold;
   color: var(--chart-5); /* Cambiá este color como prefieras */
   display: block;
+}
+
+
+@media (max-width: 1200px) {
+  .offers-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    padding: 0 2rem;
+    max-width: 100%;
+  }
 }
 
 </style>

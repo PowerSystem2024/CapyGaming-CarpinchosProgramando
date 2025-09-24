@@ -22,7 +22,6 @@
         />
 
         <div v-else>
-            <h2 class="titulo">Catálogo de productos</h2>
             <div class="grid">
             <div v-for="producto in productosFiltrados" :key="producto.id" class="card">
                 <div class="imagenes">

@@ -103,27 +103,38 @@
   <div class="benefits-bar">
     <div class="benefit-item">
       <span class="benefit-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 14 14">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 14 14">
           <path fill="#FDEBD0" fill-rule="evenodd" d="M6.375 0H3.489a2.189 2.189 0 0 0-1.874 1.195L0 4.308v.016h6.375zM0 12.923V5.574h14v7.35A1.077 1.077 0 0 1 12.923 14H1.077A1.077 1.077 0 0 1 0 12.923m14-8.615v.016H7.625V0h2.886a2.19 2.19 0 0 1 1.928 1.195zM9.437 8.636a.625.625 0 1 0-1-.75L6.488 10.49l-1.05-.79a.625.625 0 1 0-.75 1l1.55 1.163a.625.625 0 0 0 .876-.126z" clip-rule="evenodd"/>
         </svg>
       </span>
-      <span class="benefit-text">Envíos a todo el país</span>
+      <div class="benefit-text-block">
+        <span class="benefit-title">Envíos a todo el país</span>
+        <span class="benefit-subtext">Entrega puerta a puerta</span>
+      </div>
     </div>
+
     <div class="benefit-item">
       <span class="benefit-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 288 512">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 288 512">
         <path fill="#FDEBD0" d="m209.2 233.4l-108-31.6C88.7 198.2 80 186.5 80 173.5c0-16.3 13.2-29.5 29.5-29.5h66.3c12.2 0 24.2 3.7 34.2 10.5c6.1 4.1 14.3 3.1 19.5-2l34.8-34c7.1-6.9 6.1-18.4-1.8-24.5C238 74.8 207.4 64.1 176 64V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48h-2.5C45.8 64-5.4 118.7.5 183.6c4.2 46.1 39.4 83.6 83.8 96.6l102.5 30c12.5 3.7 21.2 15.3 21.2 28.3c0 16.3-13.2 29.5-29.5 29.5h-66.3C100 368 88 364.3 78 357.5c-6.1-4.1-14.3-3.1-19.5 2l-34.8 34c-7.1 6.9-6.1 18.4 1.8 24.5c24.5 19.2 55.1 29.9 86.5 30v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-48.2c46.6-.9 90.3-28.6 105.7-72.7c21.5-61.6-14.6-124.8-72.5-141.7z"/>
       </svg>
       </span>
-      <span class="benefit-text">Garantía de reembolso</span>
+    <div class="benefit-text-block">
+      <span class="benefit-title">Garantía de reembolso</span>
+      <span class="benefit-subtext">100% devolución del dinero</span>
     </div>
+  </div>
+
     <div class="benefit-item">
       <span class="benefit-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 512 512">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 512 512">
           <path fill="#FDEBD0" d="M32 376a56 56 0 0 0 56 56h336a56 56 0 0 0 56-56V222H32Zm66-76a30 30 0 0 1 30-30h48a30 30 0 0 1 30 30v20a30 30 0 0 1-30 30h-48a30 30 0 0 1-30-30ZM424 80H88a56 56 0 0 0-56 56v26h448v-26a56 56 0 0 0-56-56Z"/>
         </svg>
       </span>
-      <span class="benefit-text">Pago seguro</span>
+    <div class="benefit-text-block">
+      <span class="benefit-title">Pago seguro</span>
+      <span class="benefit-subtext">Seguridad en el pago</span>
+    </div>
     </div>
   </div>
 
@@ -399,7 +410,7 @@ const recientes = ref([
   padding: 0 1rem;
   position: relative;
   z-index: 1;
-  color: var(--color-secondary-foreground);        /* color del texto, cambia si querés */
+  color: var(--color-background);        /* color del texto, cambia si querés */
   background-color: transparent;
 }
 
@@ -491,28 +502,161 @@ const recientes = ref([
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: var(--color-primary); /* o un color suave como #f5f5f5 */
-  color: var(--color-primary-foreground);
+  background-color: var(--color-card); /* o un color suave como #f5f5f5 */
   width: 100%;
-  height: 220px;
-  padding: 1rem 2rem;
-  margin: 2rem 0;
+  height: 200px;
+  padding: 0rem 12rem;
+  padding-left: 21rem; /* para centrarlo */
+  margin: 2rem auto;
   margin-top: 0;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
 .benefit-item {
+  flex: 1;
+  min-width: 250px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
+  text-align: left;
+  gap: 1.5rem;
+  font-weight: 600;
   font-size: 1rem;
+  background: transparent;
+  padding: 0;
 }
 
+.benefit-item p {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--color-muted-foreground);
+  margin: 0;
+  background: transparent;
+}
 .benefit-icon {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  background: transparent;
 }
 
+.benefit-text-block {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.benefit-title {
+  font-weight: 600;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.benefit-subtext {
+  font-weight: 300;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+.benefit-icon svg{
+  background: transparent;
+}
+
+
+
+
+/* Esto todavia hay que corregir cuando tengamos todo lo del Home */
+@media (max-width: 1024px) {
+  .benefits-bar {
+    padding: 0 4rem;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .benefit-item {
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .carousel {
+    height: 400px;
+  }
+
+  .carousel img {
+    object-fit: cover;
+  }
+
+  .card-container {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .card {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 240px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    height: 300px;
+  }
+
+  .prev,
+  .next {
+    font-size: 1.5rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .separator h2 {
+    font-size: 1.4rem;
+  }
+
+  .card-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .card {
+    height: 250px;
+  }
+
+  .overlay h3 {
+    font-size: 1.2rem;
+  }
+
+  .overlay button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .benefits-bar {
+    padding: 0 2rem;
+    gap: 1rem;
+  }
+
+  .benefit-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .benefit-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .benefit-title {
+    font-size: 1rem;
+  }
+
+  .benefit-subtext {
+    font-size: 0.9rem;
+  }
+}
 
 </style>

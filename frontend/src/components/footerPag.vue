@@ -14,12 +14,13 @@ import Marcas from '../components/marcas.vue';
       <div class="footer-section">
         <h4>Productos</h4>
         <ul>
-          <li><a href="#">Computadoras</a></li>
           <li><a href="#">Hardware</a></li>
+          <li><a href="#">Notebooks</a></li>
           <li><a href="#">Monitores</a></li>
           <li><a href="#">Periféricos</a></li>
-          <li><a href="#">Portables</a></li>
-          <li><a href="#">Gaming</a></li>
+          <li><a href="#">Conectividad</a></li>
+          <li><a href="#">Gaming House</a></li>
+          <li><a href="#">Impresoras</a></li>
         </ul>
       </div>
 
@@ -82,20 +83,6 @@ import Marcas from '../components/marcas.vue';
   padding: 8px 0 10px 0;
 }
 
-/* Cinta amarilla de marcas */
-/*.footer-brands {
-  width: 100%;
-  background: var(--color-primary);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-brands img {
-  height: 100px;
-}*/
-
 /* Footer principal */
 .footer-content {
   padding-top: 30px;
@@ -107,7 +94,6 @@ import Marcas from '../components/marcas.vue';
   margin: 0 auto;
   gap: 50px;
   text-align: left;
-  padding-bottom: 15px;
 }
 
 .footer-section {
