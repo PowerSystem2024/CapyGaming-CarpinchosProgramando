@@ -30,38 +30,108 @@
       </div>
 
     </div>
+<div class="linea"></div>
 
       <!-- Sub menu -->
       <div class="sub-navbar">
         <div class="menu-item">
-          <router-link to="/">Home</router-link>
+          <Dropdown title="Categorias" :items="Categorias" />
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Ofertas</router-link>
+          <router-link to="/ofertas">Notebooks</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/productos">Productos</router-link>
+          <router-link to="/ofertas">Placas de Video</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ayuda">Ayuda</router-link>
+          <router-link to="/ofertas">Motherboards</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/ofertas">Procesadores</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/ofertas">Memorias Ram</router-link>
         </div>
       </div>
-
-
-
- 
   </nav>
 </template>
 
 <script>
 import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuelve los productos que hay en el carrito
+import Dropdown from "./Dropdown.vue";
 
 export default {
   name: "NavBar",
+  components: {
+    Dropdown
+  },
   data() {
     return {
       searchText: "",
       cartCount: 0, // 🔴 número de productos visible que se muestra en el carrito en el carrito
+      Categorias: [
+        {
+          title: 'Hardware',
+          link: '/categoria/hardware',
+          children: [
+            {title: 'Procesadores', link: '#'},
+            {title: 'Placas de Video', link: '#'},
+            {title: 'Motherboards', link:'#'},
+            {title: 'Memorias Ram', link: '#'},
+            {title: 'Discos Rígidos/SSD', link: '#'},
+            {title: 'Refrigeración', link: '#'},
+            {title: 'Gabinetes', link: '#'},
+            {title: 'Fuentes', link: '#'},
+            {title: 'Energía', link: '#'},
+            {title: 'Kits de Actualización', link: '#'}
+          ]
+        },
+        {
+          title: 'Notebooks',
+          link: '#'
+        },
+        {
+          title: 'Monitores',
+          link: '#'
+        },
+        {
+          title: 'Perifericos',
+          link: '#',
+          children:[
+            {title: 'Teclados', link: '#'},
+            {title: 'Mouse', link: '#'},
+            {title: 'Auriculares', link:'#'},
+            {title: 'Micrófonos', link: '#'},
+            {title: 'Webcams', link: '#'},
+            {title: 'Joystick', link: '#'},
+            {title: 'Volantes', link: '#'},
+            {title: 'Mousepad', link: '#'},
+            {title: 'Stream Deck', link: '#'},
+            {title: 'Parlantes', link: '#'},
+            {title: 'Combos', link: '#'}
+          ]
+        },
+        {
+          title: 'Conectividad',
+          link: '#',
+          children: [
+            {title: 'Placas de Red', link: '#'},
+            {title: 'Adaptadores WiFi', link: '#'}
+          ]
+        },
+        {
+          title: 'Gaming House',
+          link: '#',
+          children: [
+            {title: 'Consolas', link: '#'},
+            {title: 'Sillas Gamer', link: '#'}
+          ]
+        },
+        {
+          title: 'Impresoras',
+          link: '#'
+        }
+    ],
     };
   },
   mounted() {
@@ -84,6 +154,7 @@ export default {
 };
 
 </script>
+
 <style scoped>
 @import url(../assets/styles/base.css);
 .navbar {
@@ -91,7 +162,7 @@ export default {
   top: 0px;
   left: 0;
   width: 100%;
-  height: 90px;
+  min-height: auto;
   background: var(--color-background);
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
@@ -106,6 +177,7 @@ export default {
   max-width: 1250px; /* 👈 limita el ancho */
   margin: 0 auto;    /* 👈 lo centra */
   height: 100%;
+  padding-bottom: 5px;
 }
 
 
@@ -116,11 +188,11 @@ export default {
   max-height: 100%;
   gap: 0.5rem;
   background: none;
-  padding-top: 5px;
+  padding-top: 0.5rem;
 }
 
 .logo img{
-    max-height: 78px;
+    max-height: 80px;
     background: none;
 }
 
@@ -142,14 +214,15 @@ export default {
 }
 
 .search input {
-  width: 450px;
-  height: 40px;
+  width: 550px;
+  height: 45px;
   padding-left: 10px;
   padding-right: 40px;
   border-radius: 5px;
   border: 1.9px solid var(--color-primary);
-  background-color: #00103100;
+  background-color: none;
   outline: none;
+  font-size: 0.9rem;
 }
 
 .search button {
@@ -216,7 +289,7 @@ export default {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: red;
+  background-color: var(--color-destructive);
   color: white;
   font-size: 10px;
   font-weight: bold;
@@ -233,6 +306,11 @@ export default {
   border-bottom: 3px solid var(--color-primary); /* línea en naranja */
 }
 
+.linea {
+  border-top: 1px solid var(--color-card);
+  margin: 0px auto;
+  width: 100%;
+}
 
 .logo a,
 .logo a:hover,
@@ -251,17 +329,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.17rem;
-  background-color: var(--color-background);
-  height: 35px;
+  padding: 0;
+  gap: 0.1rem;
 }
 
 .sub-navbar .menu-item {
-  margin: 0 10px;
+  margin: 0 1rem;
 }
 
 .sub-navbar a {
-  color: #fff;
+  color: var(--color-foreground);
   text-decoration: none;
   padding-bottom: 3px;
   border-bottom: 3px solid transparent; /* base invisible */
@@ -278,5 +355,25 @@ export default {
   border-bottom-color: var(--color-primary);
 }
 
+.menu-item {
+  color: var(--color-foreground);
+  font-size: 1rem;
+  padding: 5px 15px;
+  padding-bottom: 0;
+  position: relative;
+  text-align: center;
+
+  display: flex;
+  border-bottom: transparent;
+  transition: color 0.3s, border-bottom-color 0.3s;
+
+}
+
+.menu-item.active,
+.menu-item:hover {
+  color: var(--color-primary);
+  background-color: none;
+  border-bottom-color: var(--color-primary) ;
+}
 </style>
 
