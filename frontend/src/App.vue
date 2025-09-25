@@ -7,6 +7,7 @@ import CarritoModalPreview from "./components/CarritoModalPreview.vue";
 import { getCartCount, getCart } from "./utils/cartUtils";
 import { ultimoProducto } from "./composables/ultimoProducto";
 
+
 // Estado reactivo
 const cartCount = ref(0);
 const mostrarCarrito = ref(false);
@@ -49,7 +50,6 @@ onMounted(() => {
     :ultimoProducto="ultimoProducto"
     @close="mostrarCarrito = false"
   />
-
   <footerPag />
 </template>
 
