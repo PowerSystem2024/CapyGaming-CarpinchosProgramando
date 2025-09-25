@@ -11,6 +11,8 @@ import recuperarContra from '../components/recuperarContra.vue';
 import NotFound from "../components/notFound.vue";
 import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
+import Catalogo from '../components/Catalogo.vue';
+import ProductoDetalle from '../components/ProductoDetalle.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -64,6 +66,16 @@ const routes = [
         path: "/ofertas",
         name: "ofertas",
         component: Ofertas
+    },
+    {
+        path: "/catalogo",
+        name: "Catologo",
+        component: Catalogo
+    },
+    {
+        path: '/productoDetalle/:id',
+        name: 'ProductoDetalle',
+        component: ProductoDetalle
     }
 ]
 
