@@ -88,6 +88,10 @@
     left: 50%;
     transform: translateX(-50%);
     width: max-content;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 4px 8px #10181fa9; /* sombra hacia abajo */
+
 }
 
 /* ESTILOS PARA DROP DEL DROP */
@@ -99,6 +103,7 @@
   padding: 10px;
   white-space: nowrap;
   border-radius: 5px;
+  box-shadow: 4px 0 8px #111920; /* sombra hacia la derecha */
 }
 
 .submenu-item a {
