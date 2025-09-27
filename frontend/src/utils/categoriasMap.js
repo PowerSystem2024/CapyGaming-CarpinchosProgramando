@@ -1,42 +1,59 @@
+// Este archivo define el mapa de categorías y subcategorías utilizadas en el catálogo.
+// Se usa para estructurar la navegación y filtrado de productos en el componente CatalogoCategoria.vue.
+// Cada clave representa una categoría principal, y su valor es un array con las subcategorías asociadas.
+
 export const categoriasMap = {
-  hardware: [
-    "Procesadores",
-    "Placas de Video",
-    "Refrigeración",
-    "Motherboards",
+  Hardware: [
+    "Refrigeracion",
     "Memorias RAM",
-    "Discos Rígidos/SSD",
-    "Gabinetes",
+    "Almacenamiento",
+    "Placas de Video",
     "Fuentes",
-    "Kits de actualización",
+    "Motherboard",
+    "Energia",
+    "Procesadores",
+    "Gabinetes",
+    "Kit Actualizacion"
   ],
 
-  notebooks: null, // no tiene subcategorías
-  monitores: null, // no tiene subcategorías
-
-  perifericos: [
-    "Mouse",
-    "Teclados",
-    "Auriculares",
-    "Micrófonos",
-    "Webcams",
-    "Joysticks",
-    "Volante",
-    "Mousepads",
-    "Stream Decks",
-    "Parlantes",
-    "Combos",
-  ],
-
-  conectividad: [
-    "Placas de Red",
-    "Adaptadores Wifi"
-  ],
-
-  gaming: [
-    "Sillas Gamer",
+  Gaming: [
     "Consolas",
+    "Silla"
   ],
 
-  impresoras: null // sin subcategorías
+  Conectividad: [
+    "Adaptador WiFi",
+    "Placas de Red"
+  ],
+
+  Impresoras: [
+    "Laser",
+    "Tinta"
+  ],
+
+  Perifericos: [
+    "Joystick",
+    "StreamDeck",
+    "Teclado",
+    "Mouse Pad",
+    "Combo",
+    "Auriculares",
+    "Parlante",
+    "Webcam",
+    "Mouse",
+    "Microfono",
+    "Volante"
+  ],
+
+  Monitores: [
+    "LG",
+    "Samsung",
+    "AsRock"
+  ],
+
+  Notebooks: [
+    "ASUS",
+    "Lenovo",
+    "ACER"
+  ]
 };

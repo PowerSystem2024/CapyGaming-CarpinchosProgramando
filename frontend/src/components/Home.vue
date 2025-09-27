@@ -48,7 +48,7 @@
         <img src="../assets/imagenesHome/Categorias/motherboards.jpg" alt="Motherboards" />
         <div class="overlay">
           <h3>PLACAS MADRE</h3>
-          <router-link to="/categoria/hardware/procesadores" class="btn">Ver productos</router-link>
+          <router-link to="/categoria/hardware/motherboard" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <img src="../assets/imagenesHome/Categorias/ram.jpg" alt="Memoria RAM" />
         <div class="overlay">
           <h3>MEMORIAS RAM</h3>
-          <router-link to="/categoria/hardware/memorias-ram" class="btn">Ver productos</router-link>
+          <router-link to="/categoria/hardware/memorias ram" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -64,7 +64,7 @@
         <img src="../assets/imagenesHome/Categorias/videocard.jpg" alt="Placas de Video" />
         <div class="overlay">
           <h3>PLACAS DE VIDEO</h3>
-          <router-link to="/categoria/hardware/placas-de-video" class="btn">Ver productos</router-link>
+          <router-link to="/categoria/hardware/placas de video" class="btn">Ver productos</router-link>
         </div>
       </div>
 

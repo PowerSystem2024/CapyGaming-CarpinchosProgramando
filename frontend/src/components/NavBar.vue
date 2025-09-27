@@ -41,16 +41,16 @@
           <router-link to="/categoria/notebooks">Notebooks</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/categoria/hardware/placas-de-video">Placas de Video</router-link>
+          <router-link to="/categoria/hardware/placas de video">Placas de Video</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/categoria/hardware/motherboards">Motherboards</router-link>
+          <router-link to="/categoria/hardware/motherboard">Motherboards</router-link>
         </div>
         <div class="menu-item">
           <router-link to="/categoria/hardware/procesadores">Procesadores</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/categoria/hardware/memorias-ram">Memorias Ram</router-link>
+          <router-link to="/categoria/hardware/memorias ram">Memorias Ram</router-link>
         </div>
       </div>
   </nav>
@@ -75,15 +75,15 @@ export default {
           link: '/categoria/hardware',
           children: [
             {title: 'Procesadores', link: '/categoria/hardware/procesadores'},
-            {title: 'Placas de Video', link: '/categoria/hardware/placas-de-video'},
-            {title: 'Motherboards', link:'/categoria/hardware/motherboards'},
-            {title: 'Memorias Ram', link: '/categoria/hardware/memorias-ram'},
-            {title: 'Discos Rígidos/SSD', link: '/categoria/hardware/discos-rigidos-ssd'},
+            {title: 'Placas de Video', link: '/categoria/hardware/placas de video'},
+            {title: 'Motherboards', link:'/categoria/hardware/motherboard'},
+            {title: 'Memorias Ram', link: '/categoria/hardware/memorias ram'},
+            {title: 'Discos Rígidos/SSD', link: '/categoria/hardware/almacenamiento'},
             {title: 'Refrigeración', link: '/categoria/hardware/refrigeracion'},
             {title: 'Gabinetes', link: '/categoria/hardware/gabinetes'},
             {title: 'Fuentes', link: '/categoria/hardware/fuentes'},
             {title: 'Energía', link: '/categoria/hardware/energia'},
-            {title: 'Kits de Actualización', link: '/categoria/hardware/kits-actualizacion'}
+            {title: 'Kits de Actualización', link: '/categoria/hardware/kit actualizacion'}
           ]
         },
         {
@@ -98,25 +98,25 @@ export default {
           title: 'Perifericos',
           link: '/categoria/perifericos',
           children:[
-            {title: 'Teclados', link: '/categoria/perifericos/teclados'},
+            {title: 'Teclados', link: '/categoria/perifericos/teclado'},
             {title: 'Mouse', link: '/categoria/perifericos/mouse'},
             {title: 'Auriculares', link:'/categoria/perifericos/auriculares'},
-            {title: 'Micrófonos', link: '/categoria/perifericos/microfonos'},
-            {title: 'Webcams', link: '/categoria/perifericos/webcams'},
+            {title: 'Micrófonos', link: '/categoria/perifericos/microfono'},
+            {title: 'Webcams', link: '/categoria/perifericos/webcam'},
             {title: 'Joystick', link: '/categoria/perifericos/joystick'},
-            {title: 'Volantes', link: '/categoria/perifericos/volantes'},
-            {title: 'Mousepad', link: '/categoria/perifericos/mousepad'},
+            {title: 'Volantes', link: '/categoria/perifericos/volante'},
+            {title: 'Mousepad', link: '/categoria/perifericos/mouse pad'},
             {title: 'Stream Deck', link: '/categoria/perifericos/streamdeck'},
-            {title: 'Parlantes', link: '/categoria/perifericos/parlantes'},
-            {title: 'Combos', link: '/categoria/perifericos/combos'}
+            {title: 'Parlantes', link: '/categoria/perifericos/parlante'},
+            {title: 'Combos', link: '/categoria/perifericos/combo'}
           ]
         },
         {
           title: 'Conectividad',
           link: '/categoria/conectividad',
           children: [
-            {title: 'Placas de Red', link: '/categoria/conectividad/placas-de-red'},
-            {title: 'Adaptadores WiFi', link: '/categoria/conectividad/adaptadores-wifi'}
+            {title: 'Placas de Red', link: '/categoria/conectividad/placas de red'},
+            {title: 'Adaptadores WiFi', link: '/categoria/conectividad/adaptador wifi'}
           ]
         },
         {
@@ -124,7 +124,7 @@ export default {
           link: '/categoria/gaming',
           children: [
             {title: 'Consolas', link: '/categoria/gaming/consolas'},
-            {title: 'Sillas Gamer', link: '/categoria/gaming/sillas-gamer'}
+            {title: 'Sillas Gamer', link: '/categoria/gaming/silla'}
           ]
         },
         {
