@@ -78,7 +78,7 @@ export default {
             {title: 'Placas de Video', link: '/categoria/hardware/placas de video'},
             {title: 'Motherboards', link:'/categoria/hardware/motherboard'},
             {title: 'Memorias Ram', link: '/categoria/hardware/memorias ram'},
-            {title: 'Discos Rígidos/SSD', link: '/categoria/hardware/almacenamiento'},
+            {title: 'Almacenamiento', link: '/categoria/hardware/almacenamiento'},
             {title: 'Refrigeración', link: '/categoria/hardware/refrigeracion'},
             {title: 'Gabinetes', link: '/categoria/hardware/gabinetes'},
             {title: 'Fuentes', link: '/categoria/hardware/fuentes'},
