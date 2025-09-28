@@ -1,4 +1,3 @@
-<!-- src/components/registro.vue -->
 <template>
   <div class="auth-page">
     <div class="auth-card">
@@ -14,6 +13,7 @@
             placeholder="ej: Ana Pérez"
             autocomplete="name"
           />
+          <p v-if="errors.name" class="error">{{ errors.name }}</p>
         </div>
 
         <div class="field">
@@ -71,9 +71,8 @@
             v-model="form.telefono"
             required
             placeholder="Ingrese su número de teléfono"
-            @input="validatePhone"
           />
-          <p v-if="errors.accept" class="error">{{ errors.telefono }}</p>
+          <p v-if="errors.telefono" class="error">{{ errors.telefono }}</p>
         </div>
 
         <div class="form-group">
@@ -85,7 +84,19 @@
             required
             placeholder="Ingrese su DNI"
           />
-          <p v-if="errors.accept" class="error">{{ errors.dni }}</p>
+          <p v-if="errors.dni" class="error">{{ errors.dni }}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input
+            type="text"
+            id="direccion"
+            v-model="form.direccion"
+            required
+            placeholder="Ingrese su dirección"
+          />
+          <p v-if="errors.direccion" class="error">{{ errors.direccion }}</p>
         </div>
 
         <label class="checkbox">
@@ -111,61 +122,121 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/useAuth.js'
 
 const router = useRouter()
+const { register } = useAuth()
 
 const form = reactive({
   name: '',
   email: '',
   telefono: '',
-  dni: '',        // nuevo campo
+  dni: '',
+  direccion: '',
   password: '',
   confirm: '',
   accept: false
 })
 
 const errors = reactive({
+  name: '',
   email: '',
   password: '',
   confirm: '',
   accept: '',
   telefono: '',
-  dni: ''
+  dni: '',
+  direccion: ''
 })
 
 const showPass = ref(false)
-const loading  = ref(false)
+const loading = ref(false)
 
-function validate () {
-  errors.email    = form.email.includes('@') ? '' : 'Ingresá un email válido'
-  errors.password = form.password.length >= 6 ? '' : 'Mínimo 6 caracteres'
-  errors.confirm  = form.confirm === form.password ? '' : 'Las contraseñas no coinciden'
-  errors.accept   = form.accept ? '' : 'Debés aceptar los términos'
-  errors.dni      = form.dni.length === 8 ? '' : 'El DNI debe tener 8 caracteres'
-  errors.telefono = form.telefono.length === 9 ? '' : 'El teléfono debe tener 9 caracteres'
-  return !errors.email && !errors.password && !errors.confirm && !errors.accept && !errors.dni && !errors.telefono
+function validate() {
+  // Limpiar errores anteriores
+  Object.keys(errors).forEach(key => errors[key] = '');
+  
+  let isValid = true;
+
+  if (!form.name.trim()) {
+    errors.name = 'El nombre es requerido';
+    isValid = false;
+  }
+
+  if (!form.email.includes('@')) {
+    errors.email = 'Ingresá un email válido';
+    isValid = false;
+  }
+
+  if (form.password.length < 6) {
+    errors.password = 'Mínimo 6 caracteres';
+    isValid = false;
+  }
+
+  if (form.confirm !== form.password) {
+    errors.confirm = 'Las contraseñas no coinciden';
+    isValid = false;
+  }
+
+  if (!form.accept) {
+    errors.accept = 'Debés aceptar los términos';
+    isValid = false;
+  }
+
+  if (form.dni.length !== 8) {
+    errors.dni = 'El DNI debe tener 8 caracteres';
+    isValid = false;
+  }
+
+  if (form.telefono.length < 9) {
+    errors.telefono = 'El teléfono debe tener al menos 9 caracteres';
+    isValid = false;
+  }
+
+  if (!form.direccion.trim()) {
+    errors.direccion = 'La dirección es requerida';
+    isValid = false;
+  }
+
+  return isValid;
 }
 
-async function onSubmit () {
-  if (!validate()) return
-  loading.value = true
+async function onSubmit() {
+  if (!validate()) return;
+  
+  loading.value = true;
+  
   try {
-    // Simulación de registro (frontend only)
-    await new Promise(r => setTimeout(r, 600))
+    // Separar nombre y apellido
+    const nameParts = form.name.split(' ');
+    const nombre = nameParts[0] || '';
+    const apellido = nameParts.slice(1).join(' ') || '';
 
-    // Guardamos el usuario en localStorage
-    const user = { 
-      name: form.name, 
-      email: form.email, 
-      dni: form.dni,        // guardamos el DNI
-      createdAt: new Date().toISOString() 
+    const result = await register({
+      nombre: nombre,
+      apellido: apellido,
+      email: form.email,
+      telefono: form.telefono,
+      dni: form.dni,
+      password: form.password,
+      direccion: form.direccion
+    });
+
+    if (result.success) {
+      // Redirigir al home después del registro exitoso
+      router.push('/');
+    } else {
+      // Manejar errores específicos del backend
+      if (result.error.includes('ya existe')) {
+        errors.email = 'Este email o DNI ya está registrado';
+      } else {
+        alert(result.error || 'Error en el registro');
+      }
     }
-    localStorage.setItem('auth', JSON.stringify(user))
-
-    // Redirigimos al home (catálogo)
-    router.push('/')
+  } catch (error) {
+    alert('Error de conexión: ' + error.message);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>
@@ -193,7 +264,7 @@ async function onSubmit () {
 h1{
   margin:0 0 1rem;
   font-weight:700; font-size:1.7rem;
-  color: var(--color-primary);       /* naranja del proyecto */
+  color: var(--color-primary);
   text-align:center;
   background-color: var(--color-card);
 }
@@ -216,7 +287,7 @@ input{
   padding:.75rem .9rem;
   border-radius:10px;
   border:1px solid var(--color-input);
-  background: var(--color-popover);          /* evita el fondo global en inputs */
+  background: var(--color-popover);
   color: var(--color-popover-foreground);
   outline: none;
 }

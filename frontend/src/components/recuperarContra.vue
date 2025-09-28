@@ -1,4 +1,3 @@
- <!-- src/components/recuperarContra.vue -->
 <template>
   <div class="auth-page">
     <div class="auth-card">
@@ -37,12 +36,13 @@
 
 <script setup>
 import { ref } from 'vue'
+import AuthService from '../services/authService.js'
 
-const email   = ref('')
-const error   = ref('')
+const email = ref('')
+const error = ref('')
 const loading = ref(false)
 
-function validate () {
+function validate() {
   if (!email.value.includes('@')) {
     error.value = 'Ingresá un email válido'
     return false
@@ -51,14 +51,28 @@ function validate () {
   return true
 }
 
-async function onSubmit () {
+async function onSubmit() {
   if (!validate()) return
   loading.value = true
   try {
-    // Simulación: enviar email
-    await new Promise(r => setTimeout(r, 1000))
-    alert(`Se envió un enlace de recuperación a: ${email.value}`)
-    email.value = ''
+    const response = await fetch('http://localhost:3001/api/auth/forgot-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email.value }),
+    })
+
+    const data = await response.json()
+
+    if (response.ok) {
+      alert('Se envió un enlace de recuperación a: ' + email.value)
+      email.value = ''
+    } else {
+      error.value = data.error || 'Error al enviar el enlace'
+    }
+  } catch (error) {
+    alert('Error de conexión: ' + error.message)
   } finally {
     loading.value = false
   }

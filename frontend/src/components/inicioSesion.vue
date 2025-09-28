@@ -1,4 +1,3 @@
-<!-- src/views/LoginView.vue -->
 <template>
   <div class="auth-page">
     <div class="auth-card">
@@ -39,7 +38,6 @@
             <input type="checkbox" v-model="form.remember" />
             Recordarme
           </label>
-          <!-- <a class="link" href="/recuperarContra">¿Olvidaste tu contraseña?</a> -->
           <router-link class="link" to="/recuperarContra">¿Olvidaste tu contraseña?</router-link>
         </div>
 
@@ -58,36 +56,62 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/useAuth.js'
+
+const router = useRouter()
+const { login } = useAuth()
 
 const form = reactive({ email: '', password: '', remember: false })
 const errors = reactive({ email: '', password: '' })
 const loading = ref(false)
 const showPass = ref(false)
 
-function validate () {
-  errors.email = form.email.includes('@') ? '' : 'Ingresá un email válido'
-  errors.password = form.password.length >= 6 ? '' : 'Mínimo 6 caracteres'
-  return !errors.email && !errors.password
+function validate() {
+  // Limpiar errores anteriores
+  errors.email = ''
+  errors.password = ''
+  
+  let isValid = true
+
+  if (!form.email.includes('@')) {
+    errors.email = 'Ingresá un email válido'
+    isValid = false
+  }
+
+  if (form.password.length < 6) {
+    errors.password = 'Mínimo 6 caracteres'
+    isValid = false
+  }
+
+  return isValid
 }
 
-async function onSubmit () {
+async function onSubmit() {
   if (!validate()) return
+  
   loading.value = true
+  
   try {
-    // Simulación de login (frontend-only)
-    await new Promise(r => setTimeout(r, 600))
-    if (form.remember) {
-      localStorage.setItem('auth', JSON.stringify({ email: form.email }))
+    const result = await login(form.email, form.password)
+
+    if (result.success) {
+      // Redirigir al home después del login exitoso
+      router.push('/')
+    } else {
+      // Mostrar error específico del backend
+      if (result.error.includes('Credenciales inválidas')) {
+        errors.email = 'Email o contraseña incorrectos'
+        errors.password = 'Email o contraseña incorrectos'
+      } else {
+        alert(result.error)
+      }
     }
-    // Redirigir a home o catálogo
-    window.location.href = '/'
+  } catch (error) {
+    alert('Error de conexión: ' + error.message)
   } finally {
     loading.value = false
   }
-}
-
-function onForgot () {
-  alert('Acá iría el flujo de recuperación (cuando haya backend).')
 }
 </script>
 
@@ -98,16 +122,16 @@ function onForgot () {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-background);        /* #1C2833 */
+  background: var(--color-background);
   padding: 2rem;
 }
 
 .auth-card{
   width: 100%;
   max-width: 420px;
-  background: var(--color-card);              /* #212F3C */
-  color: var(--color-card-foreground);        /* #FDEBD0 */
-  border: 1px solid var(--color-border);      /* #2C3E50 */
+  background: var(--color-card);
+  color: var(--color-card-foreground);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
   padding: 2rem;
@@ -119,7 +143,7 @@ h1{
   margin: 0 0 1rem;
   font-weight: 700;
   font-size: 1.6rem;
-  color: var(--color-primary);                /* #F39C12: naranja del proyecto */
+  color: var(--color-primary);
   text-align: center;
   background-color: var(--color-card);
 }
@@ -132,14 +156,14 @@ input{
   width:100%;
   padding:.75rem .9rem;
   border-radius:10px;
-  border:1px solid var(--color-input);        /* #2C3E50 */
-  background: var(--color-popover);           /* #212F3C */
-  color: var(--color-popover-foreground);     /* #FDEBD0 */
+  border:1px solid var(--color-input);
+  background: var(--color-popover);
+  color: var(--color-popover-foreground);
   outline: none;
 }
-input::placeholder{ color: var(--color-muted-foreground); } /* #AAB7B8 */
+input::placeholder{ color: var(--color-muted-foreground); }
 input:focus{
-  border-color: var(--color-ring);            /* #3498DB */
+  border-color: var(--color-ring);
   box-shadow: 0 0 0 3px rgba(52,152,219,.25);
 }
 
@@ -152,8 +176,8 @@ button.btn{
   padding:.9rem 1rem;
   border-radius:12px;
   border:1px solid var(--color-border);
-  background: var(--color-primary);           /* CTA naranja */
-  color: var(--color-primary-foreground);     /* contraste sobre naranja */
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
   font-weight:700;
   cursor: pointer;
 }
@@ -181,7 +205,7 @@ form {
 p.alt{
   text-align: center;
   margin: 1rem 0 0;
-  color: var(--color-popover-foreground);       /* #AAB7B8 */
+  color: var(--color-popover-foreground);
   background-color: var(--color-card);
 }
 
@@ -191,7 +215,7 @@ p.alt{
   gap:1rem; margin:.25rem 0 1rem;
   background-color: var(--color-card);
 }
-.link{ color: var(--color-secondary); text-decoration: none; background-color: var(--color-card); } /* Azul */
+.link{ color: var(--color-secondary); text-decoration: none; background-color: var(--color-card); }
 .link:hover{ text-decoration: underline; }
 
 /* Errores */
