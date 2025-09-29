@@ -45,9 +45,15 @@ onMounted(async () => {
 });
 
 const agregarAlCarrito = () => {
-  const resultado = addToCart(producto.value);
+  const productoConAlias = {
+    ...producto.value,
+    id: producto.value.id_producto // alias para compatibilidad con el carrito
+  };
+
+  const resultado = addToCart(productoConAlias);
+
   if (resultado.success) {
-    setUltimoProducto(producto.value);
+    setUltimoProducto(productoConAlias);
     mostrarModal.value = true;
   } else {
     alert(resultado.message); // por ejemplo, si se alcanzó el stock
