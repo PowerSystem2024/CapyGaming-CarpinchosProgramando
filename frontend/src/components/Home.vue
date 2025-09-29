@@ -40,7 +40,7 @@
         <img src="../assets/imagenesHome/Categorias/procesadores.jpg" alt="Procesadores" />
         <div class="overlay">
           <h3>PROCESADORES</h3>
-          <button>Ver productos</button>
+          <router-link to="/categoria/hardware/procesadores" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
         <img src="../assets/imagenesHome/Categorias/motherboards.jpg" alt="Motherboards" />
         <div class="overlay">
           <h3>PLACAS MADRE</h3>
-          <button>Ver productos</button>
+          <router-link to="/categoria/hardware/motherboard" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <img src="../assets/imagenesHome/Categorias/ram.jpg" alt="Memoria RAM" />
         <div class="overlay">
           <h3>MEMORIAS RAM</h3>
-          <button>Ver productos</button>
+          <router-link to="/categoria/hardware/memorias ram" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -64,7 +64,7 @@
         <img src="../assets/imagenesHome/Categorias/videocard.jpg" alt="Placas de Video" />
         <div class="overlay">
           <h3>PLACAS DE VIDEO</h3>
-          <button>Ver productos</button>
+          <router-link to="/categoria/hardware/placas de video" class="btn">Ver productos</router-link>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
         <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Periféricos" />
         <div class="overlay">
           <h3>PERIFÉRICOS</h3>
-          <button>Ver productos</button>
+          <router-link to="/categoria/perifericos" class="btn">Ver productos</router-link>
         </div>
       </div>
     </div>
@@ -427,7 +427,7 @@ const recientes = ref([
   gap: 0;
 }
 
-.card {
+.card  {
   flex: 1;
   position: relative;
   overflow: hidden;
@@ -436,6 +436,17 @@ const recientes = ref([
   cursor: pointer;
   padding: 0;
 }
+
+.btn {
+  width:50%; 
+  padding:0.6rem 1rem; 
+  border:none; 
+  border-radius:8px; 
+  background:var(--color-primary); 
+  color:var(--color-background); 
+  cursor:pointer; transition: all 0.25s ease-in-out; font-weight: 600
+}
+.btn:hover { background-color: var(--color-secondary); color: var(--color-foreground); }
 
 .card img {
   width: 100%;

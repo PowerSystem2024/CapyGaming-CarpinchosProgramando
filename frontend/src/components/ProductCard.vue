@@ -1,8 +1,10 @@
 <!-- Es la “tarjeta individual” de un producto; se encarga solo de cómo se ve y se comporta un producto dentro del catálogo.-->
 <template>
   <article class="product-card" @click="abrirDetalle(producto)">
+    <!-- Sección de imagen del producto -->
     <div class="img-wrap">
       <img :src="imagen" :alt="producto.nombre" @error="onError" />
+       <!-- Etiqueta visual que indica si hay stock o no -->
       <span class="badge" :class="badgeClass">{{ badgeText }}</span>
     </div>
 
@@ -11,11 +13,14 @@
       <p class="marca" v-if="producto.marca">{{ producto.marca }}</p>
       <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
       <p class="stock" v-if="showStock">Stock: {{ producto.stock }}</p>
+     
+       <!-- Botón para agregar al carrito; se desactiva si no hay stock -->
       <button 
         class="btn-add" 
         :disabled="producto.stock <= 0" 
         @click.stop="$emit('agregar', producto)"
       >
+      <!-- Íconos SVG para el carrito (normal y hover) -->
         <span class="icon-wrapper">
             <svg class="icon-cart default" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 16 16">
             <path fill="#161e35" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
@@ -24,6 +29,7 @@
             <path fill="currentColor" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
             </svg>
         </span>
+        <!-- Texto del botón según disponibilidad -->
         {{ producto.stock > 0 ? 'Agregar al carrito' : 'Sin stock' }}
       </button>
     </div>
@@ -37,25 +43,29 @@ import fallbackImg from '../assets/IconosNavBarFooter/placeholder.png'; // crea 
 
 const router = useRouter();
 
+// Define las propiedades que recibe el componente
 const props = defineProps({
-  producto: { type: Object, required: true },
-  showStock: { type: Boolean, default: true }
+  producto: { type: Object, required: true }, // Producto a mostrar
+  showStock: { type: Boolean, default: true } // Si se debe mostrar el stock
 });
 
+// Computa la imagen principal del producto o usa el placeholder si no hay
 const imagen = computed(() => {
   if (props.producto.imagenes && props.producto.imagenes.length) return props.producto.imagenes[0];
   return fallbackImg;
 });
 
+// Función que navega al detalle del producto al hacer clic en la tarjeta
 const abrirDetalle = (prod) => {
-  // Podés usar un router push a la página de detalle
-  // Por ejemplo: /producto/:id
-  router.push({ name: 'ProductoDetalle', params: { id: prod.id_producto } });
+    router.push({ name: 'ProductoDetalle', params: { id: prod.id_producto } });
 };
 
+// Texto de la etiqueta de stock
 const badgeText = computed(() => (props.producto.stock > 0 ? 'En stock' : 'Sin stock'));
-const badgeClass = computed(() => (props.producto.stock > 0 ? 'in-stock' : 'out-stock'));
+// Clase CSS para la etiqueta según disponibilidad
+const badgeClass = computed(() => (props.producto.stock > 0 ? 'in-stock' : 'out-stock')); 
 
+// Si la imagen falla al cargar, se reemplaza por el placeholder
 const onError = (e) => {
   e.target.src = fallbackImg;
 };

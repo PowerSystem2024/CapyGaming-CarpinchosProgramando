@@ -38,19 +38,19 @@
           <Dropdown title="Categorias" :items="Categorias" />
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Notebooks</router-link>
+          <router-link to="/categoria/notebooks">Notebooks</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Placas de Video</router-link>
+          <router-link to="/categoria/hardware/placas de video">Placas de Video</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Motherboards</router-link>
+          <router-link to="/categoria/hardware/motherboard">Motherboards</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Procesadores</router-link>
+          <router-link to="/categoria/hardware/procesadores">Procesadores</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Memorias Ram</router-link>
+          <router-link to="/categoria/hardware/memorias ram">Memorias Ram</router-link>
         </div>
       </div>
   </nav>
@@ -74,62 +74,62 @@ export default {
           title: 'Hardware',
           link: '/categoria/hardware',
           children: [
-            {title: 'Procesadores', link: '#'},
-            {title: 'Placas de Video', link: '#'},
-            {title: 'Motherboards', link:'#'},
-            {title: 'Memorias Ram', link: '#'},
-            {title: 'Discos Rígidos/SSD', link: '#'},
-            {title: 'Refrigeración', link: '#'},
-            {title: 'Gabinetes', link: '#'},
-            {title: 'Fuentes', link: '#'},
-            {title: 'Energía', link: '#'},
-            {title: 'Kits de Actualización', link: '#'}
+            {title: 'Procesadores', link: '/categoria/hardware/procesadores'},
+            {title: 'Placas de Video', link: '/categoria/hardware/placas de video'},
+            {title: 'Motherboards', link:'/categoria/hardware/motherboard'},
+            {title: 'Memorias Ram', link: '/categoria/hardware/memorias ram'},
+            {title: 'Almacenamiento', link: '/categoria/hardware/almacenamiento'},
+            {title: 'Refrigeración', link: '/categoria/hardware/refrigeracion'},
+            {title: 'Gabinetes', link: '/categoria/hardware/gabinetes'},
+            {title: 'Fuentes', link: '/categoria/hardware/fuentes'},
+            {title: 'Energía', link: '/categoria/hardware/energia'},
+            {title: 'Kits de Actualización', link: '/categoria/hardware/kit actualizacion'}
           ]
         },
         {
           title: 'Notebooks',
-          link: '#'
+          link: '/categoria/notebooks'
         },
         {
           title: 'Monitores',
-          link: '#'
+          link: '/categoria/monitores'
         },
         {
           title: 'Perifericos',
-          link: '#',
+          link: '/categoria/perifericos',
           children:[
-            {title: 'Teclados', link: '#'},
-            {title: 'Mouse', link: '#'},
-            {title: 'Auriculares', link:'#'},
-            {title: 'Micrófonos', link: '#'},
-            {title: 'Webcams', link: '#'},
-            {title: 'Joystick', link: '#'},
-            {title: 'Volantes', link: '#'},
-            {title: 'Mousepad', link: '#'},
-            {title: 'Stream Deck', link: '#'},
-            {title: 'Parlantes', link: '#'},
-            {title: 'Combos', link: '#'}
+            {title: 'Teclados', link: '/categoria/perifericos/teclado'},
+            {title: 'Mouse', link: '/categoria/perifericos/mouse'},
+            {title: 'Auriculares', link:'/categoria/perifericos/auriculares'},
+            {title: 'Micrófonos', link: '/categoria/perifericos/microfono'},
+            {title: 'Webcams', link: '/categoria/perifericos/webcam'},
+            {title: 'Joystick', link: '/categoria/perifericos/joystick'},
+            {title: 'Volantes', link: '/categoria/perifericos/volante'},
+            {title: 'Mousepad', link: '/categoria/perifericos/mouse pad'},
+            {title: 'Stream Deck', link: '/categoria/perifericos/streamdeck'},
+            {title: 'Parlantes', link: '/categoria/perifericos/parlante'},
+            {title: 'Combos', link: '/categoria/perifericos/combo'}
           ]
         },
         {
           title: 'Conectividad',
-          link: '#',
+          link: '/categoria/conectividad',
           children: [
-            {title: 'Placas de Red', link: '#'},
-            {title: 'Adaptadores WiFi', link: '#'}
+            {title: 'Placas de Red', link: '/categoria/conectividad/placas de red'},
+            {title: 'Adaptadores WiFi', link: '/categoria/conectividad/adaptador wifi'}
           ]
         },
         {
-          title: 'Gaming House',
-          link: '#',
+          title: 'Gaming',
+          link: '/categoria/gaming',
           children: [
-            {title: 'Consolas', link: '#'},
-            {title: 'Sillas Gamer', link: '#'}
+            {title: 'Consolas', link: '/categoria/gaming/consolas'},
+            {title: 'Sillas Gamer', link: '/categoria/gaming/silla'}
           ]
         },
         {
           title: 'Impresoras',
-          link: '#'
+          link: '/categoria/impresoras'
         }
     ],
     };
