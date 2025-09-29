@@ -10,6 +10,24 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Agrega esto después de las otras rutas y antes del middleware de errores
+
+// Ruta raíz para evitar el error
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'API de CapyGaming funcionando correctamente',
+    endpoints: {
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile',
+        forgotPassword: 'POST /api/auth/forgot-password'
+      },
+      health: 'GET /api/health'
+    }
+  });
+});
+
 // Middleware
 app.use(cors({
   origin: 'http://localhost:5173',
