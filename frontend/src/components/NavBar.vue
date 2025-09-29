@@ -23,7 +23,7 @@
             Ingresar
           </router-link>
 
-          <router-link to="carrito" class="cart-btn">
+          <router-link to="/carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
           <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
           </router-link>
