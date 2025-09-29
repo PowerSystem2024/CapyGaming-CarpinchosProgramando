@@ -19,15 +19,16 @@
       </ul>
     </aside>
 
-        <!-- Sección principal con los productos filtrados -->
+        <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
     <section class="productos-grid">
         <!-- Renderiza una tarjeta por cada producto filtrado -->
       <ProductCard 
-        v-for="p in productosFiltrados" 
-        :key="p.id" 
+        v-for="p in productos" 
+        :key="p.id_producto" 
         :producto="p"
       />
-      <div v-if="productosFiltrados.length === 0" class="no-result">
+       <!--Si no hay productos, muestra un mensaje de "sin resultados" -->
+      <div v-if="productos.length === 0" class="no-result">
         No se encontraron productos para esta categoría.
       </div>
     </section>
@@ -38,15 +39,14 @@
 import { useRoute } from 'vue-router';
 import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
-import { categoriasMap } from '../utils/categoriasMap';
 import ProductCard from '../components/ProductCard.vue';
 
-// Obtiene los parámetros de la URL actual
+// Obtiene los parámetros de la URL para saber que categoria y subcategoria estan activas
 const route = useRoute();
 const categoria = ref(route.params.categoria);
 const subcategoria = ref(route.params.subcategoria);
 // Estado reactivo para almacenar los productos desde el backend
-const productos = ref([]);
+
 
 // Observa cambios en la URL para actualizar la categoría y subcategoría
 watch(() => route.params.categoria, (nuevoValor) => {
@@ -59,38 +59,50 @@ watch(() => route.params.subcategoria, (nuevoValor) => {
 // Función para normalizar texto (evita errores por mayúsculas o espacios)
 const normalizar = (texto) => texto?.toLowerCase().trim();
 
-// Computa las subcategorías disponibles según el mapa de categorías
-const subcategorias = computed(() => {
-  const grupo = Object.keys(categoriasMap).find(key => normalizar(key) === normalizar(categoria.value));
-  return grupo ? categoriasMap[grupo] : null;
-});
+// Subcategorias dinamicas desde el backend. 
+// Cada vez que cambia la categoría, se hace una petición al backend para obtener sus subcategorías.
+// Se actualiza el menú lateral automáticamente.
+const subcategorias = ref([]);
 
-// Filtra los productos según la categoría y subcategoría actual
-const productosFiltrados = computed(() => {
-  return productos.value.filter(p => {
-    const cat = normalizar(p.categoria);
-    const sub = normalizar(p.subcategoria);
-    const routeCat = normalizar(categoria.value);
-    const routeSub = normalizar(subcategoria.value);
-
-    // Si no hay subcategoría en la URL, filtra solo por categoría
-    if (!subcategoria.value) {
-      return cat === routeCat;
+watch(
+  () => route.params.categoria,
+  async (nuevoValor) => {
+    categoria.value = nuevoValor;
+    try {
+      const res = await axios.get(`http://localhost:3001/api/categorias/${nuevoValor}/subcategorias`);
+      subcategorias.value = res.data;
+    } catch (err) {
+      console.error('Error al cargar subcategorías', err);
+      subcategorias.value = [];
     }
-    // Si hay subcategoría, filtra por ambas
-    return cat === routeCat && sub === routeSub;
-  });
-});
+  },
+  { immediate: true }
+);
 
-// Al montar el componente, hace una petición al backend para obtener los productos
-onMounted(async () => {
-  try {
-    const res = await axios.get('http://localhost:3001/api/productos');
-    productos.value = res.data;
-  } catch (err) {
-    console.error('Error al cargar productos desde el backend', err);
-  }
-});
+
+// Productos filtrados desd el backend
+//Cada vez que cambia la categoría o subcategoría, se hace una nueva petición al backend.
+//El backend devuelve solo los productos que coinciden con esos filtros.
+const productos = ref([]);
+watch(
+  () => [categoria.value, subcategoria.value],
+  async () => {
+    try {
+      const res = await axios.get('http://localhost:3001/api/productos', {
+        params: {
+          categoria: categoria.value,
+          subcategoria: subcategoria.value || null
+        }
+      });
+      productos.value = res.data;
+    } catch (err) {
+      console.error('Error al cargar productos desde el backend', err);
+    }
+  },
+  { immediate: true }
+);
+
+
 </script>
 
 <style scoped>
