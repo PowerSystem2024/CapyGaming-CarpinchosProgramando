@@ -26,11 +26,19 @@
         v-for="p in productos" 
         :key="p.id_producto" 
         :producto="p"
+        @agregar="agregarAlCarrito"
       />
        <!--Si no hay productos, muestra un mensaje de "sin resultados" -->
       <div v-if="productos.length === 0" class="no-result">
         No se encontraron productos para esta categoría.
       </div>
+      <CarritoModalPreview 
+        :visible="mostrarModal" 
+        :carrito="getCart()" 
+        :ultimoProducto="ultimoProducto" 
+        @close="mostrarModal = false"
+      />
+
     </section>
   </div>
 </template>
@@ -40,7 +48,12 @@ import { useRoute } from 'vue-router';
 import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard.vue';
+import { addToCart } from '../utils/cartUtils';
+import CarritoModalPreview from '../components/CarritoModalPreview.vue';
+import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto.js';
+import { getCart } from '../utils/cartUtils';
 
+const mostrarModal = ref(false); // estado para mostrar modal
 // Obtiene los parámetros de la URL para saber que categoria y subcategoria estan activas
 const route = useRoute();
 const categoria = ref(route.params.categoria);
@@ -102,6 +115,14 @@ watch(
   { immediate: true }
 );
 
+const agregarAlCarrito = (producto) => {
+  const resultado = addToCart(producto);
+  if (resultado.success){
+    setUltimoProducto(producto); // guarda el producto agregado
+    mostrarModal.value = true; // muestra el modal
+  }
+  console.log(resultado.message);
+};
 
 </script>
 

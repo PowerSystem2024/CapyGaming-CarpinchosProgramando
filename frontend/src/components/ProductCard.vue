@@ -18,7 +18,7 @@
       <button 
         class="btn-add" 
         :disabled="producto.stock <= 0" 
-        @click.stop="$emit('agregar', producto)"
+        @click.stop="$emit('agregar',{ ...producto, id: producto.id_producto})"
       >
       <!-- Íconos SVG para el carrito (normal y hover) -->
         <span class="icon-wrapper">
