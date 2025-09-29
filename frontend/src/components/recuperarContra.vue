@@ -1,42 +1,45 @@
+[file name]: recuperarContra.vue
+[file content begin]
 <template>
-  <div class="auth-page">
-    <div class="auth-card">
-      <h1>Recuperar contraseña</h1>
-      <p class="subtitle">
-        Ingresá tu email y te enviaremos instrucciones para restablecer tu contraseña.
+  <div class="auth-modal-content">
+    <h1>Recuperar contraseña</h1>
+    <p class="subtitle">
+      Ingresá tu email y te enviaremos instrucciones para restablecer tu contraseña.
+    </p>
+
+    <form @submit.prevent="onSubmit" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          v-model.trim="email"
+          placeholder="ejemplo@mail.com"
+          autocomplete="email"
+          required
+        />
+        <p v-if="error" class="error">{{ error }}</p>
+      </div>
+
+      <button class="btn primary" :disabled="loading">
+        <span v-if="loading">Enviando...</span>
+        <span v-else>Enviar enlace</span>
+      </button>
+
+      <!-- CAMBIO: router-link → link con evento -->
+      <p class="alt">
+        ¿Recordaste tu contraseña?
+        <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
       </p>
-
-      <form @submit.prevent="onSubmit" novalidate>
-        <div class="field">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            v-model.trim="email"
-            placeholder="ejemplo@mail.com"
-            autocomplete="email"
-            required
-          />
-          <p v-if="error" class="error">{{ error }}</p>
-        </div>
-
-        <button class="btn primary" :disabled="loading">
-          <span v-if="loading">Enviando...</span>
-          <span v-else>Enviar enlace</span>
-        </button>
-
-        <p class="alt">
-          ¿Recordaste tu contraseña?
-          <router-link class="link" to="/inicioSesion">Iniciar sesión</router-link>
-        </p>
-      </form>
-    </div>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import AuthService from '../services/authService.js'
+import { ref, defineEmits } from 'vue'
+
+// AGREGAR: Emits para comunicación con el modal
+const emit = defineEmits(['switch-view'])
 
 const email = ref('')
 const error = ref('')
@@ -68,6 +71,8 @@ async function onSubmit() {
     if (response.ok) {
       alert('Se envió un enlace de recuperación a: ' + email.value)
       email.value = ''
+      // Opcional: ir al login después del éxito
+      emit('switch-view', 'login')
     } else {
       error.value = data.error || 'Error al enviar el enlace'
     }
@@ -77,9 +82,20 @@ async function onSubmit() {
     loading.value = false
   }
 }
+
+// AGREGAR: Función para cambiar a login
+function goToLogin() {
+  emit('switch-view', 'login')
+}
 </script>
 
 <style scoped>
+
+.auth-modal-content {
+  padding: 2rem;
+  background-color: var(--color-card);
+}
+
 .auth-page {
   min-height: 100vh;
   display:flex; align-items:center; justify-content:center;

@@ -18,10 +18,10 @@
 
       <!-- Opciones usuario -->
       <div class="user-options">
-          <router-link to="/inicioSesion" class="user-btn">
+          <button class="user-btn" @click="abrirAuthModal">
             <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg"/>
             Ingresar
-          </router-link>
+          </button>
 
           <router-link to="carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg"/>
@@ -149,6 +149,10 @@ export default {
       const cart = getCart();
       this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
       //cart.value = cart;
+    },
+    abrirAuthModal() {
+      // Emitir evento para que App.vue abra el modal
+      this.$emit('abrirAuth');
     }
   }
 };

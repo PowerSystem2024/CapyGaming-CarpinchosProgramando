@@ -1,130 +1,133 @@
+[file name]: registro.vue
+[file content begin]
 <template>
-  <div class="auth-page">
-    <div class="auth-card">
-      <h1>Crear cuenta</h1>
+  <div class="auth-modal-content">
+    <h1>Crear cuenta</h1>
 
-      <form @submit.prevent="onSubmit" novalidate>
-        <div class="field">
-          <label for="name">Nombre y apellido</label>
+    <form @submit.prevent="onSubmit" novalidate>
+      <!-- ... todos los campos se mantienen igual ... -->
+      <div class="field">
+        <label for="name">Nombre y apellido</label>
+        <input
+          id="name"
+          type="text"
+          v-model.trim="form.name"
+          placeholder="ej: Ana Pérez"
+          autocomplete="name"
+        />
+        <p v-if="errors.name" class="error">{{ errors.name }}</p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-row">
           <input
-            id="name"
-            type="text"
-            v-model.trim="form.name"
-            placeholder="ej: Ana Pérez"
-            autocomplete="name"
+            id="email"
+            type="email"
+            v-model.trim="form.email"
+            placeholder="ejemplo@mail.com"
+            autocomplete="email"
+            required
           />
-          <p v-if="errors.name" class="error">{{ errors.name }}</p>
         </div>
+        <p v-if="errors.email" class="error">{{ errors.email }}</p>
+      </div>
 
-        <div class="field">
-          <label for="email">Email</label>
-          <div class="input-row">
-            <input
-              id="email"
-              type="email"
-              v-model.trim="form.email"
-              placeholder="ejemplo@mail.com"
-              autocomplete="email"
-              required
-            />
-          </div>
-          <p v-if="errors.email" class="error">{{ errors.email }}</p>
-        </div>
-
-        <div class="field">
-          <label for="password">Contraseña</label>
-          <div class="password-row">
-            <input
-              id="password"
-              :type="showPass ? 'text' : 'password'"
-              v-model="form.password"
-              minlength="6"
-              autocomplete="new-password"
-              required
-            />
-            <button class="ghost" type="button" @click="showPass = !showPass">
-              {{ showPass ? 'Ocultar' : 'Mostrar' }}
-            </button>
-          </div>
-          <p v-if="errors.password" class="error">{{ errors.password }}</p>
-        </div>
-
-        <div class="field">
-          <label for="confirm">Confirmar contraseña</label>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="password-row">
           <input
-            id="confirm"
+            id="password"
             :type="showPass ? 'text' : 'password'"
-            v-model="form.confirm"
+            v-model="form.password"
             minlength="6"
             autocomplete="new-password"
             required
           />
-          <p v-if="errors.confirm" class="error">{{ errors.confirm }}</p>
+          <button class="ghost" type="button" @click="showPass = !showPass">
+            {{ showPass ? 'Ocultar' : 'Mostrar' }}
+          </button>
         </div>
+        <p v-if="errors.password" class="error">{{ errors.password }}</p>
+      </div>
 
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input
-            type="text"
-            id="telefono"
-            class="phone-number-input"
-            v-model="form.telefono"
-            required
-            placeholder="Ingrese su número de teléfono"
-          />
-          <p v-if="errors.telefono" class="error">{{ errors.telefono }}</p>
-        </div>
+      <div class="field">
+        <label for="confirm">Confirmar contraseña</label>
+        <input
+          id="confirm"
+          :type="showPass ? 'text' : 'password'"
+          v-model="form.confirm"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        />
+        <p v-if="errors.confirm" class="error">{{ errors.confirm }}</p>
+      </div>
 
-        <div class="form-group">
-          <label for="dni">DNI</label>
-          <input
-            type="text"
-            id="dni"
-            v-model="form.dni"
-            required
-            placeholder="Ingrese su DNI"
-          />
-          <p v-if="errors.dni" class="error">{{ errors.dni }}</p>
-        </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input
+          type="text"
+          id="telefono"
+          class="phone-number-input"
+          v-model="form.telefono"
+          required
+          placeholder="Ingrese su número de teléfono"
+        />
+        <p v-if="errors.telefono" class="error">{{ errors.telefono }}</p>
+      </div>
 
-        <div class="form-group">
-          <label for="direccion">Dirección</label>
-          <input
-            type="text"
-            id="direccion"
-            v-model="form.direccion"
-            required
-            placeholder="Ingrese su dirección"
-          />
-          <p v-if="errors.direccion" class="error">{{ errors.direccion }}</p>
-        </div>
+      <div class="form-group">
+        <label for="dni">DNI</label>
+        <input
+          type="text"
+          id="dni"
+          v-model="form.dni"
+          required
+          placeholder="Ingrese su DNI"
+        />
+        <p v-if="errors.dni" class="error">{{ errors.dni }}</p>
+      </div>
 
-        <label class="checkbox">
-          <input type="checkbox" v-model="form.accept" />
-          Acepto los términos y condiciones
-        </label>
-        <p v-if="errors.accept" class="error">{{ errors.accept }}</p>
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input
+          type="text"
+          id="direccion"
+          v-model="form.direccion"
+          required
+          placeholder="Ingrese su dirección"
+        />
+        <p v-if="errors.direccion" class="error">{{ errors.direccion }}</p>
+      </div>
 
-        <button class="btn primary" :disabled="loading">
-          <span v-if="loading">Creando cuenta...</span>
-          <span v-else>Registrarme</span>
-        </button>
+      <label class="checkbox">
+        <input type="checkbox" v-model="form.accept" />
+        Acepto los términos y condiciones
+      </label>
+      <p v-if="errors.accept" class="error">{{ errors.accept }}</p>
 
-        <p class="alt">
-          ¿Ya tenés cuenta?
-          <router-link class="link" to="/inicioSesion">Iniciar sesión</router-link>
-        </p>
-      </form>
-    </div>
+      <button class="btn primary" :disabled="loading">
+        <span v-if="loading">Creando cuenta...</span>
+        <span v-else>Registrarme</span>
+      </button>
+
+      <!-- CAMBIO: router-link → link con evento -->
+      <p class="alt">
+        ¿Ya tenés cuenta?
+        <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
+      </p>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, defineEmits } from 'vue'
 import { useAuth } from '../composables/useAuth.js'
 
-const router = useRouter()
+// AGREGAR: Emits para comunicación con el modal
+const emit = defineEmits(['success', 'switch-view'])
+
 const { register } = useAuth()
 
 const form = reactive({
@@ -153,7 +156,6 @@ const showPass = ref(false)
 const loading = ref(false)
 
 function validate() {
-  // Limpiar errores anteriores
   Object.keys(errors).forEach(key => errors[key] = '');
   
   let isValid = true;
@@ -207,7 +209,6 @@ async function onSubmit() {
   loading.value = true;
   
   try {
-    // Separar nombre y apellido
     const nameParts = form.name.split(' ');
     const nombre = nameParts[0] || '';
     const apellido = nameParts.slice(1).join(' ') || '';
@@ -223,10 +224,9 @@ async function onSubmit() {
     });
 
     if (result.success) {
-      // Redirigir al home después del registro exitoso
-      router.push('/');
+      // CAMBIO: Emitir éxito en lugar de redirigir
+      emit('success')
     } else {
-      // Manejar errores específicos del backend
       if (result.error.includes('ya existe')) {
         errors.email = 'Este email o DNI ya está registrado';
       } else {
@@ -239,10 +239,21 @@ async function onSubmit() {
     loading.value = false;
   }
 }
+
+// AGREGAR: Función para cambiar a login
+function goToLogin() {
+  emit('switch-view', 'login')
+}
 </script>
 
 <style scoped>
 /* Layout */
+
+.auth-modal-content {
+  padding: 2rem;
+  background-color: var(--color-card);
+}
+
 .auth-page{
   min-height: 100vh;
   display:flex; align-items:center; justify-content:center;
