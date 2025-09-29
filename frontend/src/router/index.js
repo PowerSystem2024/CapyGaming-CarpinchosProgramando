@@ -14,6 +14,7 @@ import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
+import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 
 //Definir las rutas de tu aplicacion
 const routes = [
@@ -54,7 +55,7 @@ const routes = [
         meta: { requiresAuth: false }
     },
     {
-        path: '/quienesSomos',
+        path: '/quienesSomos', 
         name: 'quienesSomos',
         component: quienesSomos,
         meta: { requiresAuth: false }
@@ -84,6 +85,12 @@ const routes = [
         meta: { requiresAuth: false }
     },
     {
+        path: '/categoria/:categoria/:subcategoria?',  // Ruta dinámica para categorías y subcategorías
+        name: 'CatalogoCategoria',
+        component: CatalogoCategoria,
+        meta: { requiresAuth: false }
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
         component: NotFound
@@ -99,7 +106,7 @@ const router = createRouter({
     }
 });
 
-// Guard de navegación mejorado
+// Guard de navegación mejorado (COMBINADO)
 router.beforeEach((to, from, next) => {
     const isAuthenticated = AuthService.isAuthenticated();
     
