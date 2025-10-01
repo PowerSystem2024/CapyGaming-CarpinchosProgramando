@@ -50,9 +50,10 @@
           <router-link to="/ofertas">Procesadores</router-link>
         </div>
         <div class="menu-item">
-          <router-link to="/ofertas">Memorias Ram</router-link>
+          <router-link to="/ofertas">Memoria RAM</router-link>
         </div>
       </div>
+
   </nav>
 </template>
 
@@ -158,222 +159,106 @@ export default {
 <style scoped>
 @import url(../assets/styles/base.css);
 .navbar {
-  position: fixed;
-  top: 0px;
-  left: 0;
-  width: 100%;
-  min-height: auto;
-  background: var(--color-background);
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  z-index: 1000; /*Para que el navbar siempre este por arriba de los elementos */
+  background-color: #161e35;
+  padding: 15px 0;
 }
 
 .navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  background: var(--color-background);
   justify-content: space-between;
   align-items: center;
-  max-width: 1250px; /* 👈 limita el ancho */
-  margin: 0 auto;    /* 👈 lo centra */
-  height: 100%;
-  padding-bottom: 5px;
+  padding: 0 20px;
 }
 
-
-.logo {
-  display: flex;
-  align-items: center;
-  width: auto;
-  max-height: 100%;
-  gap: 0.5rem;
-  background: none;
-  padding-top: 0.5rem;
+.logo img {
+  height: 50px;
 }
-
-.logo img{
-    max-height: 80px;
-    background: none;
-}
-
-.logo a:hover {
-  background: none;  /* evita el fondo en hover */
-  color: inherit;    /* mantiene el color */
-}
-
 
 .search {
-  position: relative;
   display: flex;
   align-items: center;
-}
-
-.search img{
-  padding-top: 3px;
-  max-height: 25px;
+  flex: 1;
+  margin: 0 20px;
+  max-width: 500px;
 }
 
 .search input {
-  width: 550px;
-  height: 45px;
-  padding-left: 10px;
-  padding-right: 40px;
-  border-radius: 5px;
-  border: 1.9px solid var(--color-primary);
-  background-color: none;
-  outline: none;
-  font-size: 0.9rem;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 5px 0 0 5px;
 }
 
-.search button {
-  position: absolute;
-  right: 5px;
-  margin-left: 0.5rem;
+.search-btn {
+  background-color: #fbbf24;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
-  background-color: #00103100;
-  border: rgba(245, 245, 220, 0);
+}
+
+.search-btn img {
+  width: 20px;
+  height: 20px;
 }
 
 .user-options {
-  display: flex;         /* pone los botones en fila */
-  align-items: center;   /* centra verticalmente */
-  gap: 1rem;             /* espacio entre “Ingresá” y carrito */
-}
-
-.user-options .user-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: 1rem;
-  border: none;
+  gap: 20px;
+}
+
+.user-btn, .cart-btn {
+  background-color: transparent;
   color: white;
-  cursor: pointer;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-  background-color: var(--color-primary);
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  text-decoration: none; /* 👈 saca subrayado */
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.cart-btn{
-  position: relative;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.user-btn{
-  background-color: var(--color-primary);
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-}
-
-.user-options button {
+  text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: 1rem;
-  border: none;
-  color: rgb(255, 255, 255);
+  gap: 5px;
   cursor: pointer;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-  transition: background 0.2s ease, transform 0.1s ease;
+  position: relative;
 }
 
-.cart-btn img{
-  max-height: 28px;
+.user-btn img, .cart-btn img {
+  width: 24px;
+  height: 24px;
 }
 
 .cart-badge {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: var(--color-destructive);
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
+  top: -8px;
+  right: -8px;
+  background-color: #fbbf24;
+  color: #161e35;
   border-radius: 50%;
   padding: 2px 6px;
-}
-
-.user-btn img{
-  max-height: 28px;
-}
-
-.sub-navbar .router-link-exact-active {
-  color: var(--color-primary);                 /* letras en naranja */
-  border-bottom: 3px solid var(--color-primary); /* línea en naranja */
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .linea {
-  border-top: 1px solid var(--color-card);
-  margin: 0px auto;
-  width: 100%;
+  border-bottom: 1px solid #fbbf24;
+  margin-top: 15px;
 }
 
-.logo a,
-.logo a:hover,
-.logo a:focus{
-  background-color: rgba(245, 245, 220, 0);
-}
-.user-options .user-btn.router-link-active,
-.user-options .user-btn.router-link-exact-active {
-  background-color: var(--color-primary) !important;
-  color: white !important;
-}
-
-/* Estilos para subnavbar */
-/* Sub-navbar */
 .sub-navbar {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 0;
-  gap: 0.1rem;
+  gap: 30px;
+  padding: 10px 0;
+  background-color: #161e35;
 }
 
-.sub-navbar .menu-item {
-  margin: 0 1rem;
-}
-
-.sub-navbar a {
-  color: var(--color-foreground);
+.menu-item a {
+  color: white;
   text-decoration: none;
-  padding-bottom: 3px;
-  border-bottom: 3px solid transparent; /* base invisible */
-  transition: color 0.3s, border-bottom-color 0.3s;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
-.sub-navbar a:hover {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-}
-
-.sub-navbar a.router-link-exact-active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-}
-
-.menu-item {
-  color: var(--color-foreground);
-  font-size: 1rem;
-  padding: 5px 15px;
-  padding-bottom: 0;
-  position: relative;
-  text-align: center;
-
-  display: flex;
-  border-bottom: transparent;
-  transition: color 0.3s, border-bottom-color 0.3s;
-
-}
-
-.menu-item.active,
-.menu-item:hover {
-  color: var(--color-primary);
-  background-color: none;
-  border-bottom-color: var(--color-primary) ;
+.menu-item a:hover {
+  color: #fbbf24;
 }
 </style>
-

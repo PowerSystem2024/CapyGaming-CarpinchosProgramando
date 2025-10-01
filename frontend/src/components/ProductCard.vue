@@ -1,4 +1,4 @@
-<!-- Es la “tarjeta individual” de un producto; se encarga solo de cómo se ve y se comporta un producto dentro del catálogo.-->
+<!-- Es la "tarjeta individual" de un producto; se encarga solo de cómo se ve y se comporta un producto dentro del catálogo.-->
 <template>
   <article class="product-card" @click="abrirDetalle(producto)">
     <div class="img-wrap">
@@ -11,9 +11,9 @@
       <p class="marca" v-if="producto.marca">{{ producto.marca }}</p>
       <p class="precio">$ {{ producto.precio.toLocaleString() }}</p>
       <p class="stock" v-if="showStock">Stock: {{ producto.stock }}</p>
-      <button 
-        class="btn-add" 
-        :disabled="producto.stock <= 0" 
+      <button
+        class="btn-add"
+        :disabled="producto.stock <= 0"
         @click.stop="$emit('agregar', producto)"
       >
         <span class="icon-wrapper">

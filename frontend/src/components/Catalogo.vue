@@ -5,10 +5,10 @@
     <div v-if="error">{{ error }}</div>
 
     <div class="grid">
-      <ProductCard 
-        v-for="p in productos" 
-        :key="p.id" 
-        :producto="p" 
+      <ProductCard
+        v-for="p in productos"
+        :key="p.id"
+        :producto="p"
         @agregar="onAgregar"
       />
     </div>
@@ -19,6 +19,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import ProductCard from './ProductCard.vue';
+import { addToCart } from '../utils/cartUtils';
 
 const productos = ref([]);
 const loading = ref(false);
@@ -39,8 +40,13 @@ const load = async () => {
 onMounted(load);
 
 const onAgregar = (prod) => {
-  // por ahora, solo un console.log; luego se integra carrito
-  console.log('Agregar al carrito:', prod.id);
+  const result = addToCart(prod);
+  if (result.success) {
+    console.log('✅ Producto agregado al carrito:', prod.nombre);
+  } else {
+    console.warn('⚠️ Error:', result.message);
+    alert(result.message);
+  }
 };
 </script>
 
