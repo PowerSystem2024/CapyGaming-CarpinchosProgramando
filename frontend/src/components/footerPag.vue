@@ -14,13 +14,13 @@ import Marcas from '../components/marcas.vue';
       <div class="footer-section">
         <h4>Productos</h4>
         <ul>
-          <li><a href="#">Hardware</a></li>
-          <li><a href="#">Notebooks</a></li>
-          <li><a href="#">Monitores</a></li>
-          <li><a href="#">Periféricos</a></li>
-          <li><a href="#">Conectividad</a></li>
-          <li><a href="#">Gaming House</a></li>
-          <li><a href="#">Impresoras</a></li>
+          <li><router-link to="/categoria/hardware">Hardware</router-link></li>
+          <li><router-link to="/categoria/notebooks">Notebooks</router-link></li>
+          <li><router-link to="/categoria/monitores">Monitores</router-link></li>
+          <li><router-link to="/categoria/perifericos">Periféricos</router-link></li>
+          <li><router-link to="/categoria/conectividad">Conectividad</router-link></li>
+          <li><router-link to="/categoria/gaming">Gaming</router-link></li>
+          <li><router-link to="/categoria/impresoras">Impresoras</router-link></li>
         </ul>
       </div>
 

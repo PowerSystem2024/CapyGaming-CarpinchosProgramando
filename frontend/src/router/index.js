@@ -13,6 +13,7 @@ import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
+import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -48,12 +49,12 @@ const routes = [
         component: marcas
     },
     {
-        path: '/quienesSomos',
+        path: '/quienesSomos', 
         name: 'quienesSomos',
         component: quienesSomos
     },
     {
-        path: "/:pathMatch(.*)*",
+        path: "/:pathMatch(.*)*", // Ruta comodín para páginas no encontradas
         name: "NotFound",
         component: NotFound
     },
@@ -76,6 +77,11 @@ const routes = [
         path: '/productoDetalle/:id',
         name: 'ProductoDetalle',
         component: ProductoDetalle
+    },
+    {
+        path: '/categoria/:categoria/:subcategoria?',  // Ruta dinámica para categorías y subcategorías
+        name: 'CatalogoCategoria',
+        component: CatalogoCategoria
     }
 ]
 
@@ -89,10 +95,11 @@ const router = createRouter({
     }
 });
 
+// Middleware de navegación: redirige usuarios autenticados si intentan ir a login o registro
 router.beforeEach((to) => {
-    const isAuth = !!localStorage.getItem('auth')
+    const isAuth = !!localStorage.getItem('auth')  // Verifica si hay sesión activa
     if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro')) {
-        return { name: 'Home' }
+        return { name: 'Home' } // Redirige al home si ya está logueado
     }
 })
 

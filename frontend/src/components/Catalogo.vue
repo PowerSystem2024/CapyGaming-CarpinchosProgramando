@@ -1,3 +1,5 @@
+<!-- Este fue creado para ver si funcionaba desde la base de datos, hay que quitarlo de las rutas para que el
+ usuario navegue solo por CatalogoCategoria.vue -->
 <template>
   <div>
     <h1>Catálogo</h1>

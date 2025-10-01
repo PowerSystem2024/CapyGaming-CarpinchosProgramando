@@ -1,19 +1,14 @@
 <template>
     <div class="menu-item" @mouseenter="isOpen=true" @mouseleave="isOpen = false">
     <div class="dropdown-trigger">
-        <a href="#">{{ title }}</a>
-
-        <span class="icon-wrapper">
-            <svg class="icon-drop default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#FDEBD0" d="m11.808 14.77l-3.715-4.458A.8.8 0 0 1 8.708 9h6.584a.8.8 0 0 1 .614 1.312l-3.714 4.458a.25.25 0 0 1-.384 0"/></svg>
-            <svg class="icon-drop hover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#F39C12" d="m11.808 14.77l-3.715-4.458A.8.8 0 0 1 8.708 9h6.584a.8.8 0 0 1 .614 1.312l-3.714 4.458a.25.25 0 0 1-.384 0"/></svg>
-        </span>
+        <a href="#">{{ title }} ⮟</a>
     </div>
 
     <div class="sub-menu" v-if="isOpen">
        <div v-for="(item, i) in items" :key="i" class="menu-drop" @mouseenter="hovered = i" @mouseleave="hovered = null">
     <a :href="item.link" class="menu-link">
         <span> {{ item.title }} </span> 
-        <span v-if="item.children" class="arrow-icon">▶</span>
+        <span v-if="item.children" class="arrow-icon">⮞</span>
     </a>
 
     <!-- Submenú a la derecha -->
@@ -52,7 +47,6 @@
   justify-content: center;
   font-size: 1rem;
   cursor: pointer;
-  background-color: transparent;
 }
 
 .dropdown-trigger a {
@@ -67,21 +61,13 @@
   color: var(--color-primary);
 }
 
-.menu-item svg {
-    width: 30px;
-}
-.menu-item a{
-    color: inherit;
-} 
-
 .menu-drop {
     position: relative;
     display: block;             /* se comporta como bloque completo */
     padding: 10px 10px;         /* espacio dentro de la casilla */
     border-radius: 5px;  
     cursor: pointer;            
-    background-color: var(--color-card);
-
+    background-color: var(--color-background);
 }
 
 .menu-drop:hover {
@@ -89,64 +75,35 @@
 }
 
 /* Letra más fina */
-nav .sub-menu .menu-drop a {
+.sub-menu .menu-drop a {
     font-weight: 300; /* más liviano que normal (400) */
 }
 
-nav .menu-item .sub-menu {
+.menu-item .sub-menu {
     position: absolute;
     text-align: left;
     top: calc(100% + 0px);
-    background: var(--color-card);
+    background: var(--color-background);
     padding: 10px;
     left: 50%;
     transform: translateX(-50%);
     width: max-content;
-}
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 4px 8px #10181fa9; /* sombra hacia abajo */
 
-/* Para que el icono del drop cambie de color */
-.icon-wrapper {
-    display: flex;
-    background: transparent;
 }
-
-.icon-drop {
-  width: 20px;
-  vertical-align: middle;
-  transition: all 0.01s ease-in-out;
-  fill: currentColor;
-  background-color: transparent;
-}
-
-.icon-drop.hover {
-    position: absolute;
-    opacity: 0;
-}
-
-.dropdown-trigger:hover {
-  color: var(--color-primary);
-}
-
-.dropdown-trigger:hover .icon-drop.default {
-  opacity: 0;
-}
-
-.dropdown-trigger:hover .icon-drop.hover {
-  opacity: 1;
-}
-
 
 /* ESTILOS PARA DROP DEL DROP */
 .submenu-right {
   position: absolute;
-  top: 0;
   top: calc(100% - 55px);
   left: calc(100% - 0px);
-  background: var(--color-card);
-  background-color: var(--color-card);
+  background-color: var(--color-background);
   padding: 10px;
   white-space: nowrap;
   border-radius: 5px;
+  box-shadow: 4px 0 8px #111920; /* sombra hacia la derecha */
 }
 
 .submenu-item a {
@@ -155,7 +112,6 @@ nav .menu-item .sub-menu {
   color: var(--color-foreground);
   text-decoration: none;
   font-weight: 400;
-  background: var(--color-card) !important;
 }
 
 .submenu-item a:hover {
@@ -169,12 +125,15 @@ nav .menu-item .sub-menu {
 .arrow-icon {
   justify-content: right;
   margin-left: 8px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--color-foreground);
 }
-.menu-drop:hover .arrow-icon {
+
+
+.menu-drop:hover  .arrow-icon {
   color: var(--color-background);
   background: transparent;
+   font-weight: 400 !important;
 }
 
 .menu-link {
@@ -184,14 +143,17 @@ nav .menu-item .sub-menu {
   color: var(--color-foreground);
   text-decoration: none;
   font-weight: 400;
-  background: none;
-  background-color: transparent;
+  background: transparent;
   box-sizing: border-box;
 }
+.menu-drop:hover .menu-link {
+  color: var(--color-background); /* o usa un color oscuro como #000 */
+}
 
-.menu-drop:hover .menu-link .arrow-icon {
-  color: var(--color-background);
- font-weight: 400 !important;
+.menu-drop:hover .menu-link span {
+  color: var(--color-background); /* aplica también a los spans internos */
+  background: transparent;
+  font-weight: 400;
 }
 
 
