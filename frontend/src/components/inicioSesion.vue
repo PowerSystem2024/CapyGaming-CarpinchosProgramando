@@ -1,5 +1,3 @@
-[file name]: inicioSesion.vue
-[file content begin]
 <template>
   <div class="auth-modal-content">
     <h1>Iniciar sesión</h1>
@@ -61,7 +59,7 @@
 import { reactive, ref, defineEmits } from 'vue'
 import { useAuth } from '../composables/useAuth.js'
 
-// AGREGAR: Emits para comunicación con el modal
+// Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
 
 const { login } = useAuth()
@@ -99,7 +97,7 @@ async function onSubmit() {
     const result = await login(form.email, form.password)
 
     if (result.success) {
-      // CAMBIO: Emitir éxito en lugar de redirigir
+      // Emitir éxito en lugar de redirigir
       emit('success')
     } else {
       // Mostrar error específico del backend
@@ -117,7 +115,7 @@ async function onSubmit() {
   }
 }
 
-// AGREGAR: Funciones para cambiar entre formularios
+// Funciones para cambiar entre formularios
 function goToRegister() {
   emit('switch-view', 'register')
 }
@@ -133,7 +131,6 @@ function goToForgot() {
   background-color: var(--color-card);
 }
 
-/* Mantener todos los estilos existentes igual */
 .auth-modal-content h1 {
   margin: 0 0 1rem;
   font-weight: 700;
@@ -258,4 +255,3 @@ p.alt {
   background-color: var(--color-card);
 }
 </style>
-[file content end]

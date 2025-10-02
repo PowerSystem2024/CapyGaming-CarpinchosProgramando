@@ -10,9 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Agrega esto después de las otras rutas y antes del middleware de errores
-
-// Ruta raíz para evitar el error
+// Ruta raíz para evitar error
 app.get('/', (req, res) => {
   res.json({ 
     message: 'API de CapyGaming funcionando correctamente',
@@ -37,7 +35,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', authRoutes);
-app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
+app.use('/api', productRoutes); 
 
 
 // Ruta de prueba

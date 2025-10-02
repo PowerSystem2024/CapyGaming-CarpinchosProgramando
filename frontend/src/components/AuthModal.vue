@@ -1,13 +1,9 @@
-[file name]: AuthModal.vue
-[file content begin]
 <template>
   <div v-if="visible" class="modal-overlay" @click="close">
     <div class="modal-content" @click.stop>
       <!-- Botón cerrar -->
       <button class="close-btn" @click="close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2"/>
-        </svg>
+        ×
       </button>
 
       <!-- Contenido dinámico -->
@@ -150,4 +146,3 @@ function handleSuccess() {
   }
 }
 </style>
-[file content end]

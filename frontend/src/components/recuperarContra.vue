@@ -1,5 +1,3 @@
-[file name]: recuperarContra.vue
-[file content begin]
 <template>
   <div class="auth-modal-content">
     <h1>Recuperar contraseña</h1>
@@ -38,7 +36,7 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 
-// AGREGAR: Emits para comunicación con el modal
+// Emits para comunicación con el modal
 const emit = defineEmits(['switch-view'])
 
 const email = ref('')
@@ -71,7 +69,7 @@ async function onSubmit() {
     if (response.ok) {
       alert('Se envió un enlace de recuperación a: ' + email.value)
       email.value = ''
-      // Opcional: ir al login después del éxito
+      // Ir al login después del éxito
       emit('switch-view', 'login')
     } else {
       error.value = data.error || 'Error al enviar el enlace'
@@ -83,7 +81,7 @@ async function onSubmit() {
   }
 }
 
-// AGREGAR: Función para cambiar a login
+// Función para cambiar a login
 function goToLogin() {
   emit('switch-view', 'login')
 }

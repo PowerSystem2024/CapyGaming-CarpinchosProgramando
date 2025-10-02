@@ -1,11 +1,8 @@
-[file name]: registro.vue
-[file content begin]
 <template>
   <div class="auth-modal-content">
     <h1>Crear cuenta</h1>
 
     <form @submit.prevent="onSubmit" novalidate>
-      <!-- ... todos los campos se mantienen igual ... -->
       <div class="field">
         <label for="name">Nombre y apellido</label>
         <input
@@ -125,7 +122,7 @@
 import { reactive, ref, defineEmits } from 'vue'
 import { useAuth } from '../composables/useAuth.js'
 
-// AGREGAR: Emits para comunicación con el modal
+// Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
 
 const { register } = useAuth()
@@ -224,7 +221,7 @@ async function onSubmit() {
     });
 
     if (result.success) {
-      // CAMBIO: Emitir éxito en lugar de redirigir
+      // Emitir éxito en lugar de redirigir
       emit('success')
     } else {
       if (result.error.includes('ya existe')) {
@@ -240,7 +237,7 @@ async function onSubmit() {
   }
 }
 
-// AGREGAR: Función para cambiar a login
+// Función para cambiar a login
 function goToLogin() {
   emit('switch-view', 'login')
 }
