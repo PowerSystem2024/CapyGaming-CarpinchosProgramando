@@ -68,15 +68,15 @@ export default {
     max-width: 600px;
     margin: 40px auto;
     padding: 25px;
-    background: rgb(202, 106, 0); /* Fondo */
+    background: rgb(202, 16, 0, 0); /* Fondo */
     border-radius: 8px;
     display: flex;
     flex-direction: column;
 
-    /* Borde fino real */
-    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    
+    border: 1px solid #F39C12;;
 
-    /* Sombra muy fina */
+    /* Sombra fina */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 
     outline: none !important; /* Quitar outline si estaba */
@@ -115,7 +115,7 @@ export default {
 
 .contacto input:focus,
 .contacto textarea:focus {
-  border-bottom: 2px solid #F39C12; /* Línea inferior naranja al enfocar */
+  border-bottom: 1px solid #F39C12; /* Línea inferior naranja al enfocar */
 }
 
 /* TEXTAREA*/
