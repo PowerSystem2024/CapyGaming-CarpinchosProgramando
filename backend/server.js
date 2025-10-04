@@ -33,6 +33,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Algo salió mal en el servidor' });
 });
 
+// Ruta raíz
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'API de CapyGaming funcionando correctamente',
+    endpoints: {
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile',
+        forgotPassword: 'POST /api/auth/forgot-password'
+      },
+      health: 'GET /api/health'
+    }
+  });
+});
+
 // Middleware para rutas no encontradas (sin usar comodín *)
 app.use((req, res) => {
   res.status(404).json({ 
