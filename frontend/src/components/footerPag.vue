@@ -21,6 +21,7 @@ import Marcas from '../components/marcas.vue';
           <li><router-link to="/categoria/conectividad">Conectividad</router-link></li>
           <li><router-link to="/categoria/gaming">Gaming</router-link></li>
           <li><router-link to="/categoria/impresoras">Impresoras</router-link></li>
+
         </ul>
       </div>
 
@@ -30,8 +31,11 @@ import Marcas from '../components/marcas.vue';
         <ul>
           <li><router-link to="/quienessomos">Quiénes somos</router-link></li>
           <li><a href="#">Términos y condiciones</a></li>
-          <li><a href="#">Contáctanos</a></li>
           <li><a href="#">Preguntas frecuentes</a></li>
+          <li><router-link to="/Contacto">Contáctanos</router-link></li>
+
+
+
         </ul>
       </div>
 

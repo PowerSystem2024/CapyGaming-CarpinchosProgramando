@@ -15,6 +15,6 @@ export default {
 
 <style scoped>
 div {
-    padding-top: calc(80px + 60px); /* espacio para navbar si tienes */
+    padding-top: calc(80px + 60px); /* --- */
 }
 </style>
