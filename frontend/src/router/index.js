@@ -14,6 +14,8 @@ import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
+import Contacto from '../components/Contacto.vue';
+
 
 
 //Definir las rutas de tu aplicacion
@@ -82,6 +84,11 @@ const routes = [
         path: '/categoria/:categoria/:subcategoria?',  // Ruta dinámica para categorías y subcategorías
         name: 'CatalogoCategoria',
         component: CatalogoCategoria
+    },
+    {
+        path: "/contacto",
+        name: "Contacto",
+        component: Contacto
     }
 ]
 
