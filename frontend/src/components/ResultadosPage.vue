@@ -82,15 +82,17 @@ const agregarAlCarrito = (producto) => {
 .resultados-busqueda {
   display: flex;
   gap: 1rem;
-  padding: 2rem 3rem; /* espacio arriba y a los lados */
+  padding: 2rem 0rem; /* espacio arriba y a los lados */
   padding-top: calc(75px + 60px); /* navbar + subnavbar */
   margin: 0 12rem;
 }
 
 .sidebar {
-  width: 300px;
+  width: 400px;
   flex-shrink: 0;
   padding-top: 1rem;
+  padding-left: 10rem;
+  text-align: left;
 }
 
 .sidebar h2 {
