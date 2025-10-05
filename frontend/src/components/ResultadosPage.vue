@@ -1,13 +1,30 @@
 <template>
   <div class="resultados-busqueda">
     <aside class="sidebar">
-      <h2>{{ busqueda }}</h2>
-      <p>{{ productos.length }} resultado{{ productos.length === 1 ? '' : 's' }}</p>
+        <aside class="sidebar">
+        <div class="header-filtros">
+            <div>
+            <h2>Buscaste: {{ busqueda }}</h2>
+            <p>{{ productos.length }} resultado{{ productos.length === 1 ? '' : 's' }}</p>
+            </div>
+        </div>
+        </aside>
     </aside>
+
     
+    <div class="contenido">
+      <!-- 🔽 Filtro de orden -->
+      <div class="ordenador">
+        <label for="orden">Ordenar por:</label>
+        <select id="orden" v-model="ordenSeleccionado">
+          <option value="asc">Mayor Precio</option>
+          <option value="desc">Menor Precio</option>
+        </select>
+      </div>
+
     <section class="productos-grid">
       <ProductCard
-        v-for="p in productos"
+        v-for="p in productosOrdenados"
         :key="p.id_producto"
         :producto="p"
         @agregar="agregarAlCarrito"
@@ -25,6 +42,7 @@
       />
     </section>
   </div>
+  </div>
 </template>
 
 
@@ -41,6 +59,19 @@ import CarritoModalPreview from '../components/CarritoModalPreview.vue';
 // Funciones del carrito
 import { addToCart, getCart } from '../utils/cartUtils';
 import { setUltimoProducto, ultimoProducto } from '../composables/ultimoProducto.js';
+import { computed } from 'vue';
+
+const ordenSeleccionado = ref('asc');
+
+const productosOrdenados = computed(() => {
+  return [...productos.value].sort((a, b) => {
+    const precioA = a.precio ?? 0;
+    const precioB = b.precio ?? 0;
+    return ordenSeleccionado.value === 'asc'
+      ? precioA - precioB
+      : precioB - precioA;
+  });
+});
 
 const route = useRoute(); // Accede a la ruta actual para leer el parámetro de búsqueda
 const busqueda = ref(route.query.q || ''); // Estado reactivo para el texto buscado
@@ -79,11 +110,12 @@ const agregarAlCarrito = (producto) => {
 </script>
 
 <style scoped>
+@import url(../assets/styles/base.css);
 .resultados-busqueda {
   display: flex;
   gap: 1rem;
   padding: 2rem 0rem; /* espacio arriba y a los lados */
-  padding-top: calc(75px + 60px); /* navbar + subnavbar */
+  padding-top: calc(90px + 60px); /* navbar + subnavbar */
   margin: 0 12rem;
 }
 
@@ -91,12 +123,13 @@ const agregarAlCarrito = (producto) => {
   width: 400px;
   flex-shrink: 0;
   padding-top: 1rem;
-  padding-left: 10rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
   text-align: left;
 }
 
 .sidebar h2 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
@@ -119,5 +152,30 @@ const agregarAlCarrito = (producto) => {
   color: #888;
   margin-top: 2rem;
 }
+
+.header-filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ordenador {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Alinea a la derecha */
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.ordenador select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  outline: none;
+  appearance: none;
+}
+
 
 </style>
