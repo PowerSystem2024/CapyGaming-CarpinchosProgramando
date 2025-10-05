@@ -139,30 +139,42 @@
   </div>
 
     <!-- ===== Productos Destacados ===== -->
-    <section class="productos">
-      <h2>Productos destacados</h2>
-      <div class="grid">
-        <div v-for="(prod, i) in destacados" :key="i" class="product-card">
-          <img :src="prod.img" :alt="prod.nombre" />
-          <h3>{{ prod.nombre }}</h3>
-          <p class="precio">{{ prod.precio }}</p>
-        </div>
+<section class="productos">
+  <div class="separator">
+    <h2>Productos destacados</h2>
+  </div>
+  <div class="card-container">
+    <div v-for="(prod, i) in destacados" :key="i" class="card">
+      <img :src="prod.img" :alt="prod.nombre" />
+      <div class="overlay">
+        <h3>{{ prod.nombre }}</h3>
+        <button>Ver más</button>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- ===== Productos Recientes ===== -->
-    <section class="productos">
-      <h2>Productos recientes</h2>
-      <div class="grid">
-        <div v-for="(prod, i) in recientes" :key="i" class="product-card">
-          <img :src="prod.img" :alt="prod.nombre" />
-          <h3>{{ prod.nombre }}</h3>
-          <p class="precio">{{ prod.precio }}</p>
-        </div>
-      </div>
-    </section>
-
+<section class="productos">
+  <div class="separator">
+    <h2>Productos recientes</h2>
   </div>
+  <div class="card-container">
+    <div v-for="(prod, i) in recientes" :key="i" class="card">
+      <img :src="prod.img" :alt="prod.nombre" />
+      <div class="overlay">
+        <h3>{{ prod.nombre }}</h3>
+        <button>Ver más</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  </div> 
+
+
 </template>
 
 <script setup>
@@ -205,7 +217,7 @@ onUnmounted(() => {
   clearInterval(interval);
 });
 
-// ✅ Categorías
+// ✅ Categorías ------------------------------------------------------------------------------------------------
 import imgNote from "../assets/imagenesHome/notebookHome.jpg";
 import imgCombo from "../assets/imagenesHome/comboActualizacion.jpg";
 import imgRam from "../assets/imagenesHome/homeMemoriaRAM.jpg";
@@ -219,28 +231,28 @@ const categorias = ref([
   { nombre: "Memorias RAM", productos: 4, img: imgRam, tipo: "principal" },
 ]);
 
-// ✅ Productos
-import p1 from "../assets/imagenesHome/product-1.jpg";
-import p2 from "../assets/imagenesHome/product-2.jpg";
-import p3 from "../assets/imagenesHome/product-3.jpg";
-import p4 from "../assets/imagenesHome/product-4.jpg";
-import p5 from "../assets/imagenesHome/product-5.jpg";
-import p6 from "../assets/imagenesHome/product-6.jpg";
-import p7 from "../assets/imagenesHome/product-7.jpg";
-import p8 from "../assets/imagenesHome/product-8.jpg";
+// ✅ Productos -.---------------------------------------------------------------------------------------------------
+import p1 from "../assets/imagenesHome/product-1.png";
+import p2 from "../assets/imagenesHome/product-2.png";
+import p3 from "../assets/imagenesHome/product-3.png";
+import p4 from "../assets/imagenesHome/product-4.png";
+import p5 from "../assets/imagenesHome/product-5.png";
+import p6 from "../assets/imagenesHome/product-6.png";
+import p7 from "../assets/imagenesHome/product-7.png";
+import p8 from "../assets/imagenesHome/product-8.png";
 
 const destacados = ref([
-  { nombre: "Producto 1", precio: "$123.00", img: p1 },
-  { nombre: "Producto 2", precio: "$99.00", img: p2 },
-  { nombre: "Producto 3", precio: "$150.00", img: p3 },
-  { nombre: "Producto 4", precio: "$80.00", img: p4 },
+  { nombre: "Gabinete Coolermaster Qube 500 Flatback White Mid Tower Atx", precio: "$106.477,90", img: p1 },
+  { nombre: "Notebook Asus 15.6' X1504 I7 1355u 16gb Ssd M.2 512gb Free Dos", precio: "$1.031.915", img: p2 },
+  { nombre: "Monitor Gamer Aoc G2490vx 24' 144hz 1ms Fhd Va", precio: "$218.635,64", img: p3 },
+  { nombre: "Cooler Cpu Id Cooling Se 903 Xt Basic", precio: "$24.022,04", img: p4 },
 ]);
 
 const recientes = ref([
-  { nombre: "Producto A", precio: "$200.00", img: p5 },
-  { nombre: "Producto B", precio: "$175.00", img: p6 },
-  { nombre: "Producto C", precio: "$210.00", img: p7 },
-  { nombre: "Producto D", precio: "$99.00", img: p8 },
+  { nombre: "Cooler Cpu Cooler Master Hyper 411 Nano Argb (1700 / Am5)", precio: "$44.900", img: p5 },
+  { nombre: "Fuente Xpg 700w 80+ Bronze Probe", precio: "$85.079,46", img: p6 },
+  { nombre: "Memoria Ram Ddr4 8gb 3600mhz Rgb Kingdian R11", precio: "$36.266,98", img: p7 },
+  { nombre: "Memoria Ram Ddr4 8gb 3200mhz Xpg Spectrix D50", precio: "$58.724,12", img: p8 },
 ]);
 </script>
 
@@ -399,7 +411,7 @@ const recientes = ref([
   justify-content: center;
   background: var(--color-primary);
   margin: 0;           /* quitar margen externo */
-  padding: 0.92rem 0;   /* pequeño espacio para que respire */
+  padding: 0.4rem 0;   /* pequeño espacio para que respire */
 }
 
 .separator h2 {
@@ -669,5 +681,7 @@ const recientes = ref([
     font-size: 0.9rem;
   }
 }
+
+
 
 </style>
