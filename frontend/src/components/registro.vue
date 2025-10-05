@@ -1,11 +1,10 @@
-<!-- src/components/registro.vue -->
+[file name]: registro.vue
 <template>
-  <div class="auth-page">
-    <div class="auth-card">
-      <h1>Crear cuenta</h1>
+  <div class="auth-modal-content">
+    <h1>Crear cuenta</h1>
 
-      <form @submit.prevent="onSubmit" novalidate>
-        <div class="field">
+    <form @submit.prevent="onSubmit" novalidate>
+      <div class="field">
           <label for="name">Nombre y apellido</label>
           <input
             id="name"
@@ -87,38 +86,40 @@
           />
           <p v-if="errors.accept" class="error">{{ errors.dni }}</p>
         </div>
+      <label class="checkbox">
+        <input type="checkbox" v-model="form.accept" />
+        Acepto los términos y condiciones
+      </label>
+      <p v-if="errors.accept" class="error">{{ errors.accept }}</p>
 
-        <label class="checkbox">
-          <input type="checkbox" v-model="form.accept" />
-          Acepto los términos y condiciones
-        </label>
-        <p v-if="errors.accept" class="error">{{ errors.accept }}</p>
+      <button class="btn primary" :disabled="loading">
+        <span v-if="loading">Creando cuenta...</span>
+        <span v-else>Registrarme</span>
+      </button>
 
-        <button class="btn primary" :disabled="loading">
-          <span v-if="loading">Creando cuenta...</span>
-          <span v-else>Registrarme</span>
-        </button>
-
-        <p class="alt">
-          ¿Ya tenés cuenta?
-          <router-link class="link" to="/inicioSesion">Iniciar sesión</router-link>
-        </p>
-      </form>
-    </div>
+      <!-- CAMBIO: router-link → link con evento -->
+      <p class="alt">
+        ¿Ya tenés cuenta?
+        <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
+      </p>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, defineEmits } from 'vue'
+// ELIMINAR: import { useRouter } from 'vue-router'
 
-const router = useRouter()
+// AGREGAR: Emits para comunicación con el modal
+const emit = defineEmits(['success', 'switch-view'])
+
+// ELIMINAR: const router = useRouter()
 
 const form = reactive({
   name: '',
   email: '',
   telefono: '',
-  dni: '',        // nuevo campo
+  dni: '',
   password: '',
   confirm: '',
   accept: false
@@ -157,20 +158,30 @@ async function onSubmit () {
     const user = { 
       name: form.name, 
       email: form.email, 
-      dni: form.dni,        // guardamos el DNI
+      dni: form.dni,
       createdAt: new Date().toISOString() 
     }
     localStorage.setItem('auth', JSON.stringify(user))
 
-    // Redirigimos al home (catálogo)
-    router.push('/')
+    // CAMBIO: Emitir éxito en lugar de redirigir
+    emit('success')
   } finally {
     loading.value = false
   }
 }
+
+// AGREGAR: Función para cambiar a login
+function goToLogin() {
+  emit('switch-view', 'login')
+}
 </script>
 
 <style scoped>
+.auth-modal-content {
+  padding: 2rem;
+  background-color: var(--color-card);
+}
+
 /* Layout */
 .auth-page{
   min-height: 100vh;
