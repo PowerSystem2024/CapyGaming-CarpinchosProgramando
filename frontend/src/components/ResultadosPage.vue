@@ -1,10 +1,11 @@
 <template>
   <div class="resultados-busqueda">
-    <!--Titulo con el texto buscado-->
-    <h1>Resultados para "{{ busqueda }}"</h1>
-
+    <aside class="sidebar">
+      <h2>{{ busqueda }}</h2>
+      <p>{{ productos.length }} resultado{{ productos.length === 1 ? '' : 's' }}</p>
+    </aside>
+    
     <section class="productos-grid">
-        <!-- Renderiza una tarjeta por cada producto encontrado -->
       <ProductCard
         v-for="p in productos"
         :key="p.id_producto"
@@ -12,12 +13,10 @@
         @agregar="agregarAlCarrito"
       />
 
-      <!-- Mensaje si no se encontraron productos -->
       <div v-if="productos.length === 0" class="no-result">
         No se encontraron productos para "{{ busqueda }}"
       </div>
 
-      <!-- Modal que aparece al agregar un producto al carrito -->
       <CarritoModalPreview
         :visible="mostrarModal"
         :carrito="getCart()"
@@ -27,6 +26,7 @@
     </section>
   </div>
 </template>
+
 
 <script setup>
 // Importa herramientas de Vue y utilidades
@@ -80,13 +80,36 @@ const agregarAlCarrito = (producto) => {
 
 <style scoped>
 .resultados-busqueda {
-  padding-top: calc(75px + 60px);
+  display: flex;
+  gap: 1rem;
+  padding: 2rem 3rem; /* espacio arriba y a los lados */
+  padding-top: calc(75px + 60px); /* navbar + subnavbar */
+  margin: 0 12rem;
 }
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  padding-top: 1rem;
+}
+
+.sidebar h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
 .productos-grid {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas fijas */
   gap: 1rem;
 }
+
 .no-result {
   grid-column: 1 / -1;
   text-align: center;
@@ -94,4 +117,5 @@ const agregarAlCarrito = (producto) => {
   color: #888;
   margin-top: 2rem;
 }
+
 </style>
