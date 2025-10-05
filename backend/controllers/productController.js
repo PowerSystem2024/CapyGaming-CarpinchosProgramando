@@ -115,3 +115,57 @@ export const getProductoPorId = async (req, res) => {
     res.status(500).json({ error: 'Error al traer producto' });
   }
 };
+
+// Obtener productos en oferta desde la base de datos
+export const getOfertas = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.id_producto,
+        p.nombre,
+        p.precio,
+        p.stock,
+        p.marca,
+        c.nombre AS categoria,
+        s.nombre AS subcategoria,
+        COALESCE(p.imagenes, '[]'::json) AS imagenes,
+        o.descuento_porcentaje,
+        o.precio_original,
+        o.precio_oferta,
+        o.fecha_inicio,
+        o.fecha_fin
+      FROM producto p
+      LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+      LEFT JOIN subcategoria s ON p.id_subcategoria = s.id_subcategoria
+      LEFT JOIN oferta o ON p.id_producto = o.producto_id
+      WHERE o.activa = true 
+        AND (o.fecha_fin IS NULL OR o.fecha_fin > NOW())
+      ORDER BY o.descuento_porcentaje DESC, p.nombre
+    `);
+
+    // Formatear los datos para que sean compatibles con el frontend
+    const ofertas = result.rows.map(row => ({
+      id: row.id_producto,
+      id_producto: row.id_producto,
+      title: row.nombre,
+      nombre: row.nombre,
+      description: `${row.marca} - ${row.categoria}${row.subcategoria ? ` > ${row.subcategoria}` : ''}`,
+      oldPrice: `$${row.precio_original?.toLocaleString() || row.precio.toLocaleString()}`,
+      newPrice: `$${row.precio_oferta?.toLocaleString() || row.precio.toLocaleString()}`,
+      precio: row.precio_oferta || row.precio,
+      stock: row.stock,
+      image: Array.isArray(row.imagenes) && row.imagenes.length > 0 ? row.imagenes[0] : '/placeholder.png',
+      imagenes: Array.isArray(row.imagenes) ? row.imagenes : [],
+      marca: row.marca,
+      categoria: row.categoria,
+      subcategoria: row.subcategoria,
+      descuento: row.descuento_porcentaje || 0,
+      fecha_fin: row.fecha_fin
+    }));
+
+    res.json(ofertas);
+  } catch (err) {
+    console.error('Error al traer ofertas:', err.message);
+    res.status(500).json({ error: 'Error al traer ofertas' });
+  }
+};

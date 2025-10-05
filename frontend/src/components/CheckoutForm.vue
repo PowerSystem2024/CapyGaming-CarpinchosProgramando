@@ -644,6 +644,7 @@
 
 <script>
 import { getCart, getCartTotal, clearCart } from "../utils/cartUtils";
+import { authAPI, paymentAPI } from "../services/api.js";
 
 export default {
   name: "CheckoutForm",
@@ -659,6 +660,7 @@ export default {
       showPassword: false,
       promoCode: '',
       discount: 0,
+      loading: false,
       formData: {
         // Paso 1: Datos personales
         nombre: '',
@@ -747,6 +749,11 @@ export default {
       console.log("🔍 CHECKOUT - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
       console.log("🔍 CHECKOUT - getCartTotal():", getCartTotal());
       console.log("🔍 CHECKOUT - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
+    },
+    showLogin() {
+      // Cerrar modal de checkout y redirigir al login
+      this.closeModal();
+      this.$router.push('/login');
     },
     closeModal() {
       this.$emit('close');
@@ -898,13 +905,51 @@ export default {
     showLogin() {
       alert('Funcionalidad de login próximamente');
     },
-    procesarPago() {
-      if (this.validateCurrentStep()) {
-        // Aquí iría la lógica para procesar el pago
-        alert('¡Compra realizada con éxito! Gracias por tu compra.');
-        clearCart();
-        this.$router.push('/');
-        this.closeModal();
+    async procesarPago() {
+      if (!this.validateCurrentStep()) {
+        return;
+      }
+
+      this.loading = true;
+
+      try {
+        // Verificar si el usuario está autenticado
+        if (!authAPI.isAuthenticated()) {
+          alert('Debes iniciar sesión para realizar la compra');
+          this.showLogin();
+          return;
+        }
+
+        const orderData = {
+          direccion_envio: `${this.formData.direccion}, ${this.formData.ciudad}, ${this.formData.provincia}, CP: ${this.formData.codigoPostal}`,
+          telefono_contacto: this.formData.telefono,
+          notas: this.formData.observaciones || null
+        };
+
+        // Crear preferencia de pago en Mercado Pago
+        const response = await paymentAPI.createPreference(orderData);
+
+        if (response.success) {
+          // Guardar el ID del pedido para tracking
+          localStorage.setItem('current_order_id', response.pedido_id);
+          
+          // Redirigir a Mercado Pago
+          if (process.env.NODE_ENV === 'development') {
+            // En desarrollo, usar sandbox
+            window.location.href = response.sandbox_init_point;
+          } else {
+            // En producción, usar init_point normal
+            window.location.href = response.init_point;
+          }
+        } else {
+          throw new Error(response.error || 'Error al procesar el pago');
+        }
+
+      } catch (error) {
+        console.error('Error al procesar pago:', error);
+        alert('Error al procesar el pago. Por favor, intenta de nuevo.');
+      } finally {
+        this.loading = false;
       }
     }
   }

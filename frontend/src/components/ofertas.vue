@@ -1,7 +1,19 @@
 <template>
   <div class="offers-container">
     <h2 class="section-title">OFERTAS DEL DÍA</h2>
-    <div class="offers-grid">
+    
+    <!-- Estado de carga -->
+    <div v-if="loading" class="loading-state">
+      <p>Cargando ofertas...</p>
+    </div>
+    
+    <!-- Estado de error -->
+    <div v-else-if="error" class="error-state">
+      <p>{{ error }}. Mostrando ofertas disponibles:</p>
+    </div>
+    
+    <!-- Ofertas grid -->
+    <div v-if="!loading" class="offers-grid">
       <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card">
           <!-- Badge con flip -->
           <div class="flip-container">
@@ -55,6 +67,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import mouseLogitech from "../assets/imagenesOfertas/mouseLogitech.png";
 import tecladoRedragon from "../assets/imagenesOfertas/tecladoRedragon.png";
 import auricularesHyper from "../assets/imagenesOfertas/auricularesHyper.png";
@@ -70,8 +83,11 @@ export default {
   name: "Ofertas",
   data() {
     return {
-      // Lista de ofertas de ejemplo(luego puede venir de un backend)
-      offers: [
+      offers: [],
+      loading: true,
+      error: null,
+      // Ofertas fallback en caso de error en la API
+      fallbackOffers: [
         {
           id: 1,
           title: "Mouse Logitech G502 Hero 11 Botones Gamer Rgb",
@@ -168,21 +184,39 @@ export default {
           stock: 3,
           image: sillaGamer,
           imagenes: [sillaGamer],
-        },
+        }
       ]
     };
   },
-  computed: {  // Calculando el porcentaje de descuento para el circulo flip
-    ofertasConDescuento() {
-    return this.offers.map(o => {
-      const oldP = parseFloat(o.oldPrice.replace(/[^0-9.]/g, "")); // saca $ y comas
-      const newP = parseFloat(o.newPrice.replace(/[^0-9.]/g, ""));
-      const descuento = Math.round(((oldP - newP) / oldP) * 100);
-      return { ...o, descuento };
-    });
-  }
+  
+  async mounted() {
+    await this.cargarOfertas();
   },
+  
   methods: {
+    async cargarOfertas() {
+      try {
+        this.loading = true;
+        this.error = null;
+        
+        const response = await axios.get('http://localhost:3001/api/ofertas');
+        
+        if (response.data && response.data.length > 0) {
+          this.offers = response.data;
+        } else {
+          // Si no hay ofertas en la DB, usar fallback
+          this.offers = this.fallbackOffers;
+        }
+      } catch (error) {
+        console.error('Error al cargar ofertas desde la API:', error);
+        this.error = 'Error al cargar ofertas';
+        // En caso de error, usar ofertas fallback
+        this.offers = this.fallbackOffers;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     agregarAlCarrito(oferta) {
       const resultado = addToCart(oferta);
       if (resultado.success) {
@@ -191,12 +225,30 @@ export default {
         setUltimoProducto({...oferta, quantity : 1});
         window.dispatchEvent(new Event("abrirPreview"));
         console.log("Evento abrirPreview emitido");
-        //mostrarCarrito.value = true;
       } else {
         console.log("Error al agregar oferta:", resultado.message);
       }
-    },
-
+    }
+  },
+  computed: {
+    ofertasConDescuento() {
+      if (!this.offers || this.offers.length === 0) {
+        return [];
+      }
+      
+      return this.offers.map(o => {
+        // Si el descuento ya viene calculado desde la API, usarlo
+        if (o.descuento && o.descuento > 0) {
+          return { ...o };
+        }
+        
+        // Si no, calcularlo desde los precios
+        const oldP = parseFloat(o.oldPrice?.replace(/[^0-9.]/g, "") || o.precio || 0);
+        const newP = parseFloat(o.newPrice?.replace(/[^0-9.]/g, "") || o.precio || 0);
+        const descuento = oldP > newP ? Math.round(((oldP - newP) / oldP) * 100) : 0;
+        return { ...o, descuento };
+      });
+    }
   }
 };
 </script>

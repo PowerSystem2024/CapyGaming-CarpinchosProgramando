@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -10,9 +12,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Middleware especial para webhooks de MercadoPago (debe ir antes del express.json())
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
+
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'http://localhost:5173', // Puerto correcto del frontend
   credentials: true
 }));
 app.use(express.json());
@@ -20,6 +25,8 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
+app.use('/api/cart', cartRoutes);
+app.use('/api/payments', paymentRoutes);
 
 
 // Ruta de prueba

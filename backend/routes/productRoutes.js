@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProductos, getProductoPorId } from '../controllers/productController.js';
+import { getProductos, getProductoPorId, getOfertas } from '../controllers/productController.js';
 import { getSubcategoriasPorCategoria } from '../controllers/productController.js';
 //Importa tres funciones del controlador:
 //getProductos: para obtener productos filtrados por categoría y subcategoría.
@@ -18,5 +18,9 @@ router.get('/categorias/:nombre/subcategorias', getSubcategoriasPorCategoria); /
 // Nuevo endpoint para traer un producto por id
 router.get('/productos/:id', getProductoPorId); //Define la ruta GET /api/productos/:id.
 // El controlador getProductoPorId devuelve los datos completos de un producto específico, útil para una vista de detalle o modal.
+
+// Endpoint para obtener ofertas desde la base de datos
+router.get('/ofertas', getOfertas); //Define la ruta GET /api/ofertas.
+// El controlador getOfertas busca en la base de datos productos que tienen ofertas activas y devuelve los datos formateados.
 
 export default router;

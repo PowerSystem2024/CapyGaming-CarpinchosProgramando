@@ -10,7 +10,7 @@
 
     <div v-else>
       <div class="products-grid">
-        <div v-for="product in cartItems" :key="product.id" class="product-card">
+        <div v-for="product in cartItems" :key="product.id_producto || product.id" class="product-card">
           <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
           <div class="product-info">
             <h3>{{ product.nombre }}</h3>
@@ -26,7 +26,7 @@
             </div>
 
             <p class="Subtotal">Subtotal: ${{ product.precio * product.quantity }}</p>
-            <button @click="removeItem(product.id)" class="btn-eliminar">🗑️ Eliminar</button>
+            <button @click="removeItem(product.id_producto || product.id)" class="btn-eliminar">🗑️ Eliminar</button>
           </div>
         </div>
       </div>
@@ -64,7 +64,8 @@
 <script>
 // Importamos los productos desde el archivo de datos
 
-import { getCart, removeFromCart, updateQuantity, getCartTotal, clearCart } from "../utils/cartUtils";
+import { getCart, getCartSync, removeFromCart, updateQuantity, getCartTotal, clearCart, syncCartWithServer } from "../utils/cartUtils";
+import { authAPI } from "../services/api.js";
 import CheckoutForm from "./CheckoutForm.vue";
 
 export default {
@@ -102,53 +103,85 @@ export default {
       return this.total + this.costoEnvio;
     }
   },
-  mounted() {
+  async mounted() {
+    // Si el usuario está autenticado, sincronizar carrito
+    if (authAPI.isAuthenticated()) {
+      await this.syncCartOnMount();
+    }
+    
     this.loadCart();
     window.addEventListener('cartUpdated', this.loadCart);
+    window.addEventListener('userLoggedIn', this.handleUserLogin);
     console.log(getCartTotal());
   },
+  beforeUnmount() {
+    window.removeEventListener('cartUpdated', this.loadCart);
+    window.removeEventListener('userLoggedIn', this.handleUserLogin);
+  },
   methods: {
-    loadCart() {
-      this.cartItems = getCart();
-      this.total = getCartTotal();
-      console.log("🛒 CART - Cart items loaded:", this.cartItems);
-      console.log("🛒 CART - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
-      console.log("🛒 CART - getCartTotal():", this.total);
-      console.log("🛒 CART - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
+    async loadCart() {
+      try {
+        this.cartItems = await getCart();
+        this.total = getCartTotal();
+        console.log("🛒 CART - Cart items loaded:", this.cartItems);
+        console.log("🛒 CART - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
+        console.log("🛒 CART - getCartTotal():", this.total);
+        console.log("🛒 CART - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
 
-      // Auto-seleccionar envío gratis si califica
-      if (this.total >= this.envioGratisMinimo) {
-        this.envioSeleccionado = 'gratis';
+        // Auto-seleccionar envío gratis si califica
+        if (this.total >= this.envioGratisMinimo) {
+          this.envioSeleccionado = 'gratis';
+        }
+      } catch (error) {
+        console.error('Error al cargar carrito:', error);
+        // Fallback a carrito local
+        this.cartItems = getCartSync();
+        this.total = getCartTotal();
       }
     },
-    removeItem(productId) {
-      removeFromCart(productId);
+    async removeItem(productId) {
+      await removeFromCart(productId);
       this.loadCart();
     },
-    changeQuantity(productId, newQuantity) {
-      updateQuantity(productId, newQuantity);
+    async changeQuantity(productId, newQuantity) {
+      await updateQuantity(productId, newQuantity);
       this.loadCart();
     },
     incrementQuantity(product) {
-      this.changeQuantity(product.id, product.quantity + 1);
+      this.changeQuantity(product.id_producto || product.id, product.quantity + 1);
     },
     decrementQuantity(product) {
         console.log("Método decrementQuantity llamado");
         if (product.quantity > 1) {
-          this.changeQuantity(product.id, product.quantity - 1);
+          this.changeQuantity(product.id_producto || product.id, product.quantity - 1);
         } else {
           const confirmar = window.confirm("¿Eliminar " + product.nombre + " del carrito?");
           if (confirmar === true) {
-            this.removeItem(product.id);
+            this.removeItem(product.id_producto || product.id);
         }
       }
     },
-    emptyCart() {
+    async emptyCart() {
       if (confirm("¿Estás seguro de que quieres vaciar todo el carrito?")) {
-        clearCart();
+        await clearCart();
         this.loadCart();
         console.log("✅ Carrito vaciado correctamente");
       }
+    },
+    async syncCartOnMount() {
+      try {
+        const result = await syncCartWithServer();
+        if (result.success) {
+          console.log("✅ Carrito sincronizado con servidor");
+        }
+      } catch (error) {
+        console.error("Error al sincronizar carrito:", error);
+      }
+    },
+    async handleUserLogin() {
+      // Sincronizar carrito cuando el usuario se loguea
+      await this.syncCartOnMount();
+      this.loadCart();
     },
     abrirCheckout() {
       if (this.cartItems.length > 0) {

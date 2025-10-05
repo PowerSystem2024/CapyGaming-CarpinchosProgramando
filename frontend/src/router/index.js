@@ -14,6 +14,8 @@ import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
+import PaymentSuccess from '../components/PaymentSuccess.vue';
+import OrderStatus from '../components/OrderStatus.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -82,6 +84,26 @@ const routes = [
         path: '/categoria/:categoria/:subcategoria?',  // Ruta dinámica para categorías y subcategorías
         name: 'CatalogoCategoria',
         component: CatalogoCategoria
+    },
+    {
+        path: '/pago/success',
+        name: 'PaymentSuccess',
+        component: PaymentSuccess
+    },
+    {
+        path: '/pago/failure',
+        name: 'PaymentFailure',
+        component: PaymentSuccess // Mismo componente, maneja ambos casos
+    },
+    {
+        path: '/pago/pending',
+        name: 'PaymentPending',
+        component: PaymentSuccess // Mismo componente, maneja ambos casos
+    },
+    {
+        path: '/pedido/:orderId',
+        name: 'OrderStatus',
+        component: OrderStatus
     }
 ]
 
