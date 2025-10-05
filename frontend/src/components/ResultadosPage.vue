@@ -17,8 +17,8 @@
       <div class="ordenador">
         <label for="orden">Ordenar por:</label>
         <select id="orden" v-model="ordenSeleccionado">
-          <option value="asc">Mayor Precio</option>
-          <option value="desc">Menor Precio</option>
+          <option value="asc">Menor Precio</option>
+          <option value="desc">Mayor Precio</option>
         </select>
       </div>
 
