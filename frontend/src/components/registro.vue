@@ -5,87 +5,100 @@
 
     <form @submit.prevent="onSubmit" novalidate>
       <div class="field">
-          <label for="name">Nombre y apellido</label>
+        <label for="name">Nombre y apellido</label>
+        <input
+          id="name"
+          type="text"
+          v-model.trim="form.name"
+          placeholder="ej: Ana Pérez"
+          autocomplete="name"
+        />
+        <p v-if="errors.name" class="error">{{ errors.name }}</p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-row">
           <input
-            id="name"
-            type="text"
-            v-model.trim="form.name"
-            placeholder="ej: Ana Pérez"
-            autocomplete="name"
+            id="email"
+            type="email"
+            v-model.trim="form.email"
+            placeholder="ejemplo@mail.com"
+            autocomplete="email"
+            required
           />
         </div>
+        <p v-if="errors.email" class="error">{{ errors.email }}</p>
+      </div>
 
-        <div class="field">
-          <label for="email">Email</label>
-          <div class="input-row">
-            <input
-              id="email"
-              type="email"
-              v-model.trim="form.email"
-              placeholder="ejemplo@mail.com"
-              autocomplete="email"
-              required
-            />
-          </div>
-          <p v-if="errors.email" class="error">{{ errors.email }}</p>
-        </div>
-
-        <div class="field">
-          <label for="password">Contraseña</label>
-          <div class="password-row">
-            <input
-              id="password"
-              :type="showPass ? 'text' : 'password'"
-              v-model="form.password"
-              minlength="6"
-              autocomplete="new-password"
-              required
-            />
-            <button class="ghost" type="button" @click="showPass = !showPass">
-              {{ showPass ? 'Ocultar' : 'Mostrar' }}
-            </button>
-          </div>
-          <p v-if="errors.password" class="error">{{ errors.password }}</p>
-        </div>
-
-        <div class="field">
-          <label for="confirm">Confirmar contraseña</label>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="password-row">
           <input
-            id="confirm"
+            id="password"
             :type="showPass ? 'text' : 'password'"
-            v-model="form.confirm"
+            v-model="form.password"
             minlength="6"
             autocomplete="new-password"
             required
           />
-          <p v-if="errors.confirm" class="error">{{ errors.confirm }}</p>
+          <button class="ghost" type="button" @click="showPass = !showPass">
+            {{ showPass ? 'Ocultar' : 'Mostrar' }}
+          </button>
         </div>
+        <p v-if="errors.password" class="error">{{ errors.password }}</p>
+      </div>
 
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input
-            type="text"
-            id="telefono"
-            class="phone-number-input"
-            v-model="form.telefono"
-            required
-            placeholder="Ingrese su número de teléfono"
-            @input="validatePhone"
-          />
-          <p v-if="errors.accept" class="error">{{ errors.telefono }}</p>
-        </div>
+      <div class="field">
+        <label for="confirm">Confirmar contraseña</label>
+        <input
+          id="confirm"
+          :type="showPass ? 'text' : 'password'"
+          v-model="form.confirm"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        />
+        <p v-if="errors.confirm" class="error">{{ errors.confirm }}</p>
+      </div>
 
-        <div class="form-group">
-          <label for="dni">DNI</label>
-          <input
-            type="text"
-            id="dni"
-            v-model="form.dni"
-            required
-            placeholder="Ingrese su DNI"
-          />
-          <p v-if="errors.accept" class="error">{{ errors.dni }}</p>
-        </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input
+          type="text"
+          id="telefono"
+          class="phone-number-input"
+          v-model="form.telefono"
+          required
+          placeholder="Ingrese su número de teléfono"
+        />
+        <p v-if="errors.telefono" class="error">{{ errors.telefono }}</p>
+      </div>
+
+      <div class="form-group">
+        <label for="dni">DNI</label>
+        <input
+          type="text"
+          id="dni"
+          v-model="form.dni"
+          required
+          placeholder="Ingrese su DNI"
+        />
+        <p v-if="errors.dni" class="error">{{ errors.dni }}</p>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input
+          type="text"
+          id="direccion"
+          v-model="form.direccion"
+          required
+          placeholder="Ingrese su dirección"
+        />
+        <p v-if="errors.direccion" class="error">{{ errors.direccion }}</p>
+      </div>
+
       <label class="checkbox">
         <input type="checkbox" v-model="form.accept" />
         Acepto los términos y condiciones
@@ -97,7 +110,6 @@
         <span v-else>Registrarme</span>
       </button>
 
-      <!-- CAMBIO: router-link → link con evento -->
       <p class="alt">
         ¿Ya tenés cuenta?
         <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
@@ -108,63 +120,140 @@
 
 <script setup>
 import { reactive, ref, defineEmits } from 'vue'
-// ELIMINAR: import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/useAuth.js' // ← AGREGAR ESTO
 
 // AGREGAR: Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
 
-// ELIMINAR: const router = useRouter()
+// AGREGAR: Usar el composable de autenticación
+const { register } = useAuth()
 
 const form = reactive({
   name: '',
   email: '',
   telefono: '',
   dni: '',
+  direccion: '', // ← AGREGAR CAMPO DIRECCIÓN
   password: '',
   confirm: '',
   accept: false
 })
 
 const errors = reactive({
+  name: '', // ← AGREGAR ERROR PARA NOMBRE
   email: '',
   password: '',
   confirm: '',
   accept: '',
   telefono: '',
-  dni: ''
+  dni: '',
+  direccion: '' // ← AGREGAR ERROR PARA DIRECCIÓN
 })
 
 const showPass = ref(false)
-const loading  = ref(false)
+const loading = ref(false)
 
-function validate () {
-  errors.email    = form.email.includes('@') ? '' : 'Ingresá un email válido'
-  errors.password = form.password.length >= 6 ? '' : 'Mínimo 6 caracteres'
-  errors.confirm  = form.confirm === form.password ? '' : 'Las contraseñas no coinciden'
-  errors.accept   = form.accept ? '' : 'Debés aceptar los términos'
-  errors.dni      = form.dni.length === 8 ? '' : 'El DNI debe tener 8 caracteres'
-  errors.telefono = form.telefono.length === 9 ? '' : 'El teléfono debe tener 9 caracteres'
-  return !errors.email && !errors.password && !errors.confirm && !errors.accept && !errors.dni && !errors.telefono
+function validate() {
+  // Limpiar errores anteriores
+  Object.keys(errors).forEach(key => errors[key] = '')
+  
+  let isValid = true
+
+  // Validar nombre
+  if (!form.name.trim()) {
+    errors.name = 'El nombre es requerido'
+    isValid = false
+  }
+
+  // Validar email
+  if (!form.email.includes('@')) {
+    errors.email = 'Ingresá un email válido'
+    isValid = false
+  }
+
+  // Validar contraseña
+  if (form.password.length < 6) {
+    errors.password = 'Mínimo 6 caracteres'
+    isValid = false
+  }
+
+  // Validar confirmación
+  if (form.confirm !== form.password) {
+    errors.confirm = 'Las contraseñas no coinciden'
+    isValid = false
+  }
+
+  // Validar términos
+  if (!form.accept) {
+    errors.accept = 'Debés aceptar los términos'
+    isValid = false
+  }
+
+  // Validar DNI
+  if (form.dni.length !== 8) {
+    errors.dni = 'El DNI debe tener 8 caracteres'
+    isValid = false
+  }
+
+  // Validar teléfono
+  if (form.telefono.length < 9) {
+    errors.telefono = 'El teléfono debe tener al menos 9 caracteres'
+    isValid = false
+  }
+
+  // Validar dirección
+  if (!form.direccion.trim()) {
+    errors.direccion = 'La dirección es requerida'
+    isValid = false
+  }
+
+  return isValid
 }
 
-async function onSubmit () {
-  if (!validate()) return
+async function onSubmit() {
+  console.log('🔍 Iniciando registro...') // ← Para debug
+  
+  if (!validate()) {
+    console.log('❌ Validación falló:', errors) // ← Para debug
+    return
+  }
+
   loading.value = true
+  
   try {
-    // Simulación de registro (frontend only)
-    await new Promise(r => setTimeout(r, 600))
+    console.log('📤 Enviando datos al backend...') // ← Para debug
+    
+    // Separar nombre y apellido
+    const nameParts = form.name.split(' ')
+    const nombre = nameParts[0] || ''
+    const apellido = nameParts.slice(1).join(' ') || ''
 
-    // Guardamos el usuario en localStorage
-    const user = { 
-      name: form.name, 
-      email: form.email, 
+    // Usar el servicio real de registro
+    const result = await register({
+      nombre: nombre,
+      apellido: apellido,
+      email: form.email,
+      telefono: form.telefono,
       dni: form.dni,
-      createdAt: new Date().toISOString() 
-    }
-    localStorage.setItem('auth', JSON.stringify(user))
+      direccion: form.direccion,
+      password: form.password
+    })
 
-    // CAMBIO: Emitir éxito en lugar de redirigir
-    emit('success')
+    if (result.success) {
+      console.log('✅ Registro exitoso') // ← Para debug
+      emit('success')
+    } else {
+      console.log('❌ Error en registro:', result.error) // ← Para debug
+      // Mostrar error específico del backend
+      if (result.error.includes('ya existe')) {
+        errors.email = 'Este email o DNI ya está registrado'
+      } else {
+        alert(result.error || 'Error en el registro')
+      }
+    }
+  } catch (error) {
+    console.error('💥 Error de conexión:', error) // ← Para debug
+    alert('Error de conexión: ' + error.message)
   } finally {
     loading.value = false
   }
