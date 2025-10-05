@@ -9,11 +9,24 @@
       </div>
 
       <!-- Buscador -->
-      <div class="search">
-        <input type="text" placeholder="Buscar productos" v-model="searchText" />
-        <button  class="search-btn" @click="buscarProducto">
+      <div class="search" ref="buscador">
+        <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados"/>
+        <button  class="search-btn" @click="irAResultados">
           <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar"/>
         </button>
+
+        <!-- Sugerencias en tiempo real -->
+        <ul v-if="mostrarSugerencias && sugerencias.length" class="sugerencias-list">
+          <li
+            v-for="(producto, index) in sugerencias"
+            :key="index"
+            @click="irADetalle(producto.id_producto)"
+          >
+            {{ producto.nombre }}
+          </li>
+
+        </ul>
+
       </div>
 
       <!-- Opciones usuario -->
@@ -59,6 +72,7 @@
 <script>
 import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuelve los productos que hay en el carrito
 import Dropdown from "./Dropdown.vue";
+import debounce from 'lodash.debounce'; // Importa la función debounce de lodash
 
 export default {
   name: "NavBar",
@@ -67,7 +81,9 @@ export default {
   },
   data() {
     return {
-      searchText: "",
+      searchText: '',
+      sugerencias: [], // 🔴 resultados de la búsqueda
+      mostrarSugerencias: false,
       cartCount: 0, // 🔴 número de productos visible que se muestra en el carrito en el carrito
       Categorias: [
         {
@@ -137,9 +153,17 @@ export default {
   mounted() {
     this.updateCartCount(); // inicializa el número
     window.addEventListener("cartUpdated", this.updateCartCount); // escucha el evento "cartUpdated" Cada vez que alguien agrega/quita un producto, este evento dispara y automaticamente actualiza el numero del carrito.
+    document.addEventListener('click', this.handleClickOutside);
   },
   beforeUnmount() {
     window.removeEventListener("cartUpdated", this.updateCartCount);
+    document.removeEventListener('click', this.handleClickOutside);
+  },
+
+  watch: {
+    searchText: debounce(function (nuevoTexto) {
+      this.buscarSugerencias(nuevoTexto);
+    }, 400)
   },
   methods: {
     buscarProducto() {
@@ -149,8 +173,43 @@ export default {
       const cart = getCart();
       this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
       //cart.value = cart;
+    },
+    async buscarSugerencias(texto) {
+      if (texto.trim().length < 2) {
+        this.sugerencias = [];
+        return;
+      }
+      this.mostrarSugerencias = true;
+      try {      
+        const res = await fetch(`/api/productos/buscar?nombre=${encodeURIComponent(texto)}`);
+        if (!res.ok) throw new Error('Error en la respuesta del servidor');
+        const productos = await res.json();
+        if (!Array.isArray(productos)) throw new Error('Respuesta no es un array');
+        this.sugerencias = productos.slice(0, 5);
+      } catch (error) {
+        console.error('Error al buscar sugerencias:', error.message);
+        this.sugerencias = [];
+      }
+    },
+    irAResultados() {
+      if (this.searchText.trim().length < 2) return;
+      this.mostrarSugerencias = false; //ocultar sugerencias cuando se hace la búsqueda
+      this.$router.push({ path: '/resultados', query: { q: this.searchText } });
+    },
+    handleClickOutside(event) {
+    const buscador = this.$el.querySelector('.search');
+    if (buscador && !buscador.contains(event.target)) {
+      this.mostrarSugerencias = false;
     }
-  }
+    },
+    irADetalle(id) {
+      this.mostrarSugerencias = false;
+      this.searchText = '';
+      this.$router.push({ path: `/productoDetalle/${id}` });
+    }
+
+ },
+
 };
 
 </script>
@@ -232,6 +291,34 @@ export default {
   cursor: pointer;
   background-color: #00103100;
   border: rgba(245, 245, 220, 0);
+  outline: none;
+}
+
+.sugerencias-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--color-card) !important;
+  text-align: left;
+  border: var(--color-border);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.sugerencias-list li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;         /* No permite saltos de línea */
+  overflow: hidden;            /* Oculta el texto que se pasa del ancho */
+  text-overflow: ellipsis;     /* Agrega "..." al final si se corta */
+  background: var(--color-card);
+}
+
+.sugerencias-list li:hover {
+  background-color: var(--color-primary);
 }
 
 .user-options {

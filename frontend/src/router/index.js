@@ -15,6 +15,8 @@ import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 import Contacto from '../components/Contacto.vue';
+import ResultadosPage from '../components/ResultadosPage.vue';
+
 
 
 
@@ -89,6 +91,10 @@ const routes = [
         path: "/contacto",
         name: "Contacto",
         component: Contacto
+    },
+    {
+        path: '/resultados',
+        component: ResultadosPage
     }
 ]
 
