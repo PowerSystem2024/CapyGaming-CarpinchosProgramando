@@ -27,37 +27,37 @@ export default {
         {
           name: 'Maria Mercedes Atim',
           image: '../src/assets/imagesQuienesSomos/María Mercedes Atim.png',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Garantizamos precios competitivos y buscamos mejorar ofertas para darte la mejor experiencia al menor costo.',
         },
         {
           name: 'Ana Paula Ríos Garín',
           image: '../src/assets/imagesQuienesSomos/Ana Paula Ríos Garín.jpg',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Ofrecemos soporte técnico y asesoría especializada para garantizar productos y servicios de calidad, con ayuda experta siempre disponible.',
         },
         {
           name: 'Nicolas Exequiel Mercado',
           image: '../src/assets/imagesQuienesSomos/Nicolas Mercado.jpg',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Ofrecemos soluciones y equipamiento de calidad, con atención experta y mejora continua, para apoyar el desarrollo profesional y personal de nuestros clientes.',
         },
         {
           name: 'Mariana Aguilera',
           image: '../src/assets/imagesQuienesSomos/Mariana Aguilera.jpg',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Buscamos ser líderes nacionales mediante innovación constante y adaptación a las necesidades del mercado y clientes.',
         },
         {
           name: 'Melina Aguilar',
           image: '../src/assets/imagesQuienesSomos/Melina Aguilar.jpg',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Promovemos responsabilidad, respeto y confianza con los clientes, fomentamos el trabajo en equipo, cuidamos el medio ambiente y ofrecemos productos innovadores, de calidad y alto rendimiento.',
         },
         {
           name: 'Ezequiel Quiroz',
           image: '../src/assets/imagesQuienesSomos/Ezequiel Quiroz.jpg',
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Valoramos tus opiniones para mejorar continuamente y ofrecerte la mejor atención, respondiendo personalmente a tus comentarios.',
         },
         {
           name: 'Wanda Lanatta',
           image: "../src/assets/imagesQuienesSomos/Wanda Lanatta.jpg",
-          description: 'Descripción breve del miembro del equipo.',
+          description: 'Somos una empresa creada en 2025 por un grupo de entusiastas de la tecnología y el gaming, dando lo mejor para nuestros clientes.',
         },
        
       ],
@@ -86,13 +86,13 @@ export default {
 .about-us h2 {
   font-size: 2.5em;
   margin-bottom: 20px;
-  color: var(--color-primary);
+  color: var(#F39C12);
   font-family: 'Poppins', sans-serif;
 }
 
 .about-us p {
   font-size: 1.2em;
-  color: var(--color-foreground);
+  color: #F39C12; /* naranja */
   margin-bottom: 30px;
 }
 

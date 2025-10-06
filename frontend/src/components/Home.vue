@@ -78,24 +78,6 @@
     </div>
 </section>
 
-    
-      <!-- ===== Categorías principales 
- 
-      <section class="categorias">
-      <div class="grid">
-        <div
-          v-for="(cat, i) in categorias.filter(c => c.tipo === 'principal')"
-          :key="i"
-          class="cat-card principal"
-        >
-          <img :src="cat.img" :alt="cat.nombre" />
-          <h3>{{ cat.nombre }}</h3>
-          <small>{{ cat.productos }} productos</small>
-        </div>
-      </div>
-    </section>
-===== -->
-
     <!-- Ofertas arriba -->
     <Ofertas @abrirPreview="$emit('abrirPreview')" />
 
@@ -240,12 +222,15 @@ import p5 from "../assets/imagenesHome/product-5.png";
 import p6 from "../assets/imagenesHome/product-6.png";
 import p7 from "../assets/imagenesHome/product-7.png";
 import p8 from "../assets/imagenesHome/product-8.png";
+import p9 from "../assets/imagenesHome/product-9.png";
+
 
 const destacados = ref([
   { nombre: "Gabinete Coolermaster Qube 500 Flatback White Mid Tower Atx", precio: "$106.477,90", img: p1 },
   { nombre: "Notebook Asus 15.6' X1504 I7 1355u 16gb Ssd M.2 512gb Free Dos", precio: "$1.031.915", img: p2 },
   { nombre: "Monitor Gamer Aoc G2490vx 24' 144hz 1ms Fhd Va", precio: "$218.635,64", img: p3 },
   { nombre: "Cooler Cpu Id Cooling Se 903 Xt Basic", precio: "$24.022,04", img: p4 },
+  { nombre: "Mother Gigabyte X870 Gaming X Wifi 7 Am5 Ddr5", precio: "$389.902,34", img: p9 },
 ]);
 
 const recientes = ref([
@@ -393,7 +378,7 @@ const recientes = ref([
 /*.productos img{
   width: 300px;
 } */
- 
+
 .cat-card.secundario h3,
 .cat-card.secundario small {
   position: absolute;    /*  si querés texto sobre la imagen */
@@ -449,18 +434,16 @@ const recientes = ref([
   position: relative;
   overflow: hidden;
   border: none;
-  border-radius: 0;
+  border-radius: 1rem;
   cursor: pointer;
-  padding: 0;
-}
-
-.card {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1rem;
+  width: 250px;
+  height: 350px;
 }
 
 
