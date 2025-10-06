@@ -377,24 +377,26 @@ const recientes = ref([
 /* Estilo secundario (N°2 → Notebooks y Kits) */
 .cat-card.secundario {
   background-color: var(--color-popover);
-  border: none;          /* 🔹 sin borde */
-  box-shadow: none;      /* 🔹 sin sombra */
-  border-radius: 1rem;   /* 🔹 igual que el carrusel */
-  padding: 0;            /* 🔹 quita padding extra */
-  overflow: hidden;      /* 🔹 imagen ocupa todo el bloque */
+  border: none;          /*  sin borde */
+  box-shadow: none;      /*  sin sombra */
+  border-radius: 1rem;   /*  igual que el carrusel */
+  padding: 0;            /*  quita padding extra */
+  overflow: hidden;      /*  imagen ocupa todo el bloque */
 }
 .cat-card.secundario img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 1rem;
-}
-.productos img{
+} 
+
+/*.productos img{
   width: 300px;
-}
+} */
+ 
 .cat-card.secundario h3,
 .cat-card.secundario small {
-  position: absolute;    /* 🔹 si querés texto sobre la imagen */
+  position: absolute;    /*  si querés texto sobre la imagen */
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -436,7 +438,10 @@ const recientes = ref([
 /* Contenedor de tarjetas */
 .card-container {
   display: flex;
-  gap: 0;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 
 .card  {
@@ -448,6 +453,16 @@ const recientes = ref([
   cursor: pointer;
   padding: 0;
 }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
 
 .btn {
   width:50%; 
@@ -461,11 +476,13 @@ const recientes = ref([
 .btn:hover { background-color: var(--color-secondary); color: var(--color-foreground); }
 
 .card img {
-  width: 100%;
-  height: 100%; /* ajusta el alto que quieras */
+  width: 60%;
+  height: auto; /* ajusta el alto que quieras */
   object-fit: cover;
   transition: transform 0.6s ease, filter 0.6s ease;
   display: block;
+  margin: 0 auto; /*centra horizontalmente */
+  border-radius: 0.5rem;
 }
 
 
@@ -637,6 +654,15 @@ const recientes = ref([
   .separator h2 {
     font-size: 1.4rem;
   }
+
+  /*.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem; /* más espacio entre tarjetas 
+  justify-content: center;
+  padding: 2rem 1rem;
+  } */
+
 
   .card-container {
     flex-direction: column;
