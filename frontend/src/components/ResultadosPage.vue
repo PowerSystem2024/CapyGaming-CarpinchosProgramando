@@ -14,13 +14,14 @@
     
     <div class="contenido">
       <!-- 🔽 Filtro de orden -->
-      <div class="ordenador">
+        <div class="ordenador" v-if="productos.length > 0">
         <label for="orden">Ordenar por:</label>
         <select id="orden" v-model="ordenSeleccionado">
-          <option value="asc">Menor Precio</option>
-          <option value="desc">Mayor Precio</option>
+            <option value="asc">Menor Precio</option>
+            <option value="desc">Mayor Precio</option>
         </select>
-      </div>
+        </div>
+
 
     <section class="productos-grid">
       <ProductCard
@@ -143,6 +144,20 @@ const agregarAlCarrito = (producto) => {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 columnas fijas */
   gap: 1rem;
+  background-color: var(--color-background-light);
+  padding: 1rem;
+  border-radius: 8px;
+
+}
+
+/* ANIMACION DE PRODUCTOS AL APARECER */
+.productos-grid > * {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn { /* AQUI TERMINA LA ANIMACION */
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .no-result {
@@ -158,15 +173,32 @@ const agregarAlCarrito = (producto) => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+ background-color: var(--color-background-light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.header-filtros h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
+.header-filtros p {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
 .ordenador {
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Alinea a la derecha */
   gap: 0.4rem;
   font-size: 0.9rem;
-  margin-bottom: 0.8rem;
+  background-color: var(--color-background-light);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .ordenador select {
@@ -175,6 +207,7 @@ const agregarAlCarrito = (producto) => {
   border: 1px solid var(--color-border);
   outline: none;
   appearance: none;
+  font-size: 0.9rem;
 }
 
 /* 🧠 Responsividad general */
@@ -196,7 +229,7 @@ const agregarAlCarrito = (producto) => {
 
   .sidebar {
     width: 100%;
-    padding: 0;
+    padding-top: 1rem;
   }
 
   .productos-grid {
@@ -204,6 +237,7 @@ const agregarAlCarrito = (producto) => {
   }
 
   .ordenador {
+
     justify-content: flex-start; /* centrado a la izquierda en pantallas chicas */
   }
 }
@@ -214,23 +248,17 @@ const agregarAlCarrito = (producto) => {
   }
 
   .ordenador {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 0.5rem;
-  }
-
-  .ordenador label {
-    font-size: 0.85rem;
-  }
-
-  .ordenador select {
-    width: 100%;
-    font-size: 0.9rem;
   }
 .resultados-busqueda {
     padding-top: calc(60px + 40px); /* navbar más comprimida */
   }
-
+  .sidebar {
+    width: 100%;
+    padding-top: 2.5rem;
+  }
   .sidebar h2 {
     font-size: 1rem;
   }
@@ -238,7 +266,19 @@ const agregarAlCarrito = (producto) => {
   .sidebar p {
     font-size: 0.85rem;
   }
+ .header-filtros,
+  .ordenador,
+  .productos-grid {
+    margin-bottom: 0rem;
+  }
 
+  .header-filtros h2 {
+    font-size: 1.1rem;
+  }
+
+  .productos-grid {
+    padding: 0.5rem;
+  }
 }
 
 </style>
