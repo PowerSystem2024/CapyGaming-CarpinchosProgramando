@@ -177,5 +177,68 @@ const agregarAlCarrito = (producto) => {
   appearance: none;
 }
 
+/* 🧠 Responsividad general */
+@media (max-width: 1200px) {
+  .resultados-busqueda {
+    margin: 0 4rem;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(3, 1fr); /* de 4 a 3 columnas */
+  }
+}
+
+@media (max-width: 900px) {
+  .resultados-busqueda {
+    flex-direction: column; /* apila sidebar y contenido */
+    margin: 0 2rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 0;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  }
+
+  .ordenador {
+    justify-content: flex-start; /* centrado a la izquierda en pantallas chicas */
+  }
+}
+
+@media (max-width: 600px) {
+  .productos-grid {
+    grid-template-columns: 1fr; /* 1 producto por fila */
+  }
+
+  .ordenador {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ordenador label {
+    font-size: 0.85rem;
+  }
+
+  .ordenador select {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+.resultados-busqueda {
+    padding-top: calc(60px + 40px); /* navbar más comprimida */
+  }
+
+  .sidebar h2 {
+    font-size: 1rem;
+  }
+
+  .sidebar p {
+    font-size: 0.85rem;
+  }
+
+}
 
 </style>
