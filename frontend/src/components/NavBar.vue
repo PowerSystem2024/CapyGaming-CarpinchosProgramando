@@ -12,7 +12,7 @@
       <div class="search" ref="buscador">
         <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados" />
         <button class="search-btn" @click="irAResultados">
-          <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar" />
+       <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar" />
         </button>
 
         <!-- Sugerencias -->
@@ -45,10 +45,10 @@
       </div>
       <!-- Opciones usuario -->
       <div class="user-options" >
-        <router-link to="/inicioSesion" class="user-btn">
+        <button class="user-btn" @click="abrirAuthModal">
           <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg" />
           Ingresar
-        </router-link>
+        </button>
 
         <router-link to="/carrito" class="cart-btn">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg" />
@@ -89,12 +89,12 @@
     <!-- Sección usuario -->
     <div class="menu-section">
       <h3 class="section-title">Tu cuenta</h3>
-      <router-link to="/inicioSesion" class="menu-link">
+        <button @click="abrirAuthModal" class="menu-link">
         <span class="menu-link-content">
         <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg" />
         <span>Ingresar</span>
         </span>
-      </router-link>
+      </button>
     </div>
 
     <!-- Línea divisoria -->
@@ -264,10 +264,12 @@ export default {
       this.mostrarSugerencias = false;
       this.searchText = '';
       this.$router.push({ path: `/productoDetalle/${id}` });
+    },
+    // MÉTODO: abrir AuthModal 
+    abrirAuthModal() {
+      this.$emit('abrirAuth');
     }
-
- },
-
+}
 };
 
 </script>
