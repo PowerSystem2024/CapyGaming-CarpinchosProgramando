@@ -1,6 +1,7 @@
 import express from 'express';
 import { getProductos, getProductoPorId } from '../controllers/productController.js';
 import { getSubcategoriasPorCategoria } from '../controllers/productController.js';
+import { buscarProductosPorNombre } from '../controllers/productController.js'; // Importa la función buscarProductosPorNombre
 //Importa tres funciones del controlador:
 //getProductos: para obtener productos filtrados por categoría y subcategoría.
 //getProductoPorId: para obtener el detalle de un producto específico.
@@ -15,8 +16,13 @@ router.get('/productos', getProductos); // Define la ruta GET /api/productos.
 router.get('/categorias/:nombre/subcategorias', getSubcategoriasPorCategoria); //Define la ruta GET /api/categorias/:nombre/subcategorias.
 //El controlador getSubcategoriasPorCategoria busca en la base de datos todas las subcategorías que pertenecen a la categoría indicada en :nombre.
 
+router.get('/productos/buscar', buscarProductosPorNombre);
+
 // Nuevo endpoint para traer un producto por id
 router.get('/productos/:id', getProductoPorId); //Define la ruta GET /api/productos/:id.
 // El controlador getProductoPorId devuelve los datos completos de un producto específico, útil para una vista de detalle o modal.
+
+
+
 
 export default router;

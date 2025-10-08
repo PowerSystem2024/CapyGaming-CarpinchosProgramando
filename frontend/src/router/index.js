@@ -14,7 +14,10 @@ import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
+import AuthService from '../services/authService.js';
 import Contacto from '../components/Contacto.vue';
+import ResultadosPage from '../components/ResultadosPage.vue';
+
 
 
 
@@ -89,6 +92,10 @@ const routes = [
         path: "/contacto",
         name: "Contacto",
         component: Contacto
+    },
+    {
+        path: '/resultados',
+        component: ResultadosPage
     }
 ]
 
@@ -102,10 +109,10 @@ const router = createRouter({
     }
 });
 
-// Middleware de navegación: redirige usuarios autenticados si intentan ir a login o registro
+// Middleware de navegación corregido
 router.beforeEach((to) => {
-    const isAuth = !!localStorage.getItem('auth')  // Verifica si hay sesión activa
-    if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro')) {
+    const isAuth = AuthService.isAuthenticated();  // ← Usar el servicio
+    if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro' || to.name === 'recuperarContra')) {
         return { name: 'Home' } // Redirige al home si ya está logueado
     }
 })

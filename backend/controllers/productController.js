@@ -115,3 +115,37 @@ export const getProductoPorId = async (req, res) => {
     res.status(500).json({ error: 'Error al traer producto' });
   }
 };
+
+export const buscarProductosPorNombre = async (req, res) => {
+  const { nombre } = req.query;
+
+  if (!nombre || nombre.trim() === '') {
+    return res.status(400).json({ error: 'Debe proporcionar un nombre para buscar' });
+  }
+
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.id_producto,
+        p.nombre,
+        p.precio,
+        p.stock,
+        p.marca,
+        c.nombre AS categoria,
+        s.nombre AS subcategoria,
+        ARRAY_AGG(ip.url_imagen) AS imagenes
+      FROM producto p
+      LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+      LEFT JOIN subcategoria s ON p.id_subcategoria = s.id_subcategoria
+      LEFT JOIN imagen_producto ip ON p.id_producto = ip.id_producto
+      WHERE LOWER(p.nombre) ILIKE LOWER($1)
+      GROUP BY p.id_producto, c.nombre, s.nombre
+      ORDER BY p.nombre
+    `, [`%${nombre}%`]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al buscar productos por nombre:', err.stack);
+    res.status(500).json({ error: 'Error al buscar productos' });
+  }
+};
