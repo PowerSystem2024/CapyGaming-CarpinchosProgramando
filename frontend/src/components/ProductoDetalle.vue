@@ -107,11 +107,6 @@ const infoItems = ref([
     descripcion: 'Recibí tus productos en todo Argentina'
   },
   {
-    icono: '🏪',
-    titulo: 'Retiro GRATIS en sucursal',
-    descripcion: 'Calculá costo de envío'
-  },
-  {
     icono: '🛡️',
     titulo: 'Garantía de reembolso',
     descripcion: '100% beneficiario del dinero'
@@ -215,6 +210,7 @@ const agregarAlCarrito = () => {
 .imagen-producto img {
   width: 100%;
   max-width: 100%;
+  border: 1px solid var(--color-border);
   height: auto;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -461,7 +457,7 @@ const agregarAlCarrito = () => {
 
 .info-extra {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top: 24px;
 }
