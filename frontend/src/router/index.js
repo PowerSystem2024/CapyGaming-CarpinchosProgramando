@@ -16,7 +16,8 @@ import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 import AuthService from '../services/authService.js';
 import Contacto from '../components/Contacto.vue';
-import TerminosCondiciones from '../components/TerminosCondiciones.vue';
+import ResultadosPage from '../components/ResultadosPage.vue';
+
 
 
 
@@ -93,9 +94,8 @@ const routes = [
         component: Contacto
     },
     {
-    path: '/TerminosCondiciones',
-    name: 'TerminosCondiciones',
-    component: TerminosCondiciones
+        path: '/resultados',
+        component: ResultadosPage
     }
 ]
 
