@@ -2,6 +2,8 @@ import pool from '../bd/pool.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const revokedTokens = new Set(); //Lista temporal de tokens revocados (en memoria)
+
 // Registro de usuario
 export const register = async (req, res) => {
   const { nombre, apellido, email, telefono, dni, password, direccion } = req.body;
@@ -153,3 +155,12 @@ export const getProfile = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+export const logout = (req, res) => {
+  const token = req.token; // lo extraés en el middleware
+  revokedTokens.add(token);
+  res.json({ message: 'Sesión cerrada correctamente' });
+};
+
+// Exportar la lista para usarla en el middleware
+export const isTokenRevoked = (token) => revokedTokens.has(token);

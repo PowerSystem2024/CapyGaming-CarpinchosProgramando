@@ -1,18 +1,21 @@
 import jwt from 'jsonwebtoken';
+import { isTokenRevoked } from '../controllers/authController.js'; 
 
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+export const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Token no proporcionado' });
 
-  if (!token) {
-    return res.status(401).json({ error: 'Token de acceso requerido' });
+  const token = authHeader.split(' ')[1];
+  if (isTokenRevoked(token)) {
+    return res.status(401).json({ error: 'Token revocado. Iniciá sesión nuevamente.' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Token inválido o expirado' });
-    }
-    req.user = user;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    req.token = token;
     next();
-  });
+  } catch (error) {
+    return res.status(401).json({ error: 'Token inválido o expirado' });
+  }
 };

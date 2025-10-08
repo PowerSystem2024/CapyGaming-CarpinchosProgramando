@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import NavBar from "./components/NavBar.vue";
 import FooterPag from "./components/FooterPag.vue";
 import CarritoModalPreview from "./components/CarritoModalPreview.vue";
+import AuthModal from './components/AuthModal.vue';
 import { getCartCount, getCart } from "./utils/cartUtils";
 import { ultimoProducto } from "./composables/ultimoProducto";
 
@@ -11,6 +12,7 @@ import { ultimoProducto } from "./composables/ultimoProducto";
 // Estado reactivo
 const cartCount = ref(0);
 const mostrarCarrito = ref(false);
+const mostrarAuthModal = ref(false);
 const carrito = ref([]);
 
 // Función para actualizar el contador y el contenido del carrito
@@ -22,6 +24,17 @@ function updateCartCount() {
 
 const router = useRouter();
 
+// Abrir modal de autenticación
+function openAuthModal() {
+  mostrarAuthModal.value = true;
+}
+
+// Cuando el login/registro es exitoso
+function onAuthSuccess() {
+  console.log('Autenticación exitosa');
+  updateCartCount(); // Por si el carrito necesita actualizarse
+}
+
 onMounted(() => {
   updateCartCount();
   window.addEventListener("cartUpdated", updateCartCount);
@@ -32,24 +45,33 @@ onMounted(() => {
   // Cierra el modal al cambiar de ruta
   router.afterEach(() => {
     mostrarCarrito.value = false;
+    mostrarAuthModal.value = false;
   });
 });
-
 
 </script>
 
 <template>
   <!-- Barra de navegación -->
-  <NavBar :cart-count="cartCount" @abrirPreview="mostrarCarrito = true" />
+  <NavBar :cart-count="cartCount" @abrirPreview="mostrarCarrito = true" @abrirAuth="openAuthModal" />
 
   <!-- Renderizado de la ruta correspondiente -->
-  <router-view @abrirPreview="mostrarCarrito = true" />
+  <router-view @abrirPreview="mostrarCarrito = true" @abrirAuth="openAuthModal"/>
+
   <CarritoModalPreview
     :visible="mostrarCarrito"
     :carrito="carrito"
     :ultimoProducto="ultimoProducto"
     @close="mostrarCarrito = false"
   />
+
+  <!-- Modal de autenticación -->
+  <AuthModal
+    :visible="mostrarAuthModal"
+    @close="mostrarAuthModal = false"
+    @success="onAuthSuccess"
+  />
+
   <footerPag />
 </template>
 

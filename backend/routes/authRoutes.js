@@ -3,9 +3,10 @@ import {
   register, 
   login, 
   requestPasswordReset, 
-  getProfile 
+  getProfile,
+  logout
 } from '../controllers/authController.js';
-import { authenticateToken } from '../middleware/auth.js';
+import { verifyToken } from '../middleware/auth.js';
 import { 
   registerValidation, 
   loginValidation, 
@@ -18,8 +19,9 @@ const router = express.Router();
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.post('/forgot-password', recoveryValidation, requestPasswordReset);
+router.post('/logout', verifyToken ,logout);
 
 // Rutas protegidas
-router.get('/profile', authenticateToken, getProfile);
+router.get('/profile', verifyToken, getProfile);
 
 export default router;
