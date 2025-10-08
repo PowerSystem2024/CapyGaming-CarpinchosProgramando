@@ -6,7 +6,7 @@
       <div class="imagen-producto">
         <img :src="producto.imagenes[0]" :alt="producto.nombre" />
       </div>
-      
+
       <!-- Información del producto -->
       <div class="info-producto">
         <div class="header-producto">
@@ -19,35 +19,45 @@
             <span class="etiqueta">Contado</span>
             <span class="valor">$ {{ producto.precio.toLocaleString() }}</span>
           </div>
-          
-          <div class="precio-item precio-cuotas">
-            <span class="etiqueta">6 cuotas sin interés</span>
-            <span class="valor">$ {{ calcularCuotas(producto.precio).toLocaleString() }}</span>
+        </div>
+
+        <div class="compra">
+          <!-- Selector de cantidad actualizado -->
+          <div class="selector-cantidad">
+            <span class="etiqueta-cantidad">Cantidad:</span>
+            <div class="controles-cantidad">
+              <button 
+                class="btn-cantidad" 
+                @click="disminuirCantidad"
+                :disabled="cantidad <= 1"
+              >
+                −
+              </button>
+              <input 
+                type="number" 
+                v-model.number="cantidad" 
+                min="1" 
+                max="99"
+                class="input-cantidad"
+              />
+              <button 
+                class="btn-cantidad" 
+                @click="aumentarCantidad"
+                :disabled="cantidad >= 99"
+              >
+                +
+              </button>
+            </div>
           </div>
           
-          <div class="precio-item precio-lista">
-            <span class="etiqueta">Precio de lista</span>
-            <span class="valor">$ {{ calcularPrecioLista(producto.precio).toLocaleString() }}</span>
+          <div class="acciones">
+            <button class="btn-agregar" @click="agregarAlCarrito">
+              <span class="btn-text">Agregar al carrito</span>
+              <span class="btn-icon">🛒</span>
+            </button>
           </div>
         </div>
-        
-        <div class="acciones">
-          <button class="btn-agregar" @click="agregarAlCarrito">
-            <span class="btn-text">Agregar al carrito</span>
-            <span class="btn-icon">🛒</span>
-          </button>
-        </div>
-        
-        <!-- Calculador de cuotas -->
-        <div class="calculador-cuotas">
-          <h3>Calculador de cuotas</h3>
-          <div class="input-cuotas">
-            <input type="number" min="1" max="12" v-model="cuotas" />
-            <span>cuotas</span>
-          </div>
-          <p class="valor-cuota">Valor por cuota: $ {{ calcularValorCuota(producto.precio, cuotas).toLocaleString() }}</p>
-        </div>
-        
+
         <!-- Información de envío y garantía -->
         <div class="info-extra">
           <div class="info-item" v-for="(item, index) in infoItems" :key="index" :style="{ animationDelay: `${index * 0.1}s` }">
@@ -85,9 +95,9 @@ import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto
 import CarritoModalPreview from './CarritoModalPreview.vue';
 
 const mostrarModal = ref(false);
-const cuotas = ref(6);
 const producto = ref(null);
 const route = useRoute();
+const cantidad = ref(1); // Cantidad inicial
 
 // Información de los ítems de envío y garantía
 const infoItems = ref([
@@ -123,33 +133,35 @@ onMounted(async () => {
   }
 });
 
+// Funciones para controlar la cantidad
+const aumentarCantidad = () => {
+  if (cantidad.value < 99) {
+    cantidad.value++;
+  }
+};
+
+const disminuirCantidad = () => {
+  if (cantidad.value > 1) {
+    cantidad.value--;
+  }
+};
+
 const agregarAlCarrito = () => {
   const productoConAlias = {
     ...producto.value,
     id: producto.value.id_producto
   };
 
-  const resultado = addToCart(productoConAlias);
+  const resultado = addToCart(productoConAlias, cantidad.value);
 
   if (resultado.success) {
     setUltimoProducto(productoConAlias);
     mostrarModal.value = true;
+    // Resetear cantidad después de agregar al carrito
+    cantidad.value = 1;
   } else {
     alert(resultado.message);
   }
-};
-
-// Funciones para calcular precios
-const calcularCuotas = (precio) => {
-  return Math.round(precio / 5);
-};
-
-const calcularPrecioLista = (precio) => {
-  return Math.round(precio * 0.8);
-};
-
-const calcularValorCuota = (precio, numCuotas) => {
-  return Math.round(precio / numCuotas);
 };
 </script>
 
@@ -183,6 +195,8 @@ const calcularValorCuota = (precio, numCuotas) => {
 
 .imagen-producto {
   flex: 1;
+  display: flex;
+  align-items: center;
   max-width: 500px;
   animation: slideInLeft 0.6s ease-out;
 }
@@ -200,6 +214,8 @@ const calcularValorCuota = (precio, numCuotas) => {
 
 .imagen-producto img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -288,10 +304,6 @@ const calcularValorCuota = (precio, numCuotas) => {
   border-bottom: 2px solid var(--chart-3);
 }
 
-.precio-cuotas {
-  animation-delay: 0.4s;
-}
-
 .precio-lista {
   animation-delay: 0.5s;
 }
@@ -312,48 +324,108 @@ const calcularValorCuota = (precio, numCuotas) => {
   font-weight: 700;
 }
 
-.acciones {
-  margin: 16px 0;
+.compra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.btn-agregar {
-  background: var(--chart-1);
-  color: white;
+/* Selector de cantidad */
+.selector-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0;
+  animation: slideInUp 0.5s ease-out 0.4s both;
+}
+
+.etiqueta-cantidad {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.controles-cantidad {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--chart-5);
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 3px;
+}
+
+.btn-cantidad {
+  background-color: var(--chart-5);
   border: none;
-  padding: 16px 32px;
-  font-size: 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  overflow: hidden;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.btn-agregar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.btn-cantidad:hover:not(:disabled) {
+  background-color: var(--chart-4);
+}
+
+.btn-cantidad:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-cantidad {
+  width: 50px;
+  height: 36px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input-cantidad::-webkit-outer-spin-button,
+.input-cantidad::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.acciones {
+  margin: 16px 0;
+  flex: 1;
+  min-width: 200px;
+}
+
+.btn-agregar {
+  background-color: #f59e0b;
+  color: #f8f8f8;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   width: 100%;
-  height: 100%;
-  background: var(--chart-3);
-  transition: left 0.5s;
-}
-
-.btn-agregar:hover::before {
-  left: 100%;
 }
 
 .btn-agregar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background-color: #e68900;
+}
+
+.btn-agregar .btn-text,
+.btn-agregar .btn-icon {
+  background: none !important;
+  color: #fff;
+  display: flex;
+  align-items: center;
 }
 
 .btn-agregar:active {
@@ -376,16 +448,6 @@ const calcularValorCuota = (precio, numCuotas) => {
   transform: scale(1.2) rotate(10deg);
 }
 
-.calculador-cuotas {
-  background-color: var(--color-background);
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid var(--chart-1);
-  margin: 16px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  animation: scaleIn 0.5s ease-out 0.6s both;
-}
-
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -397,56 +459,19 @@ const calcularValorCuota = (precio, numCuotas) => {
   }
 }
 
-.calculador-cuotas h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--color-foreground);
-}
-
-.input-cuotas {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.input-cuotas input {
-  width: 70px;
-  padding: 10px;
-  border: 1px solid var(--chart-5);
-  border-radius: 6px;
-  text-align: center;
-  font-weight: 600;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input-cuotas input:focus {
-  outline: none;
-  border-color: var(--chart-1);
-  box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
-}
-
-.valor-cuota {
-  font-weight: 700;
-  color: var(--chart-2);
-  margin: 0;
-  font-size: 16px;
-}
-
 .info-extra {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 24px;
 }
 
 .info-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   padding: 16px;
+  border: 1px solid var(--chart-1);
   border-radius: 8px;
   background-color: var(--color-background);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -515,6 +540,23 @@ const calcularValorCuota = (precio, numCuotas) => {
 }
 
 /* Responsive */
+/* Tablets */
+@media (max-width: 1024px) {
+  .producto-detalle {
+    margin-top: 5%;
+    padding: 15px;
+  }
+  
+  .producto-container {
+    gap: 30px;
+  }
+  
+  .info-extra {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablets pequeñas y móviles grandes */
 @media (max-width: 768px) {
   .producto-container {
     flex-direction: column;
@@ -533,9 +575,76 @@ const calcularValorCuota = (precio, numCuotas) => {
     font-size: 24px;
   }
   
+  .compra {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .selector-cantidad {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .acciones {
+    min-width: auto;
+  }
+  
   .btn-agregar {
     padding: 14px 24px;
     font-size: 16px;
+  }
+  
+  .info-extra {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .info-item {
+    width: auto;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .producto-detalle {
+    margin-top: 2%;
+    padding: 10px;
+  }
+  
+  .nombre-producto {
+    font-size: 20px;
+  }
+  
+  .precio-contado .valor {
+    font-size: 22px;
+  }
+  
+  .selector-cantidad {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .controles-cantidad {
+    align-self: stretch;
+    justify-content: center;
+  }
+  
+  .info-item {
+    padding: 12px;
+  }
+  
+  .info-item .icono {
+    font-size: 20px;
+  }
+  
+  .info-item .texto h4 {
+    font-size: 15px;
+  }
+  
+  .info-item .texto p {
+    font-size: 13px;
   }
 }
 </style>
