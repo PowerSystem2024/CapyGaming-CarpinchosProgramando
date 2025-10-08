@@ -15,7 +15,7 @@ import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 import Contacto from '../components/Contacto.vue';
-
+import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 
 
 //Definir las rutas de tu aplicacion
@@ -89,6 +89,11 @@ const routes = [
         path: "/contacto",
         name: "Contacto",
         component: Contacto
+    },
+    {
+    path: '/PreguntasFrecuentes',
+    name: 'PreguntasFrecuentes',
+    component: PreguntasFrecuentes
     }
 ]
 
