@@ -77,13 +77,31 @@ async function onSubmit () {
   if (!validate()) return
   loading.value = true
   try {
-    // Simulación de login (frontend-only)
-    await new Promise(r => setTimeout(r, 600))
-    if (form.remember) {
-      localStorage.setItem('auth', JSON.stringify({ email: form.email }))
+    const response = await fetch('http://localhost:3001/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: form.email,
+        password: form.password
+      })
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Error en login')
     }
-    // CAMBIO: Emitir éxito en lugar de redirigir
-    emit('success')
+
+    // Guardar token y datos del usuario
+    localStorage.setItem('auth', JSON.stringify({
+      token: data.token,
+      user: data.user
+    }))
+
+    emit('success') // avisar que el login fue exitoso
+  } catch (err) {
+    console.error('❌ Error en login:', err)
+    alert(err.message)
   } finally {
     loading.value = false
   }
