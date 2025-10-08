@@ -55,7 +55,7 @@ const CART_KEY = 'cart';
     saveCart(filteredCart);
     return filteredCart;
   }
-
+ 
   export function updateQuantity(productId, quantity) {
     const cart = getCart();
     const itemIndex = cart.findIndex(item => item.id_producto === productId);
