@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Checkout - CapyGaming</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #f39c12;
+        }
+        button {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #e67e22;
+        }
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f0f0f0;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Checkout - CapyGaming</h1>
+
+        <h2>1. Verificar Conexión</h2>
+        <button onclick="testConnection()">Probar Conexión con Backend</button>
+
+        <h2>2. Crear Pedido de Prueba</h2>
+        <button onclick="createTestOrder()">Crear Pedido</button>
+
+        <h2>3. Probar MercadoPago</h2>
+        <button onclick="testMercadoPago()">Generar Link de Pago</button>
+
+        <h2>4. Test Completo del Flujo</h2>
+        <button onclick="testCompleteFlow()">Ejecutar Flujo Completo</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001';
+
+        function showResult(message, type = 'info', data = null) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result ' + type;
+            resultDiv.style.display = 'block';
+
+            let content = `<strong>${message}</strong>`;
+            if (data) {
+                content += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            resultDiv.innerHTML = content;
+        }
+
+        async function testConnection() {
+            showResult('Conectando con el backend...', 'loading');
+
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+                showResult('✅ Conexión exitosa!', 'success', data);
+            } catch (error) {
+                showResult('❌ Error de conexión: ' + error.message, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function createTestOrder() {
+            showResult('Creando pedido de prueba...', 'loading');
+
+            const orderData = {
+                usuario: {
+                    dni: 12345678,
+                    nombre: 'Test',
+                    apellido: 'Usuario',
+                    email: 'test@test.com'
+                },
+                items: [
+                    {
+                        id_producto: 89,
+                        nombre: 'Notebook Acer',
+                        quantity: 1,
+                        precio: 850000
+                    }
+                ],
+                datosEnvio: {
+                    direccion: 'Av. Corrientes 1234',
+                    ciudad: 'Buenos Aires',
+                    codigoPostal: '1043',
+                    provincia: 'Buenos Aires',
+                    telefono: '1112345678',
+                    metodoEnvio: 'standard'
+                },
+                metodoPago: 'efectivo',
+                montoTotal: 855000,
+                costoEnvio: 5000
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/orders/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showResult(`✅ Pedido #${data.idPedido} creado exitosamente!`, 'success', data);
+                    window.lastOrderId = data.idPedido;
+                } else {
+                    showResult('❌ Error al crear pedido', 'error', data);
+                }
+            } catch (error) {
+                showResult('❌ Error de conexión: ' + error.message, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function testMercadoPago() {
+            showResult('Generando preferencia de MercadoPago...', 'loading');
+
+            const mpData = {
+                items: [
+                    {
+                        id_producto: 89,
+                        nombre: 'Notebook Acer',
+                        quantity: 1,
+                        precio: 850000
+                    }
+                ],
+                payer: {
+                    name: 'Test',
+                    surname: 'Usuario',
+                    email: 'test@test.com',
+                    phone: {
+                        area_code: '11',
+                        number: '12345678'
+                    },
+                    address: {
+                        street_name: 'Av. Corrientes',
+                        street_number: 1234,
+                        zip_code: '1043'
+                    }
+                },
+                orderId: window.lastOrderId || 999
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/mercadopago/create-preference`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(mpData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = {
+                        ...data,
+                        instrucciones: 'Haz clic en el link para pagar',
+                        tarjetas_prueba: {
+                            aprobar: {
+                                numero: '5031 7557 3453 0604',
+                                cvv: '123',
+                                vencimiento: '11/25',
+                                nombre: 'APRO',
+                                dni: '12345678'
+                            },
+                            rechazar: {
+                                numero: '5031 7557 3453 0604',
+                                cvv: '123',
+                                vencimiento: '11/25',
+                                nombre: 'TEST',
+                                dni: '12345678'
+                            }
+                        }
+                    };
+
+                    showResult('✅ Link de pago generado!', 'success', result);
+
+                    // Abrir en nueva ventana si el usuario quiere
+                    if (confirm('¿Quieres abrir el link de pago en una nueva ventana?')) {
+                        window.open(data.sandboxInitPoint || data.initPoint, '_blank');
+                    }
+                } else {
+                    showResult('❌ Error con MercadoPago', 'error', data);
+                }
+            } catch (error) {
+                showResult('❌ Error de conexión: ' + error.message, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function testCompleteFlow() {
+            showResult('Ejecutando flujo completo...', 'loading');
+
+            // Paso 1: Verificar conexión
+            await testConnection();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Paso 2: Crear pedido
+            await createTestOrder();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Paso 3: Generar link de pago
+            if (window.lastOrderId) {
+                await testMercadoPago();
+            }
+        }
+
+        // Test inicial al cargar la página
+        window.onload = () => {
+            console.log('🧪 Página de test cargada');
+            console.log('📍 Backend esperado en:', API_URL);
+            testConnection();
+        };
+    </script>
+</body>
+</html>

@@ -18,6 +18,10 @@ import AuthService from '../services/authService.js';
 import Contacto from '../components/Contacto.vue';
 import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 import ResultadosPage from '../components/ResultadosPage.vue';
+import OrderConfirmation from '../views/OrderConfirmation.vue';
+import PaymentSuccess from '../views/PaymentSuccess.vue';
+import PaymentFailure from '../views/PaymentFailure.vue';
+import PaymentPending from '../views/PaymentPending.vue';
 
 
 
@@ -102,6 +106,26 @@ const routes = [
   {
         path: '/resultados',
         component: ResultadosPage
+    },
+    {
+        path: '/order-confirmation/:id',
+        name: 'OrderConfirmation',
+        component: OrderConfirmation
+    },
+    {
+        path: '/payment/success',
+        name: 'PaymentSuccess',
+        component: PaymentSuccess
+    },
+    {
+        path: '/payment/failure',
+        name: 'PaymentFailure',
+        component: PaymentFailure
+    },
+    {
+        path: '/payment/pending',
+        name: 'PaymentPending',
+        component: PaymentPending
     }
 ]
 

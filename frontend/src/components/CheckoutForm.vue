@@ -589,7 +589,10 @@
                   </label>
                 </div>
 
-                <button type="submit" class="btn-pay">Finalizar compra</button>
+                <button type="submit" class="btn-pay" :disabled="processingPayment">
+                  <span v-if="processingPayment">Procesando...</span>
+                  <span v-else>Finalizar compra</span>
+                </button>
               </form>
             </div>
           </div>
@@ -702,7 +705,8 @@ export default {
         acceptTerms: false
       },
       errors: {},
-      cartItems: []
+      cartItems: [],
+      processingPayment: false
     }
   },
   computed: {
@@ -898,14 +902,132 @@ export default {
     showLogin() {
       alert('Funcionalidad de login próximamente');
     },
-    procesarPago() {
+    async procesarPago() {
       if (this.validateCurrentStep()) {
-        // Aquí iría la lógica para procesar el pago
-        alert('¡Compra realizada con éxito! Gracias por tu compra.');
-        clearCart();
-        this.$router.push('/');
-        this.closeModal();
+        try {
+          // Mostrar loading
+          this.processingPayment = true;
+
+          // Debug: Verificar que tenemos los datos necesarios
+          console.log('🛒 Iniciando proceso de pago...');
+          console.log('Carrito:', this.cartItems);
+          console.log('Datos del usuario:', this.formData);
+
+          // 1. Crear pedido en la base de datos
+          const orderData = {
+            usuario: {
+              dni: this.formData.dni,
+              nombre: this.formData.nombre,
+              apellido: this.formData.apellidos,
+              email: this.formData.email
+            },
+            items: this.cartItems,
+            datosEnvio: {
+              direccion: this.formData.direccion,
+              ciudad: this.formData.ciudad,
+              codigoPostal: this.formData.codigoPostal,
+              provincia: this.formData.provincia,
+              telefono: this.formData.telefono,
+              metodoEnvio: this.formData.metodoEnvio
+            },
+            metodoPago: this.formData.metodoPago,
+            montoTotal: this.total,
+            costoEnvio: this.shippingCost
+          };
+
+          const orderResponse = await fetch('http://localhost:3001/api/orders/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+          });
+
+          const orderResult = await orderResponse.json();
+
+          if (!orderResult.success) {
+            throw new Error(orderResult.message || 'Error al crear el pedido');
+          }
+
+          // 2. Si el método de pago es MercadoPago, crear preferencia y redirigir
+          if (this.formData.metodoPago === 'mercadopago') {
+            const mpData = {
+              items: this.cartItems,
+              payer: {
+                name: this.formData.nombre,
+                surname: this.formData.apellidos,
+                email: this.formData.email,
+                phone: {
+                  area_code: '11',
+                  number: this.formData.telefono || '12345678'
+                },
+                address: {
+                  street_name: this.formData.direccion,
+                  street_number: 0,
+                  zip_code: this.formData.codigoPostal
+                }
+              },
+              orderId: orderResult.idPedido
+            };
+
+            const mpResponse = await fetch('http://localhost:3001/api/mercadopago/create-preference', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(mpData)
+            });
+
+            const mpResult = await mpResponse.json();
+
+            if (mpResult.success) {
+              // Limpiar carrito antes de redirigir
+              clearCart();
+
+              // Redirigir a MercadoPago
+              window.location.href = mpResult.sandboxInitPoint || mpResult.initPoint;
+            } else {
+              throw new Error('Error al crear la preferencia de pago');
+            }
+          } else {
+            // 3. Para otros métodos de pago, mostrar confirmación
+            alert(`¡Pedido #${orderResult.idPedido} creado exitosamente!
+
+              ${this.getPaymentInstructions(this.formData.metodoPago)}`);
+
+            clearCart();
+            this.$router.push(`/order-confirmation/${orderResult.idPedido}`);
+            this.closeModal();
+          }
+        } catch (error) {
+          console.error('Error procesando el pago:', error);
+
+          // Mejor manejo de errores
+          let errorMessage = 'Error al procesar el pago: ';
+
+          if (error.message === 'Failed to fetch') {
+            errorMessage = 'No se puede conectar con el servidor. Verifica que el backend esté funcionando en http://localhost:3001';
+          } else {
+            errorMessage += error.message;
+          }
+
+          alert(errorMessage);
+
+          // Log adicional para debugging
+          console.log('URL del backend:', 'http://localhost:3001');
+          console.log('Datos enviados:', this.formData);
+        } finally {
+          this.processingPayment = false;
+        }
       }
+    },
+    getPaymentInstructions(metodoPago) {
+      const instructions = {
+        'tarjeta': 'Te contactaremos para coordinar el pago con tarjeta.',
+        'transferencia': 'Te enviaremos los datos bancarios por email para realizar la transferencia.',
+        'efectivo': 'Te enviaremos el cupón de pago para abonar en Pago Fácil o Rapipago.'
+      };
+      return instructions[metodoPago] || 'Te contactaremos con las instrucciones de pago.';
     }
   }
 }
