@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import ofertasRoutes from './routes/ofertasRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -20,7 +21,7 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
-
+app.use('/api/ofertas', ofertasRoutes); //ofertas
 
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
