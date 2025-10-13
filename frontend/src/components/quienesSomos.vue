@@ -3,8 +3,8 @@
     <section class="about-us">
       <h2>Quiénes Somos</h2>
       <p>
-        Somos una empresa dedicada a brindar soluciones innovadoras y eficientes para nuestros clientes.
-        Nuestro equipo está compuesto por profesionales apasionados y comprometidos con la excelencia.
+        "Somos una empresa dedicada a brindar soluciones innovadoras y eficientes para nuestros clientes.
+        Nuestro equipo está compuesto por profesionales apasionados y comprometidos con la excelencia."
       </p>
 
       <div class="team">
@@ -91,7 +91,7 @@ export default {
 }
 
 .about-us p {
-  font-size: 1.2em;
+  font-size: 1.5em;
   color: #F39C12; /* naranja */
   margin-bottom: 30px;
 }
