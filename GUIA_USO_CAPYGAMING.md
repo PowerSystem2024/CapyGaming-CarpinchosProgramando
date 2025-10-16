@@ -167,9 +167,3 @@ DNI: 99999999 - prueba@test.com (recién creado)
 ```
 
 ---
-
-## 🚦 PARA EMPEZAR A USAR:
-
-1. Solo inicia el frontend: `cd frontend && npm run dev`
-2. Abre http://localhost:5173
-3. ¡Listo para usar!
