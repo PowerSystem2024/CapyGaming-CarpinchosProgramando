@@ -18,6 +18,7 @@ import AuthService from '../services/authService.js';
 import Contacto from '../components/Contacto.vue';
 import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 import ResultadosPage from '../components/ResultadosPage.vue';
+import TerminosCondiciones from '../components/TerminosCondiciones.vue';
 
 
 
@@ -99,9 +100,14 @@ const routes = [
     name: 'PreguntasFrecuentes',
     component: PreguntasFrecuentes
     },
-  {
+    {
         path: '/resultados',
         component: ResultadosPage
+    },
+    {
+        path: "/terminosycondiciones",
+        name: "TerminosYCondiciones",
+        component: TerminosCondiciones
     }
 ]
 
