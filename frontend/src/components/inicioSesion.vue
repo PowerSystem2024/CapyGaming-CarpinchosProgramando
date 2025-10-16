@@ -58,10 +58,10 @@
 
 <script setup>
 import { reactive, ref, defineEmits } from 'vue'
-
+import { useAuth } from '../composables/useAuth.js'
 // AGREGAR: Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
-
+const { login } = useAuth()
 const form = reactive({ email: '', password: '', remember: false })
 const errors = reactive({ email: '', password: '' })
 const loading = ref(false)
@@ -76,32 +76,19 @@ function validate () {
 async function onSubmit () {
   if (!validate()) return
   loading.value = true
+  
   try {
-    const response = await fetch('http://localhost:3001/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: form.email,
-        password: form.password
-      })
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Error en login')
+    const result = await login(form.email, form.password)
+    
+    if (result.success) {
+      console.log('✅ Login exitoso')
+      emit('success') // avisar que el login fue exitoso
+    } else {
+      throw new Error(result.error || 'Error en login')
     }
-
-    // Guardar token y datos del usuario
-    localStorage.setItem('auth', JSON.stringify({
-      token: data.token,
-      user: data.user
-    }))
-
-    emit('success') // avisar que el login fue exitoso
   } catch (err) {
     console.error('❌ Error en login:', err)
-    alert(err.message)
+    alert(err.message || 'Error al iniciar sesión')
   } finally {
     loading.value = false
   }
