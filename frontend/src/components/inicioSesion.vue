@@ -58,6 +58,7 @@
 
 <script setup>
 import { reactive, ref, defineEmits } from 'vue'
+import { syncCartWithBackend } from '../utils/cartUtils.js'
 
 // AGREGAR: Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
@@ -97,6 +98,9 @@ async function onSubmit () {
       token: data.token,
       user: data.user
     }))
+
+    // Sincronizar carrito del localStorage con el backend
+    await syncCartWithBackend()
 
     emit('success') // avisar que el login fue exitoso
   } catch (err) {

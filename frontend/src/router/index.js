@@ -102,6 +102,27 @@ const routes = [
   {
         path: '/resultados',
         component: ResultadosPage
+    },
+    {
+        path: '/pedidos',
+        name: 'Pedidos',
+        component: () => import('../components/HistorialPedidos.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/pago/exitoso',
+        name: 'PagoExitoso',
+        component: () => import('../components/PagoExitoso.vue')
+    },
+    {
+        path: '/pago/fallido',
+        name: 'PagoFallido',
+        component: () => import('../components/PagoFallido.vue')
+    },
+    {
+        path: '/pago/pendiente',
+        name: 'PagoPendiente',
+        component: () => import('../components/PagoPendiente.vue')
     }
 ]
 

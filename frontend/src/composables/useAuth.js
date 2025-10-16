@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import AuthService from '../services/authService.js';
+import { syncCartWithBackend } from '../utils/cartUtils.js';
 
 export function useAuth() {
   const user = ref(AuthService.getCurrentUser());
@@ -10,6 +11,10 @@ export function useAuth() {
       const data = await AuthService.login({ email, password });
       user.value = data.user;
       isAuthenticated.value = true;
+
+      // Sincronizar carrito del localStorage con el backend
+      await syncCartWithBackend();
+
       return { success: true, data };
     } catch (error) {
       return { success: false, error: error.message };
@@ -21,6 +26,10 @@ export function useAuth() {
       const data = await AuthService.register(userData);
       user.value = data.user;
       isAuthenticated.value = true;
+
+      // Sincronizar carrito del localStorage con el backend
+      await syncCartWithBackend();
+
       return { success: true, data };
     } catch (error) {
       return { success: false, error: error.message };

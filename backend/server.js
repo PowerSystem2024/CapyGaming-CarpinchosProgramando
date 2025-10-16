@@ -3,9 +3,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
+console.log('🧪 ENV test:', process.env.TEST_VARIABLE);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,6 +23,8 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
+app.use('/api', cartRoutes); // Rutas: /api/carrito, /api/carrito/sync
+app.use('/api', orderRoutes); // Rutas: /api/pedidos, /api/pedidos/webhook
 
 
 // Ruta de prueba
@@ -35,14 +40,30 @@ app.use((err, req, res, next) => {
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'API de CapyGaming funcionando correctamente',
     endpoints: {
       auth: {
         register: 'POST /api/auth/register',
         login: 'POST /api/auth/login',
         profile: 'GET /api/auth/profile',
+        logout: 'POST /api/auth/logout',
         forgotPassword: 'POST /api/auth/forgot-password'
+      },
+      cart: {
+        get: 'GET /api/carrito',
+        add: 'POST /api/carrito',
+        update: 'PUT /api/carrito/:id_producto',
+        remove: 'DELETE /api/carrito/:id_producto',
+        sync: 'POST /api/carrito/sync',
+        clear: 'DELETE /api/carrito'
+      },
+      orders: {
+        create: 'POST /api/pedidos',
+        list: 'GET /api/pedidos',
+        detail: 'GET /api/pedidos/:id',
+        cancel: 'POST /api/pedidos/:id/cancelar',
+        webhook: 'POST /api/pedidos/webhook'
       },
       health: 'GET /api/health'
     }

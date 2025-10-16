@@ -1,7 +1,7 @@
 <template>
   <div class="carrito-container">
     <!-- Modal de Checkout -->
-    <CheckoutForm :isOpen="showCheckout" @close="showCheckout = false" />
+    <CheckoutFormIntegrated :isOpen="showCheckout" @close="showCheckout = false" />
     <h1>Carrito de Compras</h1>
     <div v-if="cartItems.length === 0" class="carrito-vacio">
       <p>El carrito está vacío</p>
@@ -11,7 +11,7 @@
     <div v-else>
       <div class="products-grid">
         <div v-for="product in cartItems" :key="product.id" class="product-card">
-          <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
+          <img :src="product.imagenes?.[0] || 'placeholder.jpg'" :alt="product.nombre" width="100" />
           <div class="product-info">
             <h3>{{ product.nombre }}</h3>
             <p class="precio">Precio: ${{ product.precio }}</p>
@@ -65,12 +65,12 @@
 // Importamos los productos desde el archivo de datos
 
 import { getCart, removeFromCart, updateQuantity, getCartTotal, clearCart } from "../utils/cartUtils";
-import CheckoutForm from "./CheckoutForm.vue";
+import CheckoutFormIntegrated from "./CheckoutFormIntegrated.vue";
 
 export default {
   name: "Carrito",
   components: {
-    CheckoutForm
+    CheckoutFormIntegrated
   },
   data() {
     return {
