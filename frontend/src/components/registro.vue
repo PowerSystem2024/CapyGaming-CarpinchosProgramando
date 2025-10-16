@@ -5,15 +5,27 @@
 
     <form @submit.prevent="onSubmit" novalidate>
       <div class="field">
-        <label for="name">Nombre y apellido</label>
+        <label for="name">Nombre</label>
         <input
           id="name"
           type="text"
-          v-model.trim="form.name"
+          v-model.trim="form.nombre"
           placeholder="ej: Ana Pérez"
           autocomplete="name"
         />
         <p v-if="errors.name" class="error">{{ errors.name }}</p>
+      </div>
+
+      <div class="field">
+        <label for="apellido">Apellido</label>
+        <input
+          id="apellido"
+          type="text"
+          v-model.trim="form.apellido"
+          placeholder="ej: Ana Pérez"
+          autocomplete="apellido"
+        />
+        <p v-if="errors.apellido" class="error">{{ errors.apellido}}</p>
       </div>
 
       <div class="field">
@@ -129,7 +141,8 @@ const emit = defineEmits(['success', 'switch-view'])
 const { register } = useAuth()
 
 const form = reactive({
-  name: '',
+  nombre: '',
+  apellido: '',
   email: '',
   telefono: '',
   dni: '',
@@ -140,7 +153,8 @@ const form = reactive({
 })
 
 const errors = reactive({
-  name: '', // ← AGREGAR ERROR PARA NOMBRE
+  nombre: '', // ← AGREGAR ERROR PARA NOMBRE
+  apellido: '',
   email: '',
   password: '',
   confirm: '',
@@ -160,8 +174,14 @@ function validate() {
   let isValid = true
 
   // Validar nombre
-  if (!form.name.trim()) {
-    errors.name = 'El nombre es requerido'
+  if (!form.nombre.trim()) {
+    errors.nombre = 'El nombre es requerido'
+    isValid = false
+  }
+
+  // Validar apellido
+  if(!form.apellido){
+    errors.apellido = 'El apellido es requerido'
     isValid = false
   }
 
@@ -223,15 +243,10 @@ async function onSubmit() {
   try {
     console.log('📤 Enviando datos al backend...') // ← Para debug
     
-    // Separar nombre y apellido
-    const nameParts = form.name.split(' ')
-    const nombre = nameParts[0] || ''
-    const apellido = nameParts.slice(1).join(' ') || ''
-
     // Usar el servicio real de registro
     const result = await register({
-      nombre: nombre,
-      apellido: apellido,
+      nombre: form.nombre,
+      apellido: form.apellido,
       email: form.email,
       telefono: form.telefono,
       dni: form.dni,

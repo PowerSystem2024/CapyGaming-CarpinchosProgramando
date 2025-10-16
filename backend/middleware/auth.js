@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { isTokenRevoked } from '../controllers/authController.js'; 
+import { isTokenRevoked } from '../controllers/authController.js';
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
