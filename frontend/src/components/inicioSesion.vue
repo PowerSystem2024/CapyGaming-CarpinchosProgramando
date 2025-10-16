@@ -1,64 +1,67 @@
-<!-- src/views/LoginView.vue -->
+[file name]: inicioSesion.vue
 <template>
-  <div class="auth-page">
-    <div class="auth-card">
-      <h1>Iniciar sesión</h1>
+  <div class="auth-modal-content">
+    <h1>Iniciar sesión</h1>
 
-      <form @submit.prevent="onSubmit" novalidate>
-        <div class="field">
-          <label for="email">Email</label>
+    <form @submit.prevent="onSubmit" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          v-model.trim="form.email"
+          placeholder="ejemplo@mail.com"
+          required
+        />
+        <p v-if="errors.email" class="error">{{ errors.email }}</p>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="password-row">
           <input
-            id="email"
-            type="email"
-            v-model.trim="form.email"
-            placeholder="ejemplo@mail.com"
+            id="password"
+            :type="showPass ? 'text' : 'password'"
+            v-model="form.password"
+            minlength="6"
             required
           />
-          <p v-if="errors.email" class="error">{{ errors.email }}</p>
+          <button class="ghost" type="button" @click="showPass = !showPass">
+            {{ showPass ? 'Ocultar' : 'Mostrar' }}
+          </button>
         </div>
+        <p v-if="errors.password" class="error">{{ errors.password }}</p>
+      </div>
 
-        <div class="field">
-          <label for="password">Contraseña</label>
-          <div class="password-row">
-            <input
-              id="password"
-              :type="showPass ? 'text' : 'password'"
-              v-model="form.password"
-              minlength="6"
-              required
-            />
-            <button class="ghost" type="button" @click="showPass = !showPass">
-              {{ showPass ? 'Ocultar' : 'Mostrar' }}
-            </button>
-          </div>
-          <p v-if="errors.password" class="error">{{ errors.password }}</p>
-        </div>
+      <div class="row">
+        <label class="checkbox">
+          <input type="checkbox" v-model="form.remember" />
+          Recordarme
+        </label>
+        <!-- CAMBIO: router-link → link con evento -->
+        <a class="link" href="#" @click.prevent="goToForgot">¿Olvidaste tu contraseña?</a>
+      </div>
 
-        <div class="row">
-          <label class="checkbox">
-            <input type="checkbox" v-model="form.remember" />
-            Recordarme
-          </label>
-          <!-- <a class="link" href="/recuperarContra">¿Olvidaste tu contraseña?</a> -->
-          <router-link class="link" to="/recuperarContra">¿Olvidaste tu contraseña?</router-link>
-        </div>
-
-        <button class="btn primary" :disabled="loading">
-          <span v-if="loading">Ingresando...</span>
-          <span v-else>Ingresar</span>
-        </button>
-        <p class="alt">
-          ¿No tenés cuenta?
-          <router-link class="link" to="/registro">Regístrate</router-link>
-        </p>
-      </form>
-    </div>
+      <button class="btn primary" :disabled="loading">
+        <span v-if="loading">Ingresando...</span>
+        <span v-else>Ingresar</span>
+      </button>
+      
+      <!-- CAMBIO: router-link → link con evento -->
+      <p class="alt">
+        ¿No tenés cuenta?
+        <a class="link" href="#" @click.prevent="goToRegister">Regístrate</a>
+      </p>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-
+import { reactive, ref, defineEmits } from 'vue'
+import { useAuth } from '../composables/useAuth.js'
+// AGREGAR: Emits para comunicación con el modal
+const emit = defineEmits(['success', 'switch-view'])
+const { login } = useAuth()
 const form = reactive({ email: '', password: '', remember: false })
 const errors = reactive({ email: '', password: '' })
 const loading = ref(false)
@@ -73,25 +76,40 @@ function validate () {
 async function onSubmit () {
   if (!validate()) return
   loading.value = true
+  
   try {
-    // Simulación de login (frontend-only)
-    await new Promise(r => setTimeout(r, 600))
-    if (form.remember) {
-      localStorage.setItem('auth', JSON.stringify({ email: form.email }))
+    const result = await login(form.email, form.password)
+    
+    if (result.success) {
+      console.log('✅ Login exitoso')
+      emit('success') // avisar que el login fue exitoso
+    } else {
+      throw new Error(result.error || 'Error en login')
     }
-    // Redirigir a home o catálogo
-    window.location.href = '/'
+  } catch (err) {
+    console.error('❌ Error en login:', err)
+    alert(err.message || 'Error al iniciar sesión')
   } finally {
     loading.value = false
   }
 }
 
-function onForgot () {
-  alert('Acá iría el flujo de recuperación (cuando haya backend).')
+// AGREGAR: Funciones para cambiar entre formularios
+function goToRegister() {
+  emit('switch-view', 'register')
+}
+
+function goToForgot() {
+  emit('switch-view', 'forgot')
 }
 </script>
 
 <style scoped>
+.auth-modal-content {
+  padding: 2rem;
+  background-color: var(--color-card);
+}
+
 /* Estructura */
 .auth-page{
   min-height: 100vh;

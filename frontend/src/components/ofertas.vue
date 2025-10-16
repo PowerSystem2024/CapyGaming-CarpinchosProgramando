@@ -3,30 +3,30 @@
     <h2 class="section-title">OFERTAS DEL DÍA</h2>
     <div class="offers-grid">
       <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card">
-          <!-- Badge con flip -->
-          <div class="flip-container">
-            <div class="flipper">
-              <div class="front">
-                <span class="badge-text">
-                  <span class="badge-descuento">{{ offer.descuento }}%</span><br>
+        <!-- Badge con flip -->
+        <div class="flip-container">
+          <div class="flipper">
+            <div class="front">
+              <span class="badge-text">
+                <span class="badge-descuento">{{ offer.descuento }}%</span><br>
                 <span class="badge-off">OFF</span>
-                </span>
-              </div>
-              <div class="back">
-                  <span class="badge-text">
-                  <span class="badge-descuento">{{ offer.descuento }}%</span><br>
+              </span>
+            </div>
+            <div class="back">
+              <span class="badge-text">
+                <span class="badge-descuento">{{ offer.descuento }}%</span><br>
                 <span class="badge-off">OFF</span>
-                </span>
-              </div>
+              </span>
             </div>
           </div>
+        </div>
 
-        <!-- Bloque de imagen con altura mínima -->
+        <!-- Imagen del producto -->
         <div class="offer-media">
           <img :src="offer.image" :alt="offer.title" class="offer-image" />
         </div>
 
-        <!-- Bloque de contenido textual -->
+        <!-- Información del producto -->
         <div class="offer-content">
           <h3 class="offer-title" :title="offer.title">{{ offer.title }}</h3>
           <div class="offer-prices">
@@ -35,171 +35,75 @@
           </div>
         </div>
 
-        <!-- Botón al final -->
+        <!-- Botón -->
         <button class="offer-btn" @click="agregarAlCarrito(offer)">
-
           <span class="icon-wrapper">
-            <svg class="icon-cart default" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 16 16">
-            <path fill="#161e35" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
+            <svg class="icon-cart default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+              <path fill="#161e35" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
             </svg>
-            <svg class="icon-cart hover" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 16 16">
-            <path fill="currentColor" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
+            <svg class="icon-cart hover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+              <path fill="currentColor" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
             </svg>
-            </span>
-
+          </span>
           Agregar al carrito
         </button>
       </div>
     </div>
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
 
 <script>
-import mouseLogitech from "../assets/imagenesOfertas/mouseLogitech.png";
-import tecladoRedragon from "../assets/imagenesOfertas/tecladoRedragon.png";
-import auricularesHyper from "../assets/imagenesOfertas/auricularesHyper.png";
-import discoSSD from "../assets/imagenesOfertas/discoSolido.png";
-import auricularesLogitech from "../assets/imagenesOfertas/auricularesLogitech.png";
-import Pad from "../assets/imagenesOfertas/Pad.png";
-import tecladoRedragon2 from "../assets/imagenesOfertas/tecladoRedragon2.png";
-import sillaGamer from "../assets/imagenesOfertas/sillaGamer.png";
+import axios from 'axios';
 import { addToCart } from "../utils/cartUtils";
-import { ultimoProducto, setUltimoProducto } from "../composables/ultimoProducto";
+import { setUltimoProducto } from "../composables/ultimoProducto";
 
 export default {
   name: "Ofertas",
   data() {
     return {
-      // Lista de ofertas de ejemplo(luego puede venir de un backend)
-      offers: [
-        {
-          id: 1,
-          title: "Mouse Logitech G502 Hero 11 Botones Gamer Rgb",
-          nombre: "Mouse Logitech G502 Hero 11 Botones Gamer Rgb",
-          description: "Sensor HERO 25K, RGB LIGHTSYNC, 11 botones programables.",
-          oldPrice: "$45.000",
-          newPrice: "$35.000",
-          precio: 35000,
-          stock: 15,
-          image: mouseLogitech,
-          imagenes: [mouseLogitech],
-        },
-        {
-          id: 2,
-          title: "Teclado Redragon Kumara K552 Rainbow",
-          nombre: "Teclado Redragon Kumara K552 Rainbow",
-          description: "Switches Blue, retroiluminación RGB, compacto 87 teclas.",
-          oldPrice: "$38.000",
-          newPrice: "$28.500",
-          precio: 28500,
-          stock: 10,
-          image: tecladoRedragon,
-          imagenes: [tecladoRedragon],
-        },
-        {
-          id: 3,
-          title: "Auricular Hyperx Cloud Stinger 2 - Ps5 White",
-          nombre: "Auricular Hyperx Cloud Stinger 2 - Ps5 White",
-          description: "Sonido 7.1 Virtual Surround, micrófono desmontable.",
-          oldPrice: "$60.000",
-          newPrice: "$48.000",
-          precio: 48000,
-          stock: 8,
-          image: auricularesHyper,
-          imagenes: [auricularesHyper],
-        },
-        {
-          id: 12,
-          title: "SSD Teamgroup MP33 de 256GB",
-          nombre: "SSD Teamgroup MP33 de 256GB",
-          description: "Disco Solido SSD M.2 Team 256GB MP33 1600MB/s NVMe PCI-E Gen3 x4",
-          oldPrice: "$55.000",
-          newPrice: "$35.000",
-          precio: 35000,
-          stock: 12,
-          image: discoSSD,
-          imagenes: [discoSSD],
-        },
-        {
-          id: 21,
-          title: "Auriculares Inalámbricos Logitech G733 Lightspeed Rgb",
-          nombre: "Auriculares Inalámbricos Logitech G733 Lightspeed Rgb",
-          description:"Auriculares Logitech G733 Wireless Lightspeed LightSync RGB Blue 29Hs",
-          oldPrice: "$300.300",
-          newPrice: "$290.900",
-          precio: 290900,
-          stock: 5,
-          image: auricularesLogitech,
-          imagenes: [auricularesLogitech],
-        },
-
-        {
-          id: 25,
-          title: "Mouse Pad Logitech G Powerplay 2",
-          nombre: "Mouse Pad Logitech G Powerplay 2",
-          description: "Mouse Pad Logitech G Powerplay Carga Inalambrica 321x344mm",
-          oldPrice: "$200.000",
-          newPrice: "$175.000",
-          precio: 175000,
-          stock: 7,
-          image: Pad,
-          imagenes: [Pad],
-        },
-        {
-          id: 27,
-          title: "Teclado Redragon Dyaus 2 K509",
-          nombre: "Teclado Redragon Dyaus 2 K509",
-          description: "Teclado Redragon K509 Dyaus Español Retroiluminado 7 Colores",
-          oldPrice: "$100.548",
-          newPrice: "$89.900",
-          precio: 89900,
-          stock: 9,
-          image: tecladoRedragon2,
-          imagenes: [tecladoRedragon2],
-        },
-        {
-          id: 47,
-          title: "Silla Gamer Noblechairs EPIC Fallout Nuka Cola Edition",
-          nombre: "Silla Gamer Noblechairs EPIC Fallout Nuka Cola Edition",
-          description:"Silla Gamer Noblechairs EPIC Fallout Nuka Cola Edition (sin almohadones) (Peso MAX. 120kg)",
-          oldPrice: "680.000",
-          newPrice: "620.000",
-          precio: 620000,
-          stock: 3,
-          image: sillaGamer,
-          imagenes: [sillaGamer],
-        },
-      ]
+      offers: [],       // aca guardaremos las ofertas del backend
+      error: null,      // para mostrar errores si es que hay
     };
   },
-  computed: {  // Calculando el porcentaje de descuento para el circulo flip
+  computed: {
     ofertasConDescuento() {
-    return this.offers.map(o => {
-      const oldP = parseFloat(o.oldPrice.replace(/[^0-9.]/g, "")); // saca $ y comas
-      const newP = parseFloat(o.newPrice.replace(/[^0-9.]/g, ""));
-      const descuento = Math.round(((oldP - newP) / oldP) * 100);
-      return { ...o, descuento };
-    });
-  }
+      return this.offers.map(o => {
+        const oldP = parseFloat(o.oldPrice.replace(/[^0-9.]/g, ""));
+        const newP = parseFloat(o.newPrice.replace(/[^0-9.]/g, ""));
+        const descuento = Math.round(((oldP - newP) / oldP) * 100);
+        return { ...o, descuento };
+      });
+    }
   },
   methods: {
+    async fetchOfertas() {
+      try {
+        const response = await axios.get('http://localhost:3001/api/ofertas');
+        this.offers = response.data;  // Guardamos las ofertas del backend
+      } catch (err) {
+        console.error("Error al traer las ofertas:", err);
+        this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
+      }
+    },
     agregarAlCarrito(oferta) {
       const resultado = addToCart(oferta);
       if (resultado.success) {
-        console.log("Oferta agregada al carrito:", oferta);
+        setUltimoProducto({ ...oferta, quantity: 1 });
         window.dispatchEvent(new Event("cartUpdated"));
-        setUltimoProducto({...oferta, quantity : 1});
         window.dispatchEvent(new Event("abrirPreview"));
-        console.log("Evento abrirPreview emitido");
-        //mostrarCarrito.value = true;
       } else {
         console.log("Error al agregar oferta:", resultado.message);
       }
-    },
-
+    }
+  },
+  mounted() {
+    this.fetchOfertas(); // trae las ofertas al cargar el componente
   }
 };
 </script>
+
+
 
 <style scoped>
 @import url(../assets/styles/base.css);

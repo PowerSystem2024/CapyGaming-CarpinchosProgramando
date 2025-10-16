@@ -13,6 +13,14 @@ import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
+import CatalogoCategoria from '../components/CatalogoCategoria.vue';
+import AuthService from '../services/authService.js';
+import Contacto from '../components/Contacto.vue';
+import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
+import ResultadosPage from '../components/ResultadosPage.vue';
+import TerminosCondiciones from '../components/TerminosCondiciones.vue';
+
+
 
 
 //Definir las rutas de tu aplicacion
@@ -48,12 +56,12 @@ const routes = [
         component: marcas
     },
     {
-        path: '/quienesSomos',
+        path: '/quienesSomos', 
         name: 'quienesSomos',
         component: quienesSomos
     },
     {
-        path: "/:pathMatch(.*)*",
+        path: "/:pathMatch(.*)*", // Ruta comodín para páginas no encontradas
         name: "NotFound",
         component: NotFound
     },
@@ -76,6 +84,30 @@ const routes = [
         path: '/productoDetalle/:id',
         name: 'ProductoDetalle',
         component: ProductoDetalle
+    },
+    {
+        path: '/categoria/:categoria/:subcategoria?',  // Ruta dinámica para categorías y subcategorías
+        name: 'CatalogoCategoria',
+        component: CatalogoCategoria
+    },
+    {
+        path: "/contacto",
+        name: "Contacto",
+        component: Contacto
+    },
+    {
+    path: '/PreguntasFrecuentes',
+    name: 'PreguntasFrecuentes',
+    component: PreguntasFrecuentes
+    },
+    {
+        path: '/resultados',
+        component: ResultadosPage
+    },
+    {
+        path: "/terminosycondiciones",
+        name: "TerminosYCondiciones",
+        component: TerminosCondiciones
     }
 ]
 
@@ -89,10 +121,11 @@ const router = createRouter({
     }
 });
 
+// Middleware de navegación corregido
 router.beforeEach((to) => {
-    const isAuth = !!localStorage.getItem('auth')
-    if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro')) {
-        return { name: 'Home' }
+    const isAuth = AuthService.isAuthenticated();  // ← Usar el servicio
+    if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro' || to.name === 'recuperarContra')) {
+        return { name: 'Home' } // Redirige al home si ya está logueado
     }
 })
 

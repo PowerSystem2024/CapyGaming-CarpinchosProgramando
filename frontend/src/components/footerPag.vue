@@ -1,5 +1,7 @@
 <script setup>
 import Marcas from '../components/marcas.vue';
+import PreguntasFrecuentes from './PreguntasFrecuentes.vue';
+import terminosycondiciones from './TerminosCondiciones.vue';
 </script>
 
 <template>
@@ -21,6 +23,7 @@ import Marcas from '../components/marcas.vue';
           <li><router-link to="/categoria/conectividad">Conectividad</router-link></li>
           <li><router-link to="/categoria/gaming">Gaming</router-link></li>
           <li><router-link to="/categoria/impresoras">Impresoras</router-link></li>
+
         </ul>
       </div>
 
@@ -29,9 +32,12 @@ import Marcas from '../components/marcas.vue';
         <h4>Acerca de</h4>
         <ul>
           <li><router-link to="/quienessomos">Quiénes somos</router-link></li>
-          <li><a href="#">Términos y condiciones</a></li>
-          <li><a href="#">Contáctanos</a></li>
-          <li><a href="#">Preguntas frecuentes</a></li>
+          <li><router-link to="/terminosycondiciones">Términos y condiciones</router-link></li>
+          <li><router-link to="/PreguntasFrecuentes">Preguntas frecuentes</router-link></li>
+          <li><router-link to="/Contacto">Contáctanos</router-link></li>
+
+
+
         </ul>
       </div>
 
