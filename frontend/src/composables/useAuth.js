@@ -1,10 +1,10 @@
 import { ref, computed } from 'vue';
 import AuthService from '../services/authService.js';
 
-export function useAuth() {
   const user = ref(AuthService.getCurrentUser());
   const isAuthenticated = ref(AuthService.isAuthenticated());
 
+  export function useAuth() {
   const login = async (email, password) => {
     try {
       const data = await AuthService.login({ email, password });
