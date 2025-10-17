@@ -33,11 +33,35 @@ import AuthService from '../services/authService.js';
     isAuthenticated.value = false;
   };
 
+  // Recuperación de contraseña
+  const forgotPassword = async (email) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error en la recuperación');
+      }
+      
+      const data = await response.json();
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
   return {
     user: computed(() => user.value),
     isAuthenticated: computed(() => isAuthenticated.value),
     login,
     register,
-    logout
+    logout,
+    forgotPassword
   };
 }
