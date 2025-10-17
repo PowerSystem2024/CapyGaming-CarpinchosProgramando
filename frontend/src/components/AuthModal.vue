@@ -20,9 +20,9 @@
 
 <script setup>
 import { ref, computed, defineEmits, defineProps } from 'vue'
-import inicioSesion from './inicioSesion.vue'
-import registro from './registro.vue'
-import recuperarContra from './recuperarContra.vue'
+import InicioSesion from './InicioSesion.vue'
+import Registro from './Registro.vue'
+import RecuperarContra from './RecuperarContra.vue'
 
 // Props y emits
 const props = defineProps({
@@ -36,9 +36,9 @@ const currentView = ref('login')
 
 // Mapeo de vistas a componentes
 const components = {
-  login: inicioSesion,
-  register: registro,
-  forgot: recuperarContra
+  login: InicioSesion,
+  register: Registro,
+  forgot: RecuperarContra
 }
 
 // Componente actual basado en la vista
