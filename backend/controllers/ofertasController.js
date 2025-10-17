@@ -3,14 +3,18 @@ import pool from '../bd/pool.js';
 export const getOfertas = async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT id_producto AS id,
-             nombre AS title,
-             precio AS newprice,
-             marca,
-             stock
-      FROM producto
-      WHERE precio IS NOT NULL
-      ORDER BY id_producto ASC;
+      SELECT 
+        o.id AS id,
+        p.nombre AS title,
+        p.precio AS newprice,
+        p.marca,
+        p.stock,
+        o.descuento,
+        o.fecha_inicio,
+        o.fecha_fin
+      FROM ofertas o
+      JOIN producto p ON o.id_producto = p.id_producto
+      ORDER BY o.id ASC;
     `);
 
     res.json(result.rows);
