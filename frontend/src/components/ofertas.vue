@@ -76,7 +76,7 @@ export default {
       });
     }
   },
-    methods: {
+    methods: {   //desde aca traemos las ofertas del back
     async fetchOfertas() {
       try {
         const response = await axios.get('http://localhost:3001/api/ofertas');
@@ -87,7 +87,7 @@ export default {
           oldPrice: "$" + (o.newprice * 1.2).toFixed(0), // precio original simulado con +20%
           newPrice: "$" + o.newprice,
           image: o.image_url || "https://via.placeholder.com/200x200?text=Producto", // imagen por defecto si no hay
-          descuento: 20 // descuento calculado aprox
+          descuento: o.descuento // descuento calculado aprox
         }));
       } catch (err) {
         console.error("Error al traer las ofertas:", err);
