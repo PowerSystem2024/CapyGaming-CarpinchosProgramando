@@ -58,37 +58,64 @@
 
 <script setup>
 import { reactive, ref, defineEmits } from 'vue'
-import { useAuth } from '../composables/useAuth.js'
+import { useAuth } from '../composables/useAuth.js' // ← AGREGAR ESTO
+
 // AGREGAR: Emits para comunicación con el modal
 const emit = defineEmits(['success', 'switch-view'])
+
+// AGREGAR: Usar el composable de autenticación
 const { login } = useAuth()
+
 const form = reactive({ email: '', password: '', remember: false })
 const errors = reactive({ email: '', password: '' })
 const loading = ref(false)
 const showPass = ref(false)
 
-function validate () {
-  errors.email = form.email.includes('@') ? '' : 'Ingresá un email válido'
-  errors.password = form.password.length >= 6 ? '' : 'Mínimo 6 caracteres'
-  return !errors.email && !errors.password
+function validate() {
+  errors.email = ''
+  errors.password = ''
+  
+  let isValid = true
+
+  if (!form.email.includes('@')) {
+    errors.email = 'Ingresá un email válido'
+    isValid = false
+  }
+
+  if (form.password.length < 6) {
+    errors.password = 'Mínimo 6 caracteres'
+    isValid = false
+  }
+
+  return isValid
 }
 
-async function onSubmit () {
+async function onSubmit() {
   if (!validate()) return
+  
   loading.value = true
   
   try {
+    // Usar el servicio real de login
     const result = await login(form.email, form.password)
-    
+
     if (result.success) {
-      console.log('✅ Login exitoso')
-      emit('success') // avisar que el login fue exitoso
+      // Guardar en localStorage si eligió "Recordarme"
+      if (form.remember) {
+        localStorage.setItem('rememberMe', 'true')
+      }
+      emit('success')
     } else {
-      throw new Error(result.error || 'Error en login')
+      // Mostrar error específico del backend
+      if (result.error.includes('Credenciales inválidas')) {
+        errors.email = 'Email o contraseña incorrectos'
+        errors.password = 'Email o contraseña incorrectos'
+      } else {
+        alert(result.error)
+      }
     }
-  } catch (err) {
-    console.error('❌ Error en login:', err)
-    alert(err.message || 'Error al iniciar sesión')
+  } catch (error) {
+    alert('Error de conexión: ' + error.message)
   } finally {
     loading.value = false
   }
@@ -103,6 +130,8 @@ function goToForgot() {
   emit('switch-view', 'forgot')
 }
 </script>
+
+<!-- El template se mantiene igual -->
 
 <style scoped>
 .auth-modal-content {
