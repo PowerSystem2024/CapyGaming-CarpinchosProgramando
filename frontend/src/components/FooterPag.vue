@@ -1,5 +1,5 @@
 <script setup>
-import Marcas from '../components/Marcas.vue';
+import Marcas from './Marcas.vue';
 
 </script>
 

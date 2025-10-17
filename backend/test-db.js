@@ -8,8 +8,8 @@ async function testConnection() {
     // Verificar si la tabla usuario existe
     const tableCheck = await client.query(`
       SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = 'public' 
+        SELECT FROM information_schema.tables
+        WHERE table_schema = 'public'
         AND table_name = 'usuario'
       );
     `);

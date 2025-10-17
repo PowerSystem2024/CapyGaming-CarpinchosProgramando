@@ -56,7 +56,7 @@
 
 <script>
 import { productos } from "../assets/data/productsData";
-import Categorias from "../components/ExploradorCategorias.vue";
+import Categorias from "./exploradorCategorias.vue";
 import { addToCart } from "../utils/cartUtils";
 import CarritoModalPreview from '../components/CarritoModalPreview.vue';
 import { getCart } from "../utils/cartUtils";
