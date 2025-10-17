@@ -1,40 +1,39 @@
 <template>
   <div class="catalogo-categoria">
     <h1>{{ categoria }}</h1>
-    
+
     <!-- Sidebar con subcategorías, solo si existen -->
     <aside v-if="subcategorias && subcategorias.length" class="sidebar">
       <h2>HARDWARE</h2>
-      <h3>
-        <router-link 
-          :to="`/categoria/${categoria}`" 
-          class="sidebar-link all-products-link"
-          :class="{ active: !subcategoria }"
-        >
-          Todos los productos
-        </router-link>
-      </h3>
-      <ul>
-        <!-- Itera sobre las subcategorías disponibles -->
+      <ul class="main-cats">
         <li 
           v-for="sub in subcategorias" 
-          :key="sub"
-          :class="{ active: normalizar(sub) === normalizar(subcategoria) }"
+          :key="sub.name || sub"
+          :class="{
+            active: normalizar(sub.name || sub) === normalizar(subcategoria),
+            'has-children': sub.children && sub.children.length
+          }"
         >
-        <!-- Enlace que actualiza la URL para navegar entre subcategorías -->
-          <router-link 
-            :to="`/categoria/${categoria}/${sub}`" 
-            class="sidebar-link"
-          >
-            {{ sub }}
+          <!-- Enlace principal -->
+          <router-link :to="`/categoria/${categoria}/${sub.name || sub}`" class="sidebar-link">
+            {{ sub.name || sub }}
           </router-link>
+
+          <!-- Subcategorías (solo si existen hijos) -->
+          <ul v-if="sub.children && sub.children.length" class="child-list">
+            <li v-for="child in sub.children" :key="child">
+              <router-link :to="`/categoria/${categoria}/${child}`" class="sidebar-link">
+                {{ child }}
+              </router-link>
+            </li>
+          </ul>
         </li>
       </ul>
     </aside>
 
     <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
     <section class="productos-grid">
-        <!-- Renderiza una tarjeta por cada producto filtrado -->
+      <!-- Renderiza una tarjeta por cada producto filtrado -->
       <ProductCard 
         v-for="p in productos" 
         :key="p.id_producto" 
@@ -51,6 +50,7 @@
         :ultimoProducto="ultimoProducto" 
         @close="mostrarModal = false"
       />
+
     </section>
   </div>
 </template>
@@ -135,7 +135,6 @@ const agregarAlCarrito = (producto) => {
   }
   console.log(resultado.message);
 };
-
 </script>
 
 <style scoped>
@@ -230,6 +229,66 @@ const agregarAlCarrito = (producto) => {
   color: var(--chart-1);
   font-weight: 600;
   background-color: var(--color-muted);
+}
+
+/* Flechita solo en ítems con hijos */
+.sidebar li.has-children {
+  position: relative;
+  cursor: pointer;
+}
+
+.sidebar li.has-children::after {
+  content: "⮟";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.25s ease;
+  font-size: 0.95rem;
+  color: var(--color-foreground);
+}
+
+/* Flecha girada cuando el ítem está activo */
+.sidebar li.has-children.active::after {
+  transform: translateY(-50%) rotate(180deg);
+  color: var(--chart-1);
+}
+
+/* Subcategorías ocultas por defecto */
+.sidebar .child-list {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+  margin-left: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+/* Cuando el padre está activo, se expanden */
+.sidebar li.has-children.active > .child-list {
+  max-height: 500px;
+  opacity: 1;
+}
+
+/* Estilo visual de subcategorías */
+.sidebar .child-list li {
+  padding: 0.25rem 0;
+}
+
+.sidebar .child-list .sidebar-link {
+  padding-left: 1rem;
+  font-size: 0.92rem;
+  color: var(--color-foreground);
+  background: none;
+}
+
+.sidebar .child-list .sidebar-link:hover {
+  color: var(--chart-1);
+}
+
+/* Hover elegante para el padre */
+.sidebar li.has-children:hover::after {
+  color: var(--chart-4);
 }
 
 .productos-grid {
