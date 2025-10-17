@@ -76,33 +76,31 @@ export default {
       });
     }
   },
-  methods: {
+    methods: {
     async fetchOfertas() {
       try {
         const response = await axios.get('http://localhost:3001/api/ofertas');
-        this.offers = response.data;  // Guardamos las ofertas del backend
+        // Adaptamos los datos del backend al formato que espera el frontend
+        this.offers = response.data.map(o => ({
+          id: o.id,
+          title: o.title,
+          oldPrice: "$" + (o.newprice * 1.2).toFixed(0), // precio original simulado con +20%
+          newPrice: "$" + o.newprice,
+          image: o.image_url || "https://via.placeholder.com/200x200?text=Producto", // imagen por defecto si no hay
+          descuento: 20 // descuento calculado aprox
+        }));
       } catch (err) {
         console.error("Error al traer las ofertas:", err);
         this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
       }
-    },
-    agregarAlCarrito(oferta) {
-      const resultado = addToCart(oferta);
-      if (resultado.success) {
-        setUltimoProducto({ ...oferta, quantity: 1 });
-        window.dispatchEvent(new Event("cartUpdated"));
-        window.dispatchEvent(new Event("abrirPreview"));
-      } else {
-        console.log("Error al agregar oferta:", resultado.message);
-      }
     }
   },
+
   mounted() {
-    this.fetchOfertas(); // trae las ofertas al cargar el componente
+    this.fetchOfertas(); // Trae las ofertas cuando se carga el componente
   }
 };
 </script>
-
 
 
 <style scoped>
