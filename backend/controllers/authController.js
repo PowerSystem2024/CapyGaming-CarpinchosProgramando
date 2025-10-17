@@ -1,6 +1,7 @@
 import pool from '../bd/pool.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 const revokedTokens = new Set(); //Lista temporal de tokens revocados (en memoria)
 
@@ -109,10 +110,27 @@ export const login = async (req, res) => {
 };
 
 // Solicitar recuperación de contraseña
+
+// Configurar el transporter de Gmail CORREGIDO
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  // AGREGAR estas opciones para Gmail
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+// Mejorar la función requestPasswordReset con mejor manejo de errores
 export const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   try {
+    console.log('📧 Intentando enviar email a:', email);
+    
     // Verificar si el usuario existe
     const userResult = await pool.query(
       'SELECT * FROM usuario WHERE email = $1',
@@ -120,20 +138,84 @@ export const requestPasswordReset = async (req, res) => {
     );
 
     if (userResult.rows.length === 0) {
-      // Por seguridad, no revelamos si el email existe o no
-      return res.json({
-        message: 'Si el email existe, se enviarán instrucciones de recuperación'
+      console.log('❌ Usuario no encontrado:', email);
+      return res.json({ 
+        message: 'Si el email existe, se enviarán instrucciones de recuperación' 
       });
     }
 
-    res.json({
-      message: 'Si el email existe, se enviarán instrucciones de recuperación',
-      resetToken: 'simulated-reset-token-' + Date.now()
+    const user = userResult.rows[0];
+    console.log('✅ Usuario encontrado:', user.nombre);
+    
+    // Generar token de recuperación
+    const resetToken = jwt.sign(
+      { userId: user.dni, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // TEMPORAL: Crear tabla si no existe (ejecuta esto en PostgreSQL)
+    // CREATE TABLE IF NOT EXISTS password_reset_tokens (id SERIAL PRIMARY KEY, user_dni BIGINT NOT NULL, token TEXT NOT NULL, expires_at TIMESTAMP NOT NULL, used BOOLEAN DEFAULT false);
+
+    // Guardar token en la base de datos
+    await pool.query(
+      'INSERT INTO password_reset_tokens (user_dni, token, expires_at) VALUES ($1, $2, $3)',
+      [user.dni, resetToken, new Date(Date.now() + 3600000)]
+    );
+
+    // Enviar email real
+    const resetLink = `http://localhost:5173/restablecer-contrasena?token=${resetToken}`;
+    
+    console.log('📤 Preparando email...');
+    
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Recuperación de contraseña - CapyGaming',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #F39C12;">Recuperación de contraseña</h2>
+          <p>Hola <strong>${user.nombre}</strong>,</p>
+          <p>Has solicitado restablecer tu contraseña en CapyGaming. Haz click en el siguiente enlace:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetLink}" style="background: #F39C12; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+              Restablecer contraseña
+            </a>
+          </div>
+          <p style="color: #666; font-size: 14px;">
+            <strong>Este enlace expirará en 1 hora.</strong><br>
+            Si no solicitaste este cambio, ignora este email.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Equipo CapyGaming<br>
+            <a href="http://localhost:5173" style="color: #F39C12;">Visita nuestra tienda</a>
+          </p>
+        </div>
+      `
+    };
+
+    // Enviar email con manejo de errores
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email enviado exitosamente:', info.messageId);
+
+    res.json({ 
+      message: 'Se han enviado instrucciones de recuperación a tu email',
+      success: true
     });
 
   } catch (error) {
-    console.error('Error en recuperación:', error);
-    res.status(500).json({ error: 'No se pudo recuperar la contraseña' });
+    console.error('💥 Error en recuperación:', error);
+    
+    // Error específico de email
+    if (error.code === 'EAUTH') {
+      console.error('❌ Error de autenticación de email. Verifica:');
+      console.error('1. Que el EMAIL_USER sea correcto');
+      console.error('2. Que el EMAIL_PASS sea la contraseña de aplicación (no la contraseña normal)');
+      console.error('3. Que la verificación en 2 pasos esté activada en Gmail');
+    }
+    
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
