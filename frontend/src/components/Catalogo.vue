@@ -29,7 +29,7 @@ const error = ref(null);
 const load = async () => {
   loading.value = true;
   try {
-    const res = await axios.get('http://localhost:3001/api/productos');
+    const res = await axios.get('/api/productos');
     console.log(res.data);
     productos.value = res.data;
   } catch (err) {

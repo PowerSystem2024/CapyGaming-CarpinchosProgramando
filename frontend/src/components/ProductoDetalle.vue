@@ -121,7 +121,7 @@ const infoItems = ref([
 onMounted(async () => {
   const id = route.params.id;
   try {
-    const res = await axios.get(`http://localhost:3001/api/productos/${id}`);
+    const res = await axios.get(`/api/productos/${id}`);
     producto.value = res.data;
   } catch (err) {
     console.error('No se pudo cargar el producto', err);
