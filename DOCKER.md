@@ -305,8 +305,8 @@ FRONTEND_URL=http://localhost
 JWT_SECRET=carpincho
 
 # Configuración de Mercado Pago
-MERCADOPAGO_ACCESS_TOKEN=APP_USR-1980789943964520-100916-0900844966174ff9916afebe30477599-2915257674
-MERCADOPAGO_PUBLIC_KEY=APP_USR-093b7183-297b-43da-9393-b227e94355eb
+MERCADOPAGO_ACCESS_TOKEN=APP_USR-
+MERCADOPAGO_PUBLIC_KEY=APP_USR-
 
 # URLs de la aplicación
 FRONTEND_URL=http://localhost:5173
@@ -659,7 +659,7 @@ DB_HOST=db                     # Nombre del servicio Docker de la BD
 DB_NAME=capygaming            # Nombre de la base de datos
 DB_PASSWORD=capygaming2025    # Contraseña de la BD
 DB_PORT=5432                  # Puerto de PostgreSQL
-JWT_SECRET=carpincho          # Secret para firmar tokens JWT
+JWT_SECRET=         # Secret para firmar tokens JWT
 FRONTEND_URL=http://localhost # URL del frontend (para CORS)
 ```
 
