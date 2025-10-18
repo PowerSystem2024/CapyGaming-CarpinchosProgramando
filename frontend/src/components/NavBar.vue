@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="logo">
         <router-link to="/">
-          <img src="../assets/IconosNavBarFooter/logoconletrasamarillo.png" alt="Logo" />
+          <img src="../assets/IconosNavBarFooter/LogoconLetrasAmarillo.png" alt="Logo" />
         </router-link>
       </div>
 
