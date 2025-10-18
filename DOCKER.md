@@ -302,11 +302,11 @@ DB_PORT=5432
 FRONTEND_URL=http://localhost
 
 # Configuración de Autenticación JWT
-JWT_SECRET=carpincho
+JWT_SECRET=...
 
 # Configuración de Mercado Pago
-MERCADOPAGO_ACCESS_TOKEN=APP_USR-
-MERCADOPAGO_PUBLIC_KEY=APP_USR-
+MERCADOPAGO_ACCESS_TOKEN=...
+MERCADOPAGO_PUBLIC_KEY=...
 
 # URLs de la aplicación
 FRONTEND_URL=http://localhost:5173
