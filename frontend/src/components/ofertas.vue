@@ -80,18 +80,19 @@ export default {
     async fetchOfertas() {
       try {
         const response = await axios.get('http://localhost:3001/api/ofertas');
-        // Adaptamos los datos del backend al formato que espera el frontend
-        this.offers = response.data.map(o => ({
-          id: o.id,
-          title: o.title,
-          oldPrice: "$" + (o.newprice * 1.2).toFixed(0), // precio original simulado con +20%
-          newPrice: "$" + o.newprice,
-          image: o.image_url || "https://via.placeholder.com/200x200?text=Producto", // imagen por defecto si no hay
-          descuento: o.descuento // descuento calculado aprox
-        }));
-      } catch (err) {
-        console.error("Error al traer las ofertas:", err);
-        this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
+
+    // Adaptamos los datos del backend al formato del frontend
+    this.offers = response.data.map(o => ({
+      id: o.id,
+      title: o.title,
+      oldPrice: "$" + (parseFloat(o.newprice) * (1 + o.descuento / 100)).toFixed(0),
+      newPrice: "$" + o.newprice,
+      image: o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen",
+      descuento: o.descuento
+    }));
+  } catch (err) {
+    console.error("Error al traer las ofertas:", err);
+    this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
       }
     }
   },
