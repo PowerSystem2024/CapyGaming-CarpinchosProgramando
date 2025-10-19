@@ -37,7 +37,7 @@
                 type="number" 
                 v-model.number="cantidad" 
                 min="1" 
-                max="99"
+                :max="producto?.stock"
                 class="input-cantidad"
               />
               <button 
@@ -56,6 +56,8 @@
               <span class="btn-icon">🛒</span>
             </button>
           </div>
+                      <!-- mensaje de stock -->
+             <p v-show="mensajeStock" class="mensaje-stock">{{ mensajeStock }}</p>
         </div>
 
         <!-- Información de envío y garantía -->
@@ -98,6 +100,7 @@ const mostrarModal = ref(false);
 const producto = ref(null);
 const route = useRoute();
 const cantidad = ref(1); // Cantidad inicial
+const mensajeStock = ref(""); // msj de aviso si sobrepasa el stock
 
 // Información de los ítems de envío y garantía
 const infoItems = ref([
@@ -129,12 +132,17 @@ onMounted(async () => {
 });
 
 // Funciones para controlar la cantidad
+// Incrementa respetando el stock del producto
 const aumentarCantidad = () => {
-  if (cantidad.value < 99) {
+  if (producto.value && cantidad.value < producto.value.stock) {
     cantidad.value++;
+  }else if (producto.value && cantidad.value >= producto.value.stock){
+    mensajeStock.value = `Solo hay ${producto.value.stock} unidades disponibles de este producto.`;
+    setTimeout(() => (mensajeStock.value = ""), 1000); // desaparece en 1s
   }
 };
 
+// Disminuye, sin bajar de 1
 const disminuirCantidad = () => {
   if (cantidad.value > 1) {
     cantidad.value--;
