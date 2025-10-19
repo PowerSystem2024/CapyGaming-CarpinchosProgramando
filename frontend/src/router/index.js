@@ -18,9 +18,7 @@ import Contacto from '../components/Contacto.vue';
 import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 import ResultadosPage from '../components/ResultadosPage.vue';
 import TerminosCondiciones from '../components/TerminosCondiciones.vue';
-
-
-
+import AuthService from '../services/authService.js';
 
 
 //Definir las rutas de tu aplicacion
