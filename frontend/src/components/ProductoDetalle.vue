@@ -173,11 +173,26 @@ const agregarAlCarrito = () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   margin-top: 10%;
   animation: fadeIn 0.6s ease-out;
 }
+.compra {
+  position: relative; /* referencia para el mensaje flotante */
+}
+
+.mensaje-stock {
+  position: absolute;
+  color: var(--color-destructive);
+  font-size: 0.9rem;
+  font-weight: 500;
+  height: -2em; /* reserva espacio para evitar saltos */
+  top: 80px;
+  left: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
 
 @keyframes fadeIn {
   from {
@@ -650,5 +665,11 @@ const agregarAlCarrito = () => {
   .info-item .texto p {
     font-size: 13px;
   }
+  .mensaje-stock {
+  position: static; /* ya no flota, se integra debajo naturalmente */
+  opacity: 1;
+  margin-top: 10px;
+  }
 }
+
 </style>
