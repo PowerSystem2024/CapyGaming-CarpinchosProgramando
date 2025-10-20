@@ -13,7 +13,7 @@
           <h1 class="nombre-producto">{{ producto.nombre }}</h1>
           <p class="codigo-producto">Risk 105467</p>
         </div>
-        
+
         <div class="precios">
           <div class="precio-item precio-contado">
             <span class="etiqueta">Contado</span>
@@ -26,43 +26,30 @@
           <div class="selector-cantidad">
             <span class="etiqueta-cantidad">Cantidad:</span>
             <div class="controles-cantidad">
-              <button 
-                class="btn-cantidad" 
-                @click="disminuirCantidad"
-                :disabled="cantidad <= 1"
-              >
+              <button class="btn-cantidad" @click="disminuirCantidad" :disabled="cantidad <= 1">
                 −
               </button>
-              <input 
-                type="number" 
-                v-model.number="cantidad" 
-                min="1" 
-                :max="producto?.stock"
-                class="input-cantidad"
-              />
-              <button 
-                class="btn-cantidad" 
-                @click="aumentarCantidad"
-                :disabled="cantidad >= 99"
-              >
+              <input type="number" v-model.number="cantidad" min="1" :max="producto?.stock" class="input-cantidad" />
+              <button class="btn-cantidad" @click="aumentarCantidad" :disabled="cantidad >= 99">
                 +
               </button>
             </div>
           </div>
-          
+
           <div class="acciones">
             <button class="btn-agregar" @click="agregarAlCarrito">
               <span class="btn-text">Agregar al carrito</span>
               <span class="btn-icon">🛒</span>
             </button>
           </div>
-                      <!-- mensaje de stock -->
-             <p v-show="mensajeStock" class="mensaje-stock">{{ mensajeStock }}</p>
+          <!-- mensaje de stock -->
+          <p v-show="mensajeStock" class="mensaje-stock">{{ mensajeStock }}</p>
         </div>
 
         <!-- Información de envío y garantía -->
         <div class="info-extra">
-          <div class="info-item" v-for="(item, index) in infoItems" :key="index" :style="{ animationDelay: `${index * 0.1}s` }">
+          <div class="info-item" v-for="(item, index) in infoItems" :key="index"
+            :style="{ animationDelay: `${index * 0.1}s` }">
             <div class="icono">{{ item.icono }}</div>
             <div class="texto">
               <h4>{{ item.titulo }}</h4>
@@ -72,14 +59,10 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Modal del carrito -->
-    <CarritoModalPreview 
-      :visible="mostrarModal" 
-      :carrito="getCart()" 
-      :ultimoProducto="ultimoProducto" 
-      @close="mostrarModal = false"
-    />
+    <CarritoModalPreview :visible="mostrarModal" :carrito="getCart()" :ultimoProducto="ultimoProducto"
+      @close="mostrarModal = false" />
   </div>
 
   <div v-else class="cargando">
@@ -110,7 +93,7 @@ const infoItems = ref([
     descripcion: 'Recibí tus productos en todo Argentina'
   },
   {
-    icono: '🛡️',
+    icono: '🛡',
     titulo: 'Garantía de reembolso',
     descripcion: '100% beneficiario del dinero'
   },
@@ -136,7 +119,7 @@ onMounted(async () => {
 const aumentarCantidad = () => {
   if (producto.value && cantidad.value < producto.value.stock) {
     cantidad.value++;
-  }else if (producto.value && cantidad.value >= producto.value.stock){
+  } else if (producto.value && cantidad.value >= producto.value.stock) {
     mensajeStock.value = `Solo hay ${producto.value.stock} unidades disponibles de este producto.`;
     setTimeout(() => (mensajeStock.value = ""), 1000); // desaparece en 1s
   }
@@ -163,7 +146,8 @@ const agregarAlCarrito = () => {
     // Resetear cantidad después de agregar al carrito
     cantidad.value = 1;
   } else {
-    alert(resultado.message);
+    mensajeStock.value = resultado.message;
+    setTimeout(() => (mensajeStock.value = ""), 2000);
   }
 };
 </script>
@@ -177,8 +161,10 @@ const agregarAlCarrito = () => {
   margin-top: 10%;
   animation: fadeIn 0.6s ease-out;
 }
+
 .compra {
-  position: relative; /* referencia para el mensaje flotante */
+  position: relative;
+  /* referencia para el mensaje flotante */
 }
 
 .mensaje-stock {
@@ -186,7 +172,8 @@ const agregarAlCarrito = () => {
   color: var(--color-destructive);
   font-size: 0.9rem;
   font-weight: 500;
-  height: -2em; /* reserva espacio para evitar saltos */
+  height: -2em;
+  /* reserva espacio para evitar saltos */
   top: 80px;
   left: 0;
   white-space: nowrap;
@@ -199,6 +186,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -224,6 +212,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -258,6 +247,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -312,6 +302,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -472,6 +463,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -503,6 +495,7 @@ const agregarAlCarrito = () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -554,8 +547,13 @@ const agregarAlCarrito = () => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
@@ -565,11 +563,11 @@ const agregarAlCarrito = () => {
     margin-top: 5%;
     padding: 15px;
   }
-  
+
   .producto-container {
     gap: 30px;
   }
-  
+
   .info-extra {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -581,44 +579,44 @@ const agregarAlCarrito = () => {
     flex-direction: column;
     gap: 30px;
   }
-  
+
   .imagen-producto {
     max-width: 100%;
   }
-  
+
   .nombre-producto {
     font-size: 24px;
   }
-  
+
   .precio-contado .valor {
     font-size: 24px;
   }
-  
+
   .compra {
     flex-direction: column;
     align-items: stretch;
     gap: 15px;
   }
-  
+
   .selector-cantidad {
     justify-content: space-between;
     width: 100%;
   }
-  
+
   .acciones {
     min-width: auto;
   }
-  
+
   .btn-agregar {
     padding: 14px 24px;
     font-size: 16px;
   }
-  
+
   .info-extra {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .info-item {
     width: auto;
   }
@@ -630,46 +628,45 @@ const agregarAlCarrito = () => {
     margin-top: 2%;
     padding: 10px;
   }
-  
+
   .nombre-producto {
     font-size: 20px;
   }
-  
+
   .precio-contado .valor {
     font-size: 22px;
   }
-  
+
   .selector-cantidad {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .controles-cantidad {
     align-self: stretch;
     justify-content: center;
   }
-  
+
   .info-item {
     padding: 12px;
   }
-  
+
   .info-item .icono {
     font-size: 20px;
   }
-  
+
   .info-item .texto h4 {
     font-size: 15px;
   }
-  
+
   .info-item .texto p {
     font-size: 13px;
   }
+
   .mensaje-stock {
-  position: static; /* ya no flota, se integra debajo naturalmente */
-  opacity: 1;
-  margin-top: 10px;
+    position: static;
+    margin-top: 10px;
   }
 }
-
 </style>
