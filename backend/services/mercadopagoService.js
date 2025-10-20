@@ -1,13 +1,21 @@
 // Este es el corazón de la integración. Aquí se encapsula toda la lógica de comunicación con la API de MercadoPago.
-import mercadopago, { Preference } from 'mercadopago';
+import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Configurar credenciales de MercadoPago
-mercadopago.configure({
-    access_token: process.env.MERCADOPAGO_ACCESS_TOKEN
+// Configurar cliente de MercadoPago (SDK v2.x)
+const client = new MercadoPagoConfig({
+  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+  options: {
+    timeout: 5000,
+    idempotencyKey: 'abc'
+  }
 });
+
+// Crear instancias de los recursos
+const preference = new Preference(client);
+const payment = new Payment(client);
 
 
 /*/
@@ -25,53 +33,52 @@ crearPreferencia():
 */
 
 export const crearPreferencia = async (preferenceData) => {
-    try{
-        const preference = {
-            items: preferenceData.items.map(item => ({
-                id:item.id,
-                title: item.title,
-                quantity: item.quantity,
-                unit_price: parseFloat(item.unit_price),
-                currency_id: 'ARS',
-                picture_url: item.picture_url || null,
-                description: item.description || ''
-            })),
-            payer: {
-                name: preferenceData.payer.name,
-                surname: preferenceData.payer.surname,
-                email: preferenceData.payer.email,
-                phone: preferenceData.payer.phone || {},
-                identification: preferenceData.payer.identification || {}
-            },
-            back_urls: {
-                success: `${process.env.FRONTEND_URL}/pago-exitoso`,
-                failure: `${process.env.FRONTEND_URL}/pago-fallido`,
-                pending: `${process.env.FRONTEND_URL}/pago-pendiente`
-            },
-            auto_return: 'approved',
-            external_reference: preferenceData.orderId,
-            notification_url: `${process.env.BACKEND_URL}/api/webhooks/mercadopago`,
-            statement_descriptor: 'CapyGaming',
-            expires: false
-        };
+  try {
+    const body = {
+      items: preferenceData.items.map(item => ({
+        id: String(item.id || ''),
+        title: item.title,
+        quantity: Number(item.quantity),
+        unit_price: Number(item.unit_price),
+        currency_id: 'ARS',
+        picture_url: item.picture_url || undefined,
+        description: item.description || ''
+      })),
+      payer: {
+        name: preferenceData.payer.name,
+        surname: preferenceData.payer.surname,
+        email: preferenceData.payer.email,
+        phone: preferenceData.payer.phone || undefined,
+        identification: preferenceData.payer.identification || undefined
+      },
+      back_urls: {
+        success: `${process.env.FRONTEND_URL}/pago-exitoso`,
+        failure: `${process.env.FRONTEND_URL}/pago-fallido`,
+        pending: `${process.env.FRONTEND_URL}/pago-pendiente`
+      },
+      auto_return: 'approved',
+      external_reference: preferenceData.orderId,
+      notification_url: `${process.env.BACKEND_URL}/api/webhooks/webhook`,
+      statement_descriptor: 'CapyGaming'
+    };
 
-        const response = await mercadopago.preferences.create(preference);
+    const response = await preference.create({ body });
 
-        return {
-            success: true,
-            preferenceId: response.body.id,
-            initPoint: response.body.init_point,
-            sandboxInitPoint: response.body.sandbox_init_point
-        };
+    return {
+      success: true,
+      preferenceId: response.id,
+      initPoint: response.init_point,
+      sandboxInitPoint: response.sandbox_init_point
+    };
 
-    } catch (error){
-        console.error('Error creando preferencia de MercadoPago: ', error);
-        throw {
-            success: false,
-            error: 'Error al crear preferencia de pago',
-            details: error.message
-        };
-    }
+  } catch (error) {
+    console.error('Error creando preferencia de MercadoPago:', error);
+    throw {
+      success: false,
+      error: 'Error al crear preferencia de pago',
+      details: error.message
+    };
+  }
 };
 
 /*/
@@ -86,35 +93,35 @@ obtenerPago():
  */
 
 export const obtenerPago = async (paymentId) => {
-    try{
-        const payment = await mercadopago.payment.get(paymentId);
+  try {
+    const response = await payment.get({ id: paymentId });
 
-        return {
-            success: true,
-            payment: {
-                id: payment.body.id,
-                status: payment.body.status,
-                status_detail: payment.body.status_detail,
-                transaction_amount: payment.body.transaction_amount,
-                currency_id: payment.body.currency_id,
-                payment_method_id: payment.body.payment_method_id,
-                payment_type_id: payment.body.payment_type_id,
-                date_created: payment.body.date_created,
-                date_approved: payment.body.date_approved,
-                external_reference: payment.body.external_reference,
-                payer: payment.body.payer  
-            }
-        };
-    } catch (error){
-        console.error('Error obteniendo pago de MercadoPago: ', error);
-        throw {
-            success: false,
-            error: 'Error al obtener información del pago',
-            details: error.message
-        };
-    }
+    return {
+      success: true,
+      payment: {
+        id: response.id,
+        status: response.status,
+        status_detail: response.status_detail,
+        transaction_amount: response.transaction_amount,
+        currency_id: response.currency_id,
+        payment_method_id: response.payment_method_id,
+        payment_type_id: response.payment_type_id,
+        date_created: response.date_created,
+        date_approved: response.date_approved,
+        external_reference: response.external_reference,
+        payer: response.payer
+      }
+    };
+
+  } catch (error) {
+    console.error('Error obteniendo pago de MercadoPago:', error);
+    throw {
+      success: false,
+      error: 'Error al obtener información del pago',
+      details: error.message
+    };
+  }
 };
-
 
 /*/
  * Validar firma del webhook de MercadoPago
