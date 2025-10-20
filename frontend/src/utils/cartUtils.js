@@ -29,19 +29,19 @@ const CART_KEY = 'cart';
     if (existingItemIndex !== -1) {
       // Si existe, verificar stock antes de aumentar
       const currentQuantity = cart[existingItemIndex].quantity;
-      const newQuantity = currentQuantity + cantidad; 
+      const newQuantity = currentQuantity + cantidad;
 
       if(newQuantity > product.stock){
         cart[existingItemIndex].quantity = product.stock; //no superar stock
         saveCart(cart);
         return{
-          succes: false,
+          success: false,
           message: `Stock máximo alcanzado (${product.stock} unidades)`
         };
       } else {
         cart[existingItemIndex].quantity = newQuantity;
         saveCart(cart);
-        return {succes: true, message: 'Producto agregado al carrito'};
+        return {success: true, message: 'Producto agregado al carrito'};
       }
     }else{
       // Agregar nuevo producto con la cantidad seleccionada, sin pasar stock
@@ -51,7 +51,7 @@ const CART_KEY = 'cart';
         quantity: quantityToAdd
       });
       saveCart(cart);
-      return{succes: true, message: 'Producto agregado al carrito'};
+      return{success: true, message: 'Producto agregado al carrito'};
     }
   }
 
@@ -61,7 +61,7 @@ const CART_KEY = 'cart';
     saveCart(filteredCart);
     return filteredCart;
   }
- 
+
   export function updateQuantity(productId, quantity) {
     const cart = getCart();
     const itemIndex = cart.findIndex(item => item.id_producto === productId);
@@ -73,8 +73,10 @@ const CART_KEY = 'cart';
         // Verificar que no exceda el stock
         const product = cart[itemIndex];
         if (quantity > product.stock) {
-          alert(`⚠️ Stock máximo: ${product.stock} unidades`);
-          return cart;
+          return{
+            success: false,
+            message: `⚠ Stock máximo: ${product.stock} unidades`
+          }
         }
         cart[itemIndex].quantity = quantity;
         saveCart(cart);
