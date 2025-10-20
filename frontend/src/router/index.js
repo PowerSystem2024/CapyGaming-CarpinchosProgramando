@@ -1,7 +1,6 @@
 // importar las funciones necesarias de vue-router
 import {createRouter, createWebHistory} from 'vue-router';
 //Importar tus componentes
-import Productos from '../components/Productos.vue'
 import Carrito from '../components/Carrito.vue';
 import InicioSesion from '../components/InicioSesion.vue';
 import Marcas from '../components/Marcas.vue';
@@ -63,11 +62,6 @@ const routes = [
         path: "/:pathMatch(.*)*", // Ruta comodín para páginas no encontradas
         name: "NotFound",
         component: NotFound
-    },
-        {
-        path: "/productos",
-        name: "Productos",
-        component: Productos
     },
     {
         path: "/ofertas",
