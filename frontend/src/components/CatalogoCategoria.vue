@@ -8,43 +8,22 @@
       <ul class="main-cats">
         <li 
           v-for="sub in subcategorias" 
-          :key="sub"
+          :key="sub.name || sub"
           :class="{
-            active: isSubcategoriaAbierta(sub),
-            'has-children': tieneSubcategoriasHijas(sub)
+            active: normalizar(sub.name || sub) === normalizar(subcategoria),
+            'has-children': sub.children && sub.children.length
           }"
         >
-          <!-- Contenedor flexible para enlace y flecha -->
-          <div class="sidebar-link-container">
-            <router-link 
-              :to="`/categoria/${categoria}/${sub}`" 
-              class="sidebar-link"
-            >
-              {{ sub }}
-            </router-link>
-            <!-- Botón flecha - solo mostrar si tiene subcategorías hijas -->
-            <button 
-              v-if="tieneSubcategoriasHijas(sub)" 
-              class="flecha-toggle"
-              @click="toggleSubcategoria(sub)"
-              :class="{ rotated: isSubcategoriaAbierta(sub) }"
-            >
-              ⮟
-            </button>
-          </div>
+          <!-- Enlace principal -->
+          <router-link :to="`/categoria/${categoria}/${sub.name || sub}`" class="sidebar-link">
+            {{ sub.name || sub }}
+          </router-link>
 
-          <!-- Subcategorías hijas - cargadas dinámicamente -->
-          <ul 
-            v-if="tieneSubcategoriasHijas(sub) && subcategoriasHijas[sub]" 
-            class="child-list"
-            :class="{ 'is-open': isSubcategoriaAbierta(sub) }"
-          >
-            <li v-for="hija in subcategoriasHijas[sub]" :key="hija">
-              <router-link 
-                :to="`/categoria/${categoria}/${hija}`" 
-                class="sidebar-link child-link"
-              >
-                {{ hija }}
+          <!-- Subcategorías (solo si existen hijos) -->
+          <ul v-if="sub.children && sub.children.length" class="child-list">
+            <li v-for="child in sub.children" :key="child">
+              <router-link :to="`/categoria/${categoria}/${child}`" class="sidebar-link">
+                {{ child }}
               </router-link>
             </li>
           </ul>
@@ -52,14 +31,16 @@
       </ul>
     </aside>
 
-    <!-- Resto del template -->
+    <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
     <section class="productos-grid">
+      <!-- Renderiza una tarjeta por cada producto filtrado -->
       <ProductCard 
         v-for="p in productos" 
         :key="p.id_producto" 
         :producto="p"
         @agregar="agregarAlCarrito"
       />
+      <!--Si no hay productos, muestra un mensaje de "sin resultados" -->
       <div v-if="productos.length === 0" class="no-result">
         No se encontraron productos para esta categoría.
       </div>
@@ -69,6 +50,7 @@
         :ultimoProducto="ultimoProducto" 
         @close="mostrarModal = false"
       />
+
     </section>
   </div>
 </template>
@@ -83,71 +65,28 @@ import CarritoModalPreview from '../components/CarritoModalPreview.vue';
 import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto.js';
 import { getCart } from '../utils/cartUtils';
 
-const mostrarModal = ref(false);
+const mostrarModal = ref(false); // estado para mostrar modal
+// Obtiene los parámetros de la URL para saber que categoria y subcategoria estan activas
 const route = useRoute();
 const categoria = ref(route.params.categoria);
 const subcategoria = ref(route.params.subcategoria);
+// Estado reactivo para almacenar los productos desde el backend
 
-// Estado para controlar subcategorías abiertas
-const subcategoriasAbiertas = ref(new Set());
 
-// Estado para almacenar subcategorías hijas
-const subcategoriasHijas = ref({});
-
-// Función para cargar subcategorías hijas
-const cargarSubcategoriasHijas = async (subcategoriaPadre) => {
-  try {
-    const res = await axios.get(`http://localhost:3001/api/categorias/${categoria.value}/${subcategoriaPadre}/subcategorias`);
-    subcategoriasHijas.value[subcategoriaPadre] = res.data;
-    console.log(`Subcategorías hijas de ${subcategoriaPadre}:`, res.data);
-  } catch (err) {
-    console.error(`Error al cargar subcategorías hijas de ${subcategoriaPadre}`, err);
-    subcategoriasHijas.value[subcategoriaPadre] = [];
-  }
-};
-
-// Función para verificar si una subcategoría tiene hijas
-const tieneSubcategoriasHijas = async (subcategoriaNombre) => {
-  // Si ya tenemos las hijas cargadas, verificar si hay datos
-  if (subcategoriasHijas.value[subcategoriaNombre]) {
-    return subcategoriasHijas.value[subcategoriaNombre].length > 0;
-  }
-  
-  // Si no tenemos datos, intentar cargarlos al hacer clic en la flecha
-  // Por ahora retornamos false, se cargarán cuando se haga clic
-  return false;
-};
-
-const toggleSubcategoria = async (subcategoriaNombre) => {
-  // Si no tenemos las subcategorías hijas cargadas, cargarlas
-  if (!subcategoriasHijas.value[subcategoriaNombre]) {
-    await cargarSubcategoriasHijas(subcategoriaNombre);
-  }
-  
-  // Toggle del estado de apertura
-  if (subcategoriasAbiertas.value.has(subcategoriaNombre)) {
-    subcategoriasAbiertas.value.delete(subcategoriaNombre);
-  } else {
-    subcategoriasAbiertas.value.add(subcategoriaNombre);
-  }
-};
-
-const isSubcategoriaAbierta = (subcategoriaNombre) => {
-  return subcategoriasAbiertas.value.has(subcategoriaNombre);
-};
-
-// Observadores de ruta
+// Observa cambios en la URL para actualizar la categoría y subcategoría
 watch(() => route.params.categoria, (nuevoValor) => {
   categoria.value = nuevoValor;
 });
-
 watch(() => route.params.subcategoria, (nuevoValor) => {
   subcategoria.value = nuevoValor;
 });
 
+// Función para normalizar texto (evita errores por mayúsculas o espacios)
 const normalizar = (texto) => texto?.toLowerCase().trim();
 
-// Subcategorías principales
+// Subcategorias dinamicas desde el backend. 
+// Cada vez que cambia la categoría, se hace una petición al backend para obtener sus subcategorías.
+// Se actualiza el menú lateral automáticamente.
 const subcategorias = ref([]);
 
 watch(
@@ -156,12 +95,7 @@ watch(
     categoria.value = nuevoValor;
     try {
       const res = await axios.get(`http://localhost:3001/api/categorias/${nuevoValor}/subcategorias`);
-      // Asumimos que el backend devuelve un array de strings
       subcategorias.value = res.data;
-      subcategoriasAbiertas.value.clear();
-      subcategoriasHijas.value = {}; // Limpiar subcategorías hijas
-      
-      console.log('🔍 Subcategorías principales recibidas:', res.data);
     } catch (err) {
       console.error('Error al cargar subcategorías', err);
       subcategorias.value = [];
@@ -170,7 +104,10 @@ watch(
   { immediate: true }
 );
 
-// Productos filtrados
+
+// Productos filtrados desd el backend
+//Cada vez que cambia la categoría o subcategoría, se hace una nueva petición al backend.
+//El backend devuelve solo los productos que coinciden con esos filtros.
 const productos = ref([]);
 watch(
   () => [categoria.value, subcategoria.value],
@@ -193,8 +130,8 @@ watch(
 const agregarAlCarrito = (producto) => {
   const resultado = addToCart(producto);
   if (resultado.success){
-    setUltimoProducto(producto);
-    mostrarModal.value = true;
+    setUltimoProducto(producto); // guarda el producto agregado
+    mostrarModal.value = true; // muestra el modal
   }
   console.log(resultado.message);
 };
@@ -204,7 +141,7 @@ const agregarAlCarrito = (producto) => {
 .catalogo-categoria {
   display: flex;
   gap: 2rem;
-  padding-top: calc(75px + 60px);
+  padding-top: calc(75px + 60px); /* 60px = altura del navbar */
   max-width: 1200px;
   margin: 0 auto;
   padding-left: 1rem;
@@ -218,6 +155,7 @@ const agregarAlCarrito = (producto) => {
   border: 1px solid var(--color-border);
   padding: 1.5rem;
   height: fit-content;
+  margin-bottom: 10px;
 }
 
 /* Estilos para HARDWARE */
@@ -231,16 +169,12 @@ const agregarAlCarrito = (producto) => {
   padding-bottom: 0.5rem;
 }
 
-/* Contenedor para enlace y flecha */
-.sidebar-link-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  position: relative;
+/* Estilos para Todos los productos */
+.sidebar h3 {
+  margin: 1rem 0 0.5rem 0;
 }
 
-/* Estilos para enlaces */
+/* Estilos comunes para TODOS los enlaces */
 .sidebar-link {
   display: block;
   padding: 0.5rem 0.75rem;
@@ -253,13 +187,24 @@ const agregarAlCarrito = (producto) => {
   border: none;
   cursor: pointer;
   text-align: left;
-  flex: 1;
+  width: 100%;
   font-family: inherit;
 }
 
 .sidebar-link:hover {
   background-color: var(--color-accent);
   color: var(--color-accent-foreground);
+}
+
+.sidebar-link.active {
+  color: var(--chart-5);
+  font-weight: 600;
+  background-color: var(--color-muted);
+}
+
+.all-products-link {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .sidebar ul {
@@ -271,81 +216,82 @@ const agregarAlCarrito = (producto) => {
 
 .sidebar li {
   margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
   background: var(--color-popover);
+}
+
+.sidebar li:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  background: var(--color-popover);
+}
+
+.sidebar li.active .sidebar-link {
+  color: var(--chart-1);
+  font-weight: 600;
+  background-color: var(--color-muted);
+}
+
+/* Flechita solo en ítems con hijos */
+.sidebar li.has-children {
   position: relative;
-}
-
-/* Botón flecha */
-.flecha-toggle {
-  background: none;
-  border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  font-size: 0.9rem;
+}
+
+.sidebar li.has-children::after {
+  content: "⮟";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.25s ease;
+  font-size: 0.95rem;
   color: var(--color-foreground);
-  transition: all 0.3s ease;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  margin-left: 0.5rem;
-  z-index: 2;
 }
 
-.flecha-toggle:hover {
-  background-color: var(--color-accent);
-  color: var(--color-accent-foreground);
-}
-
-/* Rotación de la flecha cuando está activo */
-.flecha-toggle.rotated {
-  transform: rotate(180deg);
+/* Flecha girada cuando el ítem está activo */
+.sidebar li.has-children.active::after {
+  transform: translateY(-50%) rotate(180deg);
   color: var(--chart-1);
 }
 
 /* Subcategorías ocultas por defecto */
-.child-list {
+.sidebar .child-list {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
-  margin-left: 1rem;
-  padding-left: 0.5rem;
-  border-left: 2px solid var(--color-border);
-  background: var(--color-popover);
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+  margin-left: 0.5rem;
+  padding-left: 0.25rem;
 }
 
-/* Cuando está abierto */
-.child-list.is-open {
+/* Cuando el padre está activo, se expanden */
+.sidebar li.has-children.active > .child-list {
   max-height: 500px;
   opacity: 1;
-  margin-top: 0.25rem;
 }
 
-/* Estilo para enlaces hijos */
-.child-link {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.9rem;
+/* Estilo visual de subcategorías */
+.sidebar .child-list li {
+  padding: 0.25rem 0;
+}
+
+.sidebar .child-list .sidebar-link {
+  padding-left: 1rem;
+  font-size: 0.92rem;
+  color: var(--color-foreground);
   background: none;
-  color: var(--color-muted-foreground);
 }
 
-.child-link:hover {
+.sidebar .child-list .sidebar-link:hover {
   color: var(--chart-1);
-  background-color: transparent;
 }
 
-/* Items con hijos */
-.sidebar li.has-children {
-  background: var(--color-muted);
-  border-radius: 4px;
-  padding: 0.125rem;
+/* Hover elegante para el padre */
+.sidebar li.has-children:hover::after {
+  color: var(--chart-4);
 }
 
-/* Estilos restantes */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -365,6 +311,7 @@ const agregarAlCarrito = (producto) => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos para el título principal */
 .catalogo-categoria h1 {
   position: absolute;
   top: 75px;
@@ -380,8 +327,9 @@ const agregarAlCarrito = (producto) => {
   z-index: 10;
 }
 
+/* Ajuste del padding superior para compensar el título fijo */
 .catalogo-categoria {
-  padding-top: calc(75px + 60px + 60px);
+  padding-top: calc(75px + 60px + 60px); /* navbar + título */
 }
 
 /* Responsive */
