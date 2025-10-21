@@ -644,6 +644,8 @@
 
 <script>
 import { getCart, getCartTotal, clearCart } from "../utils/cartUtils";
+import { usePayment } from "../composables/usePayment";
+import AuthService from "../services/authService.js";
 
 export default {
   name: "CheckoutForm",
@@ -653,9 +655,18 @@ export default {
       default: false
     }
   },
+  setup() {
+    const { processPayment, isProcessing, error } = usePayment();
+
+    return {
+      processPayment,
+      isProcessing,
+      paymentError: error
+    };
+  },
   data() {
     return {
-      currentStep: 1,
+      currentStep: 2,
       showPassword: false,
       promoCode: '',
       discount: 0,
@@ -729,11 +740,13 @@ export default {
   },
   mounted() {
     this.loadCart();
+    this.loadUserData();
   },
   watch: {
     isOpen(newVal) {
       if (newVal) {
         this.loadCart();
+        this.loadUserData();
         document.body.style.overflow = 'hidden';
       } else {
         document.body.style.overflow = 'auto';
@@ -747,6 +760,17 @@ export default {
       console.log("🔍 CHECKOUT - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
       console.log("🔍 CHECKOUT - getCartTotal():", getCartTotal());
       console.log("🔍 CHECKOUT - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
+    },
+    loadUserData() {
+      const user = AuthService.getCurrentUser();
+      if (user) {
+        // Prellenar datos del usuario en el formulario
+        this.formData.nombre = user.nombre || '';
+        this.formData.apellidos = user.apellidos || '';
+        this.formData.email = user.email || '';
+
+        console.log("👤 Usuario logueado - datos precargados:", user);
+      }
     },
     closeModal() {
       this.$emit('close');
@@ -898,13 +922,16 @@ export default {
     showLogin() {
       alert('Funcionalidad de login próximamente');
     },
-    procesarPago() {
+    async procesarPago() {
       if (this.validateCurrentStep()) {
-        // Aquí iría la lógica para procesar el pago
-        alert('¡Compra realizada con éxito! Gracias por tu compra.');
-        clearCart();
-        this.$router.push('/');
-        this.closeModal();
+        try {
+          await this.processPayment(this.formData);
+          // La redirección a MercadoPago se hace automáticamente en processPayment
+          // Si llegamos aquí sin error, cerramos el modal
+          this.closeModal();
+        } catch (err) {
+          alert(`Error al procesar el pago: ${err.message}`);
+        }
       }
     }
   }
