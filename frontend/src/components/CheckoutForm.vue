@@ -655,7 +655,7 @@ export default {
       default: false
     }
   },
-  setup() {
+  setup() { 
     const { processPayment, isProcessing, error } = usePayment();
 
     return {
