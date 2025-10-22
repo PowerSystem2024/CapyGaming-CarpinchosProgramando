@@ -1,26 +1,23 @@
 // importar las funciones necesarias de vue-router
 import {createRouter, createWebHistory} from 'vue-router';
 //Importar tus componentes
-import productos from '../components/productos.vue'
-import carrito from '../components/carrito.vue';
-import inicioSesion from '../components/inicioSesion.vue';
-import marcas from '../components/marcas.vue';
-import quienesSomos from '../components/quienesSomos.vue';
-import registro from '../components/registro.vue';
-import recuperarContra from '../components/recuperarContra.vue';
-import NotFound from "../components/notFound.vue";
+import Carrito from '../components/Carrito.vue';
+import InicioSesion from '../components/InicioSesion.vue';
+import Marcas from '../components/Marcas.vue';
+import QuienesSomos from '../components/QuienesSomos.vue';
+import Registro from '../components/Registro.vue';
+import RecuperarContra from '../components/RecuperarContra.vue';
+import NotFound from "../components/NotFound.vue";
 import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
-import AuthService from '../services/authService.js';
 import Contacto from '../components/Contacto.vue';
 import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 import ResultadosPage from '../components/ResultadosPage.vue';
 import TerminosCondiciones from '../components/TerminosCondiciones.vue';
-
-
+import AuthService from '../services/authService.js';
 
 
 //Definir las rutas de tu aplicacion
@@ -33,53 +30,49 @@ const routes = [
     {
         path: '/carrito',
         name: 'Carrito',
-        component: carrito
+        component: Carrito
     },
     {
         path: '/inicioSesion',
-        name: 'inicioSesion',
-        component: inicioSesion
+        name: 'InicioSesion',
+        component:  InicioSesion
+       
     },
     {
         path: '/registro',
-        name: 'registro',
-        component: registro
+        name: 'Registro',
+        component: Registro
     },
     {
         path: '/recuperarContra',
-        name: 'recuperarContra',
-        component: recuperarContra
+        name: 'RecuperarContra',
+        component: RecuperarContra
     },
     {
         path: '/marcas',
-        name: 'marcas',
-        component: marcas
+        name: 'Marcas',
+        component: Marcas
     },
     {
         path: '/quienesSomos', 
-        name: 'quienesSomos',
-        component: quienesSomos
+        name: 'QuienesSomos',
+        component: QuienesSomos
     },
     {
         path: "/:pathMatch(.*)*", // Ruta comodín para páginas no encontradas
         name: "NotFound",
         component: NotFound
     },
-        {
-        path: "/productos",
-        name: "Productos",
-        component: productos
-    },
     {
         path: "/ofertas",
-        name: "ofertas",
+        name: "Ofertas",
         component: Ofertas
     },
     {
         path: "/catalogo",
         name: "Catologo",
         component: Catalogo
-    },
+    },  
     {
         path: '/productoDetalle/:id',
         name: 'ProductoDetalle',
@@ -124,7 +117,7 @@ const router = createRouter({
 // Middleware de navegación corregido
 router.beforeEach((to) => {
     const isAuth = AuthService.isAuthenticated();  // ← Usar el servicio
-    if (isAuth && (to.name === 'inicioSesion' || to.name === 'registro' || to.name === 'recuperarContra')) {
+    if (isAuth && (to.name === 'InicioSesion' || to.name === 'Registro' || to.name === 'RecuperarContra')) {
         return { name: 'Home' } // Redirige al home si ya está logueado
     }
 })

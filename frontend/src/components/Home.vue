@@ -162,7 +162,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import Ofertas from "../components/Ofertas.vue";
-import quienesSomos from "../components/quienesSomos.vue";
 
 // ✅ Carrusel
 import imgProc from "../assets/imagenesHome/banner5.jpg";

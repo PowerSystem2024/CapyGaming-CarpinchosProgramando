@@ -1,7 +1,6 @@
 <script setup>
-import Marcas from '../components/marcas.vue';
-import PreguntasFrecuentes from './PreguntasFrecuentes.vue';
-import terminosycondiciones from './TerminosCondiciones.vue';
+import Marcas from './Marcas.vue';
+
 </script>
 
 <template>

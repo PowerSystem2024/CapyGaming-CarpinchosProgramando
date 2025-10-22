@@ -76,11 +76,11 @@ const productos = require('../frontend/src/assets/data/productsData');
 })();*/
 
 import pool from './pool.js';
-import { productos } from '../../frontend/src/assets/data/productsData.js';
-
-const subset = productos.slice(0, 5); // Solo los primeros 5
+import { productos } from './productsData.js';
 
 (async () => {
+    console.log(`🌱 Iniciando carga de ${productos.length} productos...\n`);
+
     for (const p of productos) {
         try {
         await pool.query('BEGIN');
@@ -148,5 +148,21 @@ const subset = productos.slice(0, 5); // Solo los primeros 5
         console.error(`❌ Error al insertar ${p.nombre}:`, err.message);
         }
     }
+
+    // Mostrar resumen
+    const client = await pool.connect();
+    const countCategorias = await client.query('SELECT COUNT(*) FROM categoria');
+    const countSubcategorias = await client.query('SELECT COUNT(*) FROM subcategoria');
+    const countProductos = await client.query('SELECT COUNT(*) FROM producto');
+    const countImagenes = await client.query('SELECT COUNT(*) FROM imagen_producto');
+    client.release();
+
+    console.log('\n✅ Base de datos poblada exitosamente!\n');
+    console.log('📊 Resumen:');
+    console.log(`   - Categorías: ${countCategorias.rows[0].count}`);
+    console.log(`   - Subcategorías: ${countSubcategorias.rows[0].count}`);
+    console.log(`   - Productos: ${countProductos.rows[0].count}`);
+    console.log(`   - Imágenes: ${countImagenes.rows[0].count}`);
+
     await pool.end();
 })();
