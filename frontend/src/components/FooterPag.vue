@@ -1,6 +1,6 @@
 <script setup>
-import Marcas from '../components/marcas.vue';
-import PreguntasFrecuentes from './PreguntasFrecuentes.vue';
+import Marcas from './Marcas.vue';
+
 </script>
 
 <template>
@@ -31,7 +31,7 @@ import PreguntasFrecuentes from './PreguntasFrecuentes.vue';
         <h4>Acerca de</h4>
         <ul>
           <li><router-link to="/quienessomos">Quiénes somos</router-link></li>
-          <li><a href="#">Términos y condiciones</a></li>
+          <li><router-link to="/terminosycondiciones">Términos y condiciones</router-link></li>
           <li><router-link to="/PreguntasFrecuentes">Preguntas frecuentes</router-link></li>
           <li><router-link to="/Contacto">Contáctanos</router-link></li>
 

@@ -16,13 +16,13 @@ export const register = async (req, res) => {
     );
 
     if (userExists.rows.length > 0) {
-      return res.status(400).json({ 
-        error: 'El usuario ya existe con este email o DNI' 
+      return res.status(400).json({
+        error: 'El usuario ya existe con este email o DNI'
       });
     }
 
     // Hash de la contraseña
-    const saltRounds = 10;
+    const saltRounds = 10; // cadena aleatoria para formar el hash, el numero es la cantidad de iteraciones
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insertar nuevo usuario
@@ -45,15 +45,16 @@ export const register = async (req, res) => {
         dni: newUser.rows[0].dni,
         nombre: newUser.rows[0].nombre,
         apellido: newUser.rows[0].apellido,
+        telefono: newUser.rows[0].telefono,
+        direccion: newUser.rows[0].direccion,
         email: newUser.rows[0].email,
-        telefono: newUser.rows[0].telefono
       },
       token
     });
 
   } catch (error) {
     console.error('Error en registro:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'No se pudo insertar el nuevo usuario' });
   }
 };
 
@@ -96,14 +97,14 @@ export const login = async (req, res) => {
         apellido: user.apellido,
         email: user.email,
         telefono: user.telefono,
-        direccion: user.direccion
+        direccion: user.direccion,
       },
       token
     });
 
   } catch (error) {
     console.error('Error en login:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'No se pudo loguear al usuario' });
   }
 };
 
@@ -120,19 +121,19 @@ export const requestPasswordReset = async (req, res) => {
 
     if (userResult.rows.length === 0) {
       // Por seguridad, no revelamos si el email existe o no
-      return res.json({ 
-        message: 'Si el email existe, se enviarán instrucciones de recuperación' 
+      return res.json({
+        message: 'Si el email existe, se enviarán instrucciones de recuperación'
       });
     }
 
-    res.json({ 
+    res.json({
       message: 'Si el email existe, se enviarán instrucciones de recuperación',
       resetToken: 'simulated-reset-token-' + Date.now()
     });
 
   } catch (error) {
     console.error('Error en recuperación:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'No se pudo recuperar la contraseña' });
   }
 };
 
@@ -152,7 +153,7 @@ export const getProfile = async (req, res) => {
 
   } catch (error) {
     console.error('Error obteniendo perfil:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'No se pudo obtener el perfil' });
   }
 };
 

@@ -94,7 +94,7 @@ watch(
   async (nuevoValor) => {
     categoria.value = nuevoValor;
     try {
-      const res = await axios.get(`http://localhost:3001/api/categorias/${nuevoValor}/subcategorias`);
+      const res = await axios.get(`/api/categorias/${nuevoValor}/subcategorias`);
       subcategorias.value = res.data;
     } catch (err) {
       console.error('Error al cargar subcategorías', err);
@@ -113,7 +113,7 @@ watch(
   () => [categoria.value, subcategoria.value],
   async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/productos', {
+      const res = await axios.get('/api/productos', {
         params: {
           categoria: categoria.value,
           subcategoria: subcategoria.value || null
