@@ -1,10 +1,10 @@
 const API_BASE = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api`
   : '/api';
-
+  
 // 🔴 MODO MOCK - Cambiá esto a false cuando el backend esté listo
 const USE_MOCK = false;
-
+  
 class MercadoPagoService {
   /**
    * Crear preferencia de pago
@@ -23,11 +23,11 @@ class MercadoPagoService {
         }, 1000); // Simular delay de red
       });
     }
-
+    
     // 🌐 REAL - Llamar al backend (usar cuando esté listo)
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE}/mercadopago/create-preference`, {
+      const response = await fetch(`${API_BASE}/pagos/crear-preferencia`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,13 +47,13 @@ class MercadoPagoService {
       throw error;
     }
   }
-
-  /**
+  
+  /*
    * Obtener estado de un pago
    * @param {string} paymentId - ID del pago
    * @returns {Promise<Object>} - Estado del pago
    */
-  async getPaymentStatus(paymentId) {
+  async getPaymentStatus(orderId) {
     if (USE_MOCK) {
       // 🎭 MOCK - Simular respuesta
       return new Promise((resolve) => {
@@ -61,17 +61,17 @@ class MercadoPagoService {
           resolve({
             status: 'approved',
             statusDetail: 'accredited',
-            paymentId: paymentId,
+            orderId: orderId,
             amount: 50000
           });
         }, 500);
       });
     }
-
+    
     // 🌐 REAL
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE}/mercadopago/payment/${paymentId}`, {
+      const response = await fetch(`${API_BASE}/pagos/estado/${orderId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
