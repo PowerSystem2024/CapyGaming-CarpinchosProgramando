@@ -1,6 +1,6 @@
 // importar las funciones necesarias de vue-router
-import createRouter from 'vue-router';
-import createWebHistory from 'vue-router';
+import {createRouter,createWebHistory} from 'vue-router';
+
 //Importar tus componentes
 import Carrito from '../components/Carrito.vue';
 import InicioSesion from '../components/InicioSesion.vue';
