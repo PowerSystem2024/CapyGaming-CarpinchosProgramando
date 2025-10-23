@@ -482,25 +482,9 @@
                       v-model="formData.metodoPago"
                       required
                     />
-                    <div class="payment-info">
-                      <strong>💳 Tarjeta de crédito/débito</strong>
-                      <span>Visa, MasterCard, American Express</span>
-                    </div>
                   </label>
-
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="transferencia"
-                      v-model="formData.metodoPago"
-                    />
+                </div>
                     <div class="payment-info">
-                      <strong>🏦 Transferencia bancaria</strong>
-                      <span>CBU/CVU - Alias</span>
-                    </div>
-                  </label>
-
                   <label class="payment-option">
                     <input
                       type="radio"
@@ -514,79 +498,6 @@
                     </div>
                   </label>
 
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="efectivo"
-                      v-model="formData.metodoPago"
-                    />
-                    <div class="payment-info">
-                      <strong>💵 Efectivo</strong>
-                      <span>Pago Fácil, Rapipago</span>
-                    </div>
-                  </label>
-                </div>
-
-                <!-- Formulario de tarjeta si selecciona tarjeta -->
-                <div v-if="formData.metodoPago === 'tarjeta'" class="card-form">
-                  <div class="form-group">
-                    <label for="cardNumber">Número de tarjeta</label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      v-model="formData.cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      maxlength="19"
-                      @input="formatCardNumber"
-                    />
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="cardExpiry">Vencimiento</label>
-                      <input
-                        type="text"
-                        id="cardExpiry"
-                        v-model="formData.cardExpiry"
-                        placeholder="MM/AA"
-                        maxlength="5"
-                        @input="formatExpiry"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="cardCVC">CVC</label>
-                      <input
-                        type="text"
-                        id="cardCVC"
-                        v-model="formData.cardCVC"
-                        placeholder="123"
-                        maxlength="4"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="cardName">Nombre en la tarjeta</label>
-                    <input
-                      type="text"
-                      id="cardName"
-                      v-model="formData.cardName"
-                      placeholder="JUAN PEREZ"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-group checkbox-group">
-                  <label>
-                    <input
-                      type="checkbox"
-                      v-model="formData.acceptTerms"
-                      required
-                    />
-                    <span>Acepto los términos y condiciones de la compra</span>
-                  </label>
                 </div>
 
                 <button type="submit" class="btn-pay">Finalizar compra</button>
@@ -919,9 +830,7 @@ export default {
         this.discount = 0;
       }
     },
-    showLogin() {
-      alert('Funcionalidad de login próximamente');
-    },
+
     async procesarPago() {
       if (this.validateCurrentStep()) {
         try {
