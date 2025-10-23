@@ -3,7 +3,7 @@ const API_BASE = import.meta.env.VITE_API_URL
   : '/api';
 
 // 🔴 MODO MOCK - Cambiá esto a false cuando el backend esté listo
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 class MercadoPagoService {
   /**
