@@ -19,7 +19,10 @@
 </template>
 
 <script setup>
+// Importaciones necesarias de Vue
 import { ref, computed, defineEmits, defineProps } from 'vue'
+
+// Importación de los formularios usados en el modal
 import InicioSesion from './InicioSesion.vue'
 import Registro from './Registro.vue'
 import RecuperarContra from './RecuperarContra.vue'
@@ -66,6 +69,7 @@ function handleSuccess() {
 </script>
 
 <style scoped>
+/* Fondo oscuro translúcido para el modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -81,6 +85,7 @@ function handleSuccess() {
   animation: fadeIn 0.2s ease;
 }
 
+/* Contenedor principal del contenido del modal */
 .modal-content {
   background: var(--color-background);
   border-radius: 16px;
@@ -94,6 +99,7 @@ function handleSuccess() {
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
 
+/* Estilos del botón de cierre */
 .close-btn {
   position: absolute;
   top: 1rem;
@@ -119,15 +125,18 @@ function handleSuccess() {
   flex-shrink: 0;
 }
 
+/* Efecto hover del botón de cierre */
 .close-btn:hover {
   background: var(--color-accent);
 }
 
+/* Efecto hover del botón de cierre */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* Animación para el contenido modal */
 @keyframes slideUp {
   from { 
     opacity: 0;
