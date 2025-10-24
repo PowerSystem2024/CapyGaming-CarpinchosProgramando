@@ -1,17 +1,21 @@
-/* base.css */
+/* Importa la fuente Poppins desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+/* Variables globales y configuraciones base del sitio */
 :root {
-    --color-background: #1C2833;
-    --color-foreground: #FDEBD0;
-    --color-primary: #F39C12;
-    --color-primary-foreground: #1C2833;
+    /* Colores principales del tema */
+    --color-background: #1C2833; /* Fondo base */
+    --color-foreground: #FDEBD0; /* Color del texto principal */
+    --color-primary: #F39C12; /* Color destacado principal */
+    --color-primary-foreground: #1C2833; /* Texto sobre color primario */
 
+    /* Colores secundarios */
     --color-secondary: #3498DB;
     --color-secondary-foreground: #1C2833;
     --color-accent: #2C3E50;
     --color-accent-foreground: #FDEBD0;
 
+    /* Colores para tarjetas y popovers */
     --color-card: #212F3C;
     --color-card-foreground: #FDEBD0;
     --color-popover: #212F3C;
@@ -19,19 +23,23 @@
     --color-muted: #2C3E50;
     --color-muted-foreground: #AAB7B8;
 
+    /* Colores de borde e inputs */
     --color-border: #2C3E50;
     --color-input: #2C3E50;
     --color-ring: #3498DB;
 
+    /* Colores destructivos como alertas o errores */
     --color-destructive: #E74C3C;
     --color-destructive-foreground: #FDEBD0;
 
+    /* Colores para gráficos o visualizaciones */
     --chart-1: #F39C12;
     --chart-2: #3498DB;
     --chart-3: #E67E22;
     --chart-4: #5DADE2;
     --chart-5: #F5B041;
 
+    /* Estilos del sidebar */
     --sidebar-background: #212F3C;
     --sidebar-foreground: #FDEBD0;
     --sidebar-primary: #F39C12;
@@ -41,100 +49,110 @@
     --sidebar-border: #2C3E50;
     --sidebar-ring: #3498DB;
 
+    /* Configuraciones de tipografía y renderizado */
     line-height: 1.5;
     font-weight: 400;
-
-    color-scheme: light dark;
+    color-scheme: light dark; /* Adapta según modo claro/oscuro del sistema */
     background-color: transparent;
-
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+/* Aplica estilos globales a todos los elementos */
 * {
-    color: var(--color-foreground);
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--color-background);
+    color: var(--color-foreground); /* Texto en color claro */
+    font-family: 'Poppins', sans-serif; /* Fuente general */
+    background-color: var(--color-background); /* Fondo general */
 }
 
+/* Estilos para enlaces */
 a {
     font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+    color: #646cff; /* Color del link */
+    text-decoration: inherit; /* Quita subrayado */
 }
 
+/* Cambio de color al pasar el mouse por un enlace */
 a:hover {
     color: var(--sidebar-accent);
 }
 
+/* Las imágenes no deben tener fondo */
 img {
     background-color: transparent !important;
 }
 
+/* Estilos generales del body */
 body {
     margin: 0;
     /* display: flex; */
     /*place-items: center;*/
-    min-width: 320px;
-    min-height: 100vh;
+    min-width: 320px; /* Ancho mínimo para móviles */
+    min-height: 100vh; /* Alto mínimo de pantalla completa */
 }
 
+/* Estilos para encabezados */
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
 }
 
+/* Estilos para botones */
 button {
-    border-radius: 8px;
+    border-radius: 8px; /* Bordes redondeados */
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: #1a1a1a; /* Fondo oscuro */
     cursor: pointer;
-    transition: border-color 0.25s;
+    transition: border-color 0.25s; /* Animación del borde */
 }
 
+/* Hover en botones */
 button:hover {
     border-color: var(--sidebar-ring);
 }
 
+/* Foco accesible para botones */
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Estilos de tarjetas */
 .card {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column; /* Orden vertical */
+    justify-content: space-between; /* Espaciado interno */
     height: 100%;
     padding: 1.2rem;
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: 12px; /* Bordes redondeados */
     background-color: var(--color-card);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); /* Sombra suave */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animación al interactuar */
 }
 
-
-
+/* Contenedor principal de la app */
 #app {
     max-width: 100%;
     text-align: center;
 }
 
+/* Estilos específicos para modo claro según las preferencias del sistema */
 @media (prefers-color-scheme: light) {
     :root {
-        color: #213547;
-        background-color: #ffffff;
+        color: #213547; /* Color de texto oscuro */
+        background-color: #ffffff; /* Fondo blanco */
     }
     a:hover {
-        color: var(--chart-5);
+        color: var(--chart-5); /* Hover distinto en modo claro */
     }
     button {
-        background-color: #f9f9f9;
+        background-color: #f9f9f9; /* Botón claro */
     }
 }
