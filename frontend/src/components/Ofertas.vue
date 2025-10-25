@@ -62,43 +62,60 @@ export default {
   name: "Ofertas",
   data() {
     return {
-      offers: [],       // aca guardaremos las ofertas del backend
-      error: null,      // para mostrar errores si es que hay
+      offers: [],
+      error: null,
     };
   },
   computed: {
     ofertasConDescuento() {
-      return this.offers.map(o => {
-        const oldP = parseFloat(o.oldPrice.replace(/[^0-9.]/g, ""));
-        const newP = parseFloat(o.newPrice.replace(/[^0-9.]/g, ""));
-        const descuento = Math.round(((oldP - newP) / oldP) * 100);
-        return { ...o, descuento };
-      });
+      return this.offers.map(o => ({
+        ...o,
+        descuento: o.descuento || 0
+      }));
     }
   },
-    methods: {   //desde aca traemos las ofertas del back
+  methods: {
     async fetchOfertas() {
       try {
         const response = await axios.get('http://localhost:3001/api/ofertas');
 
-    // Adaptamos los datos del backend al formato del frontend
-    this.offers = response.data.map(o => ({
-      id: o.id,
-      title: o.title,
-      oldPrice: "$" + (parseFloat(o.newprice) * (1 + o.descuento / 100)).toFixed(0),
-      newPrice: "$" + o.newprice,
-      image: o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen",
-      descuento: o.descuento
-    }));
-  } catch (err) {
-    console.error("Error al traer las ofertas:", err);
-    this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
+        // Adaptamos los datos del backend al formato del frontend
+        this.offers = response.data.map(o => {
+          const newPrice = parseFloat(o.newprice);
+          const oldPrice = newPrice / (1 - o.descuento / 100); // calcula el precio anterior real
+
+          return {
+            id: o.id,
+            title: o.title,
+            oldPrice: `$${oldPrice.toFixed(0)}`,
+            newPrice: `$${newPrice.toFixed(0)}`,
+            image: o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen",
+            descuento: o.descuento,
+            marca: o.marca,
+            stock: o.stock,
+          };
+        });
+
+      } catch (err) {
+        console.error("❌ Error al traer las ofertas:", err);
+        this.error = "No se pudieron cargar las ofertas. Intenta más tarde.";
+      }
+    },
+
+    agregarAlCarrito(oferta) {
+      const resultado = addToCart(oferta);
+      if (resultado.success) {
+        setUltimoProducto({ ...oferta, quantity: 1 });
+        window.dispatchEvent(new Event("cartUpdated"));
+        window.dispatchEvent(new Event("abrirPreview"));
+      } else {
+        console.log("Error al agregar oferta:", resultado.message);
       }
     }
   },
 
   mounted() {
-    this.fetchOfertas(); // Trae las ofertas cuando se carga el componente
+    this.fetchOfertas();
   }
 };
 </script>
