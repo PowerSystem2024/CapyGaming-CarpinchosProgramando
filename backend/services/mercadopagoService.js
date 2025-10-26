@@ -15,11 +15,11 @@ dotenv.config();
 //     idempotencyKey: 'abc'
 //   }
 // });
-
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
   options: {
-    timeout: 15000,   
+    timeout: 15000,
+    
   }
 });
 
@@ -44,8 +44,19 @@ crearPreferencia():
 
 export const createPreference = async (preferenceData) => {
   try {
-    // Generar clave de idempotencia única para esta solicitud, de tal forma que si se repite no se creen cargos duplicados
+    // Debug: Verificar variables de entorno
+    console.log('🔍 DEBUG - Variables de entorno:');
+    console.log('   FRONTEND_URL:', process.env.FRONTEND_URL);
+    console.log('   BACKEND_URL:', process.env.BACKEND_URL);
+
+// Generar clave de idempotencia única para esta solicitud, de tal forma que si se repite no se creen cargos duplicados
     const idempotencyKey = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
+
+    // Detectar si estamos en localhost (testing) o en producción
+    // MercadoPago rechaza auto_return con URLs localhost, por lo que solo lo habilitamos en producción
+    const isLocalhost = process.env.FRONTEND_URL?.includes('localhost') ||
+                       process.env.FRONTEND_URL?.includes('127.0.0.1');
+
     const body = {
       items: preferenceData.items.map(item => ({
         id: String(item.id || ''),
@@ -68,14 +79,18 @@ export const createPreference = async (preferenceData) => {
         failure: `${process.env.FRONTEND_URL}/payment/failure`,
         pending: `${process.env.FRONTEND_URL}/payment/pending`
       },
-      // auto_return: 'approved', Solo redirige automáticamente si el pago es aprobado , tiene que redirigir siempre
-      auto_return: 'all', // Redirige automaticamente en todos los casos
+      // auto_return condicional: solo en producción (URLs públicas)
+      // MercadoPago rechaza auto_return con localhost en modo TEST
+      ...(isLocalhost ? {} : { auto_return: 'all' }),
       external_reference: preferenceData.orderId,
       notification_url: `${process.env.BACKEND_URL}/api/webhooks/webhook`,
       statement_descriptor: 'CapyGaming'
     };
 
-    //const response = await preference.create({ body });
+    // Debug: Ver qué body se envía a MercadoPago
+    console.log('📤 Body enviado a MercadoPago:', JSON.stringify(body, null, 2));
+
+    //const response = await preference.create({ body });  --- IGNORE ---
 
 
     const response = await preference.create({ 
@@ -94,9 +109,9 @@ export const createPreference = async (preferenceData) => {
 
   } catch (error) {
     console.error('Error creando preferencia de MercadoPago:', error);
-    throw new Error(`Error al crear preferencia: ${error.message || 'Error desconocido'}`);
-
-
+   throw new Error(`Error al crear preferencia: ${error.message || 'Error desconocido'}`);
+      
+    
   }
 };
 
