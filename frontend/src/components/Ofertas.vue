@@ -77,7 +77,9 @@ export default {
   methods: {
     async fetchOfertas() {
       try {
-        const response = await axios.get('http://localhost:3001/api/ofertas');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/ofertas`);
+
+
 
         // Adaptamos los datos del backend al formato del frontend
         this.offers = response.data.map(o => {
