@@ -1,15 +1,25 @@
 // Este es el corazón de la integración. Aquí se encapsula toda la lógica de comunicación con la API de MercadoPago.
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
+import { request } from 'http';
 
 dotenv.config();
 
+// CODIGO HARDCODEADO - 
 // Configurar cliente de MercadoPago (SDK v2.x)
+// const client = new MercadoPagoConfig({
+//   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+//   options: {
+//     timeout: 5000,
+//     idempotencyKey: 'abc'
+//   }
+// });
+
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
   options: {
-    timeout: 5000,
-    idempotencyKey: 'abc'
+    timeout: 15000,   
   }
 });
 
@@ -32,8 +42,10 @@ crearPreferencia():
 
 */
 
-export const crearPreferencia = async (preferenceData) => {
+export const createPreference = async (preferenceData) => {
   try {
+    // Generar clave de idempotencia única para esta solicitud, de tal forma que si se repite no se creen cargos duplicados
+    const idempotencyKey = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
     const body = {
       items: preferenceData.items.map(item => ({
         id: String(item.id || ''),
@@ -52,17 +64,26 @@ export const crearPreferencia = async (preferenceData) => {
         identification: preferenceData.payer.identification || undefined
       },
       back_urls: {
-        success: `${process.env.FRONTEND_URL}/pago-exitoso`,
-        failure: `${process.env.FRONTEND_URL}/pago-fallido`,
-        pending: `${process.env.FRONTEND_URL}/pago-pendiente`
+        success: `${process.env.FRONTEND_URL}/payment/success`,
+        failure: `${process.env.FRONTEND_URL}/payment/failure`,
+        pending: `${process.env.FRONTEND_URL}/payment/pending`
       },
-      auto_return: 'approved',
+      // auto_return: 'approved', Solo redirige automáticamente si el pago es aprobado , tiene que redirigir siempre
+      auto_return: 'all', // Redirige automaticamente en todos los casos
       external_reference: preferenceData.orderId,
       notification_url: `${process.env.BACKEND_URL}/api/webhooks/webhook`,
       statement_descriptor: 'CapyGaming'
     };
 
-    const response = await preference.create({ body });
+    //const response = await preference.create({ body });
+
+
+    const response = await preference.create({ 
+      body,
+      requestOptions: {
+        idempotencyKey: idempotencyKey
+      }
+    });
 
     return {
       success: true,
@@ -73,11 +94,9 @@ export const crearPreferencia = async (preferenceData) => {
 
   } catch (error) {
     console.error('Error creando preferencia de MercadoPago:', error);
-    throw {
-      success: false,
-      error: 'Error al crear preferencia de pago',
-      details: error.message
-    };
+    throw new Error(`Error al crear preferencia: ${error.message || 'Error desconocido'}`);
+
+
   }
 };
 
@@ -115,11 +134,7 @@ export const obtenerPago = async (paymentId) => {
 
   } catch (error) {
     console.error('Error obteniendo pago de MercadoPago:', error);
-    throw {
-      success: false,
-      error: 'Error al obtener información del pago',
-      details: error.message
-    };
+    throw new Error(`Error al obtener pago: ${error.message || 'Error desconocido'}`);
   }
 };
 
@@ -140,7 +155,7 @@ export const validarWebhookSignature = (headers, body) => {
 };
 
 export default {
-  crearPreferencia,
+  createPreference,
   obtenerPago,
   validarWebhookSignature
 };
