@@ -83,10 +83,23 @@ export const validarCrearPreferencia = [
     .isString()
     .withMessage('El número de teléfono debe ser un string'),
 
-  body('payer.dni')
+  // Validar identification (estructura de MercadoPago)
+  body('payer.identification')
     .optional()
-    .isInt()
-    .withMessage('El DNI debe ser un número entero'),
+    .isObject()
+    .withMessage('La identificación debe ser un objeto'),
+
+  body('payer.identification.type')
+    .optional()
+    .isString()
+    .withMessage('El tipo de identificación debe ser un string')
+    .isIn(['DNI', 'CI', 'LC', 'LE', 'Otro'])
+    .withMessage('El tipo de identificación debe ser DNI, CI, LC, LE u Otro'),
+
+  body('payer.identification.number')
+    .optional()
+    .isString()
+    .withMessage('El número de identificación debe ser un string'),
 
   // Validar orderId (opcional)
   body('orderId')

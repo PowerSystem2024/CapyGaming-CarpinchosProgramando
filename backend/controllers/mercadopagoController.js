@@ -1,24 +1,25 @@
-// El controller es el que coordina todo: recibe peticiones, valida datos, usa el servicio, maneja la bd y responde
-import pool from '../bd/pool.js';
+// El controller coordina: recibe peticiones, valida datos, usa servicios y responde
+// Toda la lógica de BD está en orderService (service layer pattern)
 import * as mercadopagoService from '../services/mercadopagoService.js';
+import * as orderService from '../services/orderService.js';
 
 /**
  * Crear preferencia de pago en MercadoPago
  * Endpoint: POST /api/pagos/crear-preferencia
-
-Lo que devuelve al frontend:
-{
-  "success": true,
-  "preferenceId": "123456-abc-def",
-  "initPoint": "https://www.mercadopago.com.ar/checkout/...",
-  "orderId": "ORDEN-123456"
-}
+ *
+ * Responde:
+ * {
+ *   "success": true,
+ *   "preferenceId": "123456-abc-def",
+ *   "initPoint": "https://www.mercadopago.com.ar/checkout/...",
+ *   "orderId": "ORDEN-123456"
+ * }
  */
 export const crearPreferencia = async (req, res) => {
-  const { items, payer, orderId } = req.body;
+  const { items, payer } = req.body;
 
   try {
-    // 1. Validar que los datos necesarios estén presentes
+    // 1. Validaciones de entrada
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({
         success: false,
@@ -26,79 +27,66 @@ export const crearPreferencia = async (req, res) => {
       });
     }
 
-    if (!payer || !payer.email || !payer.name) {
+    if (!payer || !payer.email || !payer.name || !payer.surname) {
       return res.status(400).json({
         success: false,
-        error: 'Información del comprador incompleta'
+        error: 'Información del comprador incompleta (name, surname, email requeridos)'
       });
     }
 
-    // 2. Calcular total del pedido
+    // 2. Calcular total
     const total = items.reduce((sum, item) => {
       return sum + (parseFloat(item.unit_price) * parseInt(item.quantity));
     }, 0);
 
-    // 3. Generar orderId único si no viene del frontend
-    const ordenIdFinal = orderId || `ORDEN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    // 3. Generar orderId único
+    const ordenId = `ORDEN-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
-    // 4. Guardar la orden en la base de datos
-    const ordenResult = await pool.query(
-      `INSERT INTO orden_pago (orden_id, dni_usuario, total, estado)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id_orden, orden_id`,
-      [ordenIdFinal, payer.dni || null, total, 'pending']
-    );
+    console.log('Creando orden:', ordenId, 'Total:', total);
 
-    const idOrden = ordenResult.rows[0].id_orden;
+    // 4. Crear orden en BD con transacción (orderService)
+    const orderResult = await orderService.createOrder({
+      items,
+      payer,
+      total,
+      orderId: ordenId
+    });
 
-    // 5. Guardar los items de la orden
-    for (const item of items) {
-      await pool.query(
-        `INSERT INTO item_orden (id_orden, producto_id, nombre, cantidad, precio_unitario, precio_total, imagen_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [
-          idOrden,
-          item.id || null,
-          item.title,
-          item.quantity,
-          item.unit_price,
-          item.unit_price * item.quantity,
-          item.picture_url || null
-        ]
-      );
-    }
+    console.log('Orden creada en BD:', orderResult.idOrden);
 
-    // 6. Crear preferencia en MercadoPago usando el servicio
+    // 5. Crear preferencia en MercadoPago
     const preferenciaData = {
       items: items,
       payer: payer,
-      orderId: ordenIdFinal
+      orderId: ordenId
     };
 
-    const mpResponse = await mercadopagoService.crearPreferencia(preferenciaData);
+    const mpResponse = await mercadopagoService.createPreference(preferenciaData);
 
-    // 7. Guardar la preferencia en la base de datos con initPoint
-    await pool.query(
-      `INSERT INTO pago_mercadopago (id_orden, preference_id, external_reference, currency_id, status)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [idOrden, mpResponse.preferenceId, ordenIdFinal, 'ARS', 'pending']
+    console.log('Preferencia creada en MercadoPago:', mpResponse.preferenceId);
+
+    // 6. Actualizar con preference_id
+    await orderService.updateOrderWithPreferenceId(
+      orderResult.idOrden,
+      mpResponse.preferenceId
     );
 
-    // 8. Responder al frontend con los datos necesarios
+    // 7. Responder al frontend
     res.status(200).json({
       success: true,
       preferenceId: mpResponse.preferenceId,
       initPoint: mpResponse.initPoint,
       sandboxInitPoint: mpResponse.sandboxInitPoint,
-      orderId: ordenIdFinal
+      orderId: ordenId
     });
 
   } catch (error) {
     console.error('Error en crearPreferencia:', error);
+
     res.status(500).json({
       success: false,
       error: 'Error al crear la preferencia de pago',
-      message: error.message
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
@@ -106,65 +94,51 @@ export const crearPreferencia = async (req, res) => {
 /**
  * Consultar estado de un pago/orden
  * Endpoint: GET /api/pagos/estado/:orderId
- 
- Responde:
-{
-  "success": true,
-  "orderId": "ORDEN-123456",
-  "status": "approved",
-  "statusDetail": "accredited",
-  "transactionAmount": 15000
-}
+ *
+ * Responde:
+ * {
+ *   "success": true,
+ *   "orderId": "ORDEN-123456",
+ *   "status": "approved",
+ *   "statusDetail": "accredited",
+ *   "transactionAmount": 15000
+ * }
  */
 export const consultarEstado = async (req, res) => {
   const { orderId } = req.params;
 
   try {
-    // 1. Buscar la orden en la base de datos
-    const ordenResult = await pool.query(
-      `SELECT op.*, pm.payment_id, pm.status, pm.status_detail, 
-              pm.payment_method, pm.transaction_amount
-       FROM orden_pago op
-       LEFT JOIN pago_mercadopago pm ON op.id_orden = pm.id_orden
-       WHERE op.orden_id = $1`,
-      [orderId]
-    );
+    // 1. Buscar orden en BD
+    const orden = await orderService.getOrderById(orderId);
 
-    if (ordenResult.rows.length === 0) {
+    if (!orden) {
       return res.status(404).json({
         success: false,
         error: 'Orden no encontrada'
       });
     }
 
-    const orden = ordenResult.rows[0];
-
-    // 2. Si hay payment_id, consultar estado actualizado en MercadoPago
+    // 2. Preparar respuesta base
     let estadoActualizado = {
       orderId: orden.orden_id,
       status: orden.status || 'pending',
       total: parseFloat(orden.total)
     };
 
+    // 3. Si hay payment_id, consultar estado actualizado en MercadoPago
     if (orden.payment_id) {
       try {
         const mpPayment = await mercadopagoService.obtenerPago(orden.payment_id);
-        
-        // Actualizar estado en la base de datos si cambió
-        if (mpPayment.payment.status !== orden.status) {
-          await pool.query(
-            `UPDATE pago_mercadopago 
-             SET status = $1, status_detail = $2, fecha_actualizacion = NOW()
-             WHERE payment_id = $3`,
-            [mpPayment.payment.status, mpPayment.payment.status_detail, orden.payment_id]
-          );
 
-          await pool.query(
-            `UPDATE orden_pago 
-             SET estado = $1, fecha_actualizacion = NOW()
-             WHERE orden_id = $2`,
-            [mpPayment.payment.status, orderId]
-          );
+        // Actualizar en BD si el estado cambió
+        if (mpPayment.payment.status !== orden.status) {
+          await orderService.updateOrderPaymentStatus(orden.orden_id, {
+            paymentId: mpPayment.payment.id,
+            status: mpPayment.payment.status,
+            statusDetail: mpPayment.payment.status_detail,
+            transactionAmount: mpPayment.payment.transaction_amount,
+            paymentMethod: mpPayment.payment.payment_method_id
+          });
         }
 
         estadoActualizado = {
@@ -176,6 +150,7 @@ export const consultarEstado = async (req, res) => {
           paymentMethod: mpPayment.payment.payment_method_id,
           dateApproved: mpPayment.payment.date_approved
         };
+
       } catch (mpError) {
         console.error('Error consultando MercadoPago:', mpError);
         // Si falla MP, devolvemos el estado de la BD
@@ -198,18 +173,22 @@ export const consultarEstado = async (req, res) => {
 
 /**
  * Webhook para recibir notificaciones de MercadoPago
- * Endpoint: POST /api/webhooks/mercadopago
+ * Endpoint: POST /api/webhooks/webhook
+ *
+ * Documentación: https://www.mercadopago.com.ar/developers/en/docs/your-integrations/notifications/webhooks
  */
 export const webhookNotification = async (req, res) => {
   try {
     const { type, data } = req.body;
 
-    // 1. Registrar el evento del webhook en la base de datos
-    await pool.query(
-      `INSERT INTO webhook_evento (tipo_evento, payment_id, data_json, procesado)
-       VALUES ($1, $2, $3, $4)`,
-      [type, data?.id || null, JSON.stringify(req.body), false]
-    );
+    console.log('Webhook recibido:', type, data?.id);
+
+    // 1. Registrar evento del webhook
+    await orderService.logWebhookEvent({
+      type,
+      paymentId: data?.id || null,
+      data: req.body
+    });
 
     // 2. Procesar solo eventos de tipo "payment"
     if (type === 'payment') {
@@ -217,48 +196,38 @@ export const webhookNotification = async (req, res) => {
 
       // 3. Consultar información del pago en MercadoPago
       const mpPayment = await mercadopagoService.obtenerPago(paymentId);
-      
+
       const externalReference = mpPayment.payment.external_reference;
       const status = mpPayment.payment.status;
       const statusDetail = mpPayment.payment.status_detail;
 
-      // 4. Actualizar el pago en la base de datos
-      const pagoUpdateResult = await pool.query(
-        `UPDATE pago_mercadopago 
-         SET payment_id = $1, status = $2, status_detail = $3, 
-             transaction_amount = $4, payment_method = $5, fecha_actualizacion = NOW()
-         WHERE external_reference = $6
-         RETURNING id_orden`,
-        [
-          paymentId,
-          status,
-          statusDetail,
-          mpPayment.payment.transaction_amount,
-          mpPayment.payment.payment_method_id,
-          externalReference
-        ]
-      );
-
-      // 5. Actualizar el estado de la orden
-      if (pagoUpdateResult.rows.length > 0) {
-        await pool.query(
-          `UPDATE orden_pago 
-           SET estado = $1, fecha_actualizacion = NOW()
-           WHERE id_orden = $2`,
-          [status, pagoUpdateResult.rows[0].id_orden]
-        );
-
-        // Marcar webhook como procesado
-        await pool.query(
-          `UPDATE webhook_evento 
-           SET procesado = TRUE 
-           WHERE payment_id = $1 AND tipo_evento = $2`,
-          [paymentId, type]
-        );
+      // 4. Validar que externalReference exista
+      if (!externalReference) {
+        console.error('Pago sin external_reference:', paymentId);
+        return res.status(200).json({
+          received: true,
+          error: 'No external reference'
+        });
       }
+
+      console.log('Actualizando pago:', externalReference, status);
+
+      // 5. Actualizar estado de orden y pago (con transacción)
+      await orderService.updateOrderPaymentStatus(externalReference, {
+        paymentId,
+        status,
+        statusDetail,
+        transactionAmount: mpPayment.payment.transaction_amount,
+        paymentMethod: mpPayment.payment.payment_method_id
+      });
+
+      // 6. Marcar webhook como procesado
+      await orderService.markWebhookAsProcessed(paymentId, type);
+
+      console.log('Webhook procesado exitosamente:', paymentId);
     }
 
-    // 6. IMPORTANTE: Siempre responder 200 a MercadoPago
+    // 7. IMPORTANTE: Siempre responder 200 a MercadoPago
     res.status(200).json({ received: true });
 
   } catch (error) {
