@@ -473,17 +473,7 @@
 
             <div v-if="currentStep === 4" class="section-content">
               <form @submit.prevent="procesarPago">
-                <div class="payment-options">
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="tarjeta"
-                      v-model="formData.metodoPago"
-                      required
-                    />
-                  </label>
-                </div>
+               
                     <div class="payment-info">
                   <label class="payment-option">
                     <input
@@ -500,7 +490,24 @@
 
                 </div>
 
-                <button type="submit" class="btn-pay">Finalizar compra</button>
+                <div class="form-group checkbox-group">
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="formData.acceptTerms"
+                      required
+                    />
+                    <span>Acepto los términos y condiciones de compra *</span>
+                  </label>
+                  <small>Al finalizar la compra, acepta nuestros términos de servicio y política de devoluciones.</small>
+                </div>
+
+                <span v-if="errors.terms" class="error">{{ errors.terms }}</span>
+                <span v-if="paymentError" class="error">{{ paymentError }}</span>
+
+                <button type="submit" class="btn-pay" :disabled="isProcessing">
+                  {{ isProcessing ? 'Procesando...' : 'Finalizar compra' }}
+                </button>
               </form>
             </div>
           </div>
@@ -677,8 +684,10 @@ export default {
       if (user) {
         // Prellenar datos del usuario en el formulario
         this.formData.nombre = user.nombre || '';
-        this.formData.apellidos = user.apellidos || '';
+        // Normalizar apellido/apellidos (el backend usa "apellido" singular)
+        this.formData.apellidos = user.apellidos || user.apellido || '';
         this.formData.email = user.email || '';
+        this.formData.dni = user.dni || '';
 
         console.log("👤 Usuario logueado - datos precargados:", user);
       }

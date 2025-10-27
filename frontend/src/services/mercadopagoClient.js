@@ -11,7 +11,7 @@ class MercadoPagoService {
    * @param {Object} orderData - Datos del pedido
    * @returns {Promise<Object>} - Preference ID e init point
    */
-  async crearPreferencia(orderData) {
+  async createPreference(orderData) {
     if (USE_MOCK) {
       // 🎭 MOCK - Simular respuesta del backend
       return new Promise((resolve) => {

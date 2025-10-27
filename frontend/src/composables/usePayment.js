@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import mercadopagoService from '../services/mercadopagoService';
+import MercadoPagoService from '../services/mercadopagoClient';
 import { getCart, getCartTotal, clearCart } from '../utils/cartUtils';
 
 export function usePayment() {
@@ -26,25 +26,28 @@ export function usePayment() {
       // Preparar datos para MercadoPago
       const orderData = {
         items: cartItems.map(item => ({
-          id: item.id,
+         id: String(item.id),
           title: item.nombre,
-          quantity: item.quantity,
+          quantity: parseInt(item.quantity),
           unit_price: parseFloat(item.precio),
-          picture_url: item.imagen || '',
+          picture_url: item.imagen || undefined, 
           description: item.descripcion || item.nombre  //  Ya está correcto
         })),
-        payer: {
-          name: formData.nombre,
-          surname: formData.apellidos,
-          email: formData.email,
-          dni: formData.dni || null
-        }
+       payer: {
+        name: formData.nombre,
+        surname: formData.apellidos,
+        email: formData.email,
+        identification: formData.dni ? {    // ← Objeto condicional
+           type: 'DNI',
+           number: String(formData.dni)
+        } : undefined,  // ← Si no hay DNI, enviar undefined
+      }
       };
 
       console.log('Enviando orden a MercadoPago:', orderData);
 
       // Crear preferencia
-      const response = await mercadopagoService.createPreference(orderData);
+      const response = await MercadoPagoService.createPreference(orderData);
       preferenceId.value = response.preferenceId;
 
       console.log('Preferencia creada:', response);
@@ -55,7 +58,7 @@ export function usePayment() {
 
         console.log('Preferencia creada:', response);
         // Limpiar carrito
-        clearCart();
+        // clearCart();
 
         // Redirigir a MercadoPago
         window.location.href = response.initPoint;
@@ -79,7 +82,7 @@ export function usePayment() {
       error.value = null;
 
       console.log('Consultando estado del pago, orderId:', orderId);
-      const status = await mercadopagoService.getPaymentStatus(orderId);
+      const status = await MercadoPagoService.getPaymentStatus(orderId);
 
       paymentStatus.value = status;              //  Ahora sí existe paymentStatus
       return status;

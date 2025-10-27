@@ -1,9 +1,14 @@
 // Este es el corazón de la integración. Aquí se encapsula toda la lógica de comunicación con la API de MercadoPago.
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import dotenv from 'dotenv';
+<<<<<<< Updated upstream
 import crypto from 'crypto';
 import { request } from 'http';
 
+=======
+import crypto from 'crypto'; 
+import { request } from 'http';
+>>>>>>> Stashed changes
 dotenv.config();
 
 // CODIGO HARDCODEADO - 
@@ -18,8 +23,13 @@ dotenv.config();
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
   options: {
+<<<<<<< Updated upstream
     timeout: 15000,
     
+=======
+    timeout: 15000  // ← Aumentado de 5000 a 15000
+    // idempotencyKey se pasa por request, NO aquí
+>>>>>>> Stashed changes
   }
 });
 
@@ -39,11 +49,11 @@ crearPreferencia():
 - Configura las URLs de retorno (éxito, fallo, pendiente)
 - Configura la URL del webhook para notificaciones
 - Devuelve el preferenceId y el initPoint (URL de pago)
-
 */
 
 export const createPreference = async (preferenceData) => {
   try {
+<<<<<<< Updated upstream
     // Debug: Verificar variables de entorno
     console.log('🔍 DEBUG - Variables de entorno:');
     console.log('   FRONTEND_URL:', process.env.FRONTEND_URL);
@@ -56,6 +66,19 @@ export const createPreference = async (preferenceData) => {
     // MercadoPago rechaza auto_return con URLs localhost, por lo que solo lo habilitamos en producción
     const isLocalhost = process.env.FRONTEND_URL?.includes('localhost') ||
                        process.env.FRONTEND_URL?.includes('127.0.0.1');
+=======
+    const idempotencyKey = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
+
+    // Debug: Verificar variables de entorno
+    console.log('DEBUG - Variables de entorno:');
+    console.log(' FRONTEND_URL:', process.env.FRONTEND_URL);
+    console.log(' BACKEND_URL:', process.env.BACKEND_URL);
+
+    // Detectar si estamos en localhost (testing) o en producción
+    // MercadoPago rechaza auto_return con URLs localhost
+    const isLocalhost = process.env.FRONTEND_URL?.includes('localhost') ||
+                        process.env.FRONTEND_URL?.includes('127.0.0.1');
+>>>>>>> Stashed changes
 
     const body = {
       items: preferenceData.items.map(item => ({
@@ -88,18 +111,15 @@ export const createPreference = async (preferenceData) => {
     };
 
     // Debug: Ver qué body se envía a MercadoPago
-    console.log('📤 Body enviado a MercadoPago:', JSON.stringify(body, null, 2));
+    console.log('Body enviado a MercadoPago:', JSON.stringify(body, null, 2));
 
-    //const response = await preference.create({ body });  --- IGNORE ---
-
-
-    const response = await preference.create({ 
-      body,
-      requestOptions: {
-        idempotencyKey: idempotencyKey
-      }
+  const response = await preference.create({ 
+    body,
+    requestOptions: {
+      idempotencyKey: idempotencyKey  // ← Clave única generada arriba
+     }
     });
-
+    
     return {
       success: true,
       preferenceId: response.id,
