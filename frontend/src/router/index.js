@@ -9,7 +9,7 @@ import Registro from '../components/Registro.vue';
 import RecuperarContra from '../components/RecuperarContra.vue';
 import NotFound from "../components/NotFound.vue";
 import Home from '../components/Home.vue';
-import Ofertas from '../components/ofertas.vue';
+import Ofertas from '../components/Ofertas.vue';
 import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
