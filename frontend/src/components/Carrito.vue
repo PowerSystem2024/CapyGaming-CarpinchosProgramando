@@ -76,7 +76,7 @@ export default {
     return {
       cartItems: [],
       total: 0,
-      showCheckout: false,
+      showCheckout: false, 
       // Configuración de envío
       envioSeleccionado: 'standard',
       envioStandard: 5000,
@@ -147,7 +147,7 @@ export default {
       if (confirm("¿Estás seguro de que quieres vaciar todo el carrito?")) {
         clearCart();
         this.loadCart();
-        console.log("✅ Carrito vaciado correctamente");
+        console.log("Carrito vaciado correctamente");
       }
     },
     abrirCheckout() {

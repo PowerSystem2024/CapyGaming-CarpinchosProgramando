@@ -1,0 +1,14 @@
+{
+  "name": "capygaming-testing",
+  "version": "1.0.0",
+  "description": "Testing scripts for CapyGaming API",
+  "type": "module",
+  "scripts": {
+    "test:auth": "node test-auth-endpoints.js",
+    "test:products": "node test-products-endpoints.js",
+    "test:all": "node test-auth-endpoints.js && node test-products-endpoints.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

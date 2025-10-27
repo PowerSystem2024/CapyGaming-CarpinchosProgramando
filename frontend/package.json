@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mercadopago/sdk-js": "^0.0.3",
     "axios": "^1.12.2",
     "jquery": "^3.7.1",
     "lightbox2": "^2.11.5",
