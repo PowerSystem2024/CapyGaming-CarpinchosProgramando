@@ -1,9 +1,8 @@
-[file name]: recuperarContra.vue
 <template>
   <div class="auth-modal-content">
-    <h1>Recuperar contraseña</h1>
+    <h1>Recuperar contraseña - DEBUG</h1>
     <p class="subtitle">
-      Ingresá tu email y te enviaremos instrucciones para restablecer tu contraseña.
+      Estado: loading={{ loading }}, successMessage={{ successMessage }}
     </p>
 
     <form @submit.prevent="onSubmit" novalidate>
@@ -12,20 +11,20 @@
         <input
           id="email"
           type="email"
-          v-model.trim="email"
+          v-model="email"
           placeholder="ejemplo@mail.com"
           autocomplete="email"
           required
         />
-        <p v-if="error" class="error">{{ error }}</p>
+        <p>Email value: "{{ email }}"</p>
+        <p v-if="error" class="error">Error: {{ error }}</p>
+        <p v-if="successMessage" class="success">Success: {{ successMessage }}</p>
       </div>
 
-      <button class="btn primary" :disabled="loading">
-        <span v-if="loading">Enviando...</span>
-        <span v-else>Enviar enlace</span>
+      <button class="btn primary" type="submit">
+        <span>Enviar código</span>
       </button>
 
-      <!-- CAMBIO: router-link → link con evento -->
       <p class="alt">
         ¿Recordaste tu contraseña?
         <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
@@ -35,16 +34,24 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 
-// AGREGAR: Emits para comunicación con el modal
-const emit = defineEmits(['switch-view'])
+const emit = defineEmits(['switch-view', 'show-reset-form'])
 
-const email   = ref('')
-const error   = ref('')
+const email = ref('')
+const error = ref('')
 const loading = ref(false)
+const successMessage = ref('')
 
-function validate () {
+onMounted(() => {
+  console.log('🔧 RecuperarContra mounted - Estado inicial:')
+  console.log('email:', email.value)
+  console.log('loading:', loading.value)
+  console.log('successMessage:', successMessage.value)
+})
+
+function validate() {
+  console.log('📝 Validando email:', email.value)
   if (!email.value.includes('@')) {
     error.value = 'Ingresá un email válido'
     return false
@@ -53,22 +60,27 @@ function validate () {
   return true
 }
 
-async function onSubmit () {
+async function onSubmit() {
+  console.log('🚀 onSubmit ejecutado')
   if (!validate()) return
+  
   loading.value = true
+  error.value = ''
+  successMessage.value = ''
+  
   try {
-    // Simulación: enviar email
-    await new Promise(r => setTimeout(r, 1000))
-    alert(`Se envió un enlace de recuperación a: ${email.value}`)
-    email.value = ''
-    // OPCIONAL: ir al login después del éxito
-    emit('switch-view', 'login')
+    console.log('📤 Enviando solicitud para:', email.value)
+    // Simulación temporal
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    successMessage.value = 'Código enviado (simulación)'
+  } catch (err) {
+    console.error('💥 Error:', err)
+    error.value = 'Error: ' + err.message
   } finally {
     loading.value = false
   }
 }
 
-// AGREGAR: Función para cambiar a login
 function goToLogin() {
   emit('switch-view', 'login')
 }
@@ -77,78 +89,57 @@ function goToLogin() {
 <style scoped>
 .auth-modal-content {
   padding: 2rem;
-  background-color: var(--color-card);
+  background-color: white;
+  border-radius: 8px;
 }
 
-.auth-page {
-  min-height: 100vh;
-  display:flex; align-items:center; justify-content:center;
-  background: var(--color-background);
-  padding: 2rem;
-}
-.auth-card {
-  width:100%; max-width: 420px;
-  background: var(--color-card);
-  color: var(--color-card-foreground);
-  border:1px solid var(--color-border);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  padding: 2rem;
-}
 h1 {
   margin:0 0 .5rem;
   font-weight:700; font-size:1.6rem;
-  color: var(--color-primary);
+  color: #F39C12;
   text-align:center;
-  background-color: var(--color-card);
 }
 .subtitle {
   font-size:.95rem;
-  color: var(--color-muted-foreground);
+  color: #666;
   margin: 0 0 1.2rem;
   text-align:center;
-  background-color: var(--color-card);
 }
-.field { margin-bottom: 1rem; text-align:left; background-color: var(--color-card); }
-label { display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card); }
+.field { margin-bottom: 1rem; text-align:left; }
+label { display:block; font-weight:700; margin-bottom:.35rem; color: #333; }
 
 input {
   width:100%;
   padding:.75rem .9rem;
   border-radius:10px;
-  border:1px solid var(--color-input);
-  background: var(--color-popover);
-  color: var(--color-popover-foreground);
-  background-color: var(--color-card);
+  border:1px solid #ccc;
+  background: white;
+  color: #333;
+  outline: none;
+  font-size: 16px; /* Evita zoom en iOS */
 }
-input::placeholder { color: var(--color-muted-foreground); }
 input:focus {
-  border-color: var(--color-ring);
-  box-shadow: 0 0 0 3px rgba(52,152,219,.25);
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52,152,219,.25);
 }
 
 button.btn {
   width:100%;
   padding:.9rem 1rem;
   border-radius:12px;
-  border:1px solid var(--color-border);
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
-  font-weight:700; cursor:pointer;
+  border:none;
+  background: #F39C12;
+  color: white;
+  font-weight:700; 
+  cursor:pointer;
+  font-size: 16px;
 }
-button.btn:hover { filter:brightness(1.05); }
-button.btn:disabled { opacity:.6; cursor:not-allowed; }
+button.btn:hover { background: #e67e22; }
+button.btn:active { transform: scale(0.98); }
 
-form {
-  background-color: var(--color-card);
-}
-
-span {
-  background-color: var(--color-primary);
-}
-
-.error { margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card);}
-.alt { margin-top:1rem; text-align:center; background-color: var(--color-card);}
-.link { color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
+.error { margin:.35rem 0 0; color: #e74c3c; font-size:.9rem; }
+.success { margin:.35rem 0 0; color: #27ae60; font-size:.9rem; }
+.alt { margin-top:1rem; text-align:center; color: #666; }
+.link { color: #3498db; text-decoration:none; }
 .link:hover { text-decoration: underline; }
 </style>

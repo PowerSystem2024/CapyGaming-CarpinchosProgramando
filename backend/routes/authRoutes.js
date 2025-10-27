@@ -12,6 +12,7 @@ import {
   loginValidation, 
   recoveryValidation 
 } from '../middleware/validation.js';
+import { resetPassword } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.post('/forgot-password', recoveryValidation, requestPasswordReset);
 router.post('/logout', verifyToken ,logout);
+router.post('/reset-password', resetPassword);
 
 // Rutas protegidas
 router.get('/profile', verifyToken, getProfile);

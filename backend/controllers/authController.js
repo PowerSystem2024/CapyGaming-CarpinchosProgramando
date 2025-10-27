@@ -6,7 +6,7 @@ import nodemailer from 'nodemailer';
 const revokedTokens = new Set(); //Lista temporal de tokens revocados (en memoria)
 
 // Registro de usuario
-export const register = async (req, res) => {
+const register = async (req, res) => {
   const { nombre, apellido, email, telefono, dni, password, direccion } = req.body;
   
   try {
@@ -60,7 +60,7 @@ export const register = async (req, res) => {
 };
 
 // Login de usuario
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -124,12 +124,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Mejorar la función requestPasswordReset con mejor manejo de errores
-export const requestPasswordReset = async (req, res) => {
+const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   try {
-    console.log('📧 Intentando enviar email a:', email);
+    console.log('📧 Solicitando código para:', email);
     
     // Verificar si el usuario existe
     const userResult = await pool.query(
@@ -140,87 +139,132 @@ export const requestPasswordReset = async (req, res) => {
     if (userResult.rows.length === 0) {
       console.log('❌ Usuario no encontrado:', email);
       return res.json({ 
-        message: 'Si el email existe, se enviarán instrucciones de recuperación' 
+        message: 'Si el email existe, se enviará un código de recuperación',
+        success: true
       });
     }
 
     const user = userResult.rows[0];
     console.log('✅ Usuario encontrado:', user.nombre);
     
-    // Generar token de recuperación
-    const resetToken = jwt.sign(
-      { userId: user.dni, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    // TEMPORAL: Crear tabla si no existe (ejecuta esto en PostgreSQL)
-    // CREATE TABLE IF NOT EXISTS password_reset_tokens (id SERIAL PRIMARY KEY, user_dni BIGINT NOT NULL, token TEXT NOT NULL, expires_at TIMESTAMP NOT NULL, used BOOLEAN DEFAULT false);
-
-    // Guardar token en la base de datos
+    // Generar código de 6 dígitos
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log('🔐 Código generado:', resetCode);
+    
+    // Guardar en la base de datos (expira en 15 minutos)
     await pool.query(
-      'INSERT INTO password_reset_tokens (user_dni, token, expires_at) VALUES ($1, $2, $3)',
-      [user.dni, resetToken, new Date(Date.now() + 3600000)]
+      'INSERT INTO password_reset_codes (user_dni, code, expires_at) VALUES ($1, $2, $3)',
+      [user.dni, resetCode, new Date(Date.now() + 15 * 60 * 1000)]
     );
 
-    // Enviar email real
-    const resetLink = `http://localhost:5173/restablecer-contrasena?token=${resetToken}`;
-    
-    console.log('📤 Preparando email...');
-    
+    // Enviar email con el código
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Recuperación de contraseña - CapyGaming',
+      subject: 'Código de recuperación - CapyGaming',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #F39C12;">Recuperación de contraseña</h2>
           <p>Hola <strong>${user.nombre}</strong>,</p>
-          <p>Has solicitado restablecer tu contraseña en CapyGaming. Haz click en el siguiente enlace:</p>
+          <p>Has solicitado restablecer tu contraseña en CapyGaming.</p>
+          <p>Tu código de verificación es:</p>
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${resetLink}" style="background: #F39C12; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-              Restablecer contraseña
-            </a>
+            <span style="font-size: 32px; font-weight: bold; color: #F39C12; letter-spacing: 5px; padding: 10px 20px; border: 2px dashed #F39C12; border-radius: 5px;">
+              ${resetCode}
+            </span>
           </div>
+          <p><strong>Instrucciones:</strong></p>
+          <ol>
+            <li>Copiá el código de 6 dígitos</li>
+            <li>Volvé a la página de recuperación</li>
+            <li>Ingresá el código en el campo correspondiente</li>
+            <li>Creá tu nueva contraseña</li>
+          </ol>
           <p style="color: #666; font-size: 14px;">
-            <strong>Este enlace expirará en 1 hora.</strong><br>
+            <strong>Este código expirará en 15 minutos.</strong><br>
             Si no solicitaste este cambio, ignora este email.
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="color: #999; font-size: 12px;">
             Equipo CapyGaming<br>
-            <a href="http://localhost:5173" style="color: #F39C12;">Visita nuestra tienda</a>
+            <a href="http://localhost" style="color: #F39C12;">Visita nuestra tienda</a>
           </p>
         </div>
       `
     };
 
-    // Enviar email con manejo de errores
     const info = await transporter.sendMail(mailOptions);
     console.log('✅ Email enviado exitosamente:', info.messageId);
 
     res.json({ 
-      message: 'Se han enviado instrucciones de recuperación a tu email',
-      success: true
+      message: 'Código de recuperación enviado a tu email',
+      success: true 
     });
 
   } catch (error) {
     console.error('💥 Error en recuperación:', error);
     
-    // Error específico de email
     if (error.code === 'EAUTH') {
-      console.error('❌ Error de autenticación de email. Verifica:');
-      console.error('1. Que el EMAIL_USER sea correcto');
-      console.error('2. Que el EMAIL_PASS sea la contraseña de aplicación (no la contraseña normal)');
-      console.error('3. Que la verificación en 2 pasos esté activada en Gmail');
+      console.error('❌ Error de autenticación de email');
     }
     
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
+const resetPassword = async (req, res) => {
+  const { email, code, newPassword } = req.body;
+
+  try {
+    console.log('🔄 Intentando restablecer contraseña para:', email);
+    
+    // Verificar código
+    const codeResult = await pool.query(
+      `SELECT pc.*, u.dni 
+       FROM password_reset_codes pc
+       JOIN usuario u ON pc.user_dni = u.dni
+       WHERE u.email = $1 AND pc.code = $2 AND pc.used = false AND pc.expires_at > NOW()`,
+      [email, code]
+    );
+
+    if (codeResult.rows.length === 0) {
+      console.log('❌ Código inválido o expirado');
+      return res.status(400).json({ error: 'Código inválido o expirado' });
+    }
+
+    const resetCode = codeResult.rows[0];
+    console.log('✅ Código válido para usuario DNI:', resetCode.dni);
+    
+    // Hash nueva contraseña
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar contraseña
+    await pool.query(
+      'UPDATE usuario SET contraseña = $1 WHERE dni = $2',
+      [hashedPassword, resetCode.dni]
+    );
+
+    // Marcar código como usado
+    await pool.query(
+      'UPDATE password_reset_codes SET used = true WHERE id = $1',
+      [resetCode.id]
+    );
+
+    console.log('✅ Contraseña actualizada exitosamente');
+
+    res.json({ 
+      message: 'Contraseña restablecida exitosamente',
+      success: true 
+    });
+
+  } catch (error) {
+    console.error('💥 Error en resetPassword:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
 // Obtener perfil de usuario
-export const getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
     const userResult = await pool.query(
       'SELECT dni, nombre, apellido, email, telefono, direccion FROM usuario WHERE dni = $1',
@@ -239,11 +283,21 @@ export const getProfile = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
+const logout = (req, res) => {
   const token = req.token; // lo extraés en el middleware
   revokedTokens.add(token);
   res.json({ message: 'Sesión cerrada correctamente' });
 };
 
 // Exportar la lista para usarla en el middleware
-export const isTokenRevoked = (token) => revokedTokens.has(token);
+const isTokenRevoked = (token) => revokedTokens.has(token);
+
+export {
+  register,
+  login,
+  requestPasswordReset,
+  getProfile,
+  logout,
+  resetPassword,
+  isTokenRevoked
+}
