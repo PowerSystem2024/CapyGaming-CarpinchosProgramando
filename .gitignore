@@ -47,6 +47,7 @@ out/
 .env.test.local
 .env.production.local
 .env*.local
+.env.backup
 
 # Editor directories and files
 .vscode/*
