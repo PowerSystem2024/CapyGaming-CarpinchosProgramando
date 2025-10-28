@@ -1,6 +1,6 @@
 <template>
-  <div class="checkout-modal" v-if="isOpen" @click="closeOnOverlay">
-    <div class="checkout-container" @click.stop>
+  <div class="checkout-modal" v-if="isOpen">
+    <div class="checkout-container">
       <button class="close-button" @click="closeModal">×</button>
 
       <div class="checkout-content">
