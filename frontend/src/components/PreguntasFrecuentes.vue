@@ -41,8 +41,8 @@
       <!-- Respuestas de las preguntas superiores -->
       <transition-group name="staggered-slide" tag="div" class="top-answers">
         <div 
-          v-if="topQuestions[0]" 
-          key="top-answer-0" 
+          v-if="topQuestions[0]"
+          key="top-answer-0"
           class="top-answer"
           :style="{ '--stagger-index': 0 }"
         >
@@ -51,8 +51,8 @@
           </div>
         </div>
         <div 
-          v-if="topQuestions[1]" 
-          key="top-answer-1" 
+          v-if="topQuestions[1]"
+          key="top-answer-1"
           class="top-answer"
           :style="{ '--stagger-index': 1 }"
         >
@@ -75,10 +75,10 @@
     
     <div class="faq-container">
       <aside class="faq-categories">
-        <h2 class="category-title">Preguntas Frecuentes</h2> 
+        <h2 class="category-title">Preguntas Frecuentes</h2>
         <ul>
-          <li 
-            v-for="(categoria, index) in categorias" 
+          <li
+            v-for="(categoria, index) in categorias"
             :key="index"
             :class="{ active: categoriaSeleccionada === index }"
             @click="cambiarCategoria(index)"
@@ -96,13 +96,13 @@
         </transition>
         <div class="faq-items">
           <transition-group name="staggered-fade" tag="div">
-            <div 
-              v-for="(pregunta, index) in categorias[categoriaSeleccionada].preguntas" 
-              :key="index" 
+            <div
+              v-for="(pregunta, index) in categorias[categoriaSeleccionada].preguntas"
+              :key="index"
               class="faq-item"
               :style="{ '--stagger-index': index }"
             >
-              <div 
+              <div
                   class="faq-question"
                   @click="togglePregunta(index)"
                   :class="{ 'open': pregunta.abierta }"
@@ -117,8 +117,8 @@
               </div>
               
               <transition name="smooth-expand">
-                  <div 
-                      v-show="pregunta.abierta" 
+                  <div
+                      v-show="pregunta.abierta"
                       class="faq-answer"
                   >
                     <div class="answer-inner">
@@ -216,6 +216,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('../assets/styles/base.css');
 /* ===== Colores de CapyGaming ===== */
 :root {
   --color-bg: #0e0e0e;
@@ -346,7 +347,7 @@ export default {
 /* ===== Contenedor FAQ (Categorías y Contenido) ===== */
 .faq-container {
   display: flex;
-  gap: 0; 
+  gap: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
   border-radius: 16px;
@@ -408,7 +409,7 @@ export default {
   background-color: var(--chart-1);
 }
 
-.faq-categories li.active {    
+.faq-categories li.active {
   background-color: var(--color-accent);
   color: var(--color-text);
   font-weight: 600;
@@ -438,7 +439,7 @@ export default {
 .faq-content {
   flex: 1;
   background-color: var(--color-panel);
-  border: none; 
+  border: none;
   border-radius: 0;
   padding: 1.5rem 2rem;
   overflow: hidden;
@@ -720,18 +721,18 @@ export default {
 /* Pantallas Medianas y Pequeñas (max-width: 900px) */
 @media (max-width: 900px) {
   .faq-container {
-    flex-direction: column; 
+    flex-direction: column;
     border: none;
     overflow: visible;
   }
   
   .top-buttons {
-    flex-wrap: wrap; 
-    gap: 0.5rem; 
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .top-button {
-    flex-basis: 100%; 
+    flex-basis: 100%;
     min-height: 60px;
   }
 
@@ -743,21 +744,21 @@ export default {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--color-border);
-    border-radius: 12px 12px 0 0; 
+    border-radius: 12px 12px 0 0;
   }
 
   .faq-categories ul {
     display: flex;
-    overflow-x: auto; 
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--color-border);
   }
 
   .faq-categories li {
-    flex-shrink: 0; 
-    border-bottom: none; 
-    border-right: 1px solid var(--color-border); 
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
   }
 
   .category-content {
@@ -774,10 +775,10 @@ export default {
   }
   
   .faq-content {
-    border-radius: 0 0 12px 12px; 
+    border-radius: 0 0 12px 12px;
     border: 1px solid var(--color-border);
-    margin-top: 1rem; 
-    padding: 1rem; 
+    margin-top: 1rem;
+    padding: 1rem;
   }
   
   .faq-content h2 {
@@ -828,7 +829,7 @@ export default {
 /* Pantallas Móviles Pequeñas (max-width: 500px) */
 @media (max-width: 500px) {
     .faq-page-wrapper {
-        padding: 1rem; 
+        padding: 1rem;
     }
     
     .top-title {
@@ -837,7 +838,7 @@ export default {
     }
 
     .top-button {
-        font-size: 0.9rem; 
+        font-size: 0.9rem;
     }
     
     .top-answer .answer-content {
