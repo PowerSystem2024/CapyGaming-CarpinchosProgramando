@@ -383,15 +383,15 @@
             <div v-if="currentStep === 3" class="section-content">
               <form @submit.prevent="nextStep">
                 <div class="shipping-options">
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'standard' }">
+                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'standard', 'disabled': subtotal >= 100000 }">
                     <input
                       type="radio"
-                      name="shipping"
-                      value="standard"
-                      v-model="formData.metodoEnvio"
-                      required
-                      class="radio-standard"
-                    />
+                        name="shipping"
+                        value="standard"
+                        v-model="formData.metodoEnvio"
+                        :disabled="subtotal >= 100000"
+                        class="radio-standard"
+                        />
                     <div class="shipping-content">
                       <div class="shipping-header">
                         <strong>Envío Estándar</strong>
@@ -401,13 +401,14 @@
                     </div>
                   </label>
 
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'express' }">
+                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'express', 'disabled': subtotal >= 100000 }">
                     <input
                       type="radio"
                       name="shipping"
                       value="express"
                       v-model="formData.metodoEnvio"
                       class="radio-standard"
+                      :disabled="subtotal >= 100000"
                     />
                     <div class="shipping-content">
                       <div class="shipping-header">
@@ -1588,6 +1589,24 @@ span, small, label, input, .form-group, .section-content{
 
 .form-container{
   background-color: var(--color-card);
+}
+
+.shipping-options .shipping-option.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background: var(--color-accent) !important;
+}
+
+.shipping-options .shipping-option.disabled:hover {
+  background: var(--color-accent) !important;
+  transform: none !important;
+}
+
+.shipping-options .shipping-option.disabled .shipping-price,
+.shipping-options .shipping-option.disabled strong,
+.shipping-options .shipping-option.disabled .shipping-time {
+  color: var(--color-muted-foreground) !important;
 }
 
 /* Responsive */
