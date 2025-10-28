@@ -2,7 +2,7 @@
   <div class="about-us-container">
     <section class="about-us">
       <h2>Quiénes Somos</h2>
-      <p>
+      <p class="descripcion-capy">
         "Somos una empresa dedicada a brindar soluciones innovadoras y eficientes para nuestros clientes.
         Nuestro equipo está compuesto por profesionales apasionados y comprometidos con la excelencia."
       </p>
@@ -19,6 +19,13 @@
 </template>
 
 <script>
+import melina from '../assets/imagesQuienesSomos/MelinaAguilar.jpg';
+import wan from '../assets/imagesQuienesSomos/WandaLanatta.jpg';
+import mer from '../assets/imagesQuienesSomos/MaríaMercedesAtim.png';
+import ana from '../assets/imagesQuienesSomos/AnaPaulaRíosGarín.jpg';
+import nico from '../assets/imagesQuienesSomos/NicolasMercado.jpg';
+import marian from '../assets/imagesQuienesSomos/MarianaAguilera.jpg';
+import ezequiel from '../assets/imagesQuienesSomos/EzequielQuiroz.jpg';
 export default {
   name: 'AboutUs',
   data() {
@@ -26,68 +33,39 @@ export default {
       teamMembers: [
         {
           name: 'Maria Mercedes Atim',
-          image: '../src/assets/imagesQuienesSomos/María Mercedes Atim.png',
-
+          image: mer,
           description: 'Garantizamos precios competitivos y buscamos mejorar ofertas para darte la mejor experiencia al menor costo.',
-
-          description: 'Actualmente curso la Tecnicatura Universitaria en Programación en la Universidad Tecnológica Nacional (UTN FRSR).He realizado cursos de desarrollo Full-Stack con Java, así como también de diseño gráfico utilizando Adobe Illustrator y Adobe Photoshop.He trabajado en equipos aplicando metodologías ágiles, desarrollando proyectos con tecnologías como HTML, CSS, JavaScript, Java, Python, Git, entre otras.Me apasiona seguir aprendiendo, colaborar y crear soluciones tecnológicas que generen impacto.',
-
         },
         {
           name: 'Ana Paula Ríos Garín',
-          image: '../src/assets/imagesQuienesSomos/Ana Paula Ríos Garín.jpg',
-
+          image: ana,
           description: 'Ofrecemos soporte técnico y asesoría especializada para garantizar productos y servicios de calidad, con ayuda experta siempre disponible.',
-
-          description: '🎓 Student of Programming Technician at UTN FRSR💻 Full-stack developer passionate about JavaScript and accessible design🎨 Digital artist and creator of creative technical solutions📍 Tres de Febrero, Buenos Aires',
-
         },
         {
           name: 'Nicolas Exequiel Mercado',
-          image: '../src/assets/imagesQuienesSomos/Nicolas Mercado.jpg',
-
+          image: nico,
           description: 'Ofrecemos soluciones y equipamiento de calidad, con atención experta y mejora continua, para apoyar el desarrollo profesional y personal de nuestros clientes.',
-
-          description: 'No hay mucho que decir sobre mi la verdad, solo que me gusta programar y aprender cosas nuevas.',
-
         },
         {
           name: 'Mariana Aguilera',
-          image: '../src/assets/imagesQuienesSomos/Mariana Aguilera.jpg',
-
+          image: marian,
           description: 'Buscamos ser líderes nacionales mediante innovación constante y adaptación a las necesidades del mercado y clientes.',
-
-          description: 'Estoy estudiando la Tecnicatura en Programación en la Universidad Tecnológica Nacional San Rafael, lenguajes como: Python, Java, JavaScript. Bases de Datos: SQL, MySQL.',
-
         },
         {
           name: 'Melina Aguilar',
-          image: '../src/assets/imagesQuienesSomos/Melina Aguilar.jpg',
-
+          image: melina,
           description: 'Promovemos responsabilidad, respeto y confianza con los clientes, fomentamos el trabajo en equipo, cuidamos el medio ambiente y ofrecemos productos innovadores, de calidad y alto rendimiento.',
-
-          description: 'Estoy estudiando la Tecnicatura en Programación en la Universidad Tecnológica Nacional San Rafael, lenguajes como: Python, Java, JavaScript. Bases de Datos: SQL, MySQL.',
-
         },
         {
           name: 'Ezequiel Quiroz',
-          image: '../src/assets/imagesQuienesSomos/Ezequiel Quiroz.jpg',
-
+          image: ezequiel,
           description: 'Valoramos tus opiniones para mejorar continuamente y ofrecerte la mejor atención, respondiendo personalmente a tus comentarios.',
-
-          description: '💡 Me encuentro formándome como desarrollador y programador.🎓 Estudio en la Universidad Tecnológica Nacional (UTN) - Facultad Regional San Rafael.🚀 Estoy aprendiendo y desarrollando proyectos académicos en diferentes tecnologías.',
-
         },
         {
           name: 'Wanda Lanatta',
-          image: "../src/assets/imagesQuienesSomos/Wanda Lanatta.jpg",
-
+          image: wan,
           description: 'Somos una empresa creada en 2025 por un grupo de entusiastas de la tecnología y el gaming, dando lo mejor para nuestros clientes.',
-
-          description: '🎓 Estudiante de la Tecnicatura Universitaria en Programación en la Universidad Tecnológica Nacional (UTN).💻 Apasionada por el mundo del desarrollo y el aprendizaje de nuevas tecnologías.🌱 Actualmente enfocada en mejorar mis habilidades en JavaScript, Java y Python, además de reforzar mis bases en HTML y CSS.🤝 Me motiva colaborar en proyectos que representen un desafío, donde pueda aportar y al mismo tiempo crecer como desarrolladora.',
-
         },
-       
       ],
     };
   },
@@ -96,6 +74,12 @@ export default {
 
 <style scoped>
 @import url(../assets/styles/base.css);
+.description-capy {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #F39C12; /* naranja */
+  top: 2px
+}
 
 .about-us-container {
   padding: 20px;
