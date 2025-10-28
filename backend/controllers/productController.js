@@ -149,3 +149,41 @@ export const buscarProductosPorNombre = async (req, res) => {
     res.status(500).json({ error: 'Error al buscar productos' });
   }
 };
+
+// Obtener productos en oferta (descuento > 0)
+export const getOfertas = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.id_producto AS id,
+        p.nombre AS title,
+        p.precio AS newprice,
+        p.descuento,
+        p.marca,
+        p.stock,
+        ARRAY_AGG(ip.url_imagen) AS imagenes
+      FROM producto p
+      LEFT JOIN imagen_producto ip ON p.id_producto = ip.id_producto
+      WHERE p.descuento > 0 AND p.stock > 0
+      GROUP BY p.id_producto, p.nombre, p.precio, p.descuento, p.marca, p.stock
+      ORDER BY p.descuento DESC
+      LIMIT 10
+    `);
+
+    // Adaptamos el formato para que coincida con lo que espera el frontend
+    const ofertas = result.rows.map(row => ({
+      id: row.id,
+      title: row.title,
+      newprice: row.newprice,
+      descuento: row.descuento,
+      marca: row.marca,
+      stock: row.stock,
+      image_url: row.imagenes && row.imagenes.length > 0 ? row.imagenes[0] : null
+    }));
+
+    res.json(ofertas);
+  } catch (error) {
+    console.error('Error al obtener ofertas:', error);
+    res.status(500).json({ error: 'Error al obtener ofertas' });
+  }
+};
