@@ -1,15 +1,15 @@
 [file name]: AuthModal.vue
 <template>
-  <div v-if="visible" class="modal-overlay" @click="close">
-    <div class="modal-content" @click.stop>
+  <div v-if="visible" class="modal-overlay">
+    <div class="modal-content">
       <!-- Botón cerrar -->
       <button class="close-btn" @click="close">
         ×
       </button>
 
       <!-- Contenido dinámico -->
-      <component 
-        :is="currentComponent" 
+      <component
+        :is="currentComponent"
         :key="currentView"
         @success="handleSuccess"
         @switch-view="switchView"
@@ -129,11 +129,11 @@ function handleSuccess() {
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }

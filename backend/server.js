@@ -21,6 +21,8 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
+
+
 app.use('/api/pagos', mercadopagoRoutes); 
 app.use('/api/webhooks', mercadopagoRoutes);  
 

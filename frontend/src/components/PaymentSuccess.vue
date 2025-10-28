@@ -11,7 +11,7 @@
       <!-- Estado de error -->
       <div v-else-if="error" class="error-container">
         <div class="icon-container error">
-          <span class="icon">✗</span>
+          <span class="icon-error">✗</span>
         </div>
         <h1>Error al verificar pago</h1>
         <p>{{ error }}</p>
@@ -21,9 +21,9 @@
       </div>
 
       <!-- Estado exitoso -->
-      <div v-else-if="paymentInfo">
+      <div v-else-if="paymentInfo" class="container-success">
         <div class="icon-container success">
-          <span class="icon">✓</span>
+          <span class="icon-success">✓</span>
         </div>
         <h1>¡Pago exitoso!</h1>
         <p>Tu compra ha sido procesada correctamente.</p>
@@ -169,7 +169,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: var(--color-background);
+  background: var(--color-card);
 }
 
 .status-card {
@@ -183,6 +183,10 @@ export default {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.container-success, .actions{
+  background-color: var(--color-card);
+}
+
 .icon-container {
   width: 80px;
   height: 80px;
@@ -191,30 +195,44 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
+  background-color: var(--color-card);
 }
 
-.icon-container.success {
-  background: #4caf50;
-}
-
-.icon {
+.icon-success {
+  background-color: #4caf50;
   font-size: 3rem;
   color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.icon-error{
+  background-color: #F44336;
+  font-size: 3rem;
+  color: white;
+  border-radius: 50%;
+}
+
+strong{
+  background-color: var(--color-card);
 }
 
 h1 {
   color: var(--color-foreground);
   margin-bottom: 10px;
   font-size: 1.8rem;
+  background-color: var(--color-card);
 }
 
 p {
   color: var(--color-muted-foreground);
+  background-color: var(--color-card);
   margin-bottom: 20px;
 }
 
 .payment-info {
-  background: var(--color-accent);
+  background-color: var(--color-card);
   border-radius: 8px;
   padding: 20px;
   margin: 20px 0;
@@ -224,6 +242,7 @@ p {
 .payment-info p {
   margin: 10px 0;
   color: var(--color-foreground);
+  background-color: var(--color-card);
 }
 
 .actions {
@@ -265,6 +284,7 @@ p {
 .loading-container {
   text-align: center;
   padding: 40px 20px;
+  background-color: var(--color-card);
 }
 
 .spinner {
@@ -284,10 +304,7 @@ p {
 
 .error-container {
   text-align: center;
-}
-
-.icon-container.error {
-  background: #f44336;
+  background-color: var(--color-card);
 }
 
 .status-badge {

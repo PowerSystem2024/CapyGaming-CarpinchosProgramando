@@ -25,6 +25,7 @@ export const productos = [
     subcategoria: "ASUS",
     marca: "ASUS",
     stock: 25,
+    descuento: 10,
     },
     {
     id: 3,
@@ -335,6 +336,7 @@ export const productos = [
     subcategoria: "Webcam",
     marca: "Elgato",
     stock: 280,
+    descuento: 10,
     },
     {
     id: 32,
@@ -483,6 +485,7 @@ export const productos = [
     subcategoria: "Teclado",
     marca: "Glorious",
     stock: 290,
+    descuento: 15,
     },
     {
     id: 46,
@@ -510,6 +513,7 @@ export const productos = [
     subcategoria: "Silla",
     marca: "Noblechairs",
     stock: 80,
+    descuento: 13,
     },
     {
     id: 48,

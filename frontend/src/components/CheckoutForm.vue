@@ -1,6 +1,6 @@
 <template>
-  <div class="checkout-modal" v-if="isOpen" @click="closeOnOverlay">
-    <div class="checkout-container" @click.stop>
+  <div class="checkout-modal" v-if="isOpen">
+    <div class="checkout-container">
       <button class="close-button" @click="closeModal">×</button>
 
       <div class="checkout-content">
@@ -21,7 +21,7 @@
                 <p>¿Ya tienes una cuenta? <a href="#" @click.prevent="showLogin">Inicia sesión</a></p>
               </div>
 
-              <form @submit.prevent="nextStep">
+              <form @submit.prevent="nextStep" class="form-container">
                 <div class="form-group">
                   <label for="nombre">Nombre *</label>
                   <input
@@ -105,17 +105,7 @@
                   <small>Sus datos serán usados únicamente para procesar su pedido y pueden ser modificados en cualquier momento.</small>
                 </div>
 
-                <div class="form-group checkbox-group">
-                  <label>
-                    <input
-                      type="checkbox"
-                      v-model="formData.newsletter"
-                    />
-                    <span>Suscribirse a nuestro boletín de noticias</span>
-                  </label>
-                </div>
-
-                <button type="submit" class="btn-continue">Continuar</button>
+                  <button type="submit" class="btn-continue">Continuar</button>
               </form>
             </div>
           </div>
@@ -393,15 +383,15 @@
             <div v-if="currentStep === 3" class="section-content">
               <form @submit.prevent="nextStep">
                 <div class="shipping-options">
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'standard' }">
+                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'standard', 'disabled': subtotal >= 100000 }">
                     <input
                       type="radio"
-                      name="shipping"
-                      value="standard"
-                      v-model="formData.metodoEnvio"
-                      required
-                      class="radio-standard"
-                    />
+                        name="shipping"
+                        value="standard"
+                        v-model="formData.metodoEnvio"
+                        :disabled="subtotal >= 100000"
+                        class="radio-standard"
+                        />
                     <div class="shipping-content">
                       <div class="shipping-header">
                         <strong>Envío Estándar</strong>
@@ -411,13 +401,14 @@
                     </div>
                   </label>
 
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'express' }">
+                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'express', 'disabled': subtotal >= 100000 }">
                     <input
                       type="radio"
                       name="shipping"
                       value="express"
                       v-model="formData.metodoEnvio"
                       class="radio-standard"
+                      :disabled="subtotal >= 100000"
                     />
                     <div class="shipping-content">
                       <div class="shipping-header">
@@ -473,8 +464,7 @@
 
             <div v-if="currentStep === 4" class="section-content">
               <form @submit.prevent="procesarPago">
-               
-                    <div class="payment-info">
+                      <div class="payment-info">
                   <label class="payment-option">
                     <input
                       type="radio"
@@ -573,7 +563,7 @@ export default {
       default: false
     }
   },
-  setup() { 
+  setup() {
     const { processPayment, isProcessing, error } = usePayment();
 
     return {
@@ -1073,7 +1063,7 @@ export default {
   margin-bottom: 8px;
   color: var(--color-foreground);
   font-weight: 500;
-  background: transparent;
+  background-color: var(--color-card);
   font-size: 0.95rem;
 }
 
@@ -1087,13 +1077,14 @@ export default {
   border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 1rem;
-  background: var(--color-background);
+  background-color: var(--color-card);
   color: var(--color-foreground);
   transition: all 0.3s;
 }
 
 .form-group input::placeholder {
   color: var(--color-muted-foreground);
+  background-color: var(--color-card);
 }
 
 .form-group input:focus,
@@ -1155,12 +1146,12 @@ export default {
   gap: 10px;
   cursor: pointer;
   color: var(--color-foreground);
-  background: transparent;
+  background-color: var(--color-card);
   padding: 5px 0;
 }
 
 .checkbox-group label span {
-  background: transparent;
+  background-color: var(--color-card);
   font-size: 0.95rem;
   line-height: 1.4;
 }
@@ -1179,7 +1170,7 @@ export default {
   font-size: 0.85rem;
   margin: 8px 0 0 0;
   padding: 8px 12px;
-  background: var(--color-background);
+  background-color: var(--color-card);
   border-radius: 6px;
   display: block;
   line-height: 1.4;
@@ -1191,7 +1182,7 @@ export default {
   color: var(--color-muted-foreground);
   font-size: 0.85rem;
   margin-top: 5px;
-  background: transparent;
+  background-color: var(--color-card);
   display: block;
 }
 
@@ -1353,7 +1344,7 @@ export default {
   margin-bottom: 8px;
   color: var(--color-foreground);
   font-weight: 500;
-  background: transparent;
+  background-color: var(--color-card);
 }
 
 .order-comments textarea {
@@ -1402,10 +1393,11 @@ export default {
   width: 20px;
   height: 20px;
   accent-color: var(--color-primary);
+  background-color: var(--color-card);
 }
 
 .payment-option input[type="radio"]:checked {
-  background: var(--color-primary);
+  background-color: var(--color-card);
 }
 
 .payment-info {
@@ -1432,7 +1424,7 @@ export default {
 .card-form {
   margin-top: 20px;
   padding: 20px;
-  background: var(--color-accent);
+  background-color: var(--color-card);
   border-radius: 8px;
   border: 1px solid var(--color-border);
 }
@@ -1556,7 +1548,7 @@ export default {
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  background: var(--color-background);
+  background-color: var(--color-card);
   color: var(--color-foreground);
   font-size: 0.85rem;
 }
@@ -1564,11 +1556,13 @@ export default {
 .promo-code input::placeholder {
   color: var(--color-muted-foreground);
   font-size: 0.85rem;
+  background-color: var(--color-card);
 }
 
 .promo-code input:focus {
   outline: none;
   border-color: var(--color-primary);
+  background-color: var(--color-card);
 }
 
 .btn-promo {
@@ -1589,6 +1583,32 @@ export default {
   transform: translateY(-2px);
 }
 
+span, small, label, input, .form-group, .section-content{
+  background-color: var(--color-card);
+}
+
+.form-container{
+  background-color: var(--color-card);
+}
+
+.shipping-options .shipping-option.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background: var(--color-accent) !important;
+}
+
+.shipping-options .shipping-option.disabled:hover {
+  background: var(--color-accent) !important;
+  transform: none !important;
+}
+
+.shipping-options .shipping-option.disabled .shipping-price,
+.shipping-options .shipping-option.disabled strong,
+.shipping-options .shipping-option.disabled .shipping-time {
+  color: var(--color-muted-foreground) !important;
+}
+
 /* Responsive */
 @media (max-width: 968px) {
   .checkout-content {
@@ -1604,6 +1624,7 @@ export default {
 
   .checkout-form {
     padding: 30px 20px;
+    background-color: var(--color-card);
   }
 
   .order-summary {
@@ -1620,11 +1641,13 @@ export default {
 
   .checkout-form {
     padding: 20px 15px;
+    background-color: var(--color-card);
   }
 
   .form-row {
     flex-direction: column;
     gap: 0;
+    background-color: var(--color-card);
   }
 
   .section-header {
