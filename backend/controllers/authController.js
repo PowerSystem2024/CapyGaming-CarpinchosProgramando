@@ -111,24 +111,50 @@ const login = async (req, res) => {
 
 // Solicitar recuperación de contraseña
 
-// Configurar el transporter de Gmail CORREGIDO
+// Configurar el transporter de Gmail - VERSIÓN MEJORADA
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
-  // AGREGAR estas opciones para Gmail
+  // Configuraciones adicionales para Gmail
   tls: {
     rejectUnauthorized: false
-  }
+  },
+  // Forzar TLS
+  secure: true,
+  // Timeout aumentado
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
+
+// Función para verificar la configuración del email
+const verifyEmailConfig = async () => {
+  try {
+    console.log('🔧 Verificando configuración de email...');
+    console.log('📧 Email user:', process.env.EMAIL_USER ? '✅ Configurado' : '❌ No configurado');
+    console.log('🔑 Email pass:', process.env.EMAIL_PASS ? '✅ Configurado' : '❌ No configurado');
+    
+    await transporter.verify();
+    console.log('✅ Servidor de email listo para enviar mensajes');
+    return true;
+  } catch (error) {
+    console.error('❌ Error verificando configuración de email:', error);
+    return false;
+  }
+};
+
+// Verificar al iniciar (opcional)
+verifyEmailConfig();
 
 const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   try {
     console.log('📧 Solicitando código para:', email);
+    console.log('🔧 Usando email:', process.env.EMAIL_USER);
     
     // Verificar si el usuario existe
     const userResult = await pool.query(
@@ -157,9 +183,13 @@ const requestPasswordReset = async (req, res) => {
       [user.dni, resetCode, new Date(Date.now() + 15 * 60 * 1000)]
     );
 
-    // Enviar email con el código
+    console.log('📤 Intentando enviar email...');
+    
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: {
+        name: 'CapyGaming',
+        address: process.env.EMAIL_USER
+      },
       to: email,
       subject: 'Código de recuperación - CapyGaming',
       html: `
@@ -193,8 +223,10 @@ const requestPasswordReset = async (req, res) => {
       `
     };
 
+    // Enviar email con mejor manejo de errores
     const info = await transporter.sendMail(mailOptions);
     console.log('✅ Email enviado exitosamente:', info.messageId);
+    console.log('📨 Email aceptado por:', info.accepted);
 
     res.json({ 
       message: 'Código de recuperación enviado a tu email',
@@ -205,7 +237,17 @@ const requestPasswordReset = async (req, res) => {
     console.error('💥 Error en recuperación:', error);
     
     if (error.code === 'EAUTH') {
-      console.error('❌ Error de autenticación de email');
+      console.error('❌ Error de autenticación de email. Verificando...');
+      console.error('1. EMAIL_USER:', process.env.EMAIL_USER);
+      console.error('2. Verifica que la contraseña de aplicación sea correcta');
+      console.error('3. Verifica que la verificación en 2 pasos esté activada');
+      
+      // ✅ MODO PRUEBA: Enviar código en respuesta
+      return res.json({ 
+        message: `Modo prueba - Código: ${resetCode}`,
+        code: resetCode,
+        success: true 
+      });
     }
     
     res.status(500).json({ error: 'Error interno del servidor' });

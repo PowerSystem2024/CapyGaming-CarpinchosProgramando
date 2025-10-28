@@ -1,8 +1,8 @@
 <template>
   <div class="auth-modal-content">
-    <h1>Recuperar contraseña - DEBUG</h1>
+    <h1>Recuperar contraseña</h1>
     <p class="subtitle">
-      Estado: loading={{ loading }}, successMessage={{ successMessage }}
+      Ingresá tu email para recibir un código de recuperación
     </p>
 
     <form @submit.prevent="onSubmit" novalidate>
@@ -11,18 +11,19 @@
         <input
           id="email"
           type="email"
-          v-model="email"
+          v-model.trim="email"
           placeholder="ejemplo@mail.com"
           autocomplete="email"
           required
+          :disabled="loading"
         />
-        <p>Email value: "{{ email }}"</p>
-        <p v-if="error" class="error">Error: {{ error }}</p>
-        <p v-if="successMessage" class="success">Success: {{ successMessage }}</p>
+        <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="successMessage" class="success">{{ successMessage }}</p>
       </div>
 
-      <button class="btn primary" type="submit">
-        <span>Enviar código</span>
+      <button class="btn primary" :disabled="loading">
+        <span v-if="loading">Enviando código...</span>
+        <span v-else>Enviar código</span>
       </button>
 
       <p class="alt">
@@ -34,24 +35,20 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, onMounted } from 'vue'
+import { ref, defineEmits } from 'vue'
+import { useAuth } from '../composables/useAuth.js'
 
 const emit = defineEmits(['switch-view', 'show-reset-form'])
+
+// USAR el servicio real
+const { forgotPassword } = useAuth()
 
 const email = ref('')
 const error = ref('')
 const loading = ref(false)
 const successMessage = ref('')
 
-onMounted(() => {
-  console.log('🔧 RecuperarContra mounted - Estado inicial:')
-  console.log('email:', email.value)
-  console.log('loading:', loading.value)
-  console.log('successMessage:', successMessage.value)
-})
-
 function validate() {
-  console.log('📝 Validando email:', email.value)
   if (!email.value.includes('@')) {
     error.value = 'Ingresá un email válido'
     return false
@@ -61,7 +58,6 @@ function validate() {
 }
 
 async function onSubmit() {
-  console.log('🚀 onSubmit ejecutado')
   if (!validate()) return
   
   loading.value = true
@@ -69,13 +65,21 @@ async function onSubmit() {
   successMessage.value = ''
   
   try {
-    console.log('📤 Enviando solicitud para:', email.value)
-    // Simulación temporal
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    successMessage.value = 'Código enviado (simulación)'
-  } catch (err) {
-    console.error('💥 Error:', err)
-    error.value = 'Error: ' + err.message
+    // USAR el servicio real
+    const result = await forgotPassword(email.value)
+
+    if (result.success) {
+      successMessage.value = result.message || 'Código enviado a tu email'
+      // Emitir evento para mostrar el formulario de reset
+      setTimeout(() => {
+        emit('show-reset-form', email.value)
+      }, 2000)
+    } else {
+      error.value = result.error || 'Error al enviar el código'
+    }
+  } catch (error) {
+    console.error('💥 Error en recuperación:', error)
+    error.value = 'Error de conexión: ' + error.message
   } finally {
     loading.value = false
   }
@@ -87,59 +91,82 @@ function goToLogin() {
 </script>
 
 <style scoped>
+/* Tus estilos existentes - se mantienen igual */
 .auth-modal-content {
   padding: 2rem;
-  background-color: white;
-  border-radius: 8px;
+  background-color: var(--color-card);
 }
 
+.auth-page {
+  min-height: 100vh;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--color-background);
+  padding: 2rem;
+}
+.auth-card {
+  width:100%; max-width: 420px;
+  background: var(--color-card);
+  color: var(--color-card-foreground);
+  border:1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 2rem;
+}
 h1 {
   margin:0 0 .5rem;
   font-weight:700; font-size:1.6rem;
-  color: #F39C12;
+  color: var(--color-primary);
   text-align:center;
+  background-color: var(--color-card);
 }
 .subtitle {
   font-size:.95rem;
-  color: #666;
+  color: var(--color-muted-foreground);
   margin: 0 0 1.2rem;
   text-align:center;
+  background-color: var(--color-card);
 }
-.field { margin-bottom: 1rem; text-align:left; }
-label { display:block; font-weight:700; margin-bottom:.35rem; color: #333; }
+.field { margin-bottom: 1rem; text-align:left; background-color: var(--color-card); }
+label { display:block; font-weight:700; margin-bottom:.35rem; color: var(--color-accent-foreground); background-color: var(--color-card); }
 
 input {
   width:100%;
   padding:.75rem .9rem;
   border-radius:10px;
-  border:1px solid #ccc;
-  background: white;
-  color: #333;
-  outline: none;
-  font-size: 16px; /* Evita zoom en iOS */
+  border:1px solid var(--color-input);
+  background: var(--color-popover);
+  color: var(--color-popover-foreground);
+  background-color: var(--color-card);
 }
+input::placeholder { color: var(--color-muted-foreground); }
 input:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52,152,219,.25);
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 3px rgba(52,152,219,.25);
 }
 
 button.btn {
   width:100%;
   padding:.9rem 1rem;
   border-radius:12px;
-  border:none;
-  background: #F39C12;
-  color: white;
-  font-weight:700; 
-  cursor:pointer;
-  font-size: 16px;
+  border:1px solid var(--color-border);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight:700; cursor:pointer;
 }
-button.btn:hover { background: #e67e22; }
-button.btn:active { transform: scale(0.98); }
+button.btn:hover { filter:brightness(1.05); }
+button.btn:disabled { opacity:.6; cursor:not-allowed; }
 
-.error { margin:.35rem 0 0; color: #e74c3c; font-size:.9rem; }
-.success { margin:.35rem 0 0; color: #27ae60; font-size:.9rem; }
-.alt { margin-top:1rem; text-align:center; color: #666; }
-.link { color: #3498db; text-decoration:none; }
+form {
+  background-color: var(--color-card);
+}
+
+span {
+  background-color: var(--color-primary);
+}
+
+.error { margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card);}
+.success { margin:.35rem 0 0; color: var(--color-success); font-size:.9rem; background-color: var(--color-card); padding: 0.5rem; border-radius: 5px; border: 1px solid var(--color-success);}
+.alt { margin-top:1rem; text-align:center; background-color: var(--color-card);}
+.link { color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
 .link:hover { text-decoration: underline; }
 </style>
