@@ -3,8 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-import ofertasRoutes from './routes/ofertasRoutes.js';
-
 import mercadopagoRoutes from './routes/mercadopagoRoutes.js';
 
 // Cargar variables de entorno
@@ -23,7 +21,6 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
-app.use('/api/ofertas', ofertasRoutes);
 
 
 app.use('/api/pagos', mercadopagoRoutes); 
