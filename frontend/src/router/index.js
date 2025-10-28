@@ -1,5 +1,6 @@
 // importar las funciones necesarias de vue-router
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter,createWebHistory} from 'vue-router';
+
 //Importar tus componentes
 import Carrito from '../components/Carrito.vue';
 import InicioSesion from '../components/InicioSesion.vue';
@@ -7,6 +8,9 @@ import Marcas from '../components/Marcas.vue';
 import QuienesSomos from '../components/QuienesSomos.vue';
 import Registro from '../components/Registro.vue';
 import RecuperarContra from '../components/RecuperarContra.vue';
+import PaymentSuccess from '../components/PaymentSuccess.vue';
+import PaymentFailure from '../components/PaymentFailure.vue';
+import PaymentPending from '../components/PaymentPending.vue';
 import NotFound from "../components/NotFound.vue";
 import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
@@ -89,9 +93,25 @@ const routes = [
         component: Contacto
     },
     {
-    path: '/PreguntasFrecuentes',
-    name: 'PreguntasFrecuentes',
-    component: PreguntasFrecuentes
+       path: '/payment/success',
+       name: 'PaymentSuccess',
+       component: PaymentSuccess
+    },
+    {
+       path: '/payment/failure',
+       name: 'PaymentFailure',
+       component: PaymentFailure
+    },
+    {
+       path: '/payment/pending',
+       name: 'PaymentPending',
+       component: PaymentPending
+    }, 
+
+    {
+        path: '/PreguntasFrecuentes',
+        name: 'PreguntasFrecuentes',
+        component: PreguntasFrecuentes
     },
     {
         path: '/resultados',

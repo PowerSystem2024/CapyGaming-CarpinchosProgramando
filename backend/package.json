@@ -19,7 +19,7 @@
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^7.0.9",
+    "mercadopago": "^2.9.0",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3"
   }

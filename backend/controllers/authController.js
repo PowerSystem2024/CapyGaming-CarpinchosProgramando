@@ -8,7 +8,7 @@ const revokedTokens = new Set(); //Lista temporal de tokens revocados (en memori
 // Registro de usuario
 const register = async (req, res) => {
   const { nombre, apellido, email, telefono, dni, password, direccion } = req.body;
-  
+
   try {
     // Verificar si el usuario ya existe
     const userExists = await pool.query(

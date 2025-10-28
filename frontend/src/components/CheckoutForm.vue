@@ -473,34 +473,8 @@
 
             <div v-if="currentStep === 4" class="section-content">
               <form @submit.prevent="procesarPago">
-                <div class="payment-options">
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="tarjeta"
-                      v-model="formData.metodoPago"
-                      required
-                    />
+               
                     <div class="payment-info">
-                      <strong>💳 Tarjeta de crédito/débito</strong>
-                      <span>Visa, MasterCard, American Express</span>
-                    </div>
-                  </label>
-
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="transferencia"
-                      v-model="formData.metodoPago"
-                    />
-                    <div class="payment-info">
-                      <strong>🏦 Transferencia bancaria</strong>
-                      <span>CBU/CVU - Alias</span>
-                    </div>
-                  </label>
-
                   <label class="payment-option">
                     <input
                       type="radio"
@@ -514,68 +488,6 @@
                     </div>
                   </label>
 
-                  <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="efectivo"
-                      v-model="formData.metodoPago"
-                    />
-                    <div class="payment-info">
-                      <strong>💵 Efectivo</strong>
-                      <span>Pago Fácil, Rapipago</span>
-                    </div>
-                  </label>
-                </div>
-
-                <!-- Formulario de tarjeta si selecciona tarjeta -->
-                <div v-if="formData.metodoPago === 'tarjeta'" class="card-form">
-                  <div class="form-group">
-                    <label for="cardNumber">Número de tarjeta</label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      v-model="formData.cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      maxlength="19"
-                      @input="formatCardNumber"
-                    />
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="cardExpiry">Vencimiento</label>
-                      <input
-                        type="text"
-                        id="cardExpiry"
-                        v-model="formData.cardExpiry"
-                        placeholder="MM/AA"
-                        maxlength="5"
-                        @input="formatExpiry"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="cardCVC">CVC</label>
-                      <input
-                        type="text"
-                        id="cardCVC"
-                        v-model="formData.cardCVC"
-                        placeholder="123"
-                        maxlength="4"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="cardName">Nombre en la tarjeta</label>
-                    <input
-                      type="text"
-                      id="cardName"
-                      v-model="formData.cardName"
-                      placeholder="JUAN PEREZ"
-                    />
-                  </div>
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -585,11 +497,17 @@
                       v-model="formData.acceptTerms"
                       required
                     />
-                    <span>Acepto los términos y condiciones de la compra</span>
+                    <span>Acepto los términos y condiciones de compra *</span>
                   </label>
+                  <small>Al finalizar la compra, acepta nuestros términos de servicio y política de devoluciones.</small>
                 </div>
 
-                <button type="submit" class="btn-pay">Finalizar compra</button>
+                <span v-if="errors.terms" class="error">{{ errors.terms }}</span>
+                <span v-if="paymentError" class="error">{{ paymentError }}</span>
+
+                <button type="submit" class="btn-pay" :disabled="isProcessing">
+                  {{ isProcessing ? 'Procesando...' : 'Finalizar compra' }}
+                </button>
               </form>
             </div>
           </div>
@@ -644,6 +562,8 @@
 
 <script>
 import { getCart, getCartTotal, clearCart } from "../utils/cartUtils";
+import { usePayment } from "../composables/usePayment";
+import AuthService from "../services/authService.js";
 
 export default {
   name: "CheckoutForm",
@@ -653,9 +573,18 @@ export default {
       default: false
     }
   },
+  setup() { 
+    const { processPayment, isProcessing, error } = usePayment();
+
+    return {
+      processPayment,
+      isProcessing,
+      paymentError: error
+    };
+  },
   data() {
     return {
-      currentStep: 1,
+      currentStep: 2,
       showPassword: false,
       promoCode: '',
       discount: 0,
@@ -729,11 +658,13 @@ export default {
   },
   mounted() {
     this.loadCart();
+    this.loadUserData();
   },
   watch: {
     isOpen(newVal) {
       if (newVal) {
         this.loadCart();
+        this.loadUserData();
         document.body.style.overflow = 'hidden';
       } else {
         document.body.style.overflow = 'auto';
@@ -747,6 +678,19 @@ export default {
       console.log("🔍 CHECKOUT - Total items count:", this.cartItems.reduce((sum, item) => sum + item.quantity, 0));
       console.log("🔍 CHECKOUT - getCartTotal():", getCartTotal());
       console.log("🔍 CHECKOUT - Manual calculation:", this.cartItems.reduce((total, item) => total + item.precio * item.quantity, 0));
+    },
+    loadUserData() {
+      const user = AuthService.getCurrentUser();
+      if (user) {
+        // Prellenar datos del usuario en el formulario
+        this.formData.nombre = user.nombre || '';
+        // Normalizar apellido/apellidos (el backend usa "apellido" singular)
+        this.formData.apellidos = user.apellidos || user.apellido || '';
+        this.formData.email = user.email || '';
+        this.formData.dni = user.dni || '';
+
+        console.log("👤 Usuario logueado - datos precargados:", user);
+      }
     },
     closeModal() {
       this.$emit('close');
@@ -895,16 +839,17 @@ export default {
         this.discount = 0;
       }
     },
-    showLogin() {
-      alert('Funcionalidad de login próximamente');
-    },
-    procesarPago() {
+
+    async procesarPago() {
       if (this.validateCurrentStep()) {
-        // Aquí iría la lógica para procesar el pago
-        alert('¡Compra realizada con éxito! Gracias por tu compra.');
-        clearCart();
-        this.$router.push('/');
-        this.closeModal();
+        try {
+          await this.processPayment(this.formData);
+          // La redirección a MercadoPago se hace automáticamente en processPayment
+          // Si llegamos aquí sin error, cerramos el modal
+          this.closeModal();
+        } catch (err) {
+          alert(`Error al procesar el pago: ${err.message}`);
+        }
       }
     }
   }
