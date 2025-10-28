@@ -2,7 +2,7 @@
   <div class="offers-container">
     <h2 class="section-title">OFERTAS DEL DÍA</h2>
     <div class="offers-grid">
-      <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card">
+      <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card" @click="abrirDetalle(offer)">
         <!-- Badge con flip -->
         <div class="flip-container">
           <div class="flipper">
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Botón -->
-        <button class="offer-btn" @click="agregarAlCarrito(offer)">
+        <button class="offer-btn" @click.stop="agregarAlCarrito(offer)">
           <span class="icon-wrapper">
             <svg class="icon-cart default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
               <path fill="#161e35" d="M14 13.1V12H4.6l.6-1.1l9.2-.9L16 4H3.7L3 1H0v1h2.2l2.1 8.4L3 13v1.5c0 .8.7 1.5 1.5 1.5S6 15.3 6 14.5S5.3 13 4.5 13H12v1.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.7-.4-1.2-1-1.4z"/>
@@ -57,9 +57,14 @@
 import axios from 'axios';
 import { addToCart } from "../utils/cartUtils";
 import { setUltimoProducto } from "../composables/ultimoProducto";
+import { useRouter } from 'vue-router';
 
 export default {
   name: "Ofertas",
+  setup() {
+    const router = useRouter();
+    return { router };
+  },
   data() {
     return {
       offers: [],
@@ -77,26 +82,33 @@ export default {
   methods: {
     async fetchOfertas() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/ofertas`);
+        const response = await axios.get('/api/ofertas');
 
 
 
         // Adaptamos los datos del backend al formato del frontend
-        this.offers = response.data.map(o => {
-          const newPrice = parseFloat(o.newprice);
-          const oldPrice = newPrice / (1 - o.descuento / 100); // calcula el precio anterior real
+  this.offers = response.data.map(o => {
+    const precioActual = parseFloat(o.newprice);
+    const precioAnterior = precioActual / (1 - o.descuento / 100);
 
-          return {
-            id: o.id,
-            title: o.title,
-            oldPrice: `$${oldPrice.toFixed(0)}`,
-            newPrice: `$${newPrice.toFixed(0)}`,
-            image: o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen",
-            descuento: o.descuento,
-            marca: o.marca,
-            stock: o.stock,
-          };
-        });
+    return {
+      // Para mostrar en la UI
+      id: o.id,
+      title: o.title,
+      oldPrice: `$${precioAnterior.toFixed(0)}`,
+      newPrice: `$${precioActual.toFixed(0)}`,
+      image: o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen",
+      descuento: o.descuento,
+      
+      // Para el carrito (estructura correcta)
+      id_producto: o.id,
+      nombre: o.title,
+      precio: precioActual,
+      imagenes: [o.image_url || "https://via.placeholder.com/200x200?text=Sin+imagen"],
+      stock: o.stock,
+      marca: o.marca
+    };
+  });
 
       } catch (err) {
         console.error("❌ Error al traer las ofertas:", err);
@@ -104,17 +116,25 @@ export default {
       }
     },
 
-    agregarAlCarrito(oferta) {
-      const resultado = addToCart(oferta);
-      if (resultado.success) {
-        setUltimoProducto({ ...oferta, quantity: 1 });
-        window.dispatchEvent(new Event("cartUpdated"));
-        window.dispatchEvent(new Event("abrirPreview"));
-      } else {
-        console.log("Error al agregar oferta:", resultado.message);
-      }
+agregarAlCarrito(oferta) {
+  // Ya tiene la estructura correcta desde fetchOfertas
+  const resultado = addToCart(oferta);
+  if (resultado.success) {
+    setUltimoProducto({ ...oferta, quantity: 1 });
+    window.dispatchEvent(new Event("cartUpdated"));
+    window.dispatchEvent(new Event("abrirPreview"));
+  } else {
+    console.log("Error al agregar oferta:", resultado.message);
+  }
+},
+    abrirDetalle(oferta) {
+      this.router.push({ 
+        name: 'ProductoDetalle', 
+        params: { id: oferta.id } 
+      });
     }
-  },
+
+},
 
   mounted() {
     this.fetchOfertas();
@@ -186,6 +206,7 @@ h2 {
   min-height: 440px;
   max-height: 440px;
   padding: 1rem;
+  cursor: pointer;
 }
 
 .offer-card:hover {
