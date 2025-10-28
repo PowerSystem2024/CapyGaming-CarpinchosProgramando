@@ -49,6 +49,7 @@ CREATE TABLE producto (
     descripcion TEXT,
     id_categoria INTEGER NOT NULL,
     id_subcategoria INTEGER,
+    descuento INTEGER DEFAULT 0,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria) ON DELETE CASCADE,
