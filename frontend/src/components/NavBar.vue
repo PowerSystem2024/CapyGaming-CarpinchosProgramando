@@ -312,7 +312,7 @@ export default {
   left: 0;
   width: 100%;
   min-height: auto;
-  background: var(--color-background);
+  background-color: var(--color-background);
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   z-index: 1000;
@@ -321,7 +321,7 @@ export default {
 
 .navbar-content {
   display: flex;
-  background: var(--color-background);
+  background-color: var(--color-background);
   justify-content: space-between;
   align-items: center;
   max-width: 1250px;
@@ -374,7 +374,7 @@ export default {
   padding-right: 40px;
   border-radius: 5px;
   border: 1.9px solid var(--color-primary);
-  background-color: none;
+  background-color: var(--color-background);
   outline: none;
   font-size: 0.9rem;
 }
@@ -498,9 +498,10 @@ export default {
 }
 
 .linea {
-  border-top: 1px solid var(--color-card);
+  border-top: 2px solid var(--color-card);
   margin: 0px auto;
   width: 100%;
+  box-shadow: 0 8px 12px rgba(85, 88, 176, 0.533);
 }
 
 .logo a,
@@ -787,6 +788,7 @@ export default {
     border: 1px solid var(--color-primary);
     outline: none;
     border-radius: 5px;
+    background-color: var(--color-background);
   }
 
   .search-mobile button {
@@ -852,7 +854,6 @@ export default {
     background: rgba(0, 0, 0, 0.4);
     z-index: 99;
   }
-
 }
 
 
