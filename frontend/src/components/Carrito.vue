@@ -13,7 +13,7 @@
         <div v-for="product in cartItems" :key="product.id" class="product-card">
           <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
           <div class="product-info">
-            <h3>{{ product.nombre }}</h3>
+            <h3 @click="irADetalle(product.id)" class="producto-titulo-link">{{ product.nombre }}</h3>
             <p class="precio">Precio: ${{ product.precio }}</p>
             
             <p>Cantidad: {{ product.quantity }}</p>
@@ -150,6 +150,9 @@ export default {
         console.log("Carrito vaciado correctamente");
       }
     },
+    irADetalle(productId) {
+      this.$router.push(`/productoDetalle/${productId}`);
+},
     abrirCheckout() {
       if (this.cartItems.length > 0) {
         this.showCheckout = true;
@@ -301,6 +304,16 @@ export default {
     font-size: 1rem;
     color: var(--color-primary);
   }
+
+  .producto-titulo-link {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.producto-titulo-link:hover {
+  color: var(--sidebar-ring);
+  text-decoration: underline;
+}
 
   .precio {
     font-weight: bold;
