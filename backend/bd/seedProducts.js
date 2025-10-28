@@ -128,10 +128,10 @@ import { productos } from './productsData.js';
         }
         // Insertar producto
         const res = await pool.query(
-            `INSERT INTO producto (nombre, precio, stock, marca, id_categoria, id_subcategoria)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            `INSERT INTO producto (nombre, precio, stock, marca, id_categoria, id_subcategoria, descuento)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING id_producto`,
-            [p.nombre, p.precio, p.stock, p.marca, id_categoria, id_subcategoria]
+            [p.nombre, p.precio, p.stock, p.marca, id_categoria, id_subcategoria, p.descuento || 0]
         );
         const id_producto = res.rows[0].id_producto;
         // Insertar imágenes
