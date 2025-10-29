@@ -162,7 +162,7 @@ async function loadOrderDetail() {
     error.value = null;
     const orderId = route.params.id;
     const response = await orderService.getOrderById(orderId);
-    order.value = response.order || response;
+    order.value = response.pedido || response.order || response;
   } catch (err) {
     console.error('Error loading order detail:', err);
     error.value = 'No se pudo cargar el detalle del pedido. Intenta nuevamente.';
@@ -233,7 +233,7 @@ function handleImageError(event) {
 .detalle-container {
   min-height: 100vh;
   background: var(--color-background);
-  padding: 2rem 1rem;
+  padding: 12rem 1rem 2rem 1rem;
 }
 
 .detalle-content {
