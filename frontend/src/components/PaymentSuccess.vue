@@ -143,7 +143,7 @@ export default {
     };
 
     const viewOrders = () => {
-      router.push('/');
+      router.push('/mis-pedidos');
     };
 
     return {
