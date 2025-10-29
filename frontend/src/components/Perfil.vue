@@ -8,8 +8,19 @@
 
       <!-- Información del usuario -->
       <section class="perfil-section">
-        <h2>Información Personal</h2>
-        <div class="info-grid" v-if="user">
+        <div class="section-title-row">
+          <h2>Información Personal</h2>
+          <button
+            v-if="!isEditing"
+            @click="startEditing"
+            class="btn-editar"
+          >
+            Editar Perfil
+          </button>
+        </div>
+
+        <!-- VISTA NORMAL (No editando) -->
+        <div class="info-grid" v-if="user && !isEditing">
           <div class="info-item">
             <span class="label">Nombre:</span>
             <span class="value">{{ user.nombre }} {{ user.apellido || user.apellidos }}</span>
@@ -22,6 +33,120 @@
             <span class="label">DNI:</span>
             <span class="value">{{ user.dni || 'No especificado' }}</span>
           </div>
+          <div class="info-item">
+            <span class="label">Teléfono:</span>
+            <span class="value">{{ user.telefono || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Dirección:</span>
+            <span class="value">{{ user.direccion || 'No especificada' }}</span>
+          </div>
+        </div>
+
+        <!-- FORMULARIO DE EDICIÓN -->
+        <div v-if="isEditing" class="edit-form">
+          <form @submit.prevent="saveProfile">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nombre">Nombre *</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  v-model="editForm.nombre"
+                  required
+                  :disabled="saving"
+                  placeholder="Ingresa tu nombre"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="apellido">Apellido *</label>
+                <input
+                  type="text"
+                  id="apellido"
+                  v-model="editForm.apellido"
+                  required
+                  :disabled="saving"
+                  placeholder="Ingresa tu apellido"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  v-model="editForm.email"
+                  required
+                  :disabled="saving"
+                  placeholder="tu@email.com"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  v-model="editForm.telefono"
+                  :disabled="saving"
+                  placeholder="Ej: +54 11 1234-5678"
+                />
+              </div>
+
+              <div class="form-group full-width">
+                <label for="direccion">Dirección</label>
+                <input
+                  type="text"
+                  id="direccion"
+                  v-model="editForm.direccion"
+                  :disabled="saving"
+                  placeholder="Calle, número, ciudad, provincia"
+                />
+              </div>
+
+              <div class="form-group readonly-field">
+                <label for="dni">DNI</label>
+                <input
+                  type="text"
+                  id="dni"
+                  :value="user.dni"
+                  disabled
+                  title="El DNI no se puede modificar"
+                />
+                <small class="field-hint">El DNI no se puede modificar</small>
+              </div>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div v-if="editError" class="error-alert">
+              {{ editError }}
+            </div>
+
+            <!-- Mensaje de éxito -->
+            <div v-if="editSuccess" class="success-alert">
+              {{ editSuccess }}
+            </div>
+
+            <!-- Botones -->
+            <div class="form-actions">
+              <button
+                type="button"
+                @click="cancelEditing"
+                class="btn-cancelar"
+                :disabled="saving"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn-guardar"
+                :disabled="saving"
+              >
+                {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
@@ -95,12 +220,26 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import AuthService from '../services/authService.js';
 import orderService from '../services/orderService.js';
+import userService from '../services/userService.js';
 
 const router = useRouter();
 const user = ref(null);
 const orders = ref([]);
 const loading = ref(true);
 const error = ref(null);
+
+// Estado del formulario de edición
+const isEditing = ref(false);
+const saving = ref(false);
+const editError = ref(null);
+const editSuccess = ref(null);
+const editForm = ref({
+  nombre: '',
+  apellido: '',
+  email: '',
+  telefono: '',
+  direccion: ''
+});
 
 // Solo mostrar los 3 pedidos más recientes
 const recentOrders = computed(() => orders.value.slice(0, 3));
@@ -130,6 +269,59 @@ async function loadOrders() {
     error.value = 'No se pudieron cargar los pedidos. Intenta nuevamente.';
   } finally {
     loading.value = false;
+  }
+}
+
+// Iniciar modo edición
+function startEditing() {
+  isEditing.value = true;
+  editError.value = null;
+  editSuccess.value = null;
+
+  // Copiar datos actuales al formulario
+  editForm.value = {
+    nombre: user.value.nombre || '',
+    apellido: user.value.apellido || user.value.apellidos || '',
+    email: user.value.email || '',
+    telefono: user.value.telefono || '',
+    direccion: user.value.direccion || ''
+  };
+}
+
+// Cancelar edición
+function cancelEditing() {
+  isEditing.value = false;
+  editError.value = null;
+  editSuccess.value = null;
+}
+
+// Guardar cambios del perfil
+async function saveProfile() {
+  try {
+    saving.value = true;
+    editError.value = null;
+    editSuccess.value = null;
+
+    // Llamar al servicio para actualizar
+    const updatedUser = await userService.updateProfile(editForm.value);
+
+    // Actualizar la vista
+    user.value = updatedUser;
+
+    // Mostrar mensaje de éxito
+    editSuccess.value = 'Perfil actualizado correctamente';
+
+    // Cerrar el formulario después de 2 segundos
+    setTimeout(() => {
+      isEditing.value = false;
+      editSuccess.value = null;
+    }, 2000);
+
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    editError.value = err.message || 'Error al actualizar el perfil. Intenta nuevamente.';
+  } finally {
+    saving.value = false;
   }
 }
 
@@ -234,6 +426,157 @@ function formatPrice(price) {
 .btn-ver-todos:hover {
   background: #ff9800;
   color: black;
+}
+
+.btn-editar {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-editar:hover {
+  background: #4caf50;
+  color: white;
+}
+
+/* Formulario de edición */
+.edit-form {
+  margin-top: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: #ecf0f1;
+  font-weight: 500;
+}
+
+.form-group input {
+  padding: 0.7rem;
+  background: #1a252f;
+  border: 1px solid #34495e;
+  border-radius: 4px;
+  color: #ecf0f1;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: #243447;
+}
+
+.form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-group.readonly-field input {
+  background: #1c2a36;
+  cursor: not-allowed;
+  color: #7f8c8d;
+}
+
+.field-hint {
+  font-size: 0.75rem;
+  color: #95a5a6;
+  font-style: italic;
+}
+
+.error-alert {
+  padding: 0.8rem;
+  background: rgba(244, 67, 54, 0.15);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 4px;
+  color: #f44336;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.success-alert {
+  padding: 0.8rem;
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 4px;
+  color: #4caf50;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn-cancelar {
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  color: #95a5a6;
+  border: 2px solid #95a5a6;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover:not(:disabled) {
+  background: #95a5a6;
+  color: white;
+}
+
+.btn-cancelar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-guardar {
+  padding: 0.7rem 1.5rem;
+  background: #4caf50;
+  color: white;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: #45a049;
+  border-color: #45a049;
+  transform: translateY(-1px);
+}
+
+.btn-guardar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .info-grid {
