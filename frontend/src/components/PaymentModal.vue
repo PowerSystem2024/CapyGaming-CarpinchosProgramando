@@ -14,9 +14,23 @@
             <div v-if="paymentStatus" class="payment-status" :class="paymentStatus.type">
             <h3>{{ paymentStatus.title }}</h3>
             <p>{{ paymentStatus.message }}</p>
-            <button @click="handlePaymentComplete" class="btn-primary">
-                {{ paymentStatus.buttonText }}
-            </button>
+
+            <!-- Botones de acción para success y pending -->
+            <div v-if="paymentStatus.type === 'success' || paymentStatus.type === 'pending'" class="payment-actions">
+                <button @click="verPedido" class="btn-secondary">
+                Ver mi pedido
+                </button>
+                <button @click="seguirComprando" class="btn-primary">
+                Seguir comprando
+                </button>
+            </div>
+
+            <!-- Botón de reintentar para failure -->
+            <div v-else class="payment-actions">
+                <button @click="reintentar" class="btn-primary">
+                Reintentar pago
+                </button>
+            </div>
             </div>
         </div>
         </div>
@@ -25,7 +39,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import mercadopagoClient from '../services/mercadopagoClient.js';
+
+const router = useRouter();
 
 const props = defineProps({
     items: Array,
@@ -160,22 +177,34 @@ async function handlePaymentSubmit(formData, selectedPaymentMethod) {
     }
 }
 
-function handlePaymentComplete() {
-    if (paymentStatus.value.type === 'success') {
-        // Limpiar carrito y cerrar modal
-        emit('success');
-        cerrar();
-    } else if (paymentStatus.value.type === 'pending') {
-        emit('pending');
-        cerrar();
+// Funciones de navegación después del pago
+function verPedido() {
+    const orderId = localStorage.getItem('currentOrderId');
+    emit('success');
+    cerrar();
+    // Redirigir a la página de detalle del pedido
+    if (orderId) {
+        router.push(`/pedido/${orderId}`);
     } else {
-        // Reintentar - recargar el brick
-        paymentStatus.value = null;
-        if (paymentBrickController.value) {
-        paymentBrickController.value.unmount();
-        }
-        initializePaymentBrick();
+        // Si no hay orderId, ir a mis pedidos
+        router.push('/mis-pedidos');
     }
+}
+
+function seguirComprando() {
+    emit('success');
+    cerrar();
+    // Volver al home
+    router.push('/');
+}
+
+function reintentar() {
+    // Reintentar - recargar el brick
+    paymentStatus.value = null;
+    if (paymentBrickController.value) {
+        paymentBrickController.value.unmount();
+    }
+    initializePaymentBrick();
 }
 
 function cerrar() {
@@ -302,8 +331,14 @@ function formatPrice(price) {
     border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
+.payment-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    justify-content: center;
+}
+
 .btn-primary {
-    margin-top: 0.5rem;
     padding: 0.6rem 1.5rem;
     background: #ff9800;
     color: black;
@@ -313,10 +348,30 @@ function formatPrice(price) {
     font-size: 0.9rem;
     font-weight: 600;
     transition: all 0.2s;
+    flex: 1;
 }
 
 .btn-primary:hover {
     background: #fb8c00;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    padding: 0.6rem 1.5rem;
+    background: transparent;
+    color: #ecf0f1;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
 }
 </style>
