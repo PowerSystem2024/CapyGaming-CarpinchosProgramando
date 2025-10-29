@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import mercadopagoRoutes from './routes/mercadopagoRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -21,10 +22,9 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
-
-
-app.use('/api/pagos', mercadopagoRoutes); 
-app.use('/api/webhooks', mercadopagoRoutes);  
+app.use('/api/pagos', mercadopagoRoutes);
+app.use('/api/webhooks', mercadopagoRoutes);
+app.use('/api/pedidos', orderRoutes);  
 
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'API de CapyGaming funcionando correctamente',
     endpoints: {
       auth: {
@@ -48,10 +48,14 @@ app.get('/', (req, res) => {
         profile: 'GET /api/auth/profile',
         forgotPassword: 'POST /api/auth/forgot-password'
       },
-      mercadopago: {                                          
+      mercadopago: {
         crearPreferencia: 'POST /api/pagos/crear-preferencia',
         consultarEstado: 'GET /api/pagos/estado/:orderId',
         webhook: 'POST /api/webhooks/webhook'
+      },
+      pedidos: {
+        misPedidos: 'GET /api/pedidos/mis-pedidos',
+        detallePedido: 'GET /api/pedidos/:orderId'
       },
       health: 'GET /api/health'
     }
