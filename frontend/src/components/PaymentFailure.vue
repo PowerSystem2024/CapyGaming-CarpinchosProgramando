@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 export default {
@@ -27,6 +27,31 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const errorMessage = ref(route.query.error || 'Error desconocido');
+
+    onMounted(() => {
+      const paymentResult = {
+        status: 'rejected',
+        error: errorMessage.value
+      };
+
+      // Guardar resultado para que CheckoutForm lo lea
+      localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+
+      // Enviar mensaje a la pestaña original (si se abrió desde otra pestaña)
+      if (window.opener && !window.opener.closed) {
+        console.log('Enviando mensaje a pestaña original...');
+        window.opener.postMessage({
+          type: 'PAYMENT_RESULT',
+          result: paymentResult
+        }, window.location.origin);
+      }
+
+      // Limpiar flags de pago en proceso
+      localStorage.removeItem('paymentInProgress');
+      localStorage.removeItem('currentOrderId');
+
+      // NO limpiamos el carrito aquí porque el usuario puede querer reintentar
+    });
 
     const retry = () => {
       router.push('/carrito');
