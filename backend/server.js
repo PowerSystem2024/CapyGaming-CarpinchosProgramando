@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import mercadopagoRoutes from './routes/mercadopagoRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -24,7 +25,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
 app.use('/api/pagos', mercadopagoRoutes);
 app.use('/api/webhooks', mercadopagoRoutes);
-app.use('/api/pedidos', orderRoutes);  
+app.use('/api/pedidos', orderRoutes);
+app.use('/api/users', userRoutes);  
 
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
