@@ -1,7 +1,7 @@
 [file name]: AuthModal.vue
 <template>
-  <div v-if="visible" class="modal-overlay">
-    <div class="modal-content">
+  <div v-if="visible" class="modal-overlay" @click="close">
+    <div class="modal-content" @click.stop>
       <!-- Botón cerrar -->
       <button class="close-btn" @click="close">
         ×
@@ -11,8 +11,10 @@
       <component
         :is="currentComponent"
         :key="currentView"
+        :userEmail="userEmail"
         @success="handleSuccess"
         @switch-view="switchView"
+        @show-reset-form="handleShowResetForm"
       />
     </div>
   </div>
@@ -23,6 +25,7 @@ import { ref, computed, defineEmits, defineProps } from 'vue'
 import InicioSesion from './InicioSesion.vue'
 import Registro from './Registro.vue'
 import RecuperarContra from './RecuperarContra.vue'
+import RestablecerContra from './RestablecerContra.vue'
 
 // Props y emits
 const props = defineProps({
@@ -33,12 +36,14 @@ const emit = defineEmits(['close', 'success'])
 
 // Estado para controlar qué formulario mostrar
 const currentView = ref('login')
+const userEmail = ref('')
 
 // Mapeo de vistas a componentes
 const components = {
   login: InicioSesion,
   register: Registro,
-  forgot: RecuperarContra
+  forgot: RecuperarContra,
+  reset: RestablecerContra
 }
 
 // Componente actual basado en la vista
@@ -50,6 +55,7 @@ function close() {
   // Resetear a login después de cerrar
   setTimeout(() => {
     currentView.value = 'login'
+    userEmail.value = ''
   }, 300)
 }
 
@@ -63,6 +69,12 @@ function handleSuccess() {
   emit('success')
   close()
 }
+
+function handleShowResetForm(email) {
+  userEmail.value = email
+  currentView.value = 'reset'
+}
+
 </script>
 
 <style scoped>
