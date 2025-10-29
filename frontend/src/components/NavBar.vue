@@ -30,12 +30,29 @@
           <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg" />
           Ingresar
         </button>
-        <!-- Si SÍ está autenticado, mostrar nombre y botón cerrar sesión -->
-        <div v-else class="user-logged">
-          <span class="user-name">Hola, {{ user?.nombre || 'Usuario' }}</span>
-          <button class="logout-btn" @click="cerrarSesion">
-            Salir
+        <!-- Si SÍ está autenticado, mostrar menú desplegable -->
+        <div v-else class="user-logged" ref="userMenu">
+          <button class="user-menu-btn" @click="toggleUserMenu">
+            <img src="../assets/IconosNavBarFooter/profile-svgrepo-com (1).svg" />
+            <span class="user-name">Hola, {{ user?.nombre || 'Usuario' }}</span>
+            <span class="dropdown-arrow">▼</span>
           </button>
+
+          <!-- Menú desplegable -->
+          <transition name="dropdown-fade">
+            <div v-if="userMenuOpen" class="user-dropdown">
+              <router-link to="/perfil" class="dropdown-item" @click="userMenuOpen = false">
+                Mi Perfil
+              </router-link>
+              <router-link to="/mis-pedidos" class="dropdown-item" @click="userMenuOpen = false">
+                Mis Pedidos
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item logout" @click="cerrarSesion">
+                Cerrar sesión
+              </button>
+            </div>
+          </transition>
         </div>
 
         <router-link to="/carrito" class="cart-btn">
@@ -107,6 +124,16 @@
           <!-- Si SÍ está autenticado -->
           <div v-else class="user-menu-mobile">
             <p class="user-name-mobile">Hola, {{ user?.nombre || 'Usuario' }}</p>
+            <router-link to="/perfil" class="menu-link" @click="menuAbierto = false">
+              <span class="menu-link-content">
+                <span>Mi Perfil</span>
+              </span>
+            </router-link>
+            <router-link to="/mis-pedidos" class="menu-link" @click="menuAbierto = false">
+              <span class="menu-link-content">
+                <span>Mis Pedidos</span>
+              </span>
+            </router-link>
             <button @click="cerrarSesion" class="menu-link">
               <span class="menu-link-content">
                 <span>Cerrar sesión</span>
@@ -150,6 +177,7 @@ export default {
   data() {
     return {
       menuAbierto: false,
+      userMenuOpen: false,
       windowWidth: window.innerWidth, // Ancho de la ventana para manejar el responsive
       searchText: '',
       sugerencias: [], // 🔴 resultados de la búsqueda
@@ -282,6 +310,12 @@ export default {
       if (buscador && !buscador.contains(event.target)) {
         this.mostrarSugerencias = false;
       }
+
+      // Cerrar menú de usuario si click está afuera
+      const userMenu = this.$refs.userMenu;
+      if (userMenu && !userMenu.contains(event.target)) {
+        this.userMenuOpen = false;
+      }
     },
     irADetalle(id) {
       this.mostrarSugerencias = false;
@@ -292,11 +326,16 @@ export default {
     abrirAuthModal() {
       this.$emit('abrirAuth');
     },
+    // MÉTODO: toggle menú de usuario
+    toggleUserMenu() {
+      this.userMenuOpen = !this.userMenuOpen;
+    },
     // MÉTODO: cerrar sesión
     cerrarSesion() {
       this.logout();
       this.$router.push('/');
       this.menuAbierto = false; // Cerrar menú móvil si está abierto
+      this.userMenuOpen = false; // Cerrar menú de usuario
     }
   }
 };
@@ -601,15 +640,109 @@ export default {
 
 /* Estilos para usuario autenticado */
 .user-logged {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.user-menu-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.user-menu-btn img {
+  max-height: 22px;
+}
+
 .user-name {
-  color: var(--color-primary);
+  color: white;
   font-weight: 600;
   font-size: 0.95rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  margin-left: 0.2rem;
+  transition: transform 0.2s ease;
+}
+
+.user-menu-btn:hover .dropdown-arrow {
+  transform: translateY(2px);
+}
+
+/* Menú desplegable del usuario */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #2C3E50;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #34495e;
+  color: var(--color-primary);
+}
+
+.dropdown-item.logout {
+  color: #f44336;
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.3rem 0;
+}
+
+/* Animación del dropdown */
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 .logout-btn {
