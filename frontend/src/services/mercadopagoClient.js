@@ -88,6 +88,14 @@ class MercadoPagoService {
       throw error;
     }
   }
+
+async crearPreferencia(orderData) {
+  return this.createPreference(orderData);
+}
+
+async obtenerEstadoPago(orderId) {
+  return this.getPaymentStatus(orderId);
+}
 }
 
 export default new MercadoPagoService();
