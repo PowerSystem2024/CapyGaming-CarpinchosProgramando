@@ -18,8 +18,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { clearCart } from '../utils/cartUtils';
 
 export default {
   name: 'PaymentPending',
@@ -27,6 +28,32 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const paymentId = ref(route.query.payment_id || 'N/A');
+
+    onMounted(() => {
+      const paymentResult = {
+        status: 'pending',
+        paymentId: paymentId.value
+      };
+
+      // Guardar resultado para que CheckoutForm lo lea
+      localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+
+      // Enviar mensaje a la pestaña original (si se abrió desde otra pestaña)
+      if (window.opener && !window.opener.closed) {
+        console.log('Enviando mensaje a pestaña original...');
+        window.opener.postMessage({
+          type: 'PAYMENT_RESULT',
+          result: paymentResult
+        }, window.location.origin);
+      }
+
+      // Limpiar flags de pago en proceso
+      localStorage.removeItem('paymentInProgress');
+      localStorage.removeItem('currentOrderId');
+
+      // Limpiar carrito (el pago está pendiente pero iniciado)
+      clearCart();
+    });
 
     const goToHome = () => {
       router.push('/');
