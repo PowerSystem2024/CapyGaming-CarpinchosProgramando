@@ -124,7 +124,7 @@ async function loadOrders() {
     loading.value = true;
     error.value = null;
     const response = await orderService.getUserOrders();
-    orders.value = response.orders || response || [];
+    orders.value = response.pedidos || response.orders || response || [];
   } catch (err) {
     console.error('Error loading orders:', err);
     error.value = 'No se pudieron cargar los pedidos. Intenta nuevamente.';
@@ -194,7 +194,7 @@ function formatPaymentMethod(method) {
 .pedidos-container {
   min-height: 100vh;
   background: var(--color-background);
-  padding: 2rem 1rem;
+  padding: 10rem 1rem 2rem 1rem;
 }
 
 .pedidos-content {
@@ -232,6 +232,7 @@ function formatPaymentMethod(method) {
 }
 
 .filters {
+  top: 15px;
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
