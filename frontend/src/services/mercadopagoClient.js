@@ -89,6 +89,40 @@ class MercadoPagoService {
     }
   }
 
+  /**
+   * Obtener la public key de MercadoPago
+   * @returns {Promise<string>} - Public key
+   */
+  async getPublicKey() {
+    if (USE_MOCK) {
+      // 🎭 MOCK - Simular respuesta
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true,
+            publicKey: 'TEST-mock-public-key'
+          });
+        }, 100);
+      });
+    }
+
+    // 🌐 REAL
+    try {
+      const response = await fetch(`${API_BASE}/pagos/public-key`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al obtener public key');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting public key:', error);
+      throw error;
+    }
+  }
+
 async crearPreferencia(orderData) {
   return this.createPreference(orderData);
 }
