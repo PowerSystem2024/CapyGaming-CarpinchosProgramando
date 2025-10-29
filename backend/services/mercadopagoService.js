@@ -53,7 +53,8 @@ export const createPreference = async (preferenceData) => {
     const idempotencyKey = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
 
     // Detectar si estamos en localhost (testing) o en producción
-    // MercadoPago rechaza auto_return con URLs localhost, por lo que solo lo habilitamos en producción
+    // IMPORTANTE: MercadoPago RECHAZA auto_return con URLs localhost en modo TEST
+    // Solo habilitamos auto_return en producción (URLs públicas)
     const isLocalhost = process.env.FRONTEND_URL?.includes('localhost') ||
                        process.env.FRONTEND_URL?.includes('127.0.0.1');
 
@@ -79,9 +80,8 @@ export const createPreference = async (preferenceData) => {
         failure: `${process.env.FRONTEND_URL}/payment/failure`,
         pending: `${process.env.FRONTEND_URL}/payment/pending`
       },
-      // auto_return condicional: solo en producción (URLs públicas)
-      // MercadoPago rechaza auto_return con localhost en modo TEST
-      ...(isLocalhost ? {} : { auto_return: 'all' }),
+      // Solo usar auto_return en producción (MercadoPago lo rechaza con localhost)
+      ...(isLocalhost ? {} : { auto_return: 'approved' }),
       external_reference: preferenceData.orderId,
       notification_url: `${process.env.BACKEND_URL}/api/webhooks/webhook`,
       statement_descriptor: 'CapyGaming'

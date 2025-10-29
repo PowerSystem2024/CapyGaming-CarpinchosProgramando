@@ -1,0 +1,66 @@
+# ============================================
+# CONFIGURACIÓN DE NGROK - CapyGaming
+# ============================================
+# Este archivo configura múltiples túneles de ngrok
+# NOTA: La cuenta GRATUITA de ngrok solo permite 1 túnel a la vez
+# Para usar múltiples túneles necesitas ngrok Pro ($10/mes)
+# Alternativa gratuita: Ver SETUP-TUNNELS.md
+
+version: "2"
+authtoken: TU_AUTHTOKEN_AQUI  # Reemplazar con tu token de ngrok
+
+tunnels:
+  # Túnel para el BACKEND (puerto 3001)
+  backend:
+    proto: http
+    addr: 3001
+    inspect: true
+    # Dominio personalizado (requiere plan pagado)
+    # hostname: capygaming-backend.ngrok.io
+
+  # Túnel para el FRONTEND (puerto 80)
+  frontend:
+    proto: http
+    addr: 80
+    inspect: true
+    # Dominio personalizado (requiere plan pagado)
+    # hostname: capygaming-frontend.ngrok.io
+
+# ============================================
+# INSTRUCCIONES DE USO
+# ============================================
+#
+# 1. Obtén tu authtoken de ngrok:
+#    https://dashboard.ngrok.com/get-started/your-authtoken
+#
+# 2. Reemplaza TU_AUTHTOKEN_AQUI con tu token real
+#
+# 3. Copia este archivo a la ubicación de configuración de ngrok:
+#    Windows: C:\Users\{tu_usuario}\.ngrok2\ngrok.yml
+#    Linux/Mac: ~/.ngrok2/ngrok.yml
+#
+#    O especifica la ruta al ejecutar:
+#    ngrok start --config=./ngrok.yml --all
+#
+# 4. Inicia todos los túneles (requiere cuenta PAGADA):
+#    ngrok start --all
+#
+# 5. O inicia túneles individuales (cuenta gratuita):
+#    ngrok start backend    # Solo backend
+#    ngrok start frontend   # Solo frontend
+#
+# ============================================
+# CUENTA GRATUITA vs PAGADA
+# ============================================
+#
+# GRATUITA:
+# - 1 túnel simultáneo
+# - URLs aleatorias cada vez
+# - Ejecutar: ngrok start backend (uno a la vez)
+#
+# PAGADA ($10/mes):
+# - Múltiples túneles simultáneos
+# - Dominios personalizados estáticos
+# - Ejecutar: ngrok start --all
+#
+# ============================================
