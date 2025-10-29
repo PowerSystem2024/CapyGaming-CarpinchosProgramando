@@ -73,7 +73,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { addToCart, getCart } from '../utils/cartUtils';
 import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto';
@@ -104,16 +104,26 @@ const infoItems = ref([
   }
 ]);
 
-onMounted(async () => {
-  const id = route.params.id;
+// Función para cargar el producto (líneas 107-114)
+const cargarProducto = async (id) => {
   try {
-    const res = await axios.get(`/api/productos/${id}`);
-    producto.value = res.data;
+    const res = await axios.get(`/api/productos/${id}`)
+    producto.value = res.data
   } catch (err) {
-    console.error('No se pudo cargar el producto', err);
+    console.error('No se pudo cargar el producto', err)
   }
+}
+
+// Carga inicial cuando se monta el componente (líneas 116-119)
+onMounted(() => {
+  const id = route.params.id;
+  cargarProducto(id);
 });
 
+// Vigilar cambios en el ID de la URL (líneas 121-124 - NUEVO)
+watch(() => route.params.id, (nuevoId) => {
+  cargarProducto(nuevoId);
+});
 // Funciones para controlar la cantidad
 // Incrementa respetando el stock del producto
 const aumentarCantidad = () => {

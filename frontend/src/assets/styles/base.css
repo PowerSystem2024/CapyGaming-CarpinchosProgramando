@@ -55,7 +55,6 @@
 * {
     color: var(--color-foreground);
     font-family: 'Poppins', sans-serif;
-    background-color: var(--color-background);
 }
 
 a {

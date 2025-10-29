@@ -28,13 +28,40 @@ export const createOrder = async (orderData) => {
     // INICIAR TRANSACCIÓN
     await client.query('BEGIN');
 
+        // 🆕 VALIDACIÓN DE STOCK DISPONIBLE
+    console.log('🔍 Validando stock disponible...');
+    
+    for (const item of items) {
+      const stockQuery = `
+        SELECT stock, nombre
+        FROM producto
+        WHERE id_producto = $1
+      `;
+      const stockResult = await client.query(stockQuery, [item.id]);
+      
+      if (stockResult.rows.length === 0) {
+        throw new Error(`Producto con ID ${item.id} no existe`);
+      }
+      
+      const { stock, nombre } = stockResult.rows[0];
+      
+      if (stock < item.quantity) {
+        throw new Error(
+          `Stock insuficiente para ${nombre}. ` +
+          `Disponible: ${stock}, Solicitado: ${item.quantity}`
+        );
+      }
+      
+      console.log(`✅ ${nombre}: Stock OK (${stock} disponibles, ${item.quantity} solicitados)`);
+    }
+
     console.log('Iniciando transacción de BD para orden:', orderId);
 
     // 1. Insertar orden principal
     const ordenResult = await client.query(
       `INSERT INTO orden_pago (orden_id, dni_usuario, total, estado)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id_orden, orden_id, fecha_creacion`,
+      VALUES ($1, $2, $3, $4)
+      RETURNING id_orden, orden_id, fecha_creacion`,
       [
         orderId,
         payer.identification?.number || null,
@@ -52,8 +79,8 @@ export const createOrder = async (orderData) => {
     for (const item of items) {
       const itemResult = await client.query(
         `INSERT INTO item_orden (id_orden, producto_id, nombre, cantidad, precio_unitario, precio_total, imagen_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
-         RETURNING id_item`,
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id_item`,
         [
           orden.id_orden,
           item.id || null,
@@ -73,8 +100,8 @@ export const createOrder = async (orderData) => {
     // 3. Crear registro inicial de pago (sin preference_id aún)
     const pagoResult = await client.query(
       `INSERT INTO pago_mercadopago (id_orden, external_reference, currency_id, status)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id_pago`,
+      VALUES ($1, $2, $3, $4)
+      RETURNING id_pago`,
       [orden.id_orden, orderId, 'ARS', 'pending']
     );
 
@@ -115,9 +142,9 @@ export const updateOrderWithPreferenceId = async (idOrden, preferenceId) => {
   try {
     const result = await pool.query(
       `UPDATE pago_mercadopago
-       SET preference_id = $1, fecha_actualizacion = NOW()
-       WHERE id_orden = $2
-       RETURNING id_pago`,
+      SET preference_id = $1, fecha_actualizacion = NOW()
+      WHERE id_orden = $2
+      RETURNING id_pago`,
       [preferenceId, idOrden]
     );
 
@@ -148,9 +175,9 @@ export const getOrderById = async (orderId) => {
     const result = await pool.query(
       `SELECT op.*, pm.payment_id, pm.preference_id, pm.status, pm.status_detail,
               pm.payment_method, pm.transaction_amount
-       FROM orden_pago op
-       LEFT JOIN pago_mercadopago pm ON op.id_orden = pm.id_orden
-       WHERE op.orden_id = $1`,
+      FROM orden_pago op
+      LEFT JOIN pago_mercadopago pm ON op.id_orden = pm.id_orden
+      WHERE op.orden_id = $1`,
       [orderId]
     );
 
@@ -183,10 +210,10 @@ export const updateOrderPaymentStatus = async (externalReference, paymentData) =
     // Actualizar pago_mercadopago
     const pagoResult = await client.query(
       `UPDATE pago_mercadopago
-       SET payment_id = $1, status = $2, status_detail = $3,
-           transaction_amount = $4, payment_method = $5, fecha_actualizacion = NOW()
-       WHERE external_reference = $6
-       RETURNING id_orden`,
+      SET payment_id = $1, status = $2, status_detail = $3,
+          transaction_amount = $4, payment_method = $5, fecha_actualizacion = NOW()
+      WHERE external_reference = $6
+      RETURNING id_orden`,
       [paymentId, status, statusDetail, transactionAmount, paymentMethod, externalReference]
     );
 
@@ -199,10 +226,26 @@ export const updateOrderPaymentStatus = async (externalReference, paymentData) =
     // Actualizar orden_pago
     await client.query(
       `UPDATE orden_pago
-       SET estado = $1, fecha_actualizacion = NOW()
-       WHERE id_orden = $2`,
+      SET estado = $1, fecha_actualizacion = NOW()
+      WHERE id_orden = $2`,
       [status, idOrden]
     );
+
+    // Si el pago fue aprobado, actualizamos el stock
+    if (paymentData.status === 'approved') {
+      console.log('💰 Pago aprobado! Actualizando stock...');
+      
+      // Obtener los items de la orden
+      const itemsQuery = `
+        SELECT producto_id, cantidad
+        FROM item_orden
+        WHERE id_orden = $1
+      `;
+      const itemsResult = await client.query(itemsQuery, [idOrden]);
+      
+      // Actualizar stock de cada producto
+      await updateProductStock(itemsResult.rows, client);
+    }
 
     await client.query('COMMIT');
 
@@ -234,8 +277,8 @@ export const logWebhookEvent = async (webhookData) => {
   try {
     const result = await pool.query(
       `INSERT INTO webhook_evento (tipo_evento, payment_id, data_json, procesado)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id_evento`,
+      VALUES ($1, $2, $3, $4)
+      RETURNING id_evento`,
       [type, paymentId, JSON.stringify(data), false]
     );
 
@@ -260,8 +303,8 @@ export const markWebhookAsProcessed = async (paymentId, type) => {
   try {
     await pool.query(
       `UPDATE webhook_evento
-       SET procesado = TRUE
-       WHERE payment_id = $1 AND tipo_evento = $2`,
+      SET procesado = TRUE
+      WHERE payment_id = $1 AND tipo_evento = $2`,
       [paymentId, type]
     );
 
@@ -273,11 +316,33 @@ export const markWebhookAsProcessed = async (paymentId, type) => {
   }
 };
 
+async function updateProductStock(items, client) {
+  console.log('🔄 Actualizando stock de productos...');
+  
+  for (const item of items) {
+    const { producto_id, cantidad } = item;
+    // Query para restar del stock
+    const updateStockQuery = `
+      UPDATE producto
+      SET stock = stock - $1
+      WHERE id_producto = $2
+      RETURNING stock, nombre
+    `;
+    const result = await client.query(updateStockQuery, [cantidad, producto_id]);
+    
+    if (result.rows.length > 0) {
+      const { stock, nombre } = result.rows[0];
+      console.log(`✅ Stock actualizado: ${nombre} - Stock restante: ${stock}`);
+    }
+  }
+}
+
 export default {
   createOrder,
   updateOrderWithPreferenceId,
   getOrderById,
   updateOrderPaymentStatus,
   logWebhookEvent,
-  markWebhookAsProcessed
+  markWebhookAsProcessed,
+  updateProductStock
 };

@@ -4,10 +4,10 @@
 
     <!-- Sidebar con subcategorías, solo si existen -->
     <aside v-if="subcategorias && subcategorias.length" class="sidebar">
-      <h2>HARDWARE</h2>
+      <h2>{{ categoria.toUpperCase()}}</h2>
       <ul class="main-cats">
-        <li 
-          v-for="sub in subcategorias" 
+        <li
+          v-for="sub in subcategorias"
           :key="sub.name || sub"
           :class="{
             active: normalizar(sub.name || sub) === normalizar(subcategoria),
@@ -34,9 +34,9 @@
     <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
     <section class="productos-grid">
       <!-- Renderiza una tarjeta por cada producto filtrado -->
-      <ProductCard 
-        v-for="p in productos" 
-        :key="p.id_producto" 
+      <ProductCard
+        v-for="p in productos"
+        :key="p.id_producto"
         :producto="p"
         @agregar="agregarAlCarrito"
       />
@@ -44,10 +44,10 @@
       <div v-if="productos.length === 0" class="no-result">
         No se encontraron productos para esta categoría.
       </div>
-      <CarritoModalPreview 
-        :visible="mostrarModal" 
-        :carrito="getCart()" 
-        :ultimoProducto="ultimoProducto" 
+      <CarritoModalPreview
+        :visible="mostrarModal"
+        :carrito="getCart()"
+        :ultimoProducto="ultimoProducto"
         @close="mostrarModal = false"
       />
 
@@ -84,7 +84,7 @@ watch(() => route.params.subcategoria, (nuevoValor) => {
 // Función para normalizar texto (evita errores por mayúsculas o espacios)
 const normalizar = (texto) => texto?.toLowerCase().trim();
 
-// Subcategorias dinamicas desde el backend. 
+// Subcategorias dinamicas desde el backend.
 // Cada vez que cambia la categoría, se hace una petición al backend para obtener sus subcategorías.
 // Se actualiza el menú lateral automáticamente.
 const subcategorias = ref([]);
