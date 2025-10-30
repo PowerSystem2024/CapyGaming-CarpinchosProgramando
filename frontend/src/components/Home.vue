@@ -345,22 +345,28 @@ const prevReciente = () => {
 .home-page {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 3rem;
-  padding-top: calc(75px + 60px); /* 60px = altura del navbar */
+  padding-top: calc(75px + 60px);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
-/* ===== Hero (Carrusel + Secundarios) ===== */
+/* ===== Hero (Carrusel) ===== */
 .hero {
   display: flex;
   width: 100%;
-  margin: 0;       /* pegado al navbar */
-  padding: 0;      /* sin padding extra */
-  height: 500px;   /* puedes ajustar la altura */
+  margin: 0;
+  padding: 0;
+  height: 500px;
+  justify-content: center;
 }
 
-.hero .carousel,
-.hero .side-cards {
+.hero .carousel {
   height: 550px;
+  width: 100%;
 }
 
 /* ===== Carousel ===== */
@@ -377,9 +383,11 @@ const prevReciente = () => {
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }
+
 .carousel-item.active {
   opacity: 1;
 }
+
 .carousel img {
   width: 100%;
   height: 100%;
@@ -399,7 +407,9 @@ const prevReciente = () => {
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 8px;
+  z-index: 10;
 }
+
 .prev { left: 10px; }
 .next { right: 10px; }
 
@@ -412,7 +422,9 @@ const prevReciente = () => {
   display: flex;
   gap: 8px;
   background: none;
+  z-index: 10;
 }
+
 .indicators span {
   width: 12px;
   height: 12px;
@@ -420,86 +432,31 @@ const prevReciente = () => {
   background: #ffffff18;
   cursor: pointer;
 }
+
 .indicators span.active {
   background: var(--color-primary);
 }
 
-/* ===== Categorías / Productos ===== */
-
-.grid {
+/* ===== Categorías ===== */
+.categorias {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.cat-card {
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  transition: transform 0.3s;
-  background-color: var(--color-card);
-  color: var(--color-card-foreground);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-.cat-card img {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0;
   width: 100%;
-  border-radius: 0.5rem;
 }
 
-/* Estilo principal (N°1) */
-.cat-card.principal {
-  grid-column: span 2;
-
-}
-.cat-card.principal img {
-  height: 200px;
-  object-fit: cover;
-}
-
-/* Estilo secundario (N°2 → Notebooks y Kits) */
-.cat-card.secundario {
-  background-color: var(--color-popover);
-  border: none;          /*  sin borde */
-  box-shadow: none;      /*  sin sombra */
-  border-radius: 1rem;   /*  igual que el carrusel */
-  padding: 0;            /*  quita padding extra */
-  overflow: hidden;      /*  imagen ocupa todo el bloque */
-}
-.cat-card.secundario img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 1rem;
-} 
-
-/*.productos img{
-  width: 300px;
-} */
-
-.cat-card.secundario h3,
-.cat-card.secundario small {
-  position: absolute;    /*  si querés texto sobre la imagen */
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--color-foreground);
-  background: rgba(0,0,0,0.4);
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-}
-
-/* PROBANDO */
 .separator {
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-primary);
-  margin: 0;           /* quitar margen externo */
-  padding: 0.4rem 1rem;   /* pequeño espacio para que respire */
+  margin: 0;
+  padding: 0.4rem 1rem;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .separator h2 {
@@ -510,44 +467,9 @@ const prevReciente = () => {
   padding: 0 1rem;
   position: relative;
   z-index: 1;
-  color: var(--color-background);        /* color del texto, cambia si querés */
+  color: var(--color-background);
   background-color: transparent;
   flex: 1;
-}
-
-.autoplay-toggle {
-  background: rgba(0, 0, 0, 0.2);
-  border: 2px solid var(--color-background);
-  color: var(--color-background);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  z-index: 2;
-}
-
-.autoplay-toggle:hover {
-  background: var(--color-background);
-  color: var(--color-primary);
-  transform: scale(1.1);
-}
-
-.autoplay-toggle svg {
-  width: 20px;
-  height: 20px;
-  background: transparent;
-}
-
-.categorias {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
 }
 
 /* Contenedor de tarjetas */
@@ -556,11 +478,15 @@ const prevReciente = () => {
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
+  align-items: center;
   padding: 2rem 1rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.card  {
-  flex: 1;
+.card {
   position: relative;
   overflow: hidden;
   border: none;
@@ -574,19 +500,27 @@ const prevReciente = () => {
   text-align: center;
   width: 250px;
   height: 350px;
+  flex-shrink: 0;
 }
-
 
 .btn {
-  width:50%; 
-  padding:0.6rem 1rem; 
-  border:none; 
-  border-radius:8px; 
-  background:var(--color-primary); 
-  color:var(--color-background); 
-  cursor:pointer; transition: all 0.25s ease-in-out; font-weight: 600
+  width: 50%; 
+  padding: 0.6rem 1rem; 
+  border: none; 
+  border-radius: 8px; 
+  background: var(--color-primary); 
+  color: var(--color-background); 
+  cursor: pointer; 
+  transition: all 0.25s ease-in-out; 
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
 }
-.btn:hover { background-color: var(--color-secondary); color: var(--color-foreground); }
+
+.btn:hover { 
+  background-color: var(--color-secondary); 
+  color: var(--color-foreground); 
+}
 
 .card img {
   width: 100%;
@@ -597,14 +531,9 @@ const prevReciente = () => {
   border-radius: 1rem;
 }
 
-
 .card:hover img {
-  transform: scale(1.05); /* pequeño zoom */
-  filter: brightness(0.4); /* se oscurece */
-}
-
-.card:hover::before {
-  border-color: orange; /* borde animado */
+  transform: scale(1.05);
+  filter: brightness(0.4);
 }
 
 .overlay {
@@ -625,13 +554,14 @@ const prevReciente = () => {
 }
 
 .card:hover .overlay {
-  bottom: 0; /* entra desde la izquierda */
+  bottom: 0;
 }
 
 .overlay h3 {
   font-size: 1.5rem;
   letter-spacing: 1px;
   background: none;
+  margin: 0;
 }
 
 .overlay button {
@@ -649,25 +579,24 @@ const prevReciente = () => {
   background: var(--chart-3);
 }
 
-/* ESTILOS PARA BENEFICIOS */
+/* ===== ESTILOS PARA BENEFICIOS ===== */
 .benefits-bar {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  background-color: var(--color-card); /* o un color suave como #f5f5f5 */
+  background-color: var(--color-card);
   width: 100%;
+  max-width: 1400px;
   height: 200px;
-  padding: 0rem 12rem;
-  padding-left: 21rem; /* para centrarlo */
+  padding: 0 2rem;
   margin: 2rem auto;
   margin-top: 0;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 2rem;
+  box-sizing: border-box;
 }
 
 .benefit-item {
-  flex: 1;
-  min-width: 250px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -677,18 +606,16 @@ const prevReciente = () => {
   font-size: 1rem;
   background: transparent;
   padding: 0;
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  justify-content: flex-start;
 }
 
-.benefit-item p {
-  font-weight: 400;
-  font-size: 0.9rem;
-  color: var(--color-muted-foreground);
-  margin: 0;
-  background: transparent;
-}
 .benefit-icon {
   font-size: 2rem;
   background: transparent;
+  flex-shrink: 0;
 }
 
 .benefit-text-block {
@@ -701,15 +628,17 @@ const prevReciente = () => {
   font-weight: 600;
   font-size: 1rem;
   background: transparent;
+  margin: 0;
 }
 
 .benefit-subtext {
   font-weight: 300;
   font-size: 0.9rem;
   background: transparent;
+  margin: 0;
 }
 
-.benefit-icon svg{
+.benefit-icon svg {
   background: transparent;
 }
 
@@ -718,31 +647,38 @@ const prevReciente = () => {
   width: 100%;
   padding: 3rem 2rem;
   background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .carousel-wrapper {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   max-width: 1400px;
   margin: 0 auto;
   gap: 1rem;
+  width: 100%;
 }
 
 .productos-carousel-container {
   flex: 1;
   overflow: hidden;
   padding: 2rem 0;
+  width: 100%;
 }
 
 .productos-carousel-track {
   display: flex;
   gap: 2rem;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
 }
 
 .producto-card {
-  min-width: calc((100% - 6rem) / 4); /* 4 productos visibles */
+  min-width: calc((100% - 6rem) / 4);
   background: var(--color-card);
   border-radius: 16px;
   overflow: hidden;
@@ -750,6 +686,7 @@ const prevReciente = () => {
   transition: all 0.3s ease;
   border: 2px solid transparent;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
 }
 
 .producto-card:hover {
@@ -854,7 +791,7 @@ const prevReciente = () => {
   transform: scale(1.05);
 }
 
-/* Botones de navegación del carrusel (flechas simples sin fondo) */
+/* Botones de navegación del carrusel */
 .carousel-btn {
   background: transparent !important;
   border: none;
@@ -898,6 +835,8 @@ const prevReciente = () => {
   margin: 2rem auto;
   max-width: 600px;
   border: 2px dashed var(--color-border);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .no-productos p {
@@ -905,10 +844,52 @@ const prevReciente = () => {
   background: transparent;
 }
 
-/* Responsive para carruseles */
-@media (max-width: 1200px) {
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets y pantallas medianas (768px - 1199px) */
+@media (max-width: 1199px) {
+  .home-page {
+    gap: 2.5rem;
+    padding-top: calc(70px + 50px);
+  }
+
+  .hero {
+    height: 400px;
+  }
+
+  .hero .carousel {
+    height: 450px;
+  }
+
+  .card-container {
+    max-width: 1000px;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .card {
+    width: 220px;
+    height: 320px;
+  }
+
+  .benefits-bar {
+    max-width: 1000px;
+    height: 180px;
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .benefit-item {
+    min-width: 200px;
+    max-width: 250px;
+  }
+
   .producto-card {
-    min-width: calc((100% - 4rem) / 3); /* 3 productos en tablets */
+    min-width: calc((100% - 4rem) / 3);
+  }
+
+  .producto-imagen {
+    height: 280px;
   }
 
   .carousel-btn {
@@ -918,81 +899,19 @@ const prevReciente = () => {
   }
 }
 
-@media (max-width: 900px) {
-  .productos-carousel {
-    padding: 2rem 1rem;
+/* Tablets pequeñas (600px - 767px) */
+@media (max-width: 767px) {
+  .home-page {
+    gap: 2rem;
+    padding-top: calc(65px + 45px);
   }
 
-  .producto-card {
-    min-width: calc((100% - 2rem) / 2); /* 2 productos en móviles */
+  .hero {
+    height: 350px;
   }
 
-  .carousel-btn {
-    font-size: 2.5rem;
-    width: 40px;
-    height: 40px;
-  }
-
-  .productos-carousel-track {
-    gap: 1rem;
-  }
-
-  .producto-imagen {
-    height: 220px;
-  }
-}
-
-@media (max-width: 600px) {
-  .producto-card {
-    min-width: 100%; /* 1 producto en pantallas pequeñas */
-  }
-
-  .carousel-btn {
-    font-size: 2rem;
-    width: 35px;
-    height: 35px;
-  }
-}
-
-/* Esto todavia hay que corregir cuando tengamos todo lo del Home */
-@media (max-width: 1024px) {
-  .benefits-bar {
-    padding: 0 4rem;
-    height: auto;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .benefit-item {
-    justify-content: flex-start;
-    gap: 1rem;
-    padding: 0.5rem 0;
-  }
-
-  .carousel {
+  .hero .carousel {
     height: 400px;
-  }
-
-  .carousel img {
-    object-fit: cover;
-  }
-
-  .card-container {
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .card {
-    flex: 1 1 calc(50% - 1rem);
-    min-width: 240px;
-    height: 300px;
-  }
-}
-
-@media (max-width: 768px) {
-  .carousel {
-    height: 300px;
   }
 
   .prev,
@@ -1003,25 +922,19 @@ const prevReciente = () => {
 
   .separator h2 {
     font-size: 1.4rem;
+    padding: 0 0.5rem;
   }
 
-  /*.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem; /* más espacio entre tarjetas 
-  justify-content: center;
-  padding: 2rem 1rem;
-  } */
-
-
   .card-container {
-    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+    justify-content: center;
   }
 
   .card {
-    height: 250px;
+    width: calc(50% - 1rem);
+    height: 280px;
+    max-width: 200px;
   }
 
   .overlay h3 {
@@ -1034,14 +947,18 @@ const prevReciente = () => {
   }
 
   .benefits-bar {
-    padding: 0 2rem;
-    gap: 1rem;
+    height: auto;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
   }
 
   .benefit-item {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    min-width: 100%;
+    max-width: 300px;
+    justify-content: center;
+    text-align: center;
   }
 
   .benefit-icon svg {
@@ -1049,15 +966,263 @@ const prevReciente = () => {
     height: 60px;
   }
 
+  .productos-carousel {
+    padding: 2rem 1rem;
+  }
+
+  .producto-card {
+    min-width: calc((100% - 2rem) / 2);
+  }
+
+  .producto-imagen {
+    height: 240px;
+  }
+
+  .carousel-btn {
+    font-size: 2.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .productos-carousel-track {
+    gap: 1rem;
+  }
+}
+
+/* Móviles (480px - 599px) */
+@media (max-width: 599px) {
+  .home-page {
+    gap: 1.5rem;
+    padding-top: calc(60px + 40px);
+    align-items: center;
+  }
+
+  .hero {
+    height: 250px;
+  }
+
+  .hero .carousel {
+    height: 300px;
+  }
+
+  .separator h2 {
+    font-size: 1.2rem;
+  }
+
+  .card-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+    justify-content: center;
+  }
+
+  .card {
+    width: calc(50% - 0.5rem);
+    height: 200px;
+    max-width: 160px;
+    padding: 0.5rem;
+  }
+
+  .overlay h3 {
+    font-size: 0.9rem;
+  }
+
+  .overlay .btn {
+    width: 80%;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .benefits-bar {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .benefit-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+    min-width: 100%;
+  }
+
+  .benefit-icon svg {
+    width: 50px;
+    height: 50px;
+  }
+
   .benefit-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .benefit-subtext {
+    font-size: 0.8rem;
+  }
+
+  .productos-carousel {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .producto-card {
+    min-width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .producto-imagen {
+    height: 200px;
+  }
+
+  .carousel-wrapper {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .carousel-btn {
+    font-size: 2rem;
+    width: 35px;
+    height: 35px;
+    order: 2;
+  }
+
+  .productos-carousel-container {
+    order: 1;
+    width: 100%;
+  }
+
+  .btn-ver-mas {
+    padding: 0.7rem 1rem;
     font-size: 0.9rem;
   }
 }
 
+/* Móviles pequeños (hasta 479px) */
+@media (max-width: 479px) {
+  .home-page {
+    gap: 1rem;
+    padding-top: calc(55px + 35px);
+  }
 
+  .hero {
+    height: 200px;
+  }
 
+  .hero .carousel {
+    height: 250px;
+  }
+
+  .prev,
+  .next {
+    font-size: 1.2rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .indicators span {
+    width: 8px;
+    height: 8px;
+  }
+
+  .separator {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .separator h2 {
+    font-size: 1rem;
+    padding: 0 0.3rem;
+  }
+
+  .card-container {
+    gap: 0.8rem;
+    padding: 0.8rem 0.3rem;
+  }
+
+  .card {
+    width: calc(50% - 0.4rem);
+    height: 180px;
+    max-width: 140px;
+    padding: 0.3rem;
+  }
+
+  .overlay h3 {
+    font-size: 0.8rem;
+  }
+
+  .overlay .btn {
+    width: 90%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  .benefits-bar {
+    padding: 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .benefit-item {
+    gap: 0.5rem;
+  }
+
+  .benefit-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .benefit-title {
+    font-size: 0.8rem;
+  }
+
+  .benefit-subtext {
+    font-size: 0.7rem;
+  }
+
+  .productos-carousel {
+    padding: 1rem 0.3rem;
+  }
+
+  .producto-info {
+    padding: 1rem;
+  }
+
+  .producto-nombre {
+    font-size: 0.85rem;
+    min-height: 2.2rem;
+  }
+
+  .producto-precio {
+    font-size: 1rem;
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  .btn {
+    width: 70%;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .carousel-btn {
+    font-size: 1.8rem;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Ajustes para pantallas muy grandes (más de 1600px) */
+@media (min-width: 1600px) {
+  .card-container {
+    max-width: 1600px;
+  }
+
+  .benefits-bar {
+    max-width: 1600px;
+  }
+
+  .carousel-wrapper {
+    max-width: 1600px;
+  }
+
+  .card {
+    width: 280px;
+    height: 380px;
+  }
+}
 </style>
