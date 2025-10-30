@@ -1,81 +1,10 @@
 <template>
   <div class="faq-page-wrapper">
-    <div class="top-header">
-      <h2 class="top-title"> Información General </h2>
-      <div class="top-buttons">
-        <button 
-          class="top-button"
-          @click="toggleTopQuestion(0)"
-          :class="{ 'active': topQuestions[0] }"
-        >
-          <span class="button-content">
-            <span class="button-text">¿Qué es Capygaming?</span>
-            <span class="top-arrow" :class="{ 'open': topQuestions[0] }">⮟</span>
-          </span>
-          <span class="button-background"></span>
-        </button>
-        <button 
-          class="top-button"
-          @click="toggleTopQuestion(1)"
-          :class="{ 'active': topQuestions[1] }"
-        >
-          <span class="button-content">
-            <span class="button-text">¿Qué significa que el sitio sea un proyecto académico?</span>
-            <span class="top-arrow" :class="{ 'open': topQuestions[1] }">⮟</span>
-          </span>
-          <span class="button-background"></span>
-        </button>
-        <button 
-          class="top-button"
-          @click="toggleTopQuestion(2)"
-          :class="{ 'active': topQuestions[2] }"
-        >
-          <span class="button-content">
-            <span class="button-text">¿Puedo comprar productos reales en Capygaming?</span>
-            <span class="top-arrow" :class="{ 'open': topQuestions[2] }">⮟</span>
-          </span>
-          <span class="button-background"></span>
-        </button>
-      </div>
-      
-      <!-- Respuestas de las preguntas superiores -->
-      <transition-group name="staggered-slide" tag="div" class="top-answers">
-        <div 
-          v-if="topQuestions[0]"
-          key="top-answer-0"
-          class="top-answer"
-          :style="{ '--stagger-index': 0 }"
-        >
-          <div class="answer-content">
-            Capygaming es un proyecto académico universitario que simula una tienda online de videojuegos y hardware. Todo el sitio, incluidos productos, precios y promociones, es parte de la simulación y no representa transacciones reales.
-          </div>
-        </div>
-        <div 
-          v-if="topQuestions[1]"
-          key="top-answer-1"
-          class="top-answer"
-          :style="{ '--stagger-index': 1 }"
-        >
-          <div class="answer-content">
-            Capygaming es una simulación creada para prácticas universitarias. Todo el contenido, funcionalidades de compra y promociones son ficticios y solo sirven para aprender y experimentar con un sitio de e-commerce.
-          </div>
-        </div>
-        <div 
-          v-if="topQuestions[2]" 
-          key="top-answer-2" 
-          class="top-answer"
-          :style="{ '--stagger-index': 2 }"
-        >
-          <div class="answer-content">
-            No, todas las compras son simuladas con fines educativos. No se envían productos ni se realizan cobros reales.
-          </div>
-        </div>
-      </transition-group>
-    </div>
+    <h1 class="top-title"> Preguntas Frecuentes</h1>
     
     <div class="faq-container">
       <aside class="faq-categories">
-        <h2 class="category-title">Preguntas Frecuentes</h2>
+        <h2 class="category-title">Categorías</h2>
         <ul>
           <li
             v-for="(categoria, index) in categorias"
@@ -138,9 +67,31 @@
 export default {
   data() {
     return {
+      
       categoriaSeleccionada: 0,
       topQuestions: [false, false, false],
       categorias: [
+        {
+          nombre: "Información General",
+          nombreCorto: "General", // ← Nombre corto para el sidebar
+          preguntas: [
+            { 
+              pregunta: "¿Qué es Capygaming?", 
+              respuesta: "Capygaming es un proyecto académico universitario que simula una tienda online de videojuegos y hardware. Todo el sitio, incluidos productos, precios y promociones, es parte de la simulación y no representa transacciones reales.", 
+              abierta: false 
+            },
+            { 
+              pregunta: "¿Qué significa que el sitio sea un proyecto académico?", 
+              respuesta: "Capygaming es una simulación creada para prácticas universitarias. Todo el contenido, funcionalidades de compra y promociones son ficticios y solo sirven para aprender y experimentar con un sitio de e-commerce.", 
+              abierta: false 
+            },
+            { 
+              pregunta: "¿Puedo comprar productos reales en Capygaming?", 
+              respuesta: "No, todas las compras son simuladas con fines educativos. No se envían productos ni se realizan cobros reales.", 
+              abierta: false 
+            }
+          ]
+        },
         {
           nombre: "Registro de Usuario y Seguridad",
           nombreCorto: "Registro y Seguridad",
@@ -217,23 +168,23 @@ export default {
 
 <style scoped>
 @import url('../assets/styles/base.css');
-/* ===== Colores de CapyGaming ===== */
-:root {
-  --color-bg: #0e0e0e;
-  --color-panel: #1b1b1b;
-  --color-border: #2b2b2b;
-  --color-accent: #ff7b00;
-  --color-accent-light: #ffa64d;
-  --color-text: #e4e4e4;
-  --color-muted: #aaaaaa;
-}
 
+.top-subtitle {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
 /* ===== Estructura general de la página ===== */
 .faq-page-wrapper {
-  padding: 2rem;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: "Inter", sans-serif;
+  padding-left: 12rem;
+  padding-right: 12rem;
+  padding-bottom: 5rem;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   margin-top: 10%;
 }
 
@@ -243,10 +194,13 @@ export default {
 }
 
 .top-title {
-  color: var(--color-text);
-  font-size: 1.8rem;
+  margin-top: 0;
+  color: var(--color-primary);
+  font-size: 2.8rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   font-weight: 700;
   margin-bottom: 1.5rem;
+  letter-spacing: 0.5; /*  Para mejor legibilidad */
 }
 
 .top-buttons {
@@ -257,9 +211,10 @@ export default {
 
 .top-button {
   flex: 1;
-  background-color: var(--color-panel);
+  background-color: var(--color-card);
   border: 1px solid var(--color-border);
-  color: var(--color-text);
+  color: var(--color-foreground);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   padding: 0;
   text-align: left;
   border-radius: 12px;
@@ -286,11 +241,18 @@ export default {
 
 .top-button:hover .button-content {
   transform: translateX(8px);
-  border-color: var(--chart-1);
+  border-color: var(--color-primary);
+}
+
+.top-button:hover {
+  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.3); /* glow naranja */
+  border-color: var(--color-primary);
 }
 
 .top-button.active {
-  border-color: var(--chart-1);
+  border-color: var(--color-primary);
+  background-color: rgba(243, 156, 18, 0.1); /* agregar fondo sutil */
+  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.4); /* glow más fuerte */
 }
 
 .button-background {
@@ -348,8 +310,8 @@ export default {
 .faq-container {
   display: flex;
   gap: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   border-radius: 16px;
   border: 1px solid var(--color-border);
   overflow: hidden;
@@ -357,16 +319,19 @@ export default {
 
 /* ===== Panel lateral (Categorías) ===== */
 .faq-categories {
-  background-color: var(--color-panel);
+  background-color: var(--color-card);
   border-right: 1px solid var(--color-border);
+  background: var(--color-card);
   padding: 0;
   width: 280px;
   flex-shrink: 0;
-  height: fit-content;
+}
+
+.category-title{
+  color: var(--color-primary);
 }
 
 .faq-categories .category-title {
-  color: var(--color-text);
   margin: 0;
   padding: 1rem 1.5rem;
   font-size: 1.2rem;
@@ -382,15 +347,16 @@ export default {
 .faq-categories li {
   padding: 0;
   margin: 0;
-  border-radius: 0;
   cursor: pointer;
   background-color: transparent;
-  color: var(--color-text);
+  color: var(--color-foreground);
   border-bottom: 1px solid var(--color-border);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
+
+
 
 .faq-categories li:last-child {
   border-bottom: none;
@@ -405,40 +371,24 @@ export default {
 }
 
 .faq-categories li:hover .category-content {
-  transform: translateX(3px);
-  background-color: var(--chart-1);
-}
-
-.faq-categories li.active {
-  background-color: var(--color-accent);
-  color: var(--color-text);
+  background-color: var(--color-primary);
   font-weight: 600;
 }
 
-.category-indicator {
-  position: absolute;
-  right: -20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.faq-categories li.active .category-indicator {
-  right: 15px;
-  opacity: 1;
-  width: 8px;
-  height: 8px;
+.faq-categories li.active {
+  background: linear-gradient(90deg, 
+    rgba(243, 156, 18, 0.2) 0%, 
+    rgba(243, 156, 18, 0.05) 100%
+  );
+  color: var(--color-primary); /* texto naranja */
+  font-weight: 600;
+  border-left: solid var(--color-primary); /* borde naranja grueso */
 }
 
 /* ===== Contenido principal ===== */
 .faq-content {
   flex: 1;
-  background-color: var(--color-panel);
+  background-color: var(--colo-card);
   border: none;
   border-radius: 0;
   padding: 1.5rem 2rem;
@@ -446,9 +396,9 @@ export default {
 }
 
 .faq-content h2 {
-  color: var(--color-text);
+  color: var(--color-foreground);
   font-size: 1.4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Estilos de las preguntas (Acordeón) */
@@ -461,11 +411,12 @@ export default {
 .faq-item {
   border: 1px solid var(--color-border);
   border-radius: 10px;
-  background-color: #141414;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background-color: var(--color-card); 
+  transition: all 0.3s ease;
   overflow: hidden;
   position: relative;
   margin: 10px;
+
 }
 
 .faq-item::before {
@@ -475,7 +426,10 @@ export default {
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light));
+  background: linear-gradient(to bottom, 
+    var(--color-primary), 
+    var(--color-primary) 
+  );
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 0.4s ease;
@@ -486,9 +440,9 @@ export default {
 }
 
 .faq-item:hover {
-  border-color: var(--color-accent);
-  background-color: #181818;
+  border-color: var(--color-primary);
   transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(243, 156, 18, 0.25); /* sombra naranja */
 }
 
 .faq-question {
@@ -496,14 +450,17 @@ export default {
   cursor: pointer;
   position: relative;
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--color-primary);
   transition: all 0.3s ease;
 }
 
 .faq-question.open{
-  border-color: var(--chart-1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
-
+.faq-question.open .question-text {
+  color: var(--color-primary);
+}
 .question-content {
   display: flex;
   justify-content: space-between;
@@ -534,9 +491,13 @@ export default {
 .arrow-icon {
   font-size: 1.2rem;
   font-weight: bold;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  color: var(--color-muted);
+  transition: all 0.3s ease;
+  color: var(--color-muted-foreground);
   display: inline-block;
+}
+
+.arrow:hover .arrow-icon {
+  color: var(--color-primary);
 }
 
 .arrow-hover {
@@ -550,26 +511,32 @@ export default {
   transition: all 0.3s ease;
 }
 
-.arrow:hover .arrow-hover {
-  opacity: 0.1;
-  transform: scale(1);
-}
 
 .arrow.open .arrow-icon {
   transform: rotate(180deg) scale(1.2);
-  color: var(--color-accent);
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 8px rgba(243, 156, 18, 0.6)); /* glow */
 }
 
 .faq-answer {
   padding: 0 1.2rem;
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--color-muted-foreground); /* en vez de var(--color-muted) */
+  line-height: 1.7; /* mejor legibilidad */
   overflow: hidden;
+  
+  /* Agregar fondo diferenciado */
+  background-color: rgba(0, 150, 250, 0.03); /* azul muy sutil */
 }
 
 .answer-inner {
   padding: 1rem 0;
-  border-top: 1px solid rgba(255, 123, 0, 0.2);
+  border-top: 2px solid var(--color-primary); /* más grueso */
+  /* Agregar gradiente en el borde */
+  border-image: linear-gradient(
+    to right, 
+    var(--color-primary), 
+    var(--color-primary)
+  ) 1;
 }
 
 /* ======================================= */

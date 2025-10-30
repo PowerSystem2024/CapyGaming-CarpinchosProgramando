@@ -1,7 +1,9 @@
 <template>
   <div class="about-us-container">
     <section class="about-us">
-      <h2>Quiénes Somos</h2>
+      <div class="quienes-somos">
+        <h1>Quiénes Somos</h1>
+      </div>
       <p class="descripcion-capy">
         "Somos una empresa dedicada a brindar soluciones innovadoras y eficientes para nuestros clientes.
         Nuestro equipo está compuesto por profesionales apasionados y comprometidos con la excelencia."
@@ -74,6 +76,17 @@ export default {
 
 <style scoped>
 @import url(../assets/styles/base.css);
+
+.quienes-somos h1{
+  margin-top: 6rem;
+  color: var(--color-primary);
+  font-size: 2.8rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5; /* Para mejor legibilidad */
+}
+
 .description-capy {
   font-size: 1.2em;
   margin-bottom: 30px;
@@ -82,6 +95,7 @@ export default {
 }
 
 .about-us-container {
+  margin: 0 auto;
   padding: 20px;
   padding-top: calc(30px + 60px);  /* 60px = altura del navbar */
   background-color: var(--color-background);
@@ -92,7 +106,7 @@ export default {
   margin: 0 auto;
   text-align: center;
   background-color: var(--background-color);
-  color: #f9f9f9;
+
 }
 
 .about-us h2 {
@@ -115,7 +129,7 @@ export default {
   gap: 20px;
   margin-top: 30px;
   background-color: var(--background-color);
-  color: #f9f9f9;
+  
 }
 
 .team-member {
@@ -125,7 +139,7 @@ export default {
   width: 250px;
   
 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color: #f9f9f9;
+ 
 }
 
 .team-member:hover {
