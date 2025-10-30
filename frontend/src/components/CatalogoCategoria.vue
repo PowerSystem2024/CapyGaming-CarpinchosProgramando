@@ -2,56 +2,93 @@
   <div class="catalogo-categoria">
     <h1>{{ categoria }}</h1>
 
-    <!-- Sidebar con subcategorías, solo si existen -->
-    <aside v-if="subcategorias && subcategorias.length" class="sidebar">
-      <h2>{{ categoria.toUpperCase()}}</h2>
-      <ul class="main-cats">
-        <li
-          v-for="sub in subcategorias"
-          :key="sub.name || sub"
-          :class="{
-            active: normalizar(sub.name || sub) === normalizar(subcategoria),
-            'has-children': sub.children && sub.children.length
-          }"
-        >
-          <!-- Enlace principal -->
-          <router-link :to="`/categoria/${categoria}/${sub.name || sub}`" class="sidebar-link">
-            {{ sub.name || sub }}
-          </router-link>
+    <div class="sidebar-container">
+      <!-- Sidebar: Explorador de categorías -->
+      <aside class="sidebar sidebar-categorias">
+        <!-- Título de categoría -->
+        <h2 class="sidebar-main-title">{{ categoria.toUpperCase()}}</h2>
 
-          <!-- Subcategorías (solo si existen hijos) -->
-          <ul v-if="sub.children && sub.children.length" class="child-list">
-            <li v-for="child in sub.children" :key="child">
-              <router-link :to="`/categoria/${categoria}/${child}`" class="sidebar-link">
-                {{ child }}
-              </router-link>
+        <hr class="separador">
+
+        <!-- Subcategorías dinámicas -->
+        <div v-if="subcategorias && subcategorias.length" class="subcategorias-section">
+          <ul class="main-cats">
+            <li
+              v-for="(sub, index) in subcategorias"
+              :key="sub.name || sub"
+              :class="{
+                expanded: subcategoriasExpandidas[index],
+                'has-children': sub.children && sub.children.length,
+                selected: normalizar(sub.name || sub) === normalizar(subcategoria)
+              }"
+            >
+              <!-- Enlace principal con toggle para expandir -->
+              <div class="subcategoria-header">
+                <router-link :to="`/categoria/${categoria}/${sub.name || sub}`" class="sidebar-link">
+                  {{ sub.name || sub }}
+                </router-link>
+                <!-- Botón de flecha solo si tiene hijos -->
+                <button
+                  v-if="sub.children && sub.children.length"
+                  @click.prevent="toggleSubcategoria(index)"
+                  class="toggle-btn"
+                  :aria-label="subcategoriasExpandidas[index] ? 'Contraer' : 'Expandir'"
+                >
+                </button>
+              </div>
+
+              <!-- Subcategorías (solo si existen hijos) -->
+              <ul v-if="sub.children && sub.children.length" class="child-list">
+                <li v-for="child in sub.children" :key="child">
+                  <router-link :to="`/categoria/${categoria}/${child}`" class="sidebar-link">
+                    {{ child }}
+                  </router-link>
+                </li>
+              </ul>
             </li>
           </ul>
-        </li>
-      </ul>
-    </aside>
+        </div>
+      </aside>
+    </div>
 
-    <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
-    <section class="productos-grid">
-      <!-- Renderiza una tarjeta por cada producto filtrado -->
-      <ProductCard
-        v-for="p in productos"
-        :key="p.id_producto"
-        :producto="p"
-        @agregar="agregarAlCarrito"
-      />
-      <!--Si no hay productos, muestra un mensaje de "sin resultados" -->
-      <div v-if="productos.length === 0" class="no-result">
-        No se encontraron productos para esta categoría.
+    <!-- Contenedor del filtro y productos -->
+    <div class="contenido">
+      <!-- Filtro de orden estilo ResultadosPage -->
+      <div class="ordenador" v-if="productos.length > 0">
+        <label for="orden">Ordenar por:</label>
+        <select id="orden" v-model="ordenPrecio" @change="aplicarOrdenamiento">
+          <option value="ninguno">Sin ordenar</option>
+          <option value="menorPrecio">Menor Precio</option>
+          <option value="mayorPrecio">Mayor Precio</option>
+          <option value="nombreAZ">Alfabético A-Z</option>
+          <option value="nombreZA">Alfabético Z-A</option>
+          <option value="masStock">Mayor stock</option>
+          <option value="menosStock">Menor stock</option>
+          <option value="mayorDescuento">Mayor descuento</option>
+        </select>
       </div>
-      <CarritoModalPreview
-        :visible="mostrarModal"
-        :carrito="getCart()"
-        :ultimoProducto="ultimoProducto"
-        @close="mostrarModal = false"
-      />
 
-    </section>
+      <!-- Sección principal que muestra los productos ya filtrados desde el backend -->
+      <section class="productos-grid">
+        <!-- Renderiza una tarjeta por cada producto filtrado y ordenado -->
+        <ProductCard
+          v-for="p in productosOrdenados"
+          :key="p.id_producto"
+          :producto="p"
+          @agregar="agregarAlCarrito"
+        />
+        <!--Si no hay productos, muestra un mensaje de "sin resultados" -->
+        <div v-if="productosOrdenados.length === 0" class="no-result">
+          No se encontraron productos para esta categoría.
+        </div>
+        <CarritoModalPreview
+          :visible="mostrarModal"
+          :carrito="getCart()"
+          :ultimoProducto="ultimoProducto"
+          @close="mostrarModal = false"
+        />
+      </section>
+    </div>
   </div>
 </template>
 
@@ -70,6 +107,7 @@ const mostrarModal = ref(false); // estado para mostrar modal
 const route = useRoute();
 const categoria = ref(route.params.categoria);
 const subcategoria = ref(route.params.subcategoria);
+
 // Estado reactivo para almacenar los productos desde el backend
 
 
@@ -88,6 +126,12 @@ const normalizar = (texto) => texto?.toLowerCase().trim();
 // Cada vez que cambia la categoría, se hace una petición al backend para obtener sus subcategorías.
 // Se actualiza el menú lateral automáticamente.
 const subcategorias = ref([]);
+const subcategoriasExpandidas = ref({});
+
+// Función para toggle de subcategorías
+const toggleSubcategoria = (index) => {
+  subcategoriasExpandidas.value[index] = !subcategoriasExpandidas.value[index];
+};
 
 watch(
   () => route.params.categoria,
@@ -96,6 +140,19 @@ watch(
     try {
       const res = await axios.get(`/api/categorias/${nuevoValor}/subcategorias`);
       subcategorias.value = res.data;
+
+      // Inicializar estado de expansión (todas cerradas por defecto)
+      subcategoriasExpandidas.value = {};
+
+      // Auto-expandir la subcategoría que coincide con la URL actual
+      if (subcategoria.value) {
+        const index = subcategorias.value.findIndex(
+          sub => normalizar(sub.name || sub) === normalizar(subcategoria.value)
+        );
+        if (index !== -1 && subcategorias.value[index].children?.length) {
+          subcategoriasExpandidas.value[index] = true;
+        }
+      }
     } catch (err) {
       console.error('Error al cargar subcategorías', err);
       subcategorias.value = [];
@@ -105,10 +162,12 @@ watch(
 );
 
 
-// Productos filtrados desd el backend
-//Cada vez que cambia la categoría o subcategoría, se hace una nueva petición al backend.
-//El backend devuelve solo los productos que coinciden con esos filtros.
+// Productos filtrados desde el backend
+// Cada vez que cambia la categoría o subcategoría, se hace una nueva petición al backend.
+// El backend devuelve solo los productos que coinciden con esos filtros.
 const productos = ref([]);
+const ordenPrecio = ref('ninguno'); // Estado para el ordenamiento
+
 watch(
   () => [categoria.value, subcategoria.value],
   async () => {
@@ -127,6 +186,50 @@ watch(
   { immediate: true }
 );
 
+// Computed para productos ordenados
+const productosOrdenados = computed(() => {
+  if (ordenPrecio.value === 'ninguno') {
+    return productos.value;
+  }
+
+  const productosCopiados = [...productos.value];
+
+  switch (ordenPrecio.value) {
+    case 'menorPrecio':
+      return productosCopiados.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio));
+
+    case 'mayorPrecio':
+      return productosCopiados.sort((a, b) => parseFloat(b.precio) - parseFloat(a.precio));
+
+    case 'nombreAZ':
+      return productosCopiados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+    case 'nombreZA':
+      return productosCopiados.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+    case 'masStock':
+      return productosCopiados.sort((a, b) => parseInt(b.stock) - parseInt(a.stock));
+
+    case 'menosStock':
+      return productosCopiados.sort((a, b) => parseInt(a.stock) - parseInt(b.stock));
+
+    case 'mayorDescuento':
+      return productosCopiados.sort((a, b) => {
+        const descuentoA = a.descuento || 0;
+        const descuentoB = b.descuento || 0;
+        return parseInt(descuentoB) - parseInt(descuentoA);
+      });
+
+    default:
+      return productosCopiados;
+  }
+});
+
+// Función para aplicar el ordenamiento
+const aplicarOrdenamiento = () => {
+  console.log('Ordenamiento aplicado:', ordenPrecio.value);
+};
+
 const agregarAlCarrito = (producto) => {
   const resultado = addToCart(producto);
   if (resultado.success){
@@ -140,38 +243,84 @@ const agregarAlCarrito = (producto) => {
 <style scoped>
 .catalogo-categoria {
   display: flex;
-  gap: 2rem;
-  padding-top: calc(75px + 60px); /* 60px = altura del navbar */
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  gap: 1rem;
+  padding: 2rem 0rem;
+  padding-top: calc(90px + 60px); /* navbar + subnavbar */
+  margin: 0 12rem;
 }
 
+/* Contenedor del sidebar */
+.sidebar-container {
+  width: 400px;
+  flex-shrink: 0;
+}
+
+/* Sidebar de categorías */
 .sidebar {
-  width: 250px;
-  background: var(--color-popover);
+  background: var(--color-background-light);
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Contenedor de contenido (ordenador + productos) */
+.contenido {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Título principal del sidebar */
+.sidebar-main-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--color-primary);
+  text-align: left;
+}
+
+/* Separador */
+.separador {
+  border: none;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 1rem 0;
+}
+
+/* Sección de subcategorías */
+.subcategorias-section {
+  background: transparent;
+}
+
+/* Ordenador estilo ResultadosPage */
+.ordenador {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  background-color: var(--color-background-light);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.ordenador label {
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.ordenador select {
+  padding: 0.3rem 0.5rem;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  padding: 1.5rem;
-  height: fit-content;
-  margin-bottom: 10px;
-}
-
-/* Estilos para HARDWARE */
-.sidebar h2 {
-  font-size: 1.4rem;
-  background: var(--color-popover);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--chart-1);
-  border-bottom: 2px solid var(--chart-4);
-  padding-bottom: 0.5rem;
-}
-
-/* Estilos para Todos los productos */
-.sidebar h3 {
-  margin: 1rem 0 0.5rem 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  outline: none;
+  appearance: none;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 /* Estilos comunes para TODOS los enlaces */
@@ -211,48 +360,74 @@ const agregarAlCarrito = (producto) => {
   list-style: none;
   padding: 0;
   margin: 0.5rem 0 0 0;
-  background: var(--color-popover);
+  background: transparent;
 }
 
 .sidebar li {
   margin-bottom: 0.25rem;
   padding-bottom: 0.25rem;
-  background: var(--color-popover);
+  background: transparent;
 }
 
 .sidebar li:last-child {
   margin-bottom: 0;
   padding-bottom: 0;
-  background: var(--color-popover);
+  background: transparent;
 }
 
-.sidebar li.active .sidebar-link {
+/* Contenedor del header de subcategoría */
+.subcategoria-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
+}
+
+/* Ajustar el link para que ocupe el espacio disponible */
+.subcategoria-header .sidebar-link {
+  flex: 1;
+}
+
+/* Botón de toggle (flechita) */
+.toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.toggle-btn::before {
+  content: "⮟";
+  font-size: 0.95rem;
+  transition: transform 0.25s ease;
+  display: block;
+}
+
+/* Flecha girada cuando está expandida */
+.sidebar li.expanded .toggle-btn::before {
+  transform: rotate(180deg);
+  color: var(--chart-1);
+}
+
+.toggle-btn:hover {
+  color: var(--color-primary);
+}
+
+/* Resaltar cuando está seleccionada */
+.sidebar li.selected .sidebar-link {
   color: var(--chart-1);
   font-weight: 600;
   background-color: var(--color-muted);
-}
-
-/* Flechita solo en ítems con hijos */
-.sidebar li.has-children {
-  position: relative;
-  cursor: pointer;
-}
-
-.sidebar li.has-children::after {
-  content: "⮟";
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%) rotate(0deg);
-  transition: transform 0.25s ease;
-  font-size: 0.95rem;
-  color: var(--color-foreground);
-}
-
-/* Flecha girada cuando el ítem está activo */
-.sidebar li.has-children.active::after {
-  transform: translateY(-50%) rotate(180deg);
-  color: var(--chart-1);
 }
 
 /* Subcategorías ocultas por defecto */
@@ -265,13 +440,13 @@ const agregarAlCarrito = (producto) => {
   padding-left: 0.25rem;
 }
 
-/* Cuando el padre está activo, se expanden */
-.sidebar li.has-children.active > .child-list {
+/* Cuando el padre está expandido, se muestran */
+.sidebar li.expanded > .child-list {
   max-height: 500px;
   opacity: 1;
 }
 
-/* Estilo visual de subcategorías */
+/* Estilo visual de subcategorías hijas */
 .sidebar .child-list li {
   padding: 0.25rem 0;
 }
@@ -287,16 +462,14 @@ const agregarAlCarrito = (producto) => {
   color: var(--chart-1);
 }
 
-/* Hover elegante para el padre */
-.sidebar li.has-children:hover::after {
-  color: var(--chart-4);
-}
-
 .productos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
   flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  background-color: var(--color-background-light);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .no-result {
@@ -305,57 +478,64 @@ const agregarAlCarrito = (producto) => {
   font-style: italic;
   color: #888;
   margin-top: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el título principal */
-.catalogo-categoria h1 {
-  position: absolute;
-  top: 75px;
-  left: 0;
-  right: 0;
-  background: #f8f8f8;
-  padding: 1rem 2rem;
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 1px solid #e0e0e0;
-  z-index: 10;
-}
-
-/* Ajuste del padding superior para compensar el título fijo */
-.catalogo-categoria {
-  padding-top: calc(75px + 60px + 60px); /* navbar + título */
+/* Ocultar el h1 de título de categoría (ahora está en el sidebar) */
+.catalogo-categoria > h1 {
+  display: none;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+  .catalogo-categoria {
+    margin: 0 4rem;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
   .catalogo-categoria {
     flex-direction: column;
-    gap: 1rem;
+    margin: 0 2rem;
+    padding-top: calc(90px + 40px);
   }
-  
-  .sidebar {
+
+  .sidebar-container {
     width: 100%;
-    order: 2;
   }
-  
+
+  .contenido {
+    width: 100%;
+  }
+
   .productos-grid {
-    order: 1;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .catalogo-categoria h1 {
-    position: static;
-    padding: 1rem;
-    margin-bottom: 1rem;
+
+  .ordenador {
+    justify-content: flex-start;
   }
-  
+}
+
+@media (max-width: 600px) {
   .catalogo-categoria {
-    padding-top: calc(75px + 1rem);
+    padding-top: calc(60px + 40px);
+  }
+
+  .productos-grid {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+  }
+
+  .sidebar {
+    padding: 1rem;
+  }
+
+  .sidebar-main-title {
+    font-size: 1.1rem;
   }
 }
 </style>
