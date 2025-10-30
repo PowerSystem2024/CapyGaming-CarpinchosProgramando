@@ -38,9 +38,18 @@ export const validarCrearPreferencia = [
     .withMessage('El ID del producto debe ser un string'),
   
   body('items.*.picture_url')
-    .optional()
-    .isURL()
-    .withMessage('La URL de la imagen debe ser válida'),
+    .optional({ nullable: true, checkFalsy: true })
+    .custom((value) => {
+      // Si no hay valor, es válido (opcional)
+      if (!value) return true;
+
+      // Si hay valor, debe ser una URL válida
+      const urlRegex = /^https?:\/\/.+/;
+      if (!urlRegex.test(value)) {
+        throw new Error('La URL de la imagen debe ser válida');
+      }
+      return true;
+    }),
 
   // Validar datos del pagador
   body('payer.name')
@@ -113,6 +122,7 @@ export const validarCrearPreferencia = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('❌ VALIDATION ERRORS:', JSON.stringify(errors.array(), null, 2));
       return res.status(400).json({
         success: false,
         error: 'Errores de validación',

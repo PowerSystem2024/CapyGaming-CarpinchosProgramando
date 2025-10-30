@@ -18,6 +18,9 @@ import * as orderService from '../services/orderService.js';
 export const crearPreferencia = async (req, res) => {
   const { items, payer } = req.body;
 
+  console.log('📦 DEBUG - Items recibidos:', JSON.stringify(items, null, 2));
+  console.log('👤 DEBUG - Payer recibido:', JSON.stringify(payer, null, 2));
+
   try {
     // 1. Validaciones de entrada
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -34,19 +37,26 @@ export const crearPreferencia = async (req, res) => {
       });
     }
 
-    // 2. Calcular total
+    // 2. Separar items de productos y envío
+    const shippingItem = items.find(item => item.id === 'shipping');
+    const productItems = items.filter(item => item.id !== 'shipping');
+
+    console.log('📦 Productos:', productItems.length);
+    console.log('🚚 Envío:', shippingItem ? shippingItem.title : 'Sin envío');
+
+    // 3. Calcular total
     const total = items.reduce((sum, item) => {
       return sum + (parseFloat(item.unit_price) * parseInt(item.quantity));
     }, 0);
 
-    // 3. Generar orderId único
+    // 4. Generar orderId único
     const ordenId = `ORDEN-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
     console.log('Creando orden:', ordenId, 'Total:', total);
 
-    // 4. Crear orden en BD con transacción (orderService)
+    // 5. Crear orden en BD SOLO con productos (sin envío)
     const orderResult = await orderService.createOrder({
-      items,
+      items: productItems,  // Solo productos, sin envío
       payer,
       total,
       orderId: ordenId
@@ -54,9 +64,9 @@ export const crearPreferencia = async (req, res) => {
 
     console.log('Orden creada en BD:', orderResult.idOrden);
 
-    // 5. Crear preferencia en MercadoPago
+    // 6. Crear preferencia en MercadoPago con TODOS los items (productos + envío)
     const preferenciaData = {
-      items: items,
+      items: items,  // Incluye productos Y envío
       payer: payer,
       orderId: ordenId
     };
@@ -65,13 +75,13 @@ export const crearPreferencia = async (req, res) => {
 
     console.log('Preferencia creada en MercadoPago:', mpResponse.preferenceId);
 
-    // 6. Actualizar con preference_id
+    // 7. Actualizar con preference_id
     await orderService.updateOrderWithPreferenceId(
       orderResult.idOrden,
       mpResponse.preferenceId
     );
 
-    // 7. Responder al frontend
+    // 8. Responder al frontend
     res.status(200).json({
       success: true,
       preferenceId: mpResponse.preferenceId,
