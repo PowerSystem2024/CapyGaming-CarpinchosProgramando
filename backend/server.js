@@ -26,7 +26,7 @@ app.use('/api', productRoutes); // Ahora la ruta completa es /api/productos
 app.use('/api/pagos', mercadopagoRoutes);
 app.use('/api/webhooks', mercadopagoRoutes);
 app.use('/api/pedidos', orderRoutes);
-app.use('/api/users', userRoutes);  
+app.use('/api/users', userRoutes);
 
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
 
 // Middleware para rutas no encontradas (sin usar comodín *)
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Endpoint no encontrado',
     path: req.originalUrl,
     method: req.method

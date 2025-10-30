@@ -65,13 +65,12 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-       - VITE_API_URL=http://localhost:3001
+        # Usa nginx.conf (con proxy) para Docker local
+        - NGINX_CONF=nginx.conf
     container_name: capygaming-frontend
     restart: unless-stopped
     depends_on:
       - backend
-    environment:
-      -  VITE_API_URL=http://localhost:3001
     ports:
       - "80:80"
     networks:
