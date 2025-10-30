@@ -142,6 +142,11 @@ const routes = [
         path: "/terminosycondiciones",
         name: "TerminosYCondiciones",
         component: TerminosCondiciones
+    },
+    {
+        path: '/restablecer-contrasena',
+        name: 'RestablecerContra',
+        component: () => import('../components/RestablecerContra.vue')
     }
 ]
 

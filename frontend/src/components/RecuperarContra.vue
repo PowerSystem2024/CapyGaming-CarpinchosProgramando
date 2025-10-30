@@ -1,9 +1,8 @@
-[file name]: recuperarContra.vue
 <template>
   <div class="auth-modal-content">
     <h1>Recuperar contraseña</h1>
     <p class="subtitle">
-      Ingresá tu email y te enviaremos instrucciones para restablecer tu contraseña.
+      Ingresá tu email para recibir un código de recuperación
     </p>
 
     <form @submit.prevent="onSubmit" novalidate>
@@ -16,16 +15,17 @@
           placeholder="ejemplo@mail.com"
           autocomplete="email"
           required
+          :disabled="loading"
         />
         <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="successMessage" class="success">{{ successMessage }}</p>
       </div>
 
       <button class="btn primary" :disabled="loading">
-        <span v-if="loading">Enviando...</span>
-        <span v-else>Enviar enlace</span>
+        <span v-if="loading">Enviando código...</span>
+        <span v-else>Enviar código</span>
       </button>
 
-      <!-- CAMBIO: router-link → link con evento -->
       <p class="alt">
         ¿Recordaste tu contraseña?
         <a class="link" href="#" @click.prevent="goToLogin">Iniciar sesión</a>
@@ -36,15 +36,18 @@
 
 <script setup>
 import { ref, defineEmits } from 'vue'
+import { useAuth } from '../composables/useAuth.js'
 
-// AGREGAR: Emits para comunicación con el modal
-const emit = defineEmits(['switch-view'])
+const emit = defineEmits(['switch-view', 'show-reset-form'])
 
-const email   = ref('')
-const error   = ref('')
+const { forgotPassword } = useAuth()
+
+const email = ref('')
+const error = ref('')
 const loading = ref(false)
+const successMessage = ref('')
 
-function validate () {
+function validate() {
   if (!email.value.includes('@')) {
     error.value = 'Ingresá un email válido'
     return false
@@ -53,22 +56,38 @@ function validate () {
   return true
 }
 
-async function onSubmit () {
+async function onSubmit() {
   if (!validate()) return
+  
   loading.value = true
+  error.value = ''
+  successMessage.value = ''
+  
   try {
-    // Simulación: enviar email
-    await new Promise(r => setTimeout(r, 1000))
-    alert(`Se envió un enlace de recuperación a: ${email.value}`)
-    email.value = ''
-    // OPCIONAL: ir al login después del éxito
-    emit('switch-view', 'login')
+    const result = await forgotPassword(email.value)
+
+    if (result.success) {
+      successMessage.value = result.message || 'Código enviado a tu email'
+      // Emitir evento para mostrar el formulario de reset
+      setTimeout(() => {
+        emit('show-reset-form', email.value)
+      }, 2000)
+    } else {
+      // Manejar diferentes tipos de errores
+      if (result.error === 'EMAIL_NOT_FOUND') {
+        error.value = 'No existe una cuenta asociada a este email'
+      } else {
+        error.value = result.error || 'Error al enviar el código'
+      }
+    }
+  } catch (err) {
+    console.error('💥 Error en recuperación:', err)
+    error.value = 'Error de conexión: ' + err.message
   } finally {
     loading.value = false
   }
 }
 
-// AGREGAR: Función para cambiar a login
 function goToLogin() {
   emit('switch-view', 'login')
 }
@@ -148,6 +167,7 @@ span {
 }
 
 .error { margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card);}
+.success { margin:.35rem 0 0; color: var(--color-success); font-size:.9rem; background-color: var(--color-card); padding: 0.5rem; border-radius: 5px; border: 1px solid var(--color-success);}
 .alt { margin-top:1rem; text-align:center; background-color: var(--color-card);}
 .link { color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
 .link:hover { text-decoration: underline; }

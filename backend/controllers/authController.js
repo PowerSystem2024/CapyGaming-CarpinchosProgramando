@@ -1,11 +1,12 @@
 import pool from '../bd/pool.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 const revokedTokens = new Set(); //Lista temporal de tokens revocados (en memoria)
 
 // Registro de usuario
-export const register = async (req, res) => {
+const register = async (req, res) => {
   const { nombre, apellido, email, telefono, dni, password, direccion } = req.body;
 
   try {
@@ -59,7 +60,7 @@ export const register = async (req, res) => {
 };
 
 // Login de usuario
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -109,10 +110,52 @@ export const login = async (req, res) => {
 };
 
 // Solicitar recuperación de contraseña
-export const requestPasswordReset = async (req, res) => {
+
+// Configurar el transporter de Gmail - VERSIÓN MEJORADA
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  // Configuraciones adicionales para Gmail
+  tls: {
+    rejectUnauthorized: false
+  },
+  // Forzar TLS
+  secure: true,
+  // Timeout aumentado
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
+});
+
+// Función para verificar la configuración del email
+const verifyEmailConfig = async () => {
+  try {
+    console.log('🔧 Verificando configuración de email...');
+    console.log('📧 Email user:', process.env.EMAIL_USER ? '✅ Configurado' : '❌ No configurado');
+    console.log('🔑 Email pass:', process.env.EMAIL_PASS ? '✅ Configurado' : '❌ No configurado');
+    
+    await transporter.verify();
+    console.log('✅ Servidor de email listo para enviar mensajes');
+    return true;
+  } catch (error) {
+    console.error('❌ Error verificando configuración de email:', error);
+    return false;
+  }
+};
+
+// Verificar al iniciar (opcional)
+verifyEmailConfig();
+
+const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   try {
+    console.log('📧 Solicitando código para:', email);
+    console.log('🔧 Usando email:', process.env.EMAIL_USER);
+    
     // Verificar si el usuario existe
     const userResult = await pool.query(
       'SELECT * FROM usuario WHERE email = $1',
@@ -120,25 +163,151 @@ export const requestPasswordReset = async (req, res) => {
     );
 
     if (userResult.rows.length === 0) {
-      // Por seguridad, no revelamos si el email existe o no
-      return res.json({
-        message: 'Si el email existe, se enviarán instrucciones de recuperación'
+      console.log('❌ Usuario no encontrado:', email);
+      return res.status(404).json({ 
+        message: 'No existe una cuenta asociada a este email',
+        success: false,
+        error: 'EMAIL_NOT_FOUND'
       });
     }
 
-    res.json({
-      message: 'Si el email existe, se enviarán instrucciones de recuperación',
-      resetToken: 'simulated-reset-token-' + Date.now()
+    const user = userResult.rows[0];
+    console.log('✅ Usuario encontrado:', user.nombre);
+    
+    // Generar código de 6 dígitos
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log('🔐 Código generado:', resetCode);
+    
+    // Guardar en la base de datos (expira en 15 minutos)
+    await pool.query(
+      'INSERT INTO password_reset_codes (user_dni, code, expires_at) VALUES ($1, $2, $3)',
+      [user.dni, resetCode, new Date(Date.now() + 15 * 60 * 1000)]
+    );
+
+    console.log('📤 Intentando enviar email...');
+    
+    const mailOptions = {
+      from: {
+        name: 'CapyGaming',
+        address: process.env.EMAIL_USER
+      },
+      to: email,
+      subject: 'Código de recuperación - CapyGaming',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #F39C12;">Recuperación de contraseña</h2>
+          <p>Hola <strong>${user.nombre}</strong>,</p>
+          <p>Has solicitado restablecer tu contraseña en CapyGaming.</p>
+          <p>Tu código de verificación es:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <span style="font-size: 32px; font-weight: bold; color: #F39C12; letter-spacing: 5px; padding: 10px 20px; border: 2px dashed #F39C12; border-radius: 5px;">
+              ${resetCode}
+            </span>
+          </div>
+          <p><strong>Instrucciones:</strong></p>
+          <ol>
+            <li>Copiá el código de 6 dígitos</li>
+            <li>Volvé a la página de recuperación</li>
+            <li>Ingresá el código en el campo correspondiente</li>
+            <li>Creá tu nueva contraseña</li>
+          </ol>
+          <p style="color: #666; font-size: 14px;">
+            <strong>Este código expirará en 15 minutos.</strong><br>
+            Si no solicitaste este cambio, ignora este email.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Equipo CapyGaming<br>
+            <a href="http://localhost" style="color: #F39C12;">Visita nuestra tienda</a>
+          </p>
+        </div>
+      `
+    };
+
+    // Enviar email con mejor manejo de errores
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email enviado exitosamente:', info.messageId);
+    console.log('📨 Email aceptado por:', info.accepted);
+
+    res.json({ 
+      message: 'Código de recuperación enviado a tu email',
+      success: true 
     });
 
   } catch (error) {
-    console.error('Error en recuperación:', error);
-    res.status(500).json({ error: 'No se pudo recuperar la contraseña' });
+    console.error('💥 Error en recuperación:', error);
+    
+    if (error.code === 'EAUTH') {
+      console.error('❌ Error de autenticación de email. Verificando...');
+      console.error('1. EMAIL_USER:', process.env.EMAIL_USER);
+      console.error('2. Verifica que la contraseña de aplicación sea correcta');
+      console.error('3. Verifica que la verificación en 2 pasos esté activada');
+      
+      // ✅ MODO PRUEBA: Enviar código en respuesta
+      return res.json({ 
+        message: `Modo prueba - Código: ${resetCode}`,
+        code: resetCode,
+        success: true 
+      });
+    }
+    
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, code, newPassword } = req.body;
+
+  try {
+    console.log('🔄 Intentando restablecer contraseña para:', email);
+    
+    // Verificar código
+    const codeResult = await pool.query(
+      `SELECT pc.*, u.dni 
+       FROM password_reset_codes pc
+       JOIN usuario u ON pc.user_dni = u.dni
+       WHERE u.email = $1 AND pc.code = $2 AND pc.used = false AND pc.expires_at > NOW()`,
+      [email, code]
+    );
+
+    if (codeResult.rows.length === 0) {
+      console.log('❌ Código inválido o expirado');
+      return res.status(400).json({ error: 'Código inválido o expirado' });
+    }
+
+    const resetCode = codeResult.rows[0];
+    console.log('✅ Código válido para usuario DNI:', resetCode.dni);
+    
+    // Hash nueva contraseña
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar contraseña
+    await pool.query(
+      'UPDATE usuario SET contraseña = $1 WHERE dni = $2',
+      [hashedPassword, resetCode.dni]
+    );
+
+    // Marcar código como usado
+    await pool.query(
+      'UPDATE password_reset_codes SET used = true WHERE id = $1',
+      [resetCode.id]
+    );
+
+    console.log('✅ Contraseña actualizada exitosamente');
+
+    res.json({ 
+      message: 'Contraseña restablecida exitosamente',
+      success: true 
+    });
+
+  } catch (error) {
+    console.error('💥 Error en resetPassword:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
 // Obtener perfil de usuario
-export const getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
     const userResult = await pool.query(
       'SELECT dni, nombre, apellido, email, telefono, direccion FROM usuario WHERE dni = $1',
@@ -157,11 +326,21 @@ export const getProfile = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
+const logout = (req, res) => {
   const token = req.token; // lo extraés en el middleware
   revokedTokens.add(token);
   res.json({ message: 'Sesión cerrada correctamente' });
 };
 
 // Exportar la lista para usarla en el middleware
-export const isTokenRevoked = (token) => revokedTokens.has(token);
+const isTokenRevoked = (token) => revokedTokens.has(token);
+
+export {
+  register,
+  login,
+  requestPasswordReset,
+  getProfile,
+  logout,
+  resetPassword,
+  isTokenRevoked
+}
