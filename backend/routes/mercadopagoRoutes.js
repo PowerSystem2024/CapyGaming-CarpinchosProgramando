@@ -18,7 +18,8 @@ import {
 import {
   crearPreferencia,
   consultarEstado,
-  webhookNotification
+  webhookNotification,
+  getPublicKey
 } from '../controllers/mercadopagoController.js';
 
 const router = express.Router();
@@ -78,6 +79,21 @@ router.get(
   '/estado/:orderId',
   validarConsultarEstado,   // Middleware de validación
   consultarEstado           // Controller
+);
+
+/**
+ * GET /api/pagos/public-key
+ * Obtener la public key de MercadoPago para inicializar el SDK
+ *
+ * Response:
+ * {
+ *   success: true,
+ *   publicKey: "APP_USR-..."
+ * }
+ */
+router.get(
+  '/public-key',
+  getPublicKey              // Controller (sin middleware, es público)
 );
 
 // ============================================

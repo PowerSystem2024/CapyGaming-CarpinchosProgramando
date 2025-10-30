@@ -85,17 +85,59 @@ export default {
 
         console.log('Consultando estado del pago para orden:', orderId);
 
-        const paymentStatus = await checkPaymentStatus(orderId);
+        // Intentar obtener el estado con polling (reintentos cada 2 segundos)
+        let paymentStatus = null;
+        let attempts = 0;
+        const maxAttempts = 10; // 10 intentos = 20 segundos máximo
+
+        while (attempts < maxAttempts) {
+          paymentStatus = await checkPaymentStatus(orderId);
+
+          console.log(`Intento ${attempts + 1}: Estado del pago:`, paymentStatus.status);
+
+          // Si el pago está aprobado o rechazado, salir del loop
+          if (paymentStatus.status === 'approved' || paymentStatus.status === 'rejected') {
+            break;
+          }
+
+          // Si sigue pendiente, esperar 2 segundos y reintentar
+          if (paymentStatus.status === 'pending' && attempts < maxAttempts - 1) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            attempts++;
+          } else {
+            break;
+          }
+        }
+
         paymentInfo.value = paymentStatus;
 
-        console.log('Estado del pago:', paymentStatus);
+        // Guardar resultado para que CheckoutForm lo lea
+        const paymentResult = {
+          status: paymentStatus.status,
+          orderId: paymentStatus.orderId,
+          amount: paymentStatus.transactionAmount
+        };
+
+        localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+
+        // Enviar mensaje a la pestaña original (si se abrió desde otra pestaña)
+        if (window.opener && !window.opener.closed) {
+          console.log('Enviando mensaje a pestaña original...');
+          window.opener.postMessage({
+            type: 'PAYMENT_RESULT',
+            result: paymentResult
+          }, window.location.origin);
+        }
 
         if (paymentStatus.status === 'approved') {
           console.log('Pago aprobado, limpiando carrito...');
           clearCart();
           localStorage.removeItem('currentOrderId');
+          localStorage.removeItem('paymentInProgress');
         } else {
           console.log('Pago no aprobado, carrito preservado. Estado:', paymentStatus.status);
+          // Si está pendiente o rechazado, también limpiar la flag
+          localStorage.removeItem('paymentInProgress');
         }
 
         loading.value = false;
@@ -103,6 +145,7 @@ export default {
         console.error('Error al verificar el pago:', err);
         error.value = err.message || 'Error al verificar el estado del pago';
         loading.value = false;
+        localStorage.removeItem('paymentInProgress');
       }
     });
 
@@ -143,7 +186,7 @@ export default {
     };
 
     const viewOrders = () => {
-      router.push('/');
+      router.push('/mis-pedidos');
     };
 
     return {

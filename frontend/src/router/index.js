@@ -21,6 +21,9 @@ import Contacto from '../components/Contacto.vue';
 import PreguntasFrecuentes from '../components/PreguntasFrecuentes.vue';
 import ResultadosPage from '../components/ResultadosPage.vue';
 import TerminosCondiciones from '../components/TerminosCondiciones.vue';
+import Perfil from '../components/Perfil.vue';
+import MisPedidos from '../components/MisPedidos.vue';
+import DetallePedido from '../components/DetallePedido.vue';
 import AuthService from '../services/authService.js';
 
 
@@ -58,9 +61,27 @@ const routes = [
         component: Marcas
     },
     {
-        path: '/quienesSomos', 
+        path: '/quienesSomos',
         name: 'QuienesSomos',
         component: QuienesSomos
+    },
+    {
+        path: '/perfil',
+        name: 'Perfil',
+        component: Perfil,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/mis-pedidos',
+        name: 'MisPedidos',
+        component: MisPedidos,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/pedido/:id',
+        name: 'DetallePedido',
+        component: DetallePedido,
+        meta: { requiresAuth: true }
     },
     {
         path: "/:pathMatch(.*)*", // Ruta comodín para páginas no encontradas
@@ -139,11 +160,18 @@ const router = createRouter({
     }
 });
 
-// Middleware de navegación corregido
+// Middleware de navegación
 router.beforeEach((to) => {
-    const isAuth = AuthService.isAuthenticated();  // ← Usar el servicio
+    const isAuth = AuthService.isAuthenticated();
+
+    // Si está autenticado y quiere ir a login/registro, redirigir a home
     if (isAuth && (to.name === 'InicioSesion' || to.name === 'Registro' || to.name === 'RecuperarContra')) {
-        return { name: 'Home' } // Redirige al home si ya está logueado
+        return { name: 'Home' }
+    }
+
+    // Si la ruta requiere autenticación y no está logueado, redirigir a login
+    if (to.meta.requiresAuth && !isAuth) {
+        return { name: 'InicioSesion' }
     }
 })
 

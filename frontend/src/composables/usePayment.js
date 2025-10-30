@@ -26,20 +26,20 @@ export function usePayment() {
       // Preparar datos para MercadoPago
       const orderData = {
         items: cartItems.map(item => ({
-         id: String(item.id),
+        id: String(item.id),
           title: item.nombre,
           quantity: parseInt(item.quantity),
           unit_price: parseFloat(item.precio),
           picture_url: item.imagen || undefined, 
           description: item.descripcion || item.nombre  //  Ya está correcto
         })),
-       payer: {
+        payer: {
         name: formData.nombre,
         surname: formData.apellidos,
         email: formData.email,
         identification: formData.dni ? {    // ← Objeto condicional
-           type: 'DNI',
-           number: String(formData.dni)
+          type: 'DNI',
+          number: String(formData.dni)
         } : undefined,  // ← Si no hay DNI, enviar undefined
       }
       };

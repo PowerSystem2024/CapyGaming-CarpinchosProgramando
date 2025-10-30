@@ -24,57 +24,30 @@
               <form @submit.prevent="nextStep" class="form-container">
                 <div class="form-group">
                   <label for="nombre">Nombre *</label>
-                  <input
-                    type="text"
-                    id="nombre"
-                    v-model="formData.nombre"
-                    @input="validateNombre"
-                    placeholder="Ej: Juan"
-                    required
-                  />
+                  <input type="text" id="nombre" v-model="formData.nombre" @input="validateNombre"
+                    placeholder="Ej: Juan" required />
                   <span v-if="errors.nombre" class="error">{{ errors.nombre }}</span>
                 </div>
 
                 <div class="form-group">
                   <label for="apellidos">Apellidos *</label>
-                  <input
-                    type="text"
-                    id="apellidos"
-                    v-model="formData.apellidos"
-                    @input="validateApellidos"
-                    placeholder="Ej: Pérez García"
-                    required
-                  />
+                  <input type="text" id="apellidos" v-model="formData.apellidos" @input="validateApellidos"
+                    placeholder="Ej: Pérez García" required />
                   <span v-if="errors.apellidos" class="error">{{ errors.apellidos }}</span>
                 </div>
 
                 <div class="form-group">
                   <label for="email">Dirección de correo electrónico *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    v-model="formData.email"
-                    placeholder="tu@email.com"
-                    required
-                  />
+                  <input type="email" id="email" v-model="formData.email" placeholder="tu@email.com" required />
                   <span v-if="errors.email" class="error">{{ errors.email }}</span>
                 </div>
 
                 <div class="form-group">
                   <label for="password">Contraseña *</label>
                   <div class="password-input">
-                    <input
-                      :type="showPassword ? 'text' : 'password'"
-                      id="password"
-                      v-model="formData.password"
-                      placeholder="••••••••"
-                      required
-                    />
-                    <button
-                      type="button"
-                      class="toggle-password"
-                      @click="showPassword = !showPassword"
-                    >
+                    <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password"
+                      placeholder="••••••••" required />
+                    <button type="button" class="toggle-password" @click="showPassword = !showPassword">
                       {{ showPassword ? '👁️' : '👁️‍🗨️' }}
                     </button>
                   </div>
@@ -83,29 +56,20 @@
 
                 <div class="form-group">
                   <label for="dni">DNI *</label>
-                  <input
-                    type="text"
-                    id="dni"
-                    v-model="formData.dni"
-                    placeholder="12345678"
-                    required
-                  />
+                  <input type="text" id="dni" v-model="formData.dni" placeholder="12345678" required />
                   <span v-if="errors.dni" class="error">{{ errors.dni }}</span>
                 </div>
 
                 <div class="form-group checkbox-group">
                   <label>
-                    <input
-                      type="checkbox"
-                      v-model="formData.privacyAccepted"
-                      required
-                    />
+                    <input type="checkbox" v-model="formData.privacyAccepted" required />
                     <span>Acepto la política de privacidad de los datos del cliente</span>
                   </label>
-                  <small>Sus datos serán usados únicamente para procesar su pedido y pueden ser modificados en cualquier momento.</small>
+                  <small>Sus datos serán usados únicamente para procesar su pedido y pueden ser modificados en cualquier
+                    momento.</small>
                 </div>
 
-                  <button type="submit" class="btn-continue">Continuar</button>
+                <button type="submit" class="btn-continue">Continuar</button>
               </form>
             </div>
           </div>
@@ -122,82 +86,46 @@
               <form @submit.prevent="nextStep">
                 <div class="form-group">
                   <label for="alias">Alias (Opcional)</label>
-                  <input
-                    type="text"
-                    id="alias"
-                    v-model="formData.alias"
-                    placeholder='Ej: "Casa", "Oficina", "Casa de mis padres"'
-                  />
+                  <input type="text" id="alias" v-model="formData.alias"
+                    placeholder='Ej: "Casa", "Oficina", "Casa de mis padres"' />
                   <small>Nombre para identificar esta dirección</small>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label for="nombreDireccion">Nombre *</label>
-                    <input
-                      type="text"
-                      id="nombreDireccion"
-                      v-model="formData.nombreDireccion"
-                      placeholder="Juan"
-                      required
-                    />
+                    <input type="text" id="nombreDireccion" v-model="formData.nombreDireccion" placeholder="Juan"
+                      required />
                   </div>
 
                   <div class="form-group">
                     <label for="apellidosDireccion">Apellidos *</label>
-                    <input
-                      type="text"
-                      id="apellidosDireccion"
-                      v-model="formData.apellidosDireccion"
-                      placeholder="Pérez García"
-                      required
-                    />
+                    <input type="text" id="apellidosDireccion" v-model="formData.apellidosDireccion"
+                      placeholder="Pérez García" required />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="dniDireccion">DNI *</label>
-                  <input
-                    type="text"
-                    id="dniDireccion"
-                    v-model="formData.dniDireccion"
-                    placeholder="12345678"
-                    required
-                  />
+                  <input type="text" id="dniDireccion" v-model="formData.dniDireccion" placeholder="12345678"
+                    required />
                 </div>
 
                 <div class="form-group">
                   <label for="direccion">Dirección *</label>
-                  <input
-                    type="text"
-                    id="direccion"
-                    v-model="formData.direccion"
-                    placeholder="Av. Corrientes 1234, Piso 2, Depto B"
-                    required
-                  />
+                  <input type="text" id="direccion" v-model="formData.direccion"
+                    placeholder="Av. Corrientes 1234, Piso 2, Depto B" required />
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label for="codigoPostal">Código Postal *</label>
-                    <input
-                      type="text"
-                      id="codigoPostal"
-                      v-model="formData.codigoPostal"
-                      placeholder="1043"
-                      required
-                    />
+                    <input type="text" id="codigoPostal" v-model="formData.codigoPostal" placeholder="1043" required />
                   </div>
 
                   <div class="form-group">
                     <label for="ciudad">Ciudad *</label>
-                    <input
-                      type="text"
-                      id="ciudad"
-                      v-model="formData.ciudad"
-                      placeholder="Buenos Aires"
-                      required
-                    />
+                    <input type="text" id="ciudad" v-model="formData.ciudad" placeholder="Buenos Aires" required />
                   </div>
                 </div>
 
@@ -235,34 +163,20 @@
 
                   <div class="form-group">
                     <label for="pais">País *</label>
-                    <input
-                      type="text"
-                      id="pais"
-                      value="Argentina"
-                      disabled
-                      style="background: var(--color-muted); cursor: not-allowed;"
-                    />
+                    <input type="text" id="pais" value="Argentina" disabled
+                      style="background: var(--color-muted); cursor: not-allowed;" />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="telefono">Teléfono (Opcional)</label>
-                  <input
-                    type="tel"
-                    id="telefono"
-                    v-model="formData.telefono"
-                    placeholder="+54 11 1234-5678"
-                  />
+                  <input type="tel" id="telefono" v-model="formData.telefono" placeholder="+54 11 1234-5678" />
                   <small>Teléfono de contacto para la entrega</small>
                 </div>
 
                 <div class="form-group checkbox-group">
                   <label>
-                    <input
-                      type="checkbox"
-                      v-model="formData.usarMismaDireccion"
-                      checked
-                    />
+                    <input type="checkbox" v-model="formData.usarMismaDireccion" checked />
                     <span>Usar esta dirección para facturar también</span>
                   </label>
                   <small>Si desmarcas esta opción, podrás ingresar una dirección de facturación diferente</small>
@@ -275,69 +189,41 @@
                   <div class="form-row">
                     <div class="form-group">
                       <label for="nombreFacturacion">Nombre *</label>
-                      <input
-                        type="text"
-                        id="nombreFacturacion"
-                        v-model="formData.nombreFacturacion"
-                        placeholder="Juan"
-                        :required="!formData.usarMismaDireccion"
-                      />
+                      <input type="text" id="nombreFacturacion" v-model="formData.nombreFacturacion" placeholder="Juan"
+                        :required="!formData.usarMismaDireccion" />
                     </div>
 
                     <div class="form-group">
                       <label for="apellidosFacturacion">Apellidos *</label>
-                      <input
-                        type="text"
-                        id="apellidosFacturacion"
-                        v-model="formData.apellidosFacturacion"
-                        placeholder="Pérez García"
-                        :required="!formData.usarMismaDireccion"
-                      />
+                      <input type="text" id="apellidosFacturacion" v-model="formData.apellidosFacturacion"
+                        placeholder="Pérez García" :required="!formData.usarMismaDireccion" />
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="direccionFacturacion">Dirección *</label>
-                    <input
-                      type="text"
-                      id="direccionFacturacion"
-                      v-model="formData.direccionFacturacion"
-                      placeholder="Av. San Martín 567"
-                      :required="!formData.usarMismaDireccion"
-                    />
+                    <input type="text" id="direccionFacturacion" v-model="formData.direccionFacturacion"
+                      placeholder="Av. San Martín 567" :required="!formData.usarMismaDireccion" />
                   </div>
 
                   <div class="form-row">
                     <div class="form-group">
                       <label for="codigoPostalFacturacion">Código Postal *</label>
-                      <input
-                        type="text"
-                        id="codigoPostalFacturacion"
-                        v-model="formData.codigoPostalFacturacion"
-                        placeholder="1043"
-                        :required="!formData.usarMismaDireccion"
-                      />
+                      <input type="text" id="codigoPostalFacturacion" v-model="formData.codigoPostalFacturacion"
+                        placeholder="1043" :required="!formData.usarMismaDireccion" />
                     </div>
 
                     <div class="form-group">
                       <label for="ciudadFacturacion">Ciudad *</label>
-                      <input
-                        type="text"
-                        id="ciudadFacturacion"
-                        v-model="formData.ciudadFacturacion"
-                        placeholder="Buenos Aires"
-                        :required="!formData.usarMismaDireccion"
-                      />
+                      <input type="text" id="ciudadFacturacion" v-model="formData.ciudadFacturacion"
+                        placeholder="Buenos Aires" :required="!formData.usarMismaDireccion" />
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="provinciaFacturacion">Provincia *</label>
-                    <select
-                      id="provinciaFacturacion"
-                      v-model="formData.provinciaFacturacion"
-                      :required="!formData.usarMismaDireccion"
-                    >
+                    <select id="provinciaFacturacion" v-model="formData.provinciaFacturacion"
+                      :required="!formData.usarMismaDireccion">
                       <option value="">Seleccionar provincia</option>
                       <option value="buenos-aires">Buenos Aires</option>
                       <option value="caba">Ciudad Autónoma de Buenos Aires</option>
@@ -383,15 +269,10 @@
             <div v-if="currentStep === 3" class="section-content">
               <form @submit.prevent="nextStep">
                 <div class="shipping-options">
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'standard', 'disabled': subtotal >= 100000 }">
-                    <input
-                      type="radio"
-                        name="shipping"
-                        value="standard"
-                        v-model="formData.metodoEnvio"
-                        :disabled="subtotal >= 100000"
-                        class="radio-standard"
-                        />
+                  <label class="shipping-option"
+                    :class="{ 'selected': formData.metodoEnvio === 'standard', 'disabled': subtotal >= 100000 }">
+                    <input type="radio" name="shipping" value="standard" v-model="formData.metodoEnvio"
+                      :disabled="subtotal >= 100000" class="radio-standard" />
                     <div class="shipping-content">
                       <div class="shipping-header">
                         <strong>Envío Estándar</strong>
@@ -401,15 +282,10 @@
                     </div>
                   </label>
 
-                  <label class="shipping-option" :class="{ 'selected': formData.metodoEnvio === 'express', 'disabled': subtotal >= 100000 }">
-                    <input
-                      type="radio"
-                      name="shipping"
-                      value="express"
-                      v-model="formData.metodoEnvio"
-                      class="radio-standard"
-                      :disabled="subtotal >= 100000"
-                    />
+                  <label class="shipping-option"
+                    :class="{ 'selected': formData.metodoEnvio === 'express', 'disabled': subtotal >= 100000 }">
+                    <input type="radio" name="shipping" value="express" v-model="formData.metodoEnvio"
+                      class="radio-standard" :disabled="subtotal >= 100000" />
                     <div class="shipping-content">
                       <div class="shipping-header">
                         <strong>Envío Express</strong>
@@ -419,14 +295,10 @@
                     </div>
                   </label>
 
-                  <label class="shipping-option free-shipping" v-if="subtotal >= 100000" :class="{ 'selected': formData.metodoEnvio === 'gratis' }">
-                    <input
-                      type="radio"
-                      name="shipping"
-                      value="gratis"
-                      v-model="formData.metodoEnvio"
-                      class="radio-standard"
-                    />
+                  <label class="shipping-option free-shipping" v-if="subtotal >= 100000"
+                    :class="{ 'selected': formData.metodoEnvio === 'gratis' }">
+                    <input type="radio" name="shipping" value="gratis" v-model="formData.metodoEnvio"
+                      class="radio-standard" />
                     <div class="shipping-content">
                       <div class="shipping-header">
                         <strong>Envío GRATIS</strong>
@@ -441,12 +313,9 @@
 
                 <div class="order-comments">
                   <label for="comentarios">Comentarios sobre el pedido (Opcional)</label>
-                  <textarea
-                    id="comentarios"
-                    v-model="formData.comentarios"
+                  <textarea id="comentarios" v-model="formData.comentarios"
                     placeholder="Si desea agregar un comentario sobre su pedido, escríbalo en el campo a continuación"
-                    rows="4"
-                  ></textarea>
+                    rows="4"></textarea>
                 </div>
 
                 <button type="submit" class="btn-continue">Continuar</button>
@@ -464,32 +333,28 @@
 
             <div v-if="currentStep === 4" class="section-content">
               <form @submit.prevent="procesarPago">
-                      <div class="payment-info">
+                <div class="payment-info">
                   <label class="payment-option">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="mercadopago"
-                      v-model="formData.metodoPago"
-                    />
+                    <input type="radio" name="payment" value="mercadopago" v-model="formData.metodoPago" />
                     <div class="payment-info">
                       <strong>📱 Mercado Pago</strong>
                       <span>Paga con tu cuenta de MP</span>
                     </div>
                   </label>
-
                 </div>
+
+                <!-- Modal de pago con Payment Brick -->
+                <PaymentModal v-if="mostrarModalPago" :items="mappedCartItems" :formData="formData" :total="total"
+                  @close="mostrarModalPago = false" @success="handlePaymentSuccess" @failure="handlePaymentFailure"
+                  @pending="handlePaymentPending" />
 
                 <div class="form-group checkbox-group">
                   <label>
-                    <input
-                      type="checkbox"
-                      v-model="formData.acceptTerms"
-                      required
-                    />
+                    <input type="checkbox" v-model="formData.acceptTerms" required />
                     <span>Acepto los términos y condiciones de compra *</span>
                   </label>
-                  <small>Al finalizar la compra, acepta nuestros términos de servicio y política de devoluciones.</small>
+                  <small>Al finalizar la compra, acepta nuestros términos de servicio y política de
+                    devoluciones.</small>
                 </div>
 
                 <span v-if="errors.terms" class="error">{{ errors.terms }}</span>
@@ -526,11 +391,7 @@
             </div>
 
             <div class="promo-code">
-              <input
-                type="text"
-                v-model="promoCode"
-                placeholder="Código de promoción"
-              />
+              <input type="text" v-model="promoCode" placeholder="Código de promoción" />
               <button @click="applyPromoCode" class="btn-promo">Agregar cupón</button>
             </div>
 
@@ -554,9 +415,13 @@
 import { getCart, getCartTotal, clearCart } from "../utils/cartUtils";
 import { usePayment } from "../composables/usePayment";
 import AuthService from "../services/authService.js";
+import PaymentModal from '../components/PaymentModal.vue';
 
 export default {
   name: "CheckoutForm",
+  components: {
+    PaymentModal
+  },
   props: {
     isOpen: {
       type: Boolean,
@@ -565,7 +430,6 @@ export default {
   },
   setup() {
     const { processPayment, isProcessing, error } = usePayment();
-
     return {
       processPayment,
       isProcessing,
@@ -574,7 +438,7 @@ export default {
   },
   data() {
     return {
-      currentStep: 2,
+      currentStep: 1,
       showPassword: false,
       promoCode: '',
       discount: 0,
@@ -621,7 +485,8 @@ export default {
         acceptTerms: false
       },
       errors: {},
-      cartItems: []
+      cartItems: [],
+      mostrarModalPago: false
     }
   },
   computed: {
@@ -632,7 +497,7 @@ export default {
       return getCartTotal();
     },
     shippingCost() {
-      switch(this.formData.metodoEnvio) {
+      switch (this.formData.metodoEnvio) {
         case 'standard': return 5000;
         case 'express': return 10000;
         case 'gratis':
@@ -644,6 +509,24 @@ export default {
     },
     total() {
       return this.subtotal + this.shippingCost - this.discount;
+    },
+    mappedCartItems() {
+      return this.cartItems.map(item => {
+        const mappedItem = {
+          id: String(item.id),
+          title: item.nombre,
+          quantity: item.quantity,
+          unit_price: item.precio,
+          description: item.descripcion || item.nombre
+        };
+
+        // Solo incluir picture_url si es una URL válida
+        if (item.imagen && (item.imagen.startsWith('http://') || item.imagen.startsWith('https://'))) {
+          mappedItem.picture_url = item.imagen;
+        }
+
+        return mappedItem;
+      });
     }
   },
   mounted() {
@@ -743,7 +626,7 @@ export default {
     validateCurrentStep() {
       this.errors = {};
 
-      switch(this.currentStep) {
+      switch (this.currentStep) {
         case 1:
           if (!this.formData.nombre) this.errors.nombre = 'El nombre es requerido';
           if (!this.formData.apellidos) this.errors.apellidos = 'Los apellidos son requeridos';
@@ -832,15 +715,41 @@ export default {
 
     async procesarPago() {
       if (this.validateCurrentStep()) {
-        try {
-          await this.processPayment(this.formData);
-          // La redirección a MercadoPago se hace automáticamente en processPayment
-          // Si llegamos aquí sin error, cerramos el modal
-          this.closeModal();
-        } catch (err) {
-          alert(`Error al procesar el pago: ${err.message}`);
-        }
+        // En lugar de procesar el pago y redirigir,
+        // mostramos el modal de pago
+        this.mostrarModalPago = true;
       }
+    },
+
+    handlePaymentSuccess(paymentInfo) {
+      // Limpiar carrito
+      clearCart();
+
+      // Cerrar modal de checkout
+      this.closeModal();
+
+      // Mostrar mensaje de éxito
+      alert(`¡Pago exitoso! ID de pedido: ${paymentInfo.orderId}`);
+    },
+
+    handlePaymentFailure(paymentInfo) {
+      // Cerrar modal de pago pero mantener checkout abierto
+      this.mostrarModalPago = false;
+
+      // Mostrar mensaje de error
+      alert('El pago no pudo ser procesado. Por favor, intenta nuevamente.');
+    },
+
+    handlePaymentPending(paymentInfo) {
+      // Limpiar carrito (el pago está pendiente pero iniciado)
+      clearCart();
+      // Cerrar todo
+      this.mostrarModalPago = false;
+      this.closeModal();
+
+      // Mostrar mensaje
+      alert('Tu pago está siendo procesado. Te notificaremos cuando se confirme.');
+
     }
   }
 }
@@ -1211,7 +1120,8 @@ export default {
   background: transparent;
 }
 
-.btn-continue, .btn-pay {
+.btn-continue,
+.btn-pay {
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   border: none;
@@ -1227,14 +1137,16 @@ export default {
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
-.btn-continue:hover, .btn-pay:hover {
+.btn-continue:hover,
+.btn-pay:hover {
   background: var(--sidebar-ring);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
 /* Opciones de envío y pago */
-.shipping-options, .payment-options {
+.shipping-options,
+.payment-options {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1583,11 +1495,16 @@ export default {
   transform: translateY(-2px);
 }
 
-span, small, label, input, .form-group, .section-content{
+span,
+small,
+label,
+input,
+.form-group,
+.section-content {
   background-color: var(--color-card);
 }
 
-.form-container{
+.form-container {
   background-color: var(--color-card);
 }
 

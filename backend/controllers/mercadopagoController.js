@@ -237,8 +237,43 @@ export const webhookNotification = async (req, res) => {
   }
 };
 
+/**
+ * Obtener la public key de MercadoPago
+ * Endpoint: GET /api/pagos/public-key
+ *
+ * Responde:
+ * {
+ *   "success": true,
+ *   "publicKey": "APP_USR-..."
+ * }
+ */
+export const getPublicKey = async (req, res) => {
+  try {
+    const publicKey = process.env.MERCADOPAGO_PUBLIC_KEY;
+
+    if (!publicKey) {
+      return res.status(500).json({
+        success: false,
+        error: 'Public key no configurada'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      publicKey: publicKey
+    });
+  } catch (error) {
+    console.error('Error obteniendo public key:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error al obtener public key'
+    });
+  }
+};
+
 export default {
   crearPreferencia,
   consultarEstado,
-  webhookNotification
+  webhookNotification,
+  getPublicKey
 };

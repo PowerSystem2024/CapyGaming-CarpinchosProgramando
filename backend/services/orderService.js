@@ -318,7 +318,7 @@ export const markWebhookAsProcessed = async (paymentId, type) => {
 
 async function updateProductStock(items, client) {
   console.log('🔄 Actualizando stock de productos...');
-  
+
   for (const item of items) {
     const { producto_id, cantidad } = item;
     // Query para restar del stock
@@ -329,13 +329,123 @@ async function updateProductStock(items, client) {
       RETURNING stock, nombre
     `;
     const result = await client.query(updateStockQuery, [cantidad, producto_id]);
-    
+
     if (result.rows.length > 0) {
       const { stock, nombre } = result.rows[0];
       console.log(`✅ Stock actualizado: ${nombre} - Stock restante: ${stock}`);
     }
   }
 }
+
+/**
+ * Obtener todos los pedidos de un usuario
+ * @param {number} dniUsuario - DNI del usuario
+ * @returns {Promise<Array>} - Lista de pedidos con items
+ */
+export const getOrdersByUserId = async (dniUsuario) => {
+  try {
+    const query = `
+      SELECT
+        op.id_orden,
+        op.orden_id,
+        op.total,
+        op.estado as status,
+        op.fecha_creacion as created_at,
+        op.fecha_actualizacion as updated_at,
+        pm.payment_id,
+        pm.status as payment_status,
+        pm.status_detail,
+        pm.payment_method,
+        pm.transaction_amount,
+        json_agg(
+          json_build_object(
+            'id', io.id_item,
+            'producto_id', io.producto_id,
+            'title', io.nombre,
+            'quantity', io.cantidad,
+            'unit_price', io.precio_unitario,
+            'total', io.precio_total,
+            'picture_url', io.imagen_url
+          ) ORDER BY io.id_item
+        ) as items
+      FROM orden_pago op
+      LEFT JOIN pago_mercadopago pm ON op.id_orden = pm.id_orden
+      LEFT JOIN item_orden io ON op.id_orden = io.id_orden
+      WHERE op.dni_usuario = $1
+      GROUP BY op.id_orden, pm.id_pago
+      ORDER BY op.fecha_creacion DESC
+    `;
+
+    const result = await pool.query(query, [dniUsuario]);
+    return result.rows;
+
+  } catch (error) {
+    console.error('Error en getOrdersByUserId:', error);
+    throw new Error(`Error al obtener pedidos del usuario: ${error.message}`);
+  }
+};
+
+/**
+ * Obtener detalle completo de un pedido específico
+ * @param {string} orderId - ID de la orden (orden_id)
+ * @param {number} dniUsuario - DNI del usuario (para validar pertenencia)
+ * @returns {Promise<Object|null>} - Detalle completo del pedido o null
+ */
+export const getOrderDetailById = async (orderId, dniUsuario) => {
+  try {
+    const query = `
+      SELECT
+        op.id_orden,
+        op.orden_id,
+        op.dni_usuario,
+        op.total,
+        op.estado as status,
+        op.fecha_creacion as created_at,
+        op.fecha_actualizacion as updated_at,
+        pm.payment_id,
+        pm.preference_id,
+        pm.status as payment_status,
+        pm.status_detail,
+        pm.payment_method,
+        pm.transaction_amount,
+        pm.currency_id,
+        u.nombre as usuario_nombre,
+        u.apellido as usuario_apellido,
+        u.email as usuario_email,
+        u.telefono as usuario_telefono,
+        u.direccion as usuario_direccion,
+        json_agg(
+          json_build_object(
+            'id', io.id_item,
+            'producto_id', io.producto_id,
+            'title', io.nombre,
+            'quantity', io.cantidad,
+            'unit_price', io.precio_unitario,
+            'total', io.precio_total,
+            'picture_url', io.imagen_url
+          ) ORDER BY io.id_item
+        ) as items
+      FROM orden_pago op
+      LEFT JOIN pago_mercadopago pm ON op.id_orden = pm.id_orden
+      LEFT JOIN item_orden io ON op.id_orden = io.id_orden
+      LEFT JOIN usuario u ON op.dni_usuario = u.dni
+      WHERE op.orden_id = $1 AND op.dni_usuario = $2
+      GROUP BY op.id_orden, pm.id_pago, u.dni
+    `;
+
+    const result = await pool.query(query, [orderId, dniUsuario]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return result.rows[0];
+
+  } catch (error) {
+    console.error('Error en getOrderDetailById:', error);
+    throw new Error(`Error al obtener detalle del pedido: ${error.message}`);
+  }
+};
 
 export default {
   createOrder,
@@ -344,5 +454,7 @@ export default {
   updateOrderPaymentStatus,
   logWebhookEvent,
   markWebhookAsProcessed,
-  updateProductStock
+  updateProductStock,
+  getOrdersByUserId,
+  getOrderDetailById
 };
