@@ -154,7 +154,7 @@ export const buscarProductosPorNombre = async (req, res) => {
 export const getOfertas = async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT 
+      SELECT
         p.id_producto AS id,
         p.nombre AS title,
         p.precio AS newprice,
@@ -185,5 +185,36 @@ export const getOfertas = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener ofertas:', error);
     res.status(500).json({ error: 'Error al obtener ofertas' });
+  }
+};
+
+// Obtener productos destacados aleatorios
+export const getProductosDestacados = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        p.id_producto,
+        p.nombre,
+        p.precio,
+        p.stock,
+        p.marca,
+        p.descuento,
+        c.nombre AS categoria,
+        s.nombre AS subcategoria,
+        ARRAY_AGG(ip.url_imagen ORDER BY ip.orden) AS imagenes
+      FROM producto p
+      LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+      LEFT JOIN subcategoria s ON p.id_subcategoria = s.id_subcategoria
+      LEFT JOIN imagen_producto ip ON p.id_producto = ip.id_producto
+      WHERE p.stock > 0
+      GROUP BY p.id_producto, c.nombre, s.nombre
+      ORDER BY RANDOM()
+      LIMIT 6
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error al obtener productos destacados:', error);
+    res.status(500).json({ error: 'Error al obtener productos destacados' });
   }
 };

@@ -77,6 +77,7 @@ import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { addToCart, getCart } from '../utils/cartUtils';
 import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto';
+import { addToRecentlyViewed } from '../utils/recentlyViewedUtils';
 import CarritoModalPreview from './CarritoModalPreview.vue';
 
 const mostrarModal = ref(false);
@@ -109,6 +110,11 @@ const cargarProducto = async (id) => {
   try {
     const res = await axios.get(`/api/productos/${id}`)
     producto.value = res.data
+
+    // Agregar el producto a la lista de vistos recientemente
+    if (producto.value) {
+      addToRecentlyViewed(producto.value);
+    }
   } catch (err) {
     console.error('No se pudo cargar el producto', err)
   }
