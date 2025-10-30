@@ -121,35 +121,94 @@
   </div>
 
     <!-- ===== Productos Destacados ===== -->
-<section class="productos">
+<section class="productos-carousel">
   <div class="separator">
-    <h2>Productos destacados</h2>
+    <h2>Productos Destacados</h2>
   </div>
-  <div class="card-container">
-    <div v-for="(prod, i) in destacados" :key="i" class="card">
-      <img :src="prod.img" :alt="prod.nombre" />
-      <div class="overlay">
-        <h3>{{ prod.nombre }}</h3>
-        <button>Ver más</button>
+
+  <div v-if="destacados.length > 0" class="carousel-wrapper">
+    <button class="carousel-btn prev-btn" @click="prevDestacado" :disabled="destacados.length <= 4">‹</button>
+
+    <div class="productos-carousel-container">
+      <div
+        class="productos-carousel-track"
+        :style="{ transform: `translateX(-${currentDestacado * 100}%)` }"
+      >
+        <div
+          v-for="(producto, index) in destacados"
+          :key="producto.id_producto"
+          class="producto-card"
+          @click="verProducto(producto.id_producto)"
+        >
+          <div class="producto-imagen">
+            <img
+              :src="producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : '/placeholder.png'"
+              :alt="producto.nombre"
+              @error="$event.target.src = '/placeholder.png'"
+            />
+            <span v-if="producto.descuento > 0" class="descuento-badge">-{{ producto.descuento }}%</span>
+          </div>
+          <div class="producto-info">
+            <h3 class="producto-nombre">{{ producto.nombre }}</h3>
+            <p v-if="producto.marca" class="producto-marca">{{ producto.marca }}</p>
+            <p class="producto-precio">$ {{ parseFloat(producto.precio).toLocaleString('es-AR') }}</p>
+            <button class="btn-ver-mas">Ver más</button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <button class="carousel-btn next-btn" @click="nextDestacado" :disabled="destacados.length <= 4">›</button>
+  </div>
+
+  <div v-else class="no-productos">
+    <p>No hay productos destacados disponibles en este momento</p>
   </div>
 </section>
 
 
-    <!-- ===== Productos Recientes ===== -->
-<section class="productos">
+    <!-- ===== Productos Vistos Recientemente ===== -->
+<section class="productos-carousel">
   <div class="separator">
-    <h2>Productos recientes</h2>
+    <h2>Vistos Recientemente</h2>
   </div>
-  <div class="card-container">
-    <div v-for="(prod, i) in recientes" :key="i" class="card">
-      <img :src="prod.img" :alt="prod.nombre" />
-      <div class="overlay">
-        <h3>{{ prod.nombre }}</h3>
-        <button>Ver más</button>
+
+  <div v-if="recientes.length > 0" class="carousel-wrapper">
+    <button class="carousel-btn prev-btn" @click="prevReciente" :disabled="recientes.length <= 4">‹</button>
+
+    <div class="productos-carousel-container">
+      <div
+        class="productos-carousel-track"
+        :style="{ transform: `translateX(-${currentReciente * 100}%)` }"
+      >
+        <div
+          v-for="(producto, index) in recientes"
+          :key="producto.id_producto"
+          class="producto-card"
+          @click="verProducto(producto.id_producto)"
+        >
+          <div class="producto-imagen">
+            <img
+              :src="producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : '/placeholder.png'"
+              :alt="producto.nombre"
+              @error="$event.target.src = '/placeholder.png'"
+            />
+          </div>
+          <div class="producto-info">
+            <h3 class="producto-nombre">{{ producto.nombre }}</h3>
+            <p v-if="producto.marca" class="producto-marca">{{ producto.marca }}</p>
+            <p class="producto-precio">$ {{ parseFloat(producto.precio).toLocaleString('es-AR') }}</p>
+            <button class="btn-ver-mas">Ver más</button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <button class="carousel-btn next-btn" @click="nextReciente" :disabled="recientes.length <= 4">›</button>
+  </div>
+
+  <div v-else class="no-productos">
+    <p>No has visto productos recientemente. ¡Explora nuestro catálogo!</p>
   </div>
 </section>
 
@@ -161,6 +220,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { getRecentlyViewedLimited } from "../utils/recentlyViewedUtils";
 import Ofertas from "../components/Ofertas.vue";
 
 // ✅ Carrusel
@@ -191,11 +253,18 @@ function goToSlide(i) {
   currentSlide.value = i;
 }
 
-onMounted(() => {
-  interval = setInterval(nextSlide, 5000); // autoplay
+onMounted(async () => {
+  interval = setInterval(nextSlide, 5000); // autoplay banner principal
+
+  await cargarProductosDestacados();
+  await cargarProductosRecientes();
+
+  // Escuchar actualizaciones en productos vistos recientemente
+  window.addEventListener('recentlyViewedUpdated', cargarProductosRecientes);
 });
 onUnmounted(() => {
   clearInterval(interval);
+  window.removeEventListener('recentlyViewedUpdated', cargarProductosRecientes);
 });
 
 // ✅ Categorías ------------------------------------------------------------------------------------------------
@@ -212,32 +281,64 @@ const categorias = ref([
   { nombre: "Memorias RAM", productos: 4, img: imgRam, tipo: "principal" },
 ]);
 
-// ✅ Productos -.---------------------------------------------------------------------------------------------------
-import p1 from "../assets/imagenesHome/product-1.png";
-import p2 from "../assets/imagenesHome/product-2.png";
-import p3 from "../assets/imagenesHome/product-3.png";
-import p4 from "../assets/imagenesHome/product-4.png";
-import p5 from "../assets/imagenesHome/product-5.png";
-import p6 from "../assets/imagenesHome/product-6.png";
-import p7 from "../assets/imagenesHome/product-7.png";
-import p8 from "../assets/imagenesHome/product-8.png";
-import p9 from "../assets/imagenesHome/product-9.png";
+// ✅ Productos Destacados y Recientes
+const router = useRouter();
+const destacados = ref([]);
+const recientes = ref([]);
+const currentDestacado = ref(0);
+const currentReciente = ref(0);
 
+// Cargar productos destacados desde el backend
+const cargarProductosDestacados = async () => {
+  try {
+    const res = await axios.get('/api/productos-destacados');
+    destacados.value = res.data;
+  } catch (error) {
+    console.error('Error al cargar productos destacados:', error);
+  }
+};
 
-const destacados = ref([
-  { nombre: "Gabinete Coolermaster Qube 500 Flatback White Mid Tower Atx", precio: "$106.477,90", img: p1 },
-  { nombre: "Notebook Asus 15.6' X1504 I7 1355u 16gb Ssd M.2 512gb Free Dos", precio: "$1.031.915", img: p2 },
-  { nombre: "Monitor Gamer Aoc G2490vx 24' 144hz 1ms Fhd Va", precio: "$218.635,64", img: p3 },
-  { nombre: "Cooler Cpu Id Cooling Se 903 Xt Basic", precio: "$24.022,04", img: p4 },
-  { nombre: "Mother Gigabyte X870 Gaming X Wifi 7 Am5 Ddr5", precio: "$389.902,34", img: p9 },
-]);
+// Cargar productos vistos recientemente
+const cargarProductosRecientes = () => {
+  try {
+    recientes.value = getRecentlyViewedLimited(8); // Traer 8 para tener 2 páginas de 4
+  } catch (error) {
+    console.error('Error al cargar productos recientes:', error);
+  }
+};
 
-const recientes = ref([
-  { nombre: "Cooler Cpu Cooler Master Hyper 411 Nano Argb (1700 / Am5)", precio: "$44.900", img: p5 },
-  { nombre: "Fuente Xpg 700w 80+ Bronze Probe", precio: "$85.079,46", img: p6 },
-  { nombre: "Memoria Ram Ddr4 8gb 3600mhz Rgb Kingdian R11", precio: "$36.266,98", img: p7 },
-  { nombre: "Memoria Ram Ddr4 8gb 3200mhz Xpg Spectrix D50", precio: "$58.724,12", img: p8 },
-]);
+// Navegar al detalle del producto
+const verProducto = (id) => {
+  router.push({ name: 'ProductoDetalle', params: { id } });
+};
+
+// Funciones para navegar en el carrusel de destacados (4 productos por vista)
+const nextDestacado = () => {
+  if (destacados.value.length > 4) {
+    currentDestacado.value = (currentDestacado.value + 1) % Math.ceil(destacados.value.length / 4);
+  }
+};
+
+const prevDestacado = () => {
+  if (destacados.value.length > 4) {
+    const totalSlides = Math.ceil(destacados.value.length / 4);
+    currentDestacado.value = (currentDestacado.value - 1 + totalSlides) % totalSlides;
+  }
+};
+
+// Funciones para navegar en el carrusel de recientes (4 productos por vista)
+const nextReciente = () => {
+  if (recientes.value.length > 4) {
+    currentReciente.value = (currentReciente.value + 1) % Math.ceil(recientes.value.length / 4);
+  }
+};
+
+const prevReciente = () => {
+  if (recientes.value.length > 4) {
+    const totalSlides = Math.ceil(recientes.value.length / 4);
+    currentReciente.value = (currentReciente.value - 1 + totalSlides) % totalSlides;
+  }
+};
 </script>
 
 <style scoped>
@@ -397,7 +498,8 @@ const recientes = ref([
   justify-content: center;
   background: var(--color-primary);
   margin: 0;           /* quitar margen externo */
-  padding: 0.4rem 0;   /* pequeño espacio para que respire */
+  padding: 0.4rem 1rem;   /* pequeño espacio para que respire */
+  position: relative;
 }
 
 .separator h2 {
@@ -410,6 +512,35 @@ const recientes = ref([
   z-index: 1;
   color: var(--color-background);        /* color del texto, cambia si querés */
   background-color: transparent;
+  flex: 1;
+}
+
+.autoplay-toggle {
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--color-background);
+  color: var(--color-background);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.autoplay-toggle:hover {
+  background: var(--color-background);
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.autoplay-toggle svg {
+  width: 20px;
+  height: 20px;
+  background: transparent;
 }
 
 .categorias {
@@ -458,13 +589,12 @@ const recientes = ref([
 .btn:hover { background-color: var(--color-secondary); color: var(--color-foreground); }
 
 .card img {
-  width: 60%;
-  height: auto; /* ajusta el alto que quieras */
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease, filter 0.6s ease;
   display: block;
-  margin: 0 auto; /*centra horizontalmente */
-  border-radius: 0.5rem;
+  border-radius: 1rem;
 }
 
 
@@ -583,8 +713,246 @@ const recientes = ref([
   background: transparent;
 }
 
+/* ===== ESTILOS PARA CARRUSEL DE PRODUCTOS ===== */
+.productos-carousel {
+  width: 100%;
+  padding: 3rem 2rem;
+  background: var(--color-background);
+}
 
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 1rem;
+}
 
+.productos-carousel-container {
+  flex: 1;
+  overflow: hidden;
+  padding: 2rem 0;
+}
+
+.productos-carousel-track {
+  display: flex;
+  gap: 2rem;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.producto-card {
+  min-width: calc((100% - 6rem) / 4); /* 4 productos visibles */
+  background: var(--color-card);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.producto-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 30px rgba(243, 156, 18, 0.4);
+}
+
+.producto-imagen {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.producto-imagen img {
+  max-width: 95%;
+  max-height: 95%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.producto-card:hover .producto-imagen img {
+  transform: scale(1.1);
+}
+
+.descuento-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--color-destructive);
+  color: white;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+  z-index: 10;
+}
+
+.producto-info {
+  padding: 1.5rem;
+  background: var(--color-card);
+  text-align: center;
+}
+
+.producto-nombre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0 0 0.5rem 0;
+  min-height: 2.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  line-height: 1.3;
+}
+
+.producto-marca {
+  font-size: 0.85rem;
+  color: var(--color-muted-foreground);
+  margin: 0 0 0.8rem 0;
+  background: transparent;
+}
+
+.producto-precio {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin: 0.8rem 0 1.2rem 0;
+  background: transparent;
+}
+
+.btn-ver-mas {
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  background: var(--color-primary);
+  color: var(--color-background);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-ver-mas:hover {
+  background: var(--color-secondary);
+  color: var(--color-foreground);
+  transform: scale(1.05);
+}
+
+/* Botones de navegación del carrusel (flechas simples sin fondo) */
+.carousel-btn {
+  background: transparent !important;
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+  color: var(--color-primary);
+  font-size: 3.5rem;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: bold;
+  transition: none;
+}
+
+.carousel-btn:hover,
+.carousel-btn:focus,
+.carousel-btn:active {
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  transform: none !important;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.no-productos {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--color-muted-foreground);
+  font-size: 1.1rem;
+  background: var(--color-card);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 600px;
+  border: 2px dashed var(--color-border);
+}
+
+.no-productos p {
+  margin: 0;
+  background: transparent;
+}
+
+/* Responsive para carruseles */
+@media (max-width: 1200px) {
+  .producto-card {
+    min-width: calc((100% - 4rem) / 3); /* 3 productos en tablets */
+  }
+
+  .carousel-btn {
+    font-size: 3rem;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 900px) {
+  .productos-carousel {
+    padding: 2rem 1rem;
+  }
+
+  .producto-card {
+    min-width: calc((100% - 2rem) / 2); /* 2 productos en móviles */
+  }
+
+  .carousel-btn {
+    font-size: 2.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .productos-carousel-track {
+    gap: 1rem;
+  }
+
+  .producto-imagen {
+    height: 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  .producto-card {
+    min-width: 100%; /* 1 producto en pantallas pequeñas */
+  }
+
+  .carousel-btn {
+    font-size: 2rem;
+    width: 35px;
+    height: 35px;
+  }
+}
 
 /* Esto todavia hay que corregir cuando tengamos todo lo del Home */
 @media (max-width: 1024px) {
