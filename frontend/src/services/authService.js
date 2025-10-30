@@ -58,26 +58,29 @@ class AuthService {
   }
 
   // Recuperar contraseña
-async requestPasswordReset(email) {
-  try {
-    const response = await fetch(`${API_BASE}/auth/forgot-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
+  async requestPasswordReset(email) {
+    try {
+      const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Error en la solicitud');
+      const data = await response.json();
+
+      // Si la respuesta no es exitosa, lanzar error con la información del backend
+      if (!response.ok) {
+        throw new Error(data.error || data.message || 'Error en la solicitud');
+      }
+
+      return data;
+
+    } catch (error) {
+      throw error;
     }
-
-    return await response.json();
-  } catch (error) {
-    throw error;
   }
-}
 
   logout() {
     localStorage.removeItem('token');

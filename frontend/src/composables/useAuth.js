@@ -35,13 +35,23 @@ import AuthService from '../services/authService.js';
 
   // Recuperación de contraseña
   const forgotPassword = async (email) => {
-  try {
-    const result = await AuthService.requestPasswordReset(email);
-    return { success: true, message: result.message };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
+    try {
+      const result = await AuthService.requestPasswordReset(email);
+      
+      // Si el servicio devuelve success: false, propagar el error
+      if (!result.success) {
+        return { 
+          success: false, 
+          error: result.error || result.message,
+          message: result.message 
+        };
+      }
+      
+      return { success: true, message: result.message };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
 
   return {
     user: computed(() => user.value),

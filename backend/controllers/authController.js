@@ -164,9 +164,10 @@ const requestPasswordReset = async (req, res) => {
 
     if (userResult.rows.length === 0) {
       console.log('❌ Usuario no encontrado:', email);
-      return res.json({ 
-        message: 'Si el email existe, se enviará un código de recuperación',
-        success: true
+      return res.status(404).json({ 
+        message: 'No existe una cuenta asociada a este email',
+        success: false,
+        error: 'EMAIL_NOT_FOUND'
       });
     }
 

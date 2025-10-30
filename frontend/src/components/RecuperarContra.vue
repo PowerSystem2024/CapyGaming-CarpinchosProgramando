@@ -40,7 +40,6 @@ import { useAuth } from '../composables/useAuth.js'
 
 const emit = defineEmits(['switch-view', 'show-reset-form'])
 
-// USAR el servicio real
 const { forgotPassword } = useAuth()
 
 const email = ref('')
@@ -65,7 +64,6 @@ async function onSubmit() {
   successMessage.value = ''
   
   try {
-    // USAR el servicio real
     const result = await forgotPassword(email.value)
 
     if (result.success) {
@@ -75,11 +73,16 @@ async function onSubmit() {
         emit('show-reset-form', email.value)
       }, 2000)
     } else {
-      error.value = result.error || 'Error al enviar el código'
+      // Manejar diferentes tipos de errores
+      if (result.error === 'EMAIL_NOT_FOUND') {
+        error.value = 'No existe una cuenta asociada a este email'
+      } else {
+        error.value = result.error || 'Error al enviar el código'
+      }
     }
-  } catch (error) {
-    console.error('💥 Error en recuperación:', error)
-    error.value = 'Error de conexión: ' + error.message
+  } catch (err) {
+    console.error('💥 Error en recuperación:', err)
+    error.value = 'Error de conexión: ' + err.message
   } finally {
     loading.value = false
   }
@@ -91,7 +94,6 @@ function goToLogin() {
 </script>
 
 <style scoped>
-/* Tus estilos existentes - se mantienen igual */
 .auth-modal-content {
   padding: 2rem;
   background-color: var(--color-card);

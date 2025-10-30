@@ -157,7 +157,7 @@ function goToLogin() {
 <style scoped>
 .auth-modal-content {
   padding: 2rem;
-  background-color: white;
+  background-color: var(--color-card);
   border-radius: 8px;
 }
 
@@ -171,7 +171,7 @@ h1 {
 
 .subtitle {
   font-size: .95rem;
-  color: #666;
+  color: white;
   margin: 0 0 1.2rem;
   text-align: center;
 }
@@ -185,7 +185,7 @@ label {
   display: block;
   font-weight: 700;
   margin-bottom: .35rem;
-  color: #333;
+  color: var(--color-accent-foreground);
 }
 
 input {
@@ -193,8 +193,8 @@ input {
   padding: .75rem .9rem;
   border-radius: 10px;
   border: 1px solid #ccc;
-  background: white;
-  color: #333;
+  background: var(--color-popover);
+  color: white;
   outline: none;
   font-size: 16px;
 }
@@ -215,34 +215,25 @@ input:focus {
 }
 
 button.btn {
-  width: 100%;
-  padding: .9rem 1rem;
-  border-radius: 12px;
-  border: none;
-  background: #F39C12;
-  color: white;
-  font-weight: 700;
+  width:100%;
+  padding:.9rem 1rem;
+  border-radius:12px;
+  border:1px solid var(--color-border);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight:700; cursor:pointer;
+}
+
+button.btn:hover { filter:brightness(1.05); }
+button.btn:disabled { opacity:.6; cursor:not-allowed; }
+
+button.ghost{
+  border:1px solid var(--color-border);
+  background: var(--color-muted);
+  color: var(--color-accent-foreground);
+  border-radius:10px;
+  padding:.6rem .8rem;
   cursor: pointer;
-  font-size: 16px;
-}
-
-button.btn:hover {
-  background: #e67e22;
-}
-
-button.btn:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-button.ghost {
-  border: 1px solid #ddd;
-  background: #f8f9fa;
-  color: #333;
-  border-radius: 10px;
-  padding: .6rem .8rem;
-  cursor: pointer;
-  white-space: nowrap;
 }
 
 .error {
@@ -264,5 +255,9 @@ button.ghost {
 
 .link:hover {
   text-decoration: underline;
+}
+
+span {
+  background-color: var(--color-primary);
 }
 </style>
