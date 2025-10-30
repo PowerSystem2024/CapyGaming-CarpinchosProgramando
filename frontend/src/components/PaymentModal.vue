@@ -61,7 +61,11 @@ onMounted(async () => {
 
 async function initializePaymentBrick() {
     try {
-        // Crear preferencia en tu backend
+        // 1. Obtener public key desde el backend
+        const { publicKey } = await mercadopagoClient.getPublicKey();
+        console.log('✅ Public key obtenida desde backend');
+
+        // 2. Crear preferencia en tu backend
         const { preferenceId, orderId } = await mercadopagoClient.createPreference({
             items: props.items,
             payer: {
@@ -78,12 +82,12 @@ async function initializePaymentBrick() {
     // Guardar orderId para tracking
     localStorage.setItem('currentOrderId', orderId);
 
-    // 2. Inicializar SDK de Mercado Pago
-    const mp = new window.MercadoPago('APP_USR-edf2a26d-8348-4da6-b188-62c4a8ff0fee', {
+    // 3. Inicializar SDK de Mercado Pago con la public key dinámica
+    const mp = new window.MercadoPago(publicKey, {
         locale: 'es-AR'
     });
 
-    // 3. Crear Payment Brick
+    // 4. Crear Payment Brick
     const bricksBuilder = mp.bricks();
 
     paymentBrickController.value = await bricksBuilder.create('payment', 'paymentBrick_container', {
@@ -134,46 +138,74 @@ async function initializePaymentBrick() {
 
 async function handlePaymentSubmit(formData, selectedPaymentMethod) {
     try {
-    // El SDK de Mercado Pago procesa el pago automáticamente
-    // y llama al backend con el token
-    
-    // Esperar un momento para que el webhook procese
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Verificar el estado del pago
-    const orderId = localStorage.getItem('currentOrderId');
-    const paymentInfo = await mercadopagoClient.getPaymentStatus(orderId);
-    
-    // Mostrar resultado
-    if (paymentInfo.status === 'approved') {
+        // Mostrar estado de "verificando"
         paymentStatus.value = {
-        type: 'success',
-        title: '¡Pago exitoso!',
-        message: `Tu pago de $${formatPrice(paymentInfo.transaction_amount)} fue aprobado.`,
-        buttonText: 'Ver mi pedido'
+            type: 'verifying',
+            title: 'Verificando pago...',
+            message: 'Por favor espera mientras verificamos tu pago.',
         };
-        emit('success', paymentInfo);
-    } else if (paymentInfo.status === 'pending') {
-        paymentStatus.value = {
-        type: 'pending',
-        title: 'Pago pendiente',
-        message: 'Tu pago está siendo procesado. Te notificaremos cuando se confirme.',
-        buttonText: 'Entendido'
-        };
-        emit('pending', paymentInfo);
-    } else {
-        paymentStatus.value = {
-        type: 'failure',
-        title: 'Pago rechazado',
-        message: paymentInfo.status_detail || 'El pago no pudo ser procesado.',
-        buttonText: 'Reintentar'
-        };
-        emit('failure', paymentInfo);
-    }
+
+        // El SDK de Mercado Pago procesa el pago automáticamente
+        const orderId = localStorage.getItem('currentOrderId');
+
+        // Polling: Intentar obtener el estado actualizado del pago
+        // El webhook puede tardar varios segundos en actualizar la BD
+        const maxAttempts = 15; // 15 intentos
+        const delayBetweenAttempts = 2000; // 2 segundos entre intentos = 30 seg total
+        let paymentInfo = null;
+
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            console.log(`🔄 Intento ${attempt}/${maxAttempts}: Consultando estado del pago...`);
+
+            // Esperar antes de consultar
+            await new Promise(resolve => setTimeout(resolve, delayBetweenAttempts));
+
+            // Consultar estado
+            paymentInfo = await mercadopagoClient.getPaymentStatus(orderId);
+
+            // Si el pago fue aprobado o rechazado, salir del loop
+            if (paymentInfo.status === 'approved' || paymentInfo.status === 'rejected') {
+                console.log(`✅ Estado final obtenido: ${paymentInfo.status}`);
+                break;
+            }
+
+            // Si llegamos al último intento y sigue pending, aceptarlo como pending real
+            if (attempt === maxAttempts) {
+                console.log('⏱️ Timeout alcanzado. El pago permanece como pending.');
+            }
+        }
+
+        // Mostrar resultado final
+        if (paymentInfo.status === 'approved') {
+            paymentStatus.value = {
+                type: 'success',
+                title: '¡Pago exitoso!',
+                message: `Tu pago de $${formatPrice(paymentInfo.transactionAmount)} fue aprobado.`,
+                buttonText: 'Ver mi pedido'
+            };
+            emit('success', paymentInfo);
+        } else if (paymentInfo.status === 'pending' || paymentInfo.status === 'in_process') {
+            paymentStatus.value = {
+                type: 'pending',
+                title: 'Pago pendiente',
+                message: 'Tu pago está siendo procesado. Te notificaremos cuando se confirme.',
+                buttonText: 'Entendido'
+            };
+            emit('pending', paymentInfo);
+        } else {
+            // rejected, cancelled, etc.
+            paymentStatus.value = {
+                type: 'failure',
+                title: 'Pago rechazado',
+                message: paymentInfo.statusDetail || 'El pago no pudo ser procesado.',
+                buttonText: 'Reintentar'
+            };
+            emit('failure', paymentInfo);
+        }
 
     } catch (error) {
-    console.error('Error processing payment:', error);
-    throw error;
+        console.error('Error processing payment:', error);
+        throw error;
     }
 }
 
@@ -322,6 +354,12 @@ function formatPrice(price) {
     background: rgba(255, 193, 7, 0.15);
     color: #ffc107;
     border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.payment-status.verifying {
+    background: rgba(33, 150, 243, 0.15);
+    color: #2196f3;
+    border: 1px solid rgba(33, 150, 243, 0.3);
 }
 
 .payment-status.error,
