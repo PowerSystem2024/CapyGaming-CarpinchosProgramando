@@ -1,4 +1,4 @@
-![CapyGaming](https://github.com/MerAtim/CuartoSemestreUTN/raw/main/Assets/CapyGaming.png)
+![CapyGaming](https://raw.githubusercontent.com/MerAtim/CuartoSemestreUTN/main/Assets/CapyGaming.png)
 
 🎮 **E-Commerce de productos gamer.**  
 
