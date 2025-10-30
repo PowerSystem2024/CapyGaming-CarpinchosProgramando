@@ -178,12 +178,13 @@ h2 {
 /* PRODUCTOS EN OFERTA */
 .offers-container {
   padding: 1.8rem;
+  padding-top: calc(75px + 60px + 2rem); /* 75px navbar + 60px subnavbar + espacio extra */
 }
 
 .offers-grid {
     display: grid;
     justify-items: center;
-    grid-template-columns: repeat(5, 1fr); /* 👈 fuerza 5 columnas exactas */
+    grid-template-columns: repeat(4, 1fr); /* 👈 fuerza 4 columnas exactas */
     margin: 0 auto; /* 👈 centra el grid */
     padding: 0 12rem; /* 👈 espacio a los lados */
     gap: 0.5rem;

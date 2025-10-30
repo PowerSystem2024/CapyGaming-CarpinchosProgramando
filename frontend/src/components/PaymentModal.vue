@@ -47,7 +47,9 @@ const router = useRouter();
 const props = defineProps({
     items: Array,
     formData: Object,
-    total: Number
+    total: Number,
+    shippingCost: Number,
+    shippingMethod: String
 });
 
 const emit = defineEmits(['close', 'success', 'failure', 'pending']);
@@ -65,9 +67,23 @@ async function initializePaymentBrick() {
         const { publicKey } = await mercadopagoClient.getPublicKey();
         console.log('✅ Public key obtenida desde backend');
 
-        // 2. Crear preferencia en tu backend
+        // 2. Preparar items con envío incluido
+        const itemsWithShipping = [...props.items];
+
+        // Agregar envío como item si tiene costo
+        if (props.shippingCost && props.shippingCost > 0) {
+            itemsWithShipping.push({
+                id: 'shipping',
+                title: props.shippingMethod === 'express' ? 'Envío Express' : 'Envío Estándar',
+                quantity: 1,
+                unit_price: props.shippingCost,
+                description: `Costo de envío: ${props.shippingMethod === 'express' ? 'Envío Express' : 'Envío Estándar'}`
+            });
+        }
+
+        // 3. Crear preferencia en tu backend
         const { preferenceId, orderId } = await mercadopagoClient.createPreference({
-            items: props.items,
+            items: itemsWithShipping,
             payer: {
                 name: props.formData.nombre,
                 surname: props.formData.apellidos,

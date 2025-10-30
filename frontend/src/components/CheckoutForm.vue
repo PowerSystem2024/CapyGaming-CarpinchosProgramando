@@ -344,8 +344,15 @@
                 </div>
 
                 <!-- Modal de pago con Payment Brick -->
-                <PaymentModal v-if="mostrarModalPago" :items="mappedCartItems" :formData="formData" :total="total"
-                  @close="mostrarModalPago = false" @success="handlePaymentSuccess" @failure="handlePaymentFailure"
+                <PaymentModal v-if="mostrarModalPago"
+                  :items="mappedCartItems"
+                  :formData="formData"
+                  :total="total"
+                  :shippingCost="shippingCost"
+                  :shippingMethod="formData.metodoEnvio"
+                  @close="mostrarModalPago = false"
+                  @success="handlePaymentSuccess"
+                  @failure="handlePaymentFailure"
                   @pending="handlePaymentPending" />
 
                 <div class="form-group checkbox-group">
