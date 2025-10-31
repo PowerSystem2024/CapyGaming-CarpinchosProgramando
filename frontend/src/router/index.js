@@ -14,7 +14,6 @@ import PaymentPending from '../components/PaymentPending.vue';
 import NotFound from "../components/NotFound.vue";
 import Home from '../components/Home.vue';
 import Ofertas from '../components/Ofertas.vue';
-import Catalogo from '../components/Catalogo.vue';
 import ProductoDetalle from '../components/ProductoDetalle.vue';
 import CatalogoCategoria from '../components/CatalogoCategoria.vue';
 import Contacto from '../components/Contacto.vue';
@@ -93,11 +92,6 @@ const routes = [
         name: "Ofertas",
         component: Ofertas
     },
-    {
-        path: "/catalogo",
-        name: "Catologo",
-        component: Catalogo
-    },  
     {
         path: '/productoDetalle/:id',
         name: 'ProductoDetalle',
