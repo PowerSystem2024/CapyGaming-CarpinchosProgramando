@@ -378,4 +378,261 @@ p {
   background: #9e9e9e;
   color: white;
 }
+
+/* Media Queries para Responsive */
+
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+  .payment-status {
+    height: 85vh;
+  }
+  
+  .status-card {
+    padding: 50px;
+    max-width: 550px;
+  }
+  
+  .icon-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 25px;
+  }
+  
+  .icon-success, .icon-error {
+    font-size: 3.5rem;
+    width: 60px;
+    height: 60px;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+  
+  .payment-info {
+    padding: 25px;
+    margin: 25px 0;
+  }
+  
+  .payment-info p {
+    font-size: 1rem;
+    margin: 12px 0;
+  }
+  
+  .actions {
+    gap: 15px;
+    margin-top: 35px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+  }
+  
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border-width: 5px;
+  }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .payment-status {
+    padding: 30px;
+  }
+  
+  .status-card {
+    padding: 35px;
+    max-width: 480px;
+  }
+  
+  .icon-container {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 18px;
+  }
+  
+  .icon-success, .icon-error {
+    font-size: 2.8rem;
+    width: 55px;
+    height: 55px;
+  }
+  
+  h1 {
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+  }
+  
+  p {
+    font-size: 1rem;
+    margin-bottom: 18px;
+  }
+  
+  .payment-info {
+    padding: 18px;
+    margin: 18px 0;
+  }
+  
+  .payment-info p {
+    font-size: 0.95rem;
+    margin: 8px 0;
+  }
+  
+  .actions {
+    margin-top: 25px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+  
+  .spinner {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+/* Pantallas pequeñas (móviles, hasta 767px) */
+@media (max-width: 767px) {
+  .payment-status {
+    padding: 15px;
+    align-items: flex-start;
+    min-height: 90vh;
+  }
+  
+  .status-card {
+    padding: 30px 25px;
+    margin-top: 20px;
+    border-radius: 10px;
+  }
+  
+  .icon-container {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+  }
+  
+  .icon-success, .icon-error {
+    font-size: 2.5rem;
+    width: 45px;
+    height: 45px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+  
+  .payment-info {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 6px;
+  }
+  
+  .payment-info p {
+    font-size: 0.9rem;
+    margin: 8px 0;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 12px 20px;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+  
+  .loading-container h2 {
+    font-size: 1.3rem;
+  }
+  
+  .status-badge {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+  }
+}
+
+/* Pantallas muy pequeñas (móviles pequeños, hasta 480px) */
+@media (max-width: 480px) {
+  .payment-status {
+    padding: 10px;
+    min-height: 85vh;
+  }
+  
+  .status-card {
+    padding: 25px 20px;
+    margin-top: 15px;
+    border-radius: 8px;
+  }
+  
+  .icon-container {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+  }
+  
+  .icon-success, .icon-error {
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+  
+  .payment-info {
+    padding: 12px;
+    margin: 12px 0;
+  }
+  
+  .payment-info p {
+    font-size: 0.85rem;
+    margin: 6px 0;
+  }
+  
+  .actions {
+    gap: 10px;
+    margin-top: 18px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .spinner {
+    width: 45px;
+    height: 45px;
+    border-width: 3px;
+  }
+}
 </style>
