@@ -173,5 +173,103 @@ import Marcas from './Marcas.vue';
   margin: 20px auto;
   width: 90%;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 900px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding-top: 20px;
+  }
+
+  .footer-section {
+    align-items: center;
+    text-align: center;
+    min-width: auto;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Ocultar toda la sección de "Productos" en móvil */
+  .footer-section:first-child {
+    display: none;
+  }
+
+  .footer-section h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-section ul {
+    text-align: center;
+  }
+
+  .footer-section ul li {
+    margin: 8px 0;
+  }
+
+  .social-icons {
+    margin-top: 15px;
+  }
+
+  .footer-bottom {
+    padding: 0 1rem;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 599px) {
+  .footer-content {
+    gap: 1.5rem;
+    padding: 15px 0.5rem;
+  }
+
+  .footer-section h4 {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .footer-section ul li {
+    margin: 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .social-icons img {
+    width: 30px;
+  }
+
+  .pagos-icons {
+    width: 110px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+  }
+
+  .contact-horario {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .footer-content {
+    gap: 1.2rem;
+    padding: 10px 0.5rem;
+  }
+
+  .footer-section h4 {
+    font-size: 0.95rem;
+  }
+
+  .footer-section ul li {
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom {
+    font-size: 11px;
+  }
+}
 </style>
 
