@@ -17,7 +17,6 @@ export default {
 
 <style scoped>
 .contacto-container {
-  padding-top: calc(80px + 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,6 +25,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   background-color: var(--color-background);
+  padding: 2rem 1rem;
 }
 
 .contacto-title {
@@ -54,7 +54,7 @@ export default {
 /* Tablets y pantallas medianas (768px - 1199px) */
 @media (max-width: 1199px) {
   .contacto-container {
-    padding-top: calc(75px + 55px);
+    padding: 1.5rem 1.5rem;
   }
 
   .contacto-title {
@@ -72,7 +72,7 @@ export default {
 /* Tablets pequeñas (600px - 767px) */
 @media (max-width: 767px) {
   .contacto-container {
-    padding-top: calc(70px + 50px);
+    padding: 1.5rem 1rem;
   }
 
   .contacto-title {
@@ -91,7 +91,7 @@ export default {
 /* Móviles (480px - 599px) */
 @media (max-width: 599px) {
   .contacto-container {
-    padding-top: calc(65px + 45px);
+    padding: 1.5rem 0.8rem;
     min-height: calc(100vh - 110px);
   }
 
@@ -110,7 +110,7 @@ export default {
 /* Móviles pequeños (hasta 479px) */
 @media (max-width: 479px) {
   .contacto-container {
-    padding-top: calc(60px + 40px);
+    padding: 1.5rem 0.5rem;
     min-height: calc(100vh - 100px);
   }
 
@@ -129,7 +129,7 @@ export default {
 /* Ajustes para pantallas muy grandes (más de 1600px) */
 @media (min-width: 1600px) {
   .contacto-container {
-    padding-top: calc(85px + 65px);
+    padding: 2.5rem 1rem;
   }
 
   .contacto-title {

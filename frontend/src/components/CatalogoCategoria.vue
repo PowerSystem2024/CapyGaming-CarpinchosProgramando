@@ -245,7 +245,6 @@ const agregarAlCarrito = (producto) => {
   display: flex;
   gap: 1rem;
   padding: 2rem 0rem;
-  padding-top: calc(90px + 60px); /* navbar + subnavbar */
   margin: 0 12rem;
 }
 
@@ -500,7 +499,6 @@ const agregarAlCarrito = (producto) => {
   .catalogo-categoria {
     flex-direction: column;
     margin: 0 2rem;
-    padding-top: calc(90px + 40px);
   }
 
   .sidebar-container {
@@ -522,7 +520,7 @@ const agregarAlCarrito = (producto) => {
 
 @media (max-width: 600px) {
   .catalogo-categoria {
-    padding-top: calc(60px + 40px);
+    margin: 0 1rem;
   }
 
   .productos-grid {

@@ -115,8 +115,7 @@ const agregarAlCarrito = (producto) => {
 .resultados-busqueda {
   display: flex;
   gap: 1rem;
-  padding: 2rem 0rem; /* espacio arriba y a los lados */
-  padding-top: calc(90px + 60px); /* navbar + subnavbar */
+  padding: 2rem 0rem;
   margin: 0 12rem;
 }
 
@@ -253,7 +252,7 @@ const agregarAlCarrito = (producto) => {
     gap: 0.5rem;
   }
 .resultados-busqueda {
-    padding-top: calc(60px + 40px); /* navbar más comprimida */
+    margin: 0 2rem;
   }
   .sidebar {
     width: 100%;
