@@ -56,7 +56,9 @@ onMounted(() => {
   <NavBar :cart-count="cartCount" @abrirPreview="mostrarCarrito = true" @abrirAuth="openAuthModal" />
 
   <!-- Renderizado de la ruta correspondiente -->
-  <router-view @abrirPreview="mostrarCarrito = true" @abrirAuth="openAuthModal"/>
+  <main class="main-content">
+    <router-view @abrirPreview="mostrarCarrito = true" @abrirAuth="openAuthModal"/>
+  </main>
 
   <CarritoModalPreview
     :visible="mostrarCarrito"
@@ -94,5 +96,20 @@ html, body {
 #app {
   background-color: var(--color-background);
   min-height: 100vh;
+}
+
+/* Contenedor principal con padding-top para compensar el navbar fixed */
+.main-content {
+  padding-top: var(--navbar-height-desktop);
+  min-height: calc(100vh - var(--navbar-height-desktop));
+  transition: padding-top 0.3s ease;
+}
+
+/* Responsive: ajustar padding-top en mobile */
+@media (max-width: 900px) {
+  .main-content {
+    padding-top: var(--navbar-height-mobile);
+    min-height: calc(100vh - var(--navbar-height-mobile));
+  }
 }
 </style>

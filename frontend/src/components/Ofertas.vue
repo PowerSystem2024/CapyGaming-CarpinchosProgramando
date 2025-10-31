@@ -177,8 +177,7 @@ h2 {
 
 /* PRODUCTOS EN OFERTA */
 .offers-container {
-  padding: 1.8rem;
-  padding-top: calc(75px + 60px + 2rem); /* 75px navbar + 60px subnavbar + espacio extra */
+  padding: 2rem 1.8rem;
 }
 
 .offers-grid {
@@ -420,6 +419,145 @@ h2 {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     padding: 0 2rem;
     max-width: 100%;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .offers-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin: 0 2rem;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .offer-card {
+    padding: 1rem;
+  }
+
+  .offer-title {
+    font-size: 0.95rem;
+  }
+
+  .offer-btn {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+}
+
+/* Móviles */
+@media (max-width: 599px) {
+  .offers-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .offer-card {
+    padding: 0.75rem;
+    min-height: auto;
+  }
+
+  .offer-media {
+    height: 140px;
+  }
+
+  .offer-image {
+    max-height: 130px;
+  }
+
+  .offer-title {
+    font-size: 0.85rem;
+    line-height: 1.2;
+    height: 2.4em;
+    -webkit-line-clamp: 2;
+  }
+
+  .offer-prices {
+    margin: 0.5rem 0;
+  }
+
+  .old-price {
+    font-size: 0.75rem;
+  }
+
+  .new-price {
+    font-size: 1rem;
+  }
+
+  .offer-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .badge-descuento {
+    font-size: 1.2rem;
+  }
+
+  .badge-off {
+    font-size: 0.7rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 400px) {
+  .section-title {
+    font-size: 1.3rem;
+    margin: 0 0.5rem;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 0.25rem;
+    gap: 0.5rem;
+  }
+
+  .offer-card {
+    padding: 0.6rem;
+  }
+
+  .offer-media {
+    height: 120px;
+  }
+
+  .offer-image {
+    max-height: 110px;
+  }
+
+  .offer-title {
+    font-size: 0.8rem;
+  }
+
+  .new-price {
+    font-size: 0.95rem;
+  }
+
+  .offer-btn {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.3rem;
+  }
+
+  .icon-wrapper {
+    width: 16px;
+    height: 16px;
   }
 }
 

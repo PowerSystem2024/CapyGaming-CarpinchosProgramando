@@ -209,7 +209,7 @@ export const getProductosDestacados = async (req, res) => {
       WHERE p.stock > 0
       GROUP BY p.id_producto, c.nombre, s.nombre
       ORDER BY RANDOM()
-      LIMIT 6
+      LIMIT 8
     `);
 
     res.json(result.rows);

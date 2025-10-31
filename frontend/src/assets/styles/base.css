@@ -41,6 +41,10 @@
     --sidebar-border: #2C3E50;
     --sidebar-ring: #3498DB;
 
+    /* Alturas del navbar para diferentes breakpoints */
+    --navbar-height-desktop: 135px;
+    --navbar-height-mobile: 132px;
+
     line-height: 1.5;
     font-weight: 400;
 
