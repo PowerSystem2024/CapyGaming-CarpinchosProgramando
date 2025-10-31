@@ -116,15 +116,18 @@ const agregarAlCarrito = (producto) => {
   display: flex;
   gap: 1rem;
   padding: 2rem 0rem;
-  margin: 0 12rem;
+  margin: 0 4rem; /* Reducido de 12rem a 4rem para dar más espacio */
+  max-width: 1600px; /* Limitar ancho máximo */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .sidebar {
-  width: 400px;
+  width: 280px; /* Reducido de 400px a 280px */
   flex-shrink: 0;
   padding-top: 1rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   text-align: left;
 }
 
@@ -210,13 +213,19 @@ const agregarAlCarrito = (producto) => {
 }
 
 /* 🧠 Responsividad general */
-@media (max-width: 1200px) {
-  .resultados-busqueda {
-    margin: 0 4rem;
-  }
-
+@media (max-width: 1400px) {
   .productos-grid {
     grid-template-columns: repeat(3, 1fr); /* de 4 a 3 columnas */
+  }
+}
+
+@media (max-width: 1200px) {
+  .resultados-busqueda {
+    margin: 0 2rem;
+  }
+
+  .sidebar {
+    width: 220px; /* Reducir aún más en pantallas medianas */
   }
 }
 
@@ -229,6 +238,8 @@ const agregarAlCarrito = (producto) => {
   .sidebar {
     width: 100%;
     padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .productos-grid {
@@ -236,14 +247,19 @@ const agregarAlCarrito = (producto) => {
   }
 
   .ordenador {
-
     justify-content: flex-start; /* centrado a la izquierda en pantallas chicas */
   }
 }
 
 @media (max-width: 600px) {
+  .resultados-busqueda {
+    margin: 0 1rem;
+  }
+
   .productos-grid {
-    grid-template-columns: 1fr; /* 1 producto por fila */
+    grid-template-columns: repeat(2, 1fr); /* Mantener 2 columnas en móvil */
+    gap: 0.75rem;
+    padding: 0.75rem;
   }
 
   .ordenador {
@@ -251,13 +267,14 @@ const agregarAlCarrito = (producto) => {
     align-items: flex-start;
     gap: 0.5rem;
   }
-.resultados-busqueda {
-    margin: 0 2rem;
-  }
+
   .sidebar {
     width: 100%;
-    padding-top: 2.5rem;
+    padding-top: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
+
   .sidebar h2 {
     font-size: 1rem;
   }
@@ -265,7 +282,8 @@ const agregarAlCarrito = (producto) => {
   .sidebar p {
     font-size: 0.85rem;
   }
- .header-filtros,
+
+  .header-filtros,
   .ordenador,
   .productos-grid {
     margin-bottom: 0rem;
@@ -274,9 +292,22 @@ const agregarAlCarrito = (producto) => {
   .header-filtros h2 {
     font-size: 1.1rem;
   }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .resultados-busqueda {
+    margin: 0 0.5rem;
+  }
 
   .productos-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas compactas */
+    gap: 0.5rem;
     padding: 0.5rem;
+  }
+
+  .header-filtros {
+    padding: 0.75rem;
   }
 }
 

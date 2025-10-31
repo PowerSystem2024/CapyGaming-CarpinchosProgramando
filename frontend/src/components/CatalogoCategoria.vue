@@ -245,12 +245,15 @@ const agregarAlCarrito = (producto) => {
   display: flex;
   gap: 1rem;
   padding: 2rem 0rem;
-  margin: 0 12rem;
+  margin: 0 4rem; /* Reducido de 12rem a 4rem */
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Contenedor del sidebar */
 .sidebar-container {
-  width: 400px;
+  width: 280px; /* Reducido de 400px a 280px */
   flex-shrink: 0;
 }
 
@@ -485,13 +488,19 @@ const agregarAlCarrito = (producto) => {
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-  .catalogo-categoria {
-    margin: 0 4rem;
-  }
-
+@media (max-width: 1400px) {
   .productos-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .catalogo-categoria {
+    margin: 0 2rem;
+  }
+
+  .sidebar-container {
+    width: 220px;
   }
 }
 
