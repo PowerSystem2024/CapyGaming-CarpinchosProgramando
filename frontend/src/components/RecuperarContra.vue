@@ -97,6 +97,9 @@ function goToLogin() {
 .auth-modal-content {
   padding: 2rem;
   background-color: var(--color-card);
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
 .auth-page {
@@ -139,6 +142,7 @@ input {
   background: var(--color-popover);
   color: var(--color-popover-foreground);
   background-color: var(--color-card);
+  box-sizing: border-box;
 }
 input::placeholder { color: var(--color-muted-foreground); }
 input:focus {
@@ -154,6 +158,8 @@ button.btn {
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   font-weight:700; cursor:pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 button.btn:hover { filter:brightness(1.05); }
 button.btn:disabled { opacity:.6; cursor:not-allowed; }
@@ -171,4 +177,196 @@ span {
 .alt { margin-top:1rem; text-align:center; background-color: var(--color-card);}
 .link { color: var(--color-secondary); text-decoration:none; background-color: var(--color-card); }
 .link:hover { text-decoration: underline; }
+
+/* Media Queries para Responsive */
+
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+  .auth-modal-content {
+    padding: 2.5rem;
+    max-width: 450px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .field {
+    margin-bottom: 1.25rem;
+  }
+  
+  input {
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+  }
+  
+  button.btn {
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+  }
+  
+  .alt {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .auth-modal-content {
+    padding: 2rem;
+    max-width: 420px;
+  }
+  
+  h1 {
+    font-size: 1.7rem;
+  }
+  
+  .subtitle {
+    font-size: 0.95rem;
+  }
+  
+  input {
+    padding: 0.8rem 0.95rem;
+  }
+  
+  button.btn {
+    padding: 0.95rem 1.1rem;
+  }
+}
+
+/* Pantallas pequeñas (móviles grandes, 576px a 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .auth-modal-content {
+    padding: 1.75rem;
+    max-width: 380px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .field {
+    margin-bottom: 0.9rem;
+  }
+  
+  input {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.95rem;
+  }
+  
+  button.btn {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .error, .success {
+    font-size: 0.85rem;
+  }
+  
+  .alt {
+    margin-top: 0.9rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Pantallas muy pequeñas (móviles, hasta 575px) */
+@media (max-width: 575px) {
+  .auth-modal-content {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.35rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .field {
+    margin-bottom: 0.8rem;
+  }
+  
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  input {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  button.btn {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  .error, .success {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+  
+  .success {
+    padding: 0.4rem;
+  }
+  
+  .alt {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .link {
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas extra pequeñas (móviles muy pequeños, hasta 380px) */
+@media (max-width: 380px) {
+  .auth-modal-content {
+    padding: 1.25rem;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  .subtitle {
+    font-size: 0.8rem;
+  }
+  
+  input {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  button.btn {
+    padding: 0.75rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .alt {
+    font-size: 0.8rem;
+  }
+}
 </style>

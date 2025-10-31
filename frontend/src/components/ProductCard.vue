@@ -73,21 +73,134 @@ const onError = (e) => {
 
 <style scoped>
 @import url(../assets/styles/base.css);
-.product-card { cursor: pointer; border: 1px solid var(--color-border); width: 260px; min-height: 440px; max-height: 440px; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; background: var(--color-card); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease;}
-.product-card:hover { transform: scale(1.01); box-shadow: 0 2px 10px #111920; }
-.img-wrap { position: relative; min-height: 55%; display:flex; align-items:center; justify-content:center; background: var(--color-card)}
-.img-wrap img { max-width:85%; max-height:85%; width: auto; height: auto; object-fit:contain; transition: transform 0.3s ease; }
-.product-card:hover img { transform: scale(1.1);}
-.badge { position:absolute; top:8px; left:8px; padding:4px 8px; border-radius:12px; font-weight:600; font-size:0.8rem; }
-.badge.in-stock { background: var(--color-secondary); color: white; } /* celeste/verde */
-.badge.out-stock { background:var(--color-destructive); color: white; }
-.info { flex:1; display: flex; flex-direction: column; justify-content: space-between; padding: 10px; text-align:center; background: var(--color-card); }
-.nombre { background-color: transparent; color: var(--color-primary); font-size:1rem; font-weight: 600;  line-clamp: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin:0 0 6px; }
-.precio { background-color: transparent; color: var(--color-secondary); font-weight:700; margin:6px 0; font-size: 1.2rem; }
-.marca, .stock { background-color: var(--color-card); color: #ffffff59; font-size: 0.8rem; color: #999; }
-.btn-add { margin-top: auto; width:100%; padding:0.6rem 1rem; border:none; border-radius:8px; background:var(--color-primary); color:var(--color-background); cursor:pointer; transition: all 0.25s ease-in-out; font-weight: 600}
-.btn-add:hover { background-color: var(--sidebar-ring); color: var(--color-foreground); }
-.btn-add[disabled] { opacity:0.6; cursor:not-allowed; background:#999; }
+
+/* Estilos base */
+.product-card { 
+  cursor: pointer; 
+  border: 1px solid var(--color-border); 
+  width: 260px; 
+  min-height: 440px; 
+  max-height: 440px; 
+  border-radius: 12px; 
+  box-shadow: var(--card-shadow); 
+  overflow: hidden; 
+  background: var(--color-card); 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover { 
+  transform: scale(1.01); 
+  box-shadow: 0 2px 10px #111920; 
+}
+
+.img-wrap { 
+  position: relative; 
+  min-height: 55%; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  background: var(--color-card);
+}
+
+.img-wrap img { 
+  max-width:85%; 
+  max-height:85%; 
+  width: auto; 
+  height: auto; 
+  object-fit:contain; 
+  transition: transform 0.3s ease; 
+}
+
+.product-card:hover img { 
+  transform: scale(1.1);
+}
+
+.badge { 
+  position:absolute; 
+  top:8px; 
+  left:8px; 
+  padding:4px 8px; 
+  border-radius:12px; 
+  font-weight:600; 
+  font-size:0.8rem; 
+}
+
+.badge.in-stock { 
+  background: var(--color-secondary); 
+  color: white; 
+} /* celeste/verde */
+
+.badge.out-stock { 
+  background:var(--color-destructive); 
+  color: white; 
+}
+
+.info { 
+  flex:1; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  padding: 10px; 
+  text-align:center; 
+  background: var(--color-card); 
+}
+
+.nombre { 
+  background-color: transparent; 
+  color: var(--color-primary); 
+  font-size:1rem; 
+  font-weight: 600;  
+  line-clamp: 2; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  margin:0 0 6px; 
+}
+
+.precio { 
+  background-color: transparent; 
+  color: var(--color-secondary); 
+  font-weight:700; 
+  margin:6px 0; 
+  font-size: 1.2rem; 
+}
+
+.marca, .stock { 
+  background-color: var(--color-card); 
+  color: #ffffff59; 
+  font-size: 0.8rem; 
+  color: #999; 
+}
+
+.btn-add { 
+  margin-top: auto; 
+  width:100%; 
+  padding:0.6rem 1rem; 
+  border:none; 
+  border-radius:8px; 
+  background:var(--color-primary); 
+  color:var(--color-background); 
+  cursor:pointer; 
+  transition: all 0.25s ease-in-out; 
+  font-weight: 600;
+}
+
+.btn-add:hover { 
+  background-color: var(--sidebar-ring); 
+  color: var(--color-foreground); 
+}
+
+.btn-add[disabled] { 
+  opacity:0.6; 
+  cursor:not-allowed; 
+  background:#999; 
+}
+
 .icon-wrapper {
   position: relative;
   display: inline-block;
@@ -118,5 +231,216 @@ const onError = (e) => {
 
 .btn-add:hover .icon-cart.hover {
   opacity: 1;
+}
+
+/* Media Queries para Responsive */
+
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+  .product-card {
+    width: 280px;
+    min-height: 460px;
+    max-height: 460px;
+  }
+  
+  .img-wrap {
+    min-height: 58%;
+  }
+  
+  .img-wrap img {
+    max-width: 80%;
+    max-height: 80%;
+  }
+  
+  .nombre {
+    font-size: 1.1rem;
+    -webkit-line-clamp: 2;
+  }
+  
+  .precio {
+    font-size: 1.3rem;
+  }
+  
+  .marca, .stock {
+    font-size: 0.85rem;
+  }
+  
+  .btn-add {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .product-card {
+    width: 240px;
+    min-height: 420px;
+    max-height: 420px;
+  }
+  
+  .img-wrap {
+    min-height: 52%;
+  }
+  
+  .img-wrap img {
+    max-width: 82%;
+    max-height: 82%;
+  }
+  
+  .info {
+    padding: 8px;
+  }
+  
+  .nombre {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 2;
+  }
+  
+  .precio {
+    font-size: 1.15rem;
+  }
+  
+  .btn-add {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .icon-wrapper {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .icon-cart {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Pantallas pequeñas (tablets pequeñas y móviles grandes, 576px a 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .product-card {
+    width: 220px;
+    min-height: 380px;
+    max-height: 380px;
+    margin: 0 auto;
+  }
+  
+  .img-wrap {
+    min-height: 50%;
+  }
+  
+  .img-wrap img {
+    max-width: 80%;
+    max-height: 80%;
+  }
+  
+  .info {
+    padding: 8px 6px;
+  }
+  
+  .nombre {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 2;
+    margin: 0 0 4px;
+  }
+  
+  .precio {
+    font-size: 1.1rem;
+    margin: 4px 0;
+  }
+  
+  .marca, .stock {
+    font-size: 0.75rem;
+  }
+  
+  .btn-add {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.85rem;
+  }
+  
+  .badge {
+    font-size: 0.75rem;
+    padding: 3px 6px;
+  }
+  
+  .icon-wrapper {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  
+  .icon-cart {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Pantallas muy pequeñas (móviles, hasta 575px) */
+@media (max-width: 575px) {
+  .product-card {
+    width: 100%;
+    min-height: 350px;
+    max-height: 350px;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  .img-wrap {
+    min-height: 48%;
+  }
+  
+  .img-wrap img {
+    max-width: 75%;
+    max-height: 75%;
+  }
+  
+  .info {
+    padding: 8px;
+  }
+  
+  .nombre {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+    margin: 0 0 3px;
+  }
+  
+  .precio {
+    font-size: 1rem;
+    margin: 3px 0;
+  }
+  
+  .marca, .stock {
+    font-size: 0.7rem;
+  }
+  
+  .btn-add {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    top: 6px;
+    left: 6px;
+  }
+  
+  .icon-wrapper {
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+  }
+  
+  .icon-cart {
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+  }
 }
 </style>
