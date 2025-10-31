@@ -1,4 +1,3 @@
-
 <template>
   <div class="brands-carousel">
     <div class="brands-track">
@@ -60,6 +59,8 @@ export default {
   border-radius: 8px;
   padding: 1rem 0;
   position: relative;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .brands-track {
@@ -97,5 +98,68 @@ export default {
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* Responsive para pantallas grandes (desktop) */
+@media (min-width: 1200px) {
+  .brands-carousel {
+    max-width: 1200px;
+  }
+  
+  .brand-item {
+    width: 140px;
+    height: 90px;
+  }
+}
+
+/* Responsive para pantallas medianas (tabletas) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .brands-carousel {
+    max-width: 95%;
+  }
+  
+  .brands-track {
+    gap: 1.5rem;
+  }
+  
+  .brand-item {
+    width: 110px;
+    height: 75px;
+  }
+}
+
+/* Responsive para pantallas pequeñas (móviles) */
+@media (max-width: 767px) {
+  .brands-carousel {
+    max-width: 95%;
+    padding: 0.5rem 0;
+  }
+  
+  .brands-track {
+    gap: 1rem;
+    animation: scroll 60s linear infinite; /* Velocidad más rápida para móviles */
+  }
+  
+  .brand-item {
+    width: 90px;
+    height: 60px;
+    padding: 5px;
+  }
+  
+  .brand-item:hover {
+    transform: scale(1.05); /* Efecto hover más sutil en móviles */
+  }
+}
+
+/* Para pantallas muy pequeñas (móviles pequeños) */
+@media (max-width: 480px) {
+  .brands-track {
+    gap: 0.8rem;
+  }
+  
+  .brand-item {
+    width: 80px;
+    height: 55px;
+  }
 }
 </style>

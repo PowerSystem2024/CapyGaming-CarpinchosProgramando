@@ -428,4 +428,219 @@ function formatPrice(price) {
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
 }
+
+/* Media Queries para Responsive */
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+    .modal-container {
+        max-width: 500px;
+        max-height: 85vh;
+    }
+    
+    .modal-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .header-title {
+        font-size: 1.1rem;
+    }
+    
+    .close-btn {
+        font-size: 1.8rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    #paymentBrick_container {
+        min-height: 320px;
+    }
+    
+    .payment-status {
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+    
+    .payment-status h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .payment-status p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .payment-actions {
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.8rem 1.75rem;
+        font-size: 1rem;
+    }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .modal-container {
+        max-width: 500px;
+        max-height: 85vh;
+    }
+    
+    .modal-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .modal-body {
+        padding: 0.75rem;
+    }
+    
+    #paymentBrick_container {
+        min-height: 300px;
+    }
+    
+    .payment-status {
+        padding: 1.25rem;
+    }
+    
+    .payment-status h3 {
+        font-size: 1.1rem;
+    }
+    
+    .payment-status p {
+        font-size: 0.9rem;
+    }
+    
+    .payment-actions {
+        gap: 0.9rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.7rem 1.6rem;
+    }
+}
+
+/* Pantallas pequeñas (móviles, hasta 767px) */
+@media (max-width: 767px) {
+    .modal-overlay {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 10vh;
+    }
+    
+    .modal-container {
+        max-width: 100%;
+        max-height: 90vh;
+        border-radius: 12px;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .close-btn {
+        font-size: 1.8rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    #paymentBrick_container {
+        min-height: 280px;
+        border-radius: 8px;
+    }
+    
+    .payment-status {
+        padding: 1.25rem;
+        margin-top: 1rem;
+        border-radius: 8px;
+    }
+    
+    .payment-status h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .payment-status p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+    
+    .payment-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+}
+
+/* Pantallas muy pequeñas (móviles pequeños, hasta 480px) */
+@media (max-width: 480px) {
+    .modal-overlay {
+        padding: 10px;
+        padding-top: 5vh;
+    }
+    
+    .modal-container {
+        max-height: 95vh;
+        border-radius: 10px;
+    }
+    
+    .modal-header {
+        padding: 0.875rem;
+    }
+    
+    .header-title {
+        font-size: 0.95rem;
+    }
+    
+    .close-btn {
+        font-size: 1.6rem;
+    }
+    
+    .modal-body {
+        padding: 0.875rem;
+    }
+    
+    #paymentBrick_container {
+        min-height: 250px;
+    }
+    
+    .payment-status {
+        padding: 1rem;
+    }
+    
+    .payment-status h3 {
+        font-size: 1rem;
+    }
+    
+    .payment-status p {
+        font-size: 0.85rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+}
 </style>

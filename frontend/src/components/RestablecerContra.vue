@@ -159,6 +159,10 @@ function goToLogin() {
   padding: 2rem;
   background-color: var(--color-card);
   border-radius: 8px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -167,6 +171,7 @@ h1 {
   font-size: 1.6rem;
   color: #F39C12;
   text-align: center;
+  background-color: var(--color-card);
 }
 
 .subtitle {
@@ -174,11 +179,13 @@ h1 {
   color: white;
   margin: 0 0 1.2rem;
   text-align: center;
+  background-color: var(--color-card);
 }
 
 .field {
   margin-bottom: 1rem;
   text-align: left;
+  background-color: var(--color-card);
 }
 
 label {
@@ -186,6 +193,7 @@ label {
   font-weight: 700;
   margin-bottom: .35rem;
   color: var(--color-accent-foreground);
+  background-color: var(--color-card);
 }
 
 input {
@@ -197,6 +205,7 @@ input {
   color: white;
   outline: none;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 input:focus {
@@ -208,6 +217,7 @@ input:focus {
   display: flex;
   gap: .5rem;
   align-items: center;
+  background-color: var(--color-card);
 }
 
 .password-row input {
@@ -221,7 +231,10 @@ button.btn {
   border:1px solid var(--color-border);
   background: var(--color-primary);
   color: var(--color-primary-foreground);
-  font-weight:700; cursor:pointer;
+  font-weight:700; 
+  cursor:pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 button.btn:hover { filter:brightness(1.05); }
@@ -234,23 +247,28 @@ button.ghost{
   border-radius:10px;
   padding:.6rem .8rem;
   cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 .error {
   margin: .35rem 0 0;
   color: #e74c3c;
   font-size: .9rem;
+  background-color: var(--color-card);
 }
 
 .alt {
   margin-top: 1rem;
   text-align: center;
   color: #666;
+  background-color: var(--color-card);
 }
 
 .link {
   color: #3498db;
   text-decoration: none;
+  background-color: var(--color-card);
 }
 
 .link:hover {
@@ -259,5 +277,234 @@ button.ghost{
 
 span {
   background-color: var(--color-primary);
+}
+
+form {
+  background-color: var(--color-card);
+}
+
+/* Media Queries para Responsive */
+
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+  .auth-modal-content {
+    padding: 2.5rem;
+    max-width: 450px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .field {
+    margin-bottom: 1.25rem;
+  }
+  
+  input {
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+  }
+  
+  button.btn {
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+  }
+  
+  button.ghost {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  
+  .alt {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .auth-modal-content {
+    padding: 2rem;
+    max-width: 420px;
+  }
+  
+  h1 {
+    font-size: 1.7rem;
+  }
+  
+  .subtitle {
+    font-size: 0.95rem;
+  }
+  
+  input {
+    padding: 0.8rem 0.95rem;
+  }
+  
+  button.btn {
+    padding: 0.95rem 1.1rem;
+  }
+  
+  button.ghost {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas pequeñas (móviles grandes, 576px a 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .auth-modal-content {
+    padding: 1.75rem;
+    max-width: 380px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .field {
+    margin-bottom: 0.9rem;
+  }
+  
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  input {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+  
+  button.btn {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+  
+  button.ghost {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .error {
+    font-size: 0.85rem;
+  }
+  
+  .alt {
+    margin-top: 0.9rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Pantallas muy pequeñas (móviles, hasta 575px) */
+@media (max-width: 575px) {
+  .auth-modal-content {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.35rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .field {
+    margin-bottom: 0.8rem;
+  }
+  
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  input {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  .password-row {
+    gap: 0.4rem;
+  }
+  
+  button.btn {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  button.ghost {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .error {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+  
+  .alt {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .link {
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas extra pequeñas (móviles muy pequeños, hasta 380px) */
+@media (max-width: 380px) {
+  .auth-modal-content {
+    padding: 1.25rem;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  .subtitle {
+    font-size: 0.8rem;
+  }
+  
+  input {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  button.btn {
+    padding: 0.75rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  button.ghost {
+    padding: 0.4rem 0.45rem;
+    font-size: 0.7rem;
+  }
+  
+  .alt {
+    font-size: 0.8rem;
+  }
 }
 </style>
