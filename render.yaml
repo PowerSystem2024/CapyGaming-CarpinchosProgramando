@@ -2,15 +2,7 @@
 # Este archivo permite desplegar toda la aplicación con un solo click
 
 services:
-  # 1. Base de datos PostgreSQL
-  - type: pserv
-    name: capygaming-db
-    plan: free
-    databaseName: capygaming
-    user: capygaming_user
-    region: oregon  # Puedes cambiar a ohio, singapore, frankfurt
-
-  # 2. Backend API (Node.js + Express)
+  # 1. Backend API (Node.js + Express)
   - type: web
     name: capygaming-backend
     runtime: node
@@ -27,17 +19,13 @@ services:
       - key: PORT
         value: 3001
 
-      # Base de datos (se vincula automáticamente con el servicio PostgreSQL)
+      # Base de datos (se vincula con el servicio PostgreSQL de abajo)
       - key: DATABASE_URL
         fromDatabase:
           name: capygaming-db
           property: connectionString
 
-      # La URL del DATABASE_URL tiene este formato:
-      # postgresql://user:password@host:5432/database
-      # Necesitamos extraer las partes individuales para pool.js
-      # Por eso usamos variables adicionales
-
+      # Extraer partes individuales de DATABASE_URL para pool.js
       - key: DB_USER
         fromDatabase:
           name: capygaming-db
@@ -61,18 +49,18 @@ services:
       - key: DB_PORT
         value: 5432
 
-      # JWT Secret (IMPORTANTE: Genera uno nuevo seguro)
+      # JWT Secret (se genera automáticamente)
       - key: JWT_SECRET
         generateValue: true
 
-      # URLs de la aplicación (se actualizan después del deploy)
+      # URLs de la aplicación (actualizar después del deploy)
       - key: FRONTEND_URL
-        value: https://capygaming.onrender.com  # Actualizar después con tu URL real
+        value: https://capygaming-frontend.onrender.com
 
       - key: BACKEND_URL
-        sync: false  # Se configura manualmente en el dashboard
+        sync: false
 
-      # MercadoPago (configurar manualmente en el dashboard)
+      # MercadoPago (configurar manualmente después)
       - key: MERCADOPAGO_ACCESS_TOKEN
         sync: false
 
@@ -85,14 +73,14 @@ services:
       - key: ALLOW_UNSIGNED_WEBHOOKS
         value: false
 
-      # Email (configurar manualmente en el dashboard)
+      # Email (configurar manualmente después)
       - key: EMAIL_USER
         sync: false
 
       - key: EMAIL_PASS
         sync: false
 
-  # 3. Frontend (Vue.js + Vite - Static Site)
+  # 2. Frontend (Vue.js + Vite - Static Site)
   - type: web
     name: capygaming-frontend
     runtime: static
@@ -101,9 +89,9 @@ services:
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
-      # URL del backend (actualizar después del deploy del backend)
+      # URL del backend (actualizar después del deploy)
       - key: VITE_API_URL
-        value: https://capygaming-backend.onrender.com  # Actualizar con tu URL real
+        value: https://capygaming-backend.onrender.com
     routes:
       # Vue Router: redirigir todas las rutas a index.html
       - type: rewrite
