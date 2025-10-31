@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { addToCart } from "../utils/cartUtils";
 import { setUltimoProducto } from "../composables/ultimoProducto";
 import { useRouter } from 'vue-router';
@@ -82,7 +82,7 @@ export default {
   methods: {
     async fetchOfertas() {
       try {
-        const response = await axios.get('/api/ofertas');
+        const response = await apiClient.get('/api/ofertas');
 
 
 

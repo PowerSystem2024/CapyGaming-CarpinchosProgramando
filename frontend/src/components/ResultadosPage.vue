@@ -51,7 +51,7 @@
 // Importa herramientas de Vue y utilidades
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 
 // Componentes visuales
 import ProductCard from '../components/ProductCard.vue';
@@ -89,7 +89,7 @@ watch( // Observa cambios en el parámetro de búsqueda (?q=...)
     }
 
     try { // Llama al backend para buscar productos por nombre
-      const res = await axios.get(`/api/productos/buscar?nombre=${encodeURIComponent(nuevoTexto)}`);
+      const res = await apiClient.get(`/api/productos/buscar?nombre=${encodeURIComponent(nuevoTexto)}`);
       productos.value = Array.isArray(res.data) ? res.data : [];
     } catch (err) {
       console.error('Error al buscar productos:', err);

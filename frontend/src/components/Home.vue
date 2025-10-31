@@ -221,7 +221,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import apiClient from "../api/apiClient";
 import { getRecentlyViewedLimited } from "../utils/recentlyViewedUtils";
 import Ofertas from "../components/Ofertas.vue";
 
@@ -291,7 +291,7 @@ const currentReciente = ref(0);
 // Cargar productos destacados desde el backend
 const cargarProductosDestacados = async () => {
   try {
-    const res = await axios.get('/api/productos-destacados');
+    const res = await apiClient.get('/api/productos-destacados');
     destacados.value = res.data;
   } catch (error) {
     console.error('Error al cargar productos destacados:', error);

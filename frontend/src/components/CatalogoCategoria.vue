@@ -95,7 +95,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, computed, watch, onMounted } from 'vue';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import ProductCard from '../components/ProductCard.vue';
 import { addToCart } from '../utils/cartUtils';
 import CarritoModalPreview from '../components/CarritoModalPreview.vue';
@@ -138,7 +138,7 @@ watch(
   async (nuevoValor) => {
     categoria.value = nuevoValor;
     try {
-      const res = await axios.get(`/api/categorias/${nuevoValor}/subcategorias`);
+      const res = await apiClient.get(`/api/categorias/${nuevoValor}/subcategorias`);
       subcategorias.value = res.data;
 
       // Inicializar estado de expansión (todas cerradas por defecto)
@@ -172,7 +172,7 @@ watch(
   () => [categoria.value, subcategoria.value],
   async () => {
     try {
-      const res = await axios.get('/api/productos', {
+      const res = await apiClient.get('/api/productos', {
         params: {
           categoria: categoria.value,
           subcategoria: subcategoria.value || null

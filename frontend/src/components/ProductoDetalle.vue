@@ -74,7 +74,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { addToCart, getCart } from '../utils/cartUtils';
 import { ultimoProducto, setUltimoProducto } from '../composables/ultimoProducto';
 import { addToRecentlyViewed } from '../utils/recentlyViewedUtils';
@@ -108,7 +108,7 @@ const infoItems = ref([
 // Función para cargar el producto (líneas 107-114)
 const cargarProducto = async (id) => {
   try {
-    const res = await axios.get(`/api/productos/${id}`)
+    const res = await apiClient.get(`/api/productos/${id}`)
     producto.value = res.data
 
     // Agregar el producto a la lista de vistos recientemente
