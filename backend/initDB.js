@@ -13,7 +13,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Cargar variables de entorno
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// Intenta primero .env.render (para producción), luego .env (para local)
+dotenv.config({ path: path.resolve(__dirname, '.env.render') });
+if (!process.env.DATABASE_URL) {
+  dotenv.config({ path: path.resolve(__dirname, '../.env') });
+}
 
 async function initializeDatabase() {
   console.log('🔄 Conectando a la base de datos...');

@@ -55,7 +55,7 @@ services:
 
       # URLs de la aplicación (actualizar después del deploy)
       - key: FRONTEND_URL
-        value: https://capygaming-frontend.onrender.com
+        value: https://capygaming-frontend-uffp.onrender.com
 
       - key: BACKEND_URL
         sync: false
@@ -89,7 +89,7 @@ services:
     envVars:
       # URL del backend (actualizar después del deploy)
       - key: VITE_API_URL
-        value: https://capygaming-backend.onrender.com
+        value: https://capygaming-backend-1pfp.onrender.com
     routes:
       # Vue Router: redirigir todas las rutas a index.html
       - type: rewrite
