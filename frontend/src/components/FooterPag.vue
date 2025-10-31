@@ -102,7 +102,10 @@ import Marcas from './Marcas.vue';
 }
 
 .footer-section {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  align-items: center;
   min-width: 220px;
 }
 
@@ -140,6 +143,9 @@ import Marcas from './Marcas.vue';
 
 .social-icons {
   margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .social-icons img {
   width: 35px;

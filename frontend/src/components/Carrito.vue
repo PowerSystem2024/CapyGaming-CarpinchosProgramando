@@ -180,6 +180,7 @@ export default {
     width: 100%;
     margin: 0 auto;
     min-height: calc(100vh - 100px);
+    box-sizing: border-box;
   }
   
   /* No aplicar herencia de fondo a todos los elementos */
@@ -200,7 +201,7 @@ export default {
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-top: 7%;
+    margin-top: 10%;
   }
 
   .carrito-vacio {
@@ -447,7 +448,6 @@ export default {
     text-align: right;
   }
 
-
   .btn-comprar {
     background-color: var(--color-primary);
     color: var(--color-primary-foreground);
@@ -548,4 +548,348 @@ export default {
     color: var(--color-primary);
     background-color: transparent !important;
   }
-  </style>
+
+  /* ===== RESPONSIVE DESIGN ===== */
+
+  /* Tablets y pantallas medianas (768px - 1199px) */
+  @media (max-width: 1199px) {
+    .carrito-container {
+      padding: 1.5rem;
+    }
+
+    .carrito-container h1 {
+      font-size: 1.8rem;
+      margin-top: 5%;
+      padding: 0.8rem;
+    }
+
+    .products-grid {
+      max-width: 900px;
+    }
+
+    .product-card {
+      gap: 15px;
+      padding: 0.8rem;
+    }
+
+    .product-card img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .product-info h3 {
+      font-size: 0.95rem;
+    }
+
+    .precio {
+      font-size: 1.1rem;
+    }
+
+    .btn-comprar {
+      padding: 10px 25px;
+      font-size: 1rem;
+    }
+  }
+
+  /* Tablets pequeñas (600px - 767px) */
+  @media (max-width: 767px) {
+    .carrito-container {
+      padding: 1rem;
+      gap: 0.8rem;
+    }
+
+    .carrito-container h1 {
+      font-size: 1.6rem;
+      margin-top: 4%;
+      padding: 0.7rem;
+    }
+
+    .carrito-vacio {
+      padding: 30px;
+      max-width: 500px;
+    }
+
+    .carrito-vacio p {
+      font-size: 1.1rem;
+    }
+
+    .carrito-vacio a {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.9rem;
+    }
+
+    .products-grid {
+      gap: 1rem;
+    }
+
+    .product-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 0.8rem;
+    }
+
+    .product-card img {
+      width: 80px;
+      height: 80px;
+      align-self: center;
+    }
+
+    .product-info {
+      width: 100%;
+    }
+
+    .product-info h3 {
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .precio {
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .cantidad-controls {
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .Subtotal {
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .product-card .btn-eliminar {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .total-carrito {
+      padding: 15px;
+    }
+
+    .acciones-finales {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .acciones-finales .btn-eliminar.btn-vaciar,
+    .acciones-finales .btn-comprar {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-comprar {
+      padding: 12px 20px;
+      font-size: 1rem;
+    }
+  }
+
+  /* Móviles (480px - 599px) */
+  @media (max-width: 599px) {
+    .carrito-container {
+      padding: 0.8rem;
+      gap: 0.6rem;
+    }
+
+    .carrito-container h1 {
+      font-size: 1.4rem;
+      margin-top: 3%;
+      padding: 0.6rem;
+    }
+
+    .carrito-vacio {
+      padding: 25px;
+      max-width: 400px;
+    }
+
+    .carrito-vacio p {
+      font-size: 1rem;
+    }
+
+    .carrito-vacio a {
+      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .products-grid {
+      gap: 0.8rem;
+    }
+
+    .product-card {
+      padding: 0.7rem;
+    }
+
+    .product-card img {
+      width: 70px;
+      height: 70px;
+    }
+
+    .product-info h3 {
+      font-size: 0.85rem;
+    }
+
+    .precio {
+      font-size: 0.9rem;
+    }
+
+    .cantidad-controls {
+      gap: 10px;
+    }
+
+    .btn-cantidad {
+      width: 25px;
+      height: 25px;
+      font-size: 14px;
+    }
+
+    .cantidad {
+      font-size: 1rem;
+    }
+
+    .Subtotal {
+      font-size: 0.9rem;
+    }
+
+    .total-carrito {
+      padding: 12px;
+    }
+
+    .resumen-totales {
+      padding: 12px;
+    }
+
+    .total-line {
+      font-size: 0.9rem;
+    }
+
+    .total-line.total-final {
+      font-size: 1.1rem;
+    }
+
+    .btn-comprar {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Móviles pequeños (hasta 479px) */
+  @media (max-width: 479px) {
+    .carrito-container {
+      padding: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .carrito-container h1 {
+      font-size: 1.2rem;
+      margin-top: 2%;
+      padding: 0.5rem;
+    }
+
+    .carrito-vacio {
+      padding: 20px;
+      max-width: 350px;
+    }
+
+    .carrito-vacio p {
+      font-size: 0.9rem;
+    }
+
+    .carrito-vacio a {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.7rem;
+    }
+
+    .product-card {
+      padding: 0.6rem;
+    }
+
+    .product-card img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .product-info h3 {
+      font-size: 0.8rem;
+    }
+
+    .precio {
+      font-size: 0.85rem;
+    }
+
+    .cantidad-controls {
+      gap: 8px;
+    }
+
+    .btn-cantidad {
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+    }
+
+    .cantidad {
+      font-size: 0.9rem;
+    }
+
+    .product-card .btn-eliminar {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    .total-carrito {
+      padding: 10px;
+    }
+
+    .resumen-totales {
+      padding: 10px;
+    }
+
+    .total-line {
+      font-size: 0.85rem;
+    }
+
+    .total-line.total-final {
+      font-size: 1rem;
+    }
+
+    .acciones-finales .btn-eliminar.btn-vaciar {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    .btn-comprar {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Ajustes para pantallas muy grandes (más de 1600px) */
+  @media (min-width: 1600px) {
+    .carrito-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .products-grid {
+      max-width: 1400px;
+    }
+
+    .total-carrito {
+      max-width: 1400px;
+    }
+  }
+
+  /* Mejoras de accesibilidad para botones en móviles */
+  @media (max-width: 767px) {
+    .btn-cantidad,
+    .btn-eliminar,
+    .btn-comprar {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    .product-card .btn-eliminar {
+      min-height: 40px;
+    }
+  }
+</style>

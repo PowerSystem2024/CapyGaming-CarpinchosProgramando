@@ -1,4 +1,3 @@
-[file name]: registro.vue
 <template>
   <div class="auth-modal-content">
     <h1>Crear cuenta</h1>
@@ -284,6 +283,10 @@ function goToLogin() {
 .auth-modal-content {
   padding: 2rem;
   background-color: var(--color-card);
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Layout */
@@ -334,6 +337,7 @@ input{
   background: var(--color-popover);          /* evita el fondo global en inputs */
   color: var(--color-popover-foreground);
   outline: none;
+  box-sizing: border-box;
 }
 input::placeholder{ color: var(--color-muted-foreground); }
 input:focus{
@@ -357,6 +361,8 @@ button.btn{
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   font-weight:700; cursor:pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 button.btn:hover{ filter:brightness(1.05); }
 button.btn:disabled{ opacity:.6; cursor:not-allowed; }
@@ -368,6 +374,8 @@ button.ghost{
   border-radius:10px;
   padding:.6rem .8rem;
   cursor:pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 form {
@@ -383,4 +391,228 @@ span {
 
 .error{ margin:.35rem 0 0; color: var(--color-destructive); font-size:.9rem; background-color: var(--color-card); }
 .alt{ margin-top: 1rem; text-align:center; background-color: var(--color-card); }
+
+/* Media Queries para Responsive */
+
+/* Pantallas grandes (desktops, 1200px en adelante) */
+@media (min-width: 1200px) {
+  .auth-modal-content {
+    padding: 2.5rem;
+    max-width: 480px;
+  }
+  
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .field, .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  input {
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+  }
+  
+  button.btn {
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+  }
+  
+  button.ghost {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  
+  .checkbox {
+    font-size: 0.9rem;
+  }
+  
+  .alt {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Pantallas medianas (tablets, 768px a 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .auth-modal-content {
+    padding: 2rem;
+    max-width: 450px;
+  }
+  
+  h1 {
+    font-size: 1.6rem;
+  }
+  
+  .field, .form-group {
+    margin-bottom: 0.9rem;
+  }
+  
+  input {
+    padding: 0.7rem 0.85rem;
+  }
+  
+  button.btn {
+    padding: 0.85rem 1rem;
+  }
+  
+  button.ghost {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas pequeñas (móviles grandes, 576px a 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .auth-modal-content {
+    padding: 1.75rem;
+    max-width: 420px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .field, .form-group {
+    margin-bottom: 0.8rem;
+  }
+  
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  input {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  button.btn {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  button.ghost {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .checkbox {
+    font-size: 0.8rem;
+    margin: 0.2rem 0 0.8rem;
+  }
+  
+  .error {
+    font-size: 0.8rem;
+  }
+  
+  .alt {
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Pantallas muy pequeñas (móviles, hasta 575px) */
+@media (max-width: 575px) {
+  .auth-modal-content {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.7rem;
+  }
+  
+  .field, .form-group {
+    margin-bottom: 0.7rem;
+  }
+  
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  input {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+  
+  .input-row,
+  .password-row {
+    gap: 0.4rem;
+  }
+  
+  button.btn {
+    padding: 0.75rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+  
+  button.ghost {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .checkbox {
+    font-size: 0.75rem;
+    margin: 0.15rem 0 0.7rem;
+  }
+  
+  .error {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  
+  .alt {
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+  }
+  
+  .link {
+    font-size: 0.8rem;
+  }
+}
+
+/* Pantallas extra pequeñas (móviles muy pequeños, hasta 380px) */
+@media (max-width: 380px) {
+  .auth-modal-content {
+    padding: 1.25rem;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  input {
+    padding: 0.55rem 0.7rem;
+    font-size: 0.8rem;
+  }
+  
+  button.btn {
+    padding: 0.7rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  button.ghost {
+    padding: 0.4rem 0.45rem;
+    font-size: 0.7rem;
+  }
+  
+  .checkbox {
+    font-size: 0.7rem;
+  }
+  
+  .alt {
+    font-size: 0.75rem;
+  }
+}
 </style>
