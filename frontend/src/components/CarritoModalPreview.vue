@@ -161,7 +161,7 @@
     font-size: 0.9rem;
     font-weight: bold;
     cursor: pointer;
-    background-color: var(--color-background);
+    background-color: transparent;
     }
 
     header{
@@ -249,7 +249,8 @@
     }
 
     .btn-finalizar:hover {
-    background-color: #ffffff;
+    background-color: #3ad260;
+    color: black;
     }
 
     .btn-continuar {
@@ -264,8 +265,8 @@
     }
 
     .btn-continuar:hover {
-    background-color: #000000;
-    color: var(--color-primary);
+    background-color:#3498DB;
+    color: black;
     }
 
     .item-img {

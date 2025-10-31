@@ -52,8 +52,8 @@ import Marcas from './Marcas.vue';
       <div class="footer-section">
         <h4>Contacto</h4>
         <ul>
-          <li><a href="#">Tel: (001) 12233344XXX</a></li>
-          <li><a href="#">capygaming@example.com.ar</a></li>
+          <li><a href="#">Tel: +54 9 2284 37-1768 </a></li>
+          <li><a href="#">capygaming@capy.com.ar</a></li>
           <p class="contact-horario">LUN A VIER DE 10 A 13 / 14 A 17 HS</p>
         </ul>
         <div class="social-icons">
