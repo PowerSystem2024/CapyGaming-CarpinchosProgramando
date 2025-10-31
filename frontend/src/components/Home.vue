@@ -673,11 +673,11 @@ const prevReciente = () => {
   display: flex;
   gap: 2rem;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 100%;
+  /* El ancho se calcula automáticamente según el número de productos */
 }
 
 .producto-card {
-  min-width: calc((100% - 6rem) / 4);
+  flex: 0 0 calc(25% - 1.5rem); /* 25% del container menos el gap proporcional */
   background: var(--color-card);
   border-radius: 16px;
   overflow: hidden;
@@ -685,7 +685,6 @@ const prevReciente = () => {
   transition: all 0.3s ease;
   border: 2px solid transparent;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
 }
 
 .producto-card:hover {
