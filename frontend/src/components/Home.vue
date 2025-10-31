@@ -347,7 +347,6 @@ const prevReciente = () => {
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  padding-top: calc(75px + 60px);
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -674,11 +673,11 @@ const prevReciente = () => {
   display: flex;
   gap: 2rem;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 100%;
+  /* El ancho se calcula automáticamente según el número de productos */
 }
 
 .producto-card {
-  min-width: calc((100% - 6rem) / 4);
+  flex: 0 0 calc(25% - 1.5rem); /* 25% del container menos el gap proporcional */
   background: var(--color-card);
   border-radius: 16px;
   overflow: hidden;
@@ -686,7 +685,6 @@ const prevReciente = () => {
   transition: all 0.3s ease;
   border: 2px solid transparent;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
 }
 
 .producto-card:hover {
@@ -850,7 +848,6 @@ const prevReciente = () => {
 @media (max-width: 1199px) {
   .home-page {
     gap: 2.5rem;
-    padding-top: calc(70px + 50px);
   }
 
   .hero {
@@ -903,7 +900,6 @@ const prevReciente = () => {
 @media (max-width: 767px) {
   .home-page {
     gap: 2rem;
-    padding-top: calc(65px + 45px);
   }
 
   .hero {
@@ -993,7 +989,6 @@ const prevReciente = () => {
 @media (max-width: 599px) {
   .home-page {
     gap: 1.5rem;
-    padding-top: calc(60px + 40px);
     align-items: center;
   }
 
@@ -1078,16 +1073,37 @@ const prevReciente = () => {
     gap: 0.5rem;
   }
 
+  /* Ocultar flechas en móvil y hacer scroll horizontal */
   .carousel-btn {
-    font-size: 2rem;
-    width: 35px;
-    height: 35px;
-    order: 2;
+    display: none;
   }
 
   .productos-carousel-container {
     order: 1;
     width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-card);
+  }
+
+  .productos-carousel-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .productos-carousel-container::-webkit-scrollbar-track {
+    background: var(--color-card);
+    border-radius: 3px;
+  }
+
+  .productos-carousel-container::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
+
+  .productos-carousel {
+    justify-content: flex-start;
   }
 
   .btn-ver-mas {
@@ -1100,7 +1116,6 @@ const prevReciente = () => {
 @media (max-width: 479px) {
   .home-page {
     gap: 1rem;
-    padding-top: calc(55px + 35px);
   }
 
   .hero {
@@ -1200,9 +1215,7 @@ const prevReciente = () => {
   }
 
   .carousel-btn {
-    font-size: 1.8rem;
-    width: 30px;
-    height: 30px;
+    display: none;
   }
 }
 

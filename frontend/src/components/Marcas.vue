@@ -102,10 +102,6 @@ export default {
 
 /* Responsive para pantallas grandes (desktop) */
 @media (min-width: 1200px) {
-  .brands-carousel {
-    max-width: 1200px;
-  }
-  
   .brand-item {
     width: 140px;
     height: 90px;
@@ -114,14 +110,10 @@ export default {
 
 /* Responsive para pantallas medianas (tabletas) */
 @media (max-width: 1199px) and (min-width: 768px) {
-  .brands-carousel {
-    max-width: 95%;
-  }
-  
   .brands-track {
     gap: 1.5rem;
   }
-  
+
   .brand-item {
     width: 110px;
     height: 75px;
@@ -131,21 +123,20 @@ export default {
 /* Responsive para pantallas pequeñas (móviles) */
 @media (max-width: 767px) {
   .brands-carousel {
-    max-width: 95%;
     padding: 0.5rem 0;
   }
-  
+
   .brands-track {
     gap: 1rem;
     animation: scroll 60s linear infinite; /* Velocidad más rápida para móviles */
   }
-  
+
   .brand-item {
     width: 90px;
     height: 60px;
     padding: 5px;
   }
-  
+
   .brand-item:hover {
     transform: scale(1.05); /* Efecto hover más sutil en móviles */
   }

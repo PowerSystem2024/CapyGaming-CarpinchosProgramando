@@ -96,8 +96,7 @@ export default {
 
 .about-us-container {
   margin: 0 auto;
-  padding: 20px;
-  padding-top: calc(30px + 60px);  /* 60px = altura del navbar */
+  padding: 2rem 20px;
   background-color: var(--color-background);
 }
 

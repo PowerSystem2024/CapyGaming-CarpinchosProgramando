@@ -8,7 +8,7 @@
         </router-link>
       </div>
 
-      <!-- Buscador -->
+      <!-- Buscador (solo desktop) -->
       <div class="search" ref="buscador">
         <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados" />
         <button class="search-btn" @click="irAResultados">
@@ -23,7 +23,7 @@
         </ul>
       </div>
 
-      <!-- Opciones usuario -->
+      <!-- Opciones usuario (solo desktop) -->
       <div class="user-options">
         <!-- Si NO está autenticado, mostrar botón Ingresar -->
         <button v-if="!isAuthenticated" class="user-btn" @click="abrirAuthModal">
@@ -60,25 +60,23 @@
           <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
         </router-link>
       </div>
-    </div>
 
-    <div class="cart-menu-mobile">
-      <!-- Carrito móvil -->
-      <div class="cart-mobile" v-if="windowWidth <= 900">
-        <router-link to="/carrito" class="cart-btn cart-mobile">
+      <!-- Carrito móvil (dentro de navbar-content para alineación) -->
+      <div class="mobile-actions">
+        <router-link to="/carrito" class="cart-btn-mobile">
           <img src="../assets/IconosNavBarFooter/cart-svgrepo-com (2).svg" />
           <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
         </router-link>
+
+        <!-- Botón hamburguesa -->
+        <button class="menu-toggle" @click="toggleMenu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 20 20">
+            <path fill="#FDEBD0"
+              d="M16.4 9H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1zm0 4H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1zM3.6 7h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1z" />
+          </svg>
+        </button>
       </div>
     </div>
-
-    <!-- Botón hamburguesa -->
-    <button class="menu-toggle" @click="toggleMenu">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 20 20">
-        <path fill="#FDEBD0"
-          d="M16.4 9H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1zm0 4H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1zM3.6 7h12.8c.552 0 .6-.447.6-1c0-.553-.048-1-.6-1H3.6c-.552 0-.6.447-.6 1c0 .553.048 1 .6 1z" />
-      </svg>
-    </button>
 
     <div class="search-mobile" v-if="windowWidth <= 900">
       <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados" />
@@ -347,7 +345,7 @@ export default {
 
 .navbar {
   position: fixed;
-  top: 0px;
+  top: 0;
   left: 0;
   width: 100%;
   min-height: auto;
@@ -355,7 +353,7 @@ export default {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   z-index: 1000;
-  /*Para que el navbar siempre este por arriba de los elementos */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-content {
@@ -363,12 +361,18 @@ export default {
   background-color: var(--color-background);
   justify-content: space-between;
   align-items: center;
-  max-width: 1250px;
-  /* 👈 limita el ancho */
+  max-width: 1400px;
   margin: 0 auto;
-  /* 👈 lo centra */
   height: 100%;
-  padding-bottom: 5px;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+}
+
+@media (max-width: 1199px) {
+  .navbar-content {
+    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+  }
 }
 
 
@@ -379,12 +383,14 @@ export default {
   max-height: 100%;
   gap: 0.5rem;
   background: none;
-  padding-top: 0.5rem;
+  padding: 0.5rem 0;
 }
 
 .logo img {
-  max-height: 80px;
+  height: 60px;
+  width: auto;
   background: none;
+  object-fit: contain;
 }
 
 .logo a:hover {
@@ -407,7 +413,9 @@ export default {
 }
 
 .search input {
-  width: 550px;
+  width: 100%;
+  max-width: 550px;
+  min-width: 300px;
   height: 45px;
   padding-left: 10px;
   padding-right: 40px;
@@ -416,6 +424,14 @@ export default {
   background-color: var(--color-background);
   outline: none;
   font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1199px) {
+  .search input {
+    min-width: 250px;
+    max-width: 400px;
+  }
 }
 
 .search button {
@@ -561,12 +577,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  gap: 0.1rem;
+  padding: 0.75rem 0;
+  gap: 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .sub-navbar .menu-item {
-  margin: 0 1rem;
+  margin: 0 0.75rem;
+}
+
+@media (max-width: 1199px) {
+  .sub-navbar .menu-item {
+    margin: 0 0.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 .sub-navbar a {
@@ -611,25 +636,37 @@ export default {
 
 /* === 🔹 Modo responsive === */
 
+/* 🔸 Acciones móviles (carrito + menú hamburguesa) */
+.mobile-actions {
+  display: none;
+}
+
 /* 🔸 Botón hamburguesa */
 .menu-toggle {
   display: none;
   background: none;
   border: none;
   cursor: pointer;
-}
-
-.cart-menu-mobile {
-  gap: 0.5rem;
-  display: flex;
-  padding-right: 1rem;
+  padding: 0.25rem;
 }
 
 .menu-toggle svg {
   width: 32px;
   height: 32px;
-  margin: 0rem;
   outline: none;
+}
+
+/* 🔸 Carrito móvil */
+.cart-btn-mobile {
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.cart-btn-mobile img {
+  max-height: 28px;
 }
 
 /* 🔸 Menú oculto por defecto */
@@ -778,26 +815,50 @@ export default {
 
 /* 📱 Mobile */
 @media (max-width: 900px) {
+  .navbar {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
 
   .navbar-content {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    /* Espacio entre logo y botón */
-    padding: 0.5rem 1rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
     position: relative;
     z-index: 5;
-    padding: 0.5rem;
   }
 
-  /* Mostrar botón hamburguesa */
+  .logo {
+    flex: 0 0 auto;
+  }
+
+  .logo img {
+    height: 45px;
+  }
+
+  /* Mostrar acciones móviles (carrito + menú) */
+  .mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .menu-toggle {
     display: block;
-
   }
 
-  /* Ocultar cosas grandes en móvil */
+  .menu-toggle svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cart-btn-mobile img {
+    max-height: 26px;
+  }
+
+  /* Ocultar elementos de desktop en móvil */
   .search,
   .user-options {
     display: none;
@@ -902,42 +963,37 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.5rem 1rem;
-    gap: 0.5rem;
+    position: relative;
+    padding: 0.75rem 1rem;
     width: 100%;
-    margin-top: 1rem;
   }
 
   .search-mobile img {
-    padding-top: 3px;
-    max-height: 25px;
+    max-height: 22px;
   }
 
   .search-mobile input {
     flex: 1;
-    height: 40px;
-    padding: 0 10px;
+    height: 42px;
+    padding: 0 40px 0 12px;
     font-size: 0.9rem;
-    border: 1px solid var(--color-primary);
+    border: 1.5px solid var(--color-primary);
     outline: none;
     border-radius: 5px;
     background-color: var(--color-background);
+    color: var(--color-foreground);
   }
 
   .search-mobile button {
     position: absolute;
-    right: 20px;
+    right: 1.5rem;
     background: transparent;
     border: none;
     width: 40px;
     height: 40px;
     padding: 5px;
     outline: none;
-  }
-
-  .search-mobile {
-    width: 100%;
-    margin-top: 0.5rem;
+    cursor: pointer;
   }
 
   .search-responsive {
@@ -971,13 +1027,6 @@ export default {
     transform: translateX(100%);
   }
 
-  .cart-mobile {
-    display: flex;
-    align-items: center;
-    margin-left: 5rem;
-    position: relative;
-  }
-
   .overlay {
     position: fixed;
     top: 0;
@@ -990,9 +1039,63 @@ export default {
 }
 
 
+@media (max-width: 599px) {
+  .navbar-content {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .search-mobile {
+    padding: 0.6rem;
+  }
+
+  .menu-toggle svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .cart-btn-mobile img {
+    max-height: 24px;
+  }
+
+  .mobile-actions {
+    gap: 0.4rem;
+  }
+}
+
 @media (max-width: 400px) {
-  .cart-mobile {
-    margin-left: 2.8rem;
+  .navbar-content {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .logo img {
+    height: 38px;
+  }
+
+  .search-mobile {
+    padding: 0.5rem;
+  }
+
+  .search-mobile input {
+    font-size: 0.85rem;
+    height: 38px;
+    padding: 0 35px 0 10px;
+  }
+
+  .menu-toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .cart-btn-mobile img {
+    max-height: 22px;
+  }
+
+  .mobile-actions {
+    gap: 0.3rem;
   }
 }
 </style>

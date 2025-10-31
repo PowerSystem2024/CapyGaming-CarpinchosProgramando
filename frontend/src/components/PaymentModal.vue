@@ -110,6 +110,7 @@ async function initializePaymentBrick() {
         initialization: {
         amount: props.total, // Monto total
         preferenceId: preferenceId, // ID de la preferencia
+        redirectMode: 'self', // 👈 Redirigir en la misma pestaña, no en nueva
         },
         callbacks: {
         onReady: () => {
@@ -135,7 +136,8 @@ async function initializePaymentBrick() {
         visual: {
             style: {
             theme: 'dark'
-            }
+            },
+            hideRedirectionPanel: true, // 👈 Oculta el panel de redirección
         },
         paymentMethods: {
             maxInstallments: 12,

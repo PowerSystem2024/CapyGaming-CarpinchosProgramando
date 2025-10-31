@@ -75,33 +75,33 @@ const onError = (e) => {
 @import url(../assets/styles/base.css);
 
 /* Estilos base */
-.product-card { 
-  cursor: pointer; 
-  border: 1px solid var(--color-border); 
-  width: 260px; 
-  min-height: 440px; 
-  max-height: 440px; 
-  border-radius: 12px; 
-  box-shadow: var(--card-shadow); 
-  overflow: hidden; 
-  background: var(--color-card); 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between; 
+.product-card {
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  width: 100%; /* Cambio de 260px a 100% para adaptarse al grid */
+  min-height: 480px; /* Aumentado de 440px a 480px para más espacio */
+  /* max-height removido - permite que las tarjetas crezcan según el contenido */
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden; /* Mantener hidden para preservar border-radius */
+  background: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.product-card:hover { 
-  transform: scale(1.01); 
-  box-shadow: 0 2px 10px #111920; 
+.product-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 2px 10px #111920;
 }
 
-.img-wrap { 
-  position: relative; 
-  min-height: 55%; 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
+.img-wrap {
+  position: relative;
+  min-height: 48%; /* Reducido de 55% a 48% para dar más espacio al texto */
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background: var(--color-card);
 }
 
@@ -138,14 +138,14 @@ const onError = (e) => {
   color: white; 
 }
 
-.info { 
-  flex:1; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between; 
-  padding: 10px; 
-  text-align:center; 
-  background: var(--color-card); 
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 12px 16px 12px; /* Aumentado padding inferior de 10px a 16px */
+  text-align: center;
+  background: var(--color-card);
 }
 
 .nombre { 
@@ -238,38 +238,40 @@ const onError = (e) => {
 /* Pantallas grandes (desktops, 1200px en adelante) */
 @media (min-width: 1200px) {
   .product-card {
-    width: 280px;
-    min-height: 460px;
-    max-height: 460px;
+    min-height: 500px; /* Aumentado a 500px para más espacio vertical */
   }
-  
+
   .img-wrap {
-    min-height: 58%;
+    min-height: 50%; /* Reducido de 58% a 50% para dar más espacio al texto */
   }
-  
+
   .img-wrap img {
     max-width: 80%;
     max-height: 80%;
   }
-  
+
+  .info {
+    padding: 14px 14px 20px 14px; /* Aumentado padding inferior a 20px */
+  }
+
   .nombre {
     font-size: 1.1rem;
     -webkit-line-clamp: 2;
   }
-  
+
   .precio {
     font-size: 1.3rem;
   }
-  
+
   .marca, .stock {
     font-size: 0.85rem;
   }
-  
+
   .btn-add {
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
   }
-  
+
   .badge {
     font-size: 0.85rem;
     padding: 5px 10px;
@@ -279,43 +281,41 @@ const onError = (e) => {
 /* Pantallas medianas (tablets, 768px a 1199px) */
 @media (max-width: 1199px) and (min-width: 768px) {
   .product-card {
-    width: 240px;
-    min-height: 420px;
-    max-height: 420px;
+    min-height: 450px; /* Aumentado de 420px a 450px */
   }
-  
+
   .img-wrap {
-    min-height: 52%;
+    min-height: 48%; /* Reducido de 52% a 48% */
   }
-  
+
   .img-wrap img {
     max-width: 82%;
     max-height: 82%;
   }
-  
+
   .info {
-    padding: 8px;
+    padding: 10px 10px 16px 10px; /* Aumentado padding inferior */
   }
-  
+
   .nombre {
     font-size: 0.95rem;
     -webkit-line-clamp: 2;
   }
-  
+
   .precio {
     font-size: 1.15rem;
   }
-  
+
   .btn-add {
     padding: 0.5rem 0.8rem;
     font-size: 0.9rem;
   }
-  
+
   .icon-wrapper {
     width: 18px;
     height: 18px;
   }
-  
+
   .icon-cart {
     width: 18px;
     height: 18px;
@@ -325,56 +325,54 @@ const onError = (e) => {
 /* Pantallas pequeñas (tablets pequeñas y móviles grandes, 576px a 767px) */
 @media (max-width: 767px) and (min-width: 576px) {
   .product-card {
-    width: 220px;
     min-height: 380px;
-    max-height: 380px;
     margin: 0 auto;
   }
-  
+
   .img-wrap {
     min-height: 50%;
   }
-  
+
   .img-wrap img {
     max-width: 80%;
     max-height: 80%;
   }
-  
+
   .info {
-    padding: 8px 6px;
+    padding: 8px 8px 12px 8px;
   }
-  
+
   .nombre {
     font-size: 0.9rem;
     -webkit-line-clamp: 2;
     margin: 0 0 4px;
   }
-  
+
   .precio {
     font-size: 1.1rem;
     margin: 4px 0;
   }
-  
+
   .marca, .stock {
     font-size: 0.75rem;
   }
-  
+
   .btn-add {
     padding: 0.5rem 0.6rem;
     font-size: 0.85rem;
   }
-  
+
   .badge {
     font-size: 0.75rem;
     padding: 3px 6px;
   }
-  
+
   .icon-wrapper {
     width: 16px;
     height: 16px;
     margin-right: 4px;
   }
-  
+
   .icon-cart {
     width: 16px;
     height: 16px;
@@ -385,58 +383,57 @@ const onError = (e) => {
 @media (max-width: 575px) {
   .product-card {
     width: 100%;
-    min-height: 350px;
-    max-height: 350px;
+    min-height: 360px;
     max-width: 280px;
     margin: 0 auto;
   }
-  
+
   .img-wrap {
     min-height: 48%;
   }
-  
+
   .img-wrap img {
     max-width: 75%;
     max-height: 75%;
   }
-  
+
   .info {
-    padding: 8px;
+    padding: 8px 8px 12px 8px;
   }
-  
+
   .nombre {
     font-size: 0.85rem;
     -webkit-line-clamp: 2;
     margin: 0 0 3px;
   }
-  
+
   .precio {
     font-size: 1rem;
     margin: 3px 0;
   }
-  
+
   .marca, .stock {
     font-size: 0.7rem;
   }
-  
+
   .btn-add {
-    padding: 0.4rem 0.6rem;
+    padding: 0.45rem 0.6rem;
     font-size: 0.8rem;
   }
-  
+
   .badge {
     font-size: 0.7rem;
     padding: 2px 5px;
     top: 6px;
     left: 6px;
   }
-  
+
   .icon-wrapper {
     width: 14px;
     height: 14px;
     margin-right: 3px;
   }
-  
+
   .icon-cart {
     width: 14px;
     height: 14px;
