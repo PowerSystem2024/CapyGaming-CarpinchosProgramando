@@ -84,7 +84,6 @@ services:
   - type: web
     name: capygaming-frontend
     runtime: static
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
