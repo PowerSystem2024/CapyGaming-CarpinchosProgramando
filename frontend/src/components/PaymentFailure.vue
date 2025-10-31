@@ -1,17 +1,40 @@
 <template>
   <div class="payment-status failure">
     <div class="status-card">
-      <div class="icon-container failure">
-        <span class="icon">✕</span>
+      <!-- Estado de carga -->
+      <div v-if="loading" class="loading-container">
+        <div class="spinner"></div>
+        <h2>Verificando pago...</h2>
+        <p>Por favor espera mientras confirmamos tu pago</p>
       </div>
-      <h1>Pago rechazado</h1>
-      <p>No pudimos procesar tu pago. Por favor, intentá nuevamente.</p>
-      <div class="payment-info error">
-        <p><strong>Motivo:</strong> {{ errorMessage }}</p>
+
+      <!-- Estado de error de verificación -->
+      <div v-else-if="verificationError" class="error-container">
+        <div class="icon-container failure">
+          <span class="icon">✕</span>
+        </div>
+        <h1>Error al verificar pago</h1>
+        <p>{{ verificationError }}</p>
+        <div class="actions">
+          <button @click="retry" class="btn-primary">Intentar de nuevo</button>
+          <button @click="goToHome" class="btn-secondary">Volver al inicio</button>
+        </div>
       </div>
-      <div class="actions">
-        <button @click="retry" class="btn-primary">Intentar de nuevo</button>
-        <button @click="goToHome" class="btn-secondary">Volver al inicio</button>
+
+      <!-- Estado de pago rechazado confirmado -->
+      <div v-else class="failure-container">
+        <div class="icon-container failure">
+          <span class="icon">✕</span>
+        </div>
+        <h1>Pago rechazado</h1>
+        <p>No pudimos procesar tu pago. Por favor, intentá nuevamente.</p>
+        <div class="payment-info error">
+          <p><strong>Motivo:</strong> {{ errorMessage }}</p>
+        </div>
+        <div class="actions">
+          <button @click="retry" class="btn-primary">Intentar de nuevo</button>
+          <button @click="goToHome" class="btn-secondary">Volver al inicio</button>
+        </div>
       </div>
     </div>
   </div>
@@ -20,37 +43,90 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { usePayment } from '../composables/usePayment';
 
 export default {
   name: 'PaymentFailure',
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const errorMessage = ref(route.query.error || 'Error desconocido');
+    const { checkPaymentStatus } = usePayment();
 
-    onMounted(() => {
-      const paymentResult = {
-        status: 'rejected',
-        error: errorMessage.value
-      };
+    const loading = ref(true);
+    const verificationError = ref(null);
+    const errorMessage = ref(route.query.error || 'El pago no pudo ser procesado');
 
-      // Guardar resultado para que CheckoutForm lo lea
-      localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+    onMounted(async () => {
+      try {
+        const orderId = localStorage.getItem('currentOrderId');
 
-      // Enviar mensaje a la pestaña original (si se abrió desde otra pestaña)
-      if (window.opener && !window.opener.closed) {
-        console.log('Enviando mensaje a pestaña original...');
-        window.opener.postMessage({
-          type: 'PAYMENT_RESULT',
-          result: paymentResult
-        }, window.location.origin);
+        if (!orderId) {
+          // Si no hay orderId, mostrar el mensaje de error directamente
+          loading.value = false;
+          return;
+        }
+
+        console.log('Verificando estado del pago para orden:', orderId);
+
+        // Intentar obtener el estado con polling
+        let paymentStatus = null;
+        let attempts = 0;
+        const maxAttempts = 15; // 15 intentos = 30 segundos máximo
+
+        while (attempts < maxAttempts) {
+          paymentStatus = await checkPaymentStatus(orderId);
+
+          console.log(`Intento ${attempts + 1}: Estado del pago:`, paymentStatus.status);
+
+          // Si el pago cambió a aprobado, redirigir
+          if (paymentStatus.status === 'approved') {
+            console.log('Pago aprobado, redirigiendo a /payment/success');
+            router.replace('/payment/success');
+            return;
+          } else if (paymentStatus.status === 'pending' || paymentStatus.status === 'in_process') {
+            console.log('Pago pendiente, redirigiendo a /payment/pending');
+            router.replace('/payment/pending');
+            return;
+          }
+
+          // Si está rechazado, salir del loop
+          if (paymentStatus.status === 'rejected' || paymentStatus.status === 'cancelled') {
+            break;
+          }
+
+          // Continuar polling
+          if (attempts < maxAttempts - 1) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            attempts++;
+          } else {
+            break;
+          }
+        }
+
+        // Si después del polling está rechazado, mostrar la vista de failure
+        if (paymentStatus.statusDetail) {
+          errorMessage.value = paymentStatus.statusDetail;
+        }
+
+        const paymentResult = {
+          status: 'rejected',
+          orderId: orderId,
+          error: errorMessage.value
+        };
+
+        localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+        localStorage.removeItem('paymentInProgress');
+        localStorage.removeItem('currentOrderId');
+
+        // NO limpiamos el carrito aquí porque el usuario puede querer reintentar
+
+        loading.value = false;
+      } catch (err) {
+        console.error('Error al verificar el pago:', err);
+        verificationError.value = err.message || 'Error al verificar el estado del pago';
+        loading.value = false;
+        localStorage.removeItem('paymentInProgress');
       }
-
-      // Limpiar flags de pago en proceso
-      localStorage.removeItem('paymentInProgress');
-      localStorage.removeItem('currentOrderId');
-
-      // NO limpiamos el carrito aquí porque el usuario puede querer reintentar
     });
 
     const retry = () => {
@@ -62,6 +138,8 @@ export default {
     };
 
     return {
+      loading,
+      verificationError,
       errorMessage,
       retry,
       goToHome
@@ -110,6 +188,32 @@ export default {
 .icon {
   font-size: 3rem;
   color: white;
+}
+
+.loading-container, .error-container, .failure-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid #f44336;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+h2 {
+  color: var(--color-foreground);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
 h1 {

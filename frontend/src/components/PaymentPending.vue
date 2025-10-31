@@ -1,17 +1,39 @@
 <template>
   <div class="payment-status pending">
     <div class="status-card">
-      <div class="icon-container pending">
-        <span class="icon">⏱</span>
+      <!-- Estado de carga -->
+      <div v-if="loading" class="loading-container">
+        <div class="spinner"></div>
+        <h2>Verificando pago...</h2>
+        <p>Por favor espera mientras confirmamos tu pago</p>
       </div>
-      <h1>Pago pendiente</h1>
-      <p>Tu pago está siendo procesado. Te notificaremos cuando se complete.</p>
-      <div class="payment-info">
-        <p><strong>ID de pago:</strong> {{ paymentId }}</p>
-        <p>Este proceso puede tardar algunos minutos.</p>
+
+      <!-- Estado de error -->
+      <div v-else-if="error" class="error-container">
+        <div class="icon-container error">
+          <span class="icon">✗</span>
+        </div>
+        <h1>Error al verificar pago</h1>
+        <p>{{ error }}</p>
+        <div class="actions">
+          <button @click="goToHome" class="btn-primary">Volver al inicio</button>
+        </div>
       </div>
-      <div class="actions">
-        <button @click="goToHome" class="btn-primary">Volver al inicio</button>
+
+      <!-- Estado pendiente confirmado -->
+      <div v-else class="pending-container">
+        <div class="icon-container pending">
+          <span class="icon">⏱</span>
+        </div>
+        <h1>Pago pendiente</h1>
+        <p>Tu pago está siendo procesado. Te notificaremos cuando se complete.</p>
+        <div class="payment-info">
+          <p v-if="paymentId"><strong>ID de pago:</strong> {{ paymentId }}</p>
+          <p>Este proceso puede tardar algunos minutos.</p>
+        </div>
+        <div class="actions">
+          <button @click="goToHome" class="btn-primary">Volver al inicio</button>
+        </div>
       </div>
     </div>
   </div>
@@ -21,38 +43,80 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { clearCart } from '../utils/cartUtils';
+import { usePayment } from '../composables/usePayment';
 
 export default {
   name: 'PaymentPending',
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const paymentId = ref(route.query.payment_id || 'N/A');
+    const { checkPaymentStatus } = usePayment();
 
-    onMounted(() => {
-      const paymentResult = {
-        status: 'pending',
-        paymentId: paymentId.value
-      };
+    const loading = ref(true);
+    const error = ref(null);
+    const paymentId = ref(route.query.payment_id || null);
 
-      // Guardar resultado para que CheckoutForm lo lea
-      localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+    onMounted(async () => {
+      try {
+        const orderId = localStorage.getItem('currentOrderId');
 
-      // Enviar mensaje a la pestaña original (si se abrió desde otra pestaña)
-      if (window.opener && !window.opener.closed) {
-        console.log('Enviando mensaje a pestaña original...');
-        window.opener.postMessage({
-          type: 'PAYMENT_RESULT',
-          result: paymentResult
-        }, window.location.origin);
+        if (!orderId) {
+          throw new Error('No se encontró el ID de la orden');
+        }
+
+        console.log('Verificando estado del pago para orden:', orderId);
+
+        // Intentar obtener el estado con polling
+        let paymentStatus = null;
+        let attempts = 0;
+        const maxAttempts = 15; // 15 intentos = 30 segundos máximo
+
+        while (attempts < maxAttempts) {
+          paymentStatus = await checkPaymentStatus(orderId);
+
+          console.log(`Intento ${attempts + 1}: Estado del pago:`, paymentStatus.status);
+
+          // Si el pago cambió a aprobado o rechazado, redirigir
+          if (paymentStatus.status === 'approved') {
+            console.log('Pago aprobado, redirigiendo a /payment/success');
+            router.replace('/payment/success');
+            return;
+          } else if (paymentStatus.status === 'rejected' || paymentStatus.status === 'cancelled') {
+            console.log('Pago rechazado, redirigiendo a /payment/failure');
+            router.replace('/payment/failure');
+            return;
+          }
+
+          // Si sigue pendiente, continuar polling
+          if ((paymentStatus.status === 'pending' || paymentStatus.status === 'in_process') && attempts < maxAttempts - 1) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            attempts++;
+          } else {
+            break;
+          }
+        }
+
+        // Si después del polling sigue pendiente, mostrar la vista de pending
+        const paymentResult = {
+          status: 'pending',
+          orderId: orderId,
+          paymentId: paymentId.value
+        };
+
+        localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+        localStorage.removeItem('paymentInProgress');
+
+        // Limpiar carrito ya que el pago está iniciado
+        clearCart();
+        localStorage.removeItem('currentOrderId');
+
+        loading.value = false;
+      } catch (err) {
+        console.error('Error al verificar el pago:', err);
+        error.value = err.message || 'Error al verificar el estado del pago';
+        loading.value = false;
+        localStorage.removeItem('paymentInProgress');
       }
-
-      // Limpiar flags de pago en proceso
-      localStorage.removeItem('paymentInProgress');
-      localStorage.removeItem('currentOrderId');
-
-      // Limpiar carrito (el pago está pendiente pero iniciado)
-      clearCart();
     });
 
     const goToHome = () => {
@@ -60,6 +124,8 @@ export default {
     };
 
     return {
+      loading,
+      error,
       paymentId,
       goToHome
     };
@@ -104,9 +170,39 @@ export default {
   background: #ff9800;
 }
 
+.icon-container.error {
+  background: #f44336;
+}
+
 .icon {
   font-size: 3rem;
   color: white;
+}
+
+.loading-container, .error-container, .pending-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid #ff9800;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+h2 {
+  color: var(--color-foreground);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
 h1 {

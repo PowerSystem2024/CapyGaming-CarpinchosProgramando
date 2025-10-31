@@ -2,35 +2,26 @@
     <div class="modal-overlay">
         <div class="modal-container">
         <div class="modal-header">
-            <span class="header-title">Pago</span>
+            <span class="header-title">Pago con Mercado Pago</span>
             <button @click="cerrar" class="close-btn">×</button>
         </div>
 
         <div class="modal-body">
-            <!-- Payment Brick se renderiza aquí -->
+            <!-- Wallet Brick se renderiza aquí -->
             <div id="paymentBrick_container"></div>
 
-            <!-- Estado del pago -->
-            <div v-if="paymentStatus" class="payment-status" :class="paymentStatus.type">
-            <h3>{{ paymentStatus.title }}</h3>
-            <p>{{ paymentStatus.message }}</p>
-
-            <!-- Botones de acción para success y pending -->
-            <div v-if="paymentStatus.type === 'success' || paymentStatus.type === 'pending'" class="payment-actions">
-                <button @click="verPedido" class="btn-secondary">
-                Ver mi pedido
-                </button>
-                <button @click="seguirComprando" class="btn-primary">
-                Seguir comprando
-                </button>
-            </div>
-
-            <!-- Botón de reintentar para failure -->
-            <div v-else class="payment-actions">
-                <button @click="reintentar" class="btn-primary">
-                Reintentar pago
-                </button>
-            </div>
+            <!-- Mensaje de error si falla la inicialización -->
+            <div v-if="initError" class="payment-status error">
+                <h3>Error al inicializar el pago</h3>
+                <p>{{ initError }}</p>
+                <div class="payment-actions">
+                    <button @click="reintentar" class="btn-primary">
+                        Reintentar
+                    </button>
+                    <button @click="cerrar" class="btn-secondary">
+                        Cancelar
+                    </button>
+                </div>
             </div>
         </div>
         </div>
@@ -39,10 +30,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
 import mercadopagoClient from '../services/mercadopagoClient.js';
-
-const router = useRouter();
 
 const props = defineProps({
     items: Array,
@@ -52,10 +40,10 @@ const props = defineProps({
     shippingMethod: String
 });
 
-const emit = defineEmits(['close', 'success', 'failure', 'pending']);
+const emit = defineEmits(['close', 'success']);
 
 const paymentBrickController = ref(null);
-const paymentStatus = ref(null);
+const initError = ref(null);
 
 onMounted(async () => {
     await initializePaymentBrick();
@@ -63,6 +51,8 @@ onMounted(async () => {
 
 async function initializePaymentBrick() {
     try {
+        initError.value = null;
+
         // 1. Obtener public key desde el backend
         const { publicKey } = await mercadopagoClient.getPublicKey();
         console.log('✅ Public key obtenida desde backend');
@@ -95,162 +85,43 @@ async function initializePaymentBrick() {
             }
         });
 
-    // Guardar orderId para tracking
-    localStorage.setItem('currentOrderId', orderId);
+        // Guardar orderId para tracking
+        localStorage.setItem('currentOrderId', orderId);
 
-    // 3. Inicializar SDK de Mercado Pago con la public key dinámica
-    const mp = new window.MercadoPago(publicKey, {
-        locale: 'es-AR'
-    });
+        // 4. Inicializar SDK de Mercado Pago
+        const mp = new window.MercadoPago(publicKey, {
+            locale: 'es-AR'
+        });
 
-    // 4. Crear Payment Brick
-    const bricksBuilder = mp.bricks();
+        // 5. Crear Wallet Brick (solo pagos con cuenta de MercadoPago)
+        const bricksBuilder = mp.bricks();
 
-    paymentBrickController.value = await bricksBuilder.create('payment', 'paymentBrick_container', {
-        initialization: {
-        amount: props.total, // Monto total
-        preferenceId: preferenceId, // ID de la preferencia
-        redirectMode: 'self', // 👈 Redirigir en la misma pestaña, no en nueva
-        },
-        callbacks: {
-        onReady: () => {
-            // Brick listo para usar
-            console.log('Payment Brick ready');
-        },
-        onSubmit: async ({ selectedPaymentMethod, formData }) => {
-            // Cuando el usuario confirma el pago
-            return handlePaymentSubmit(formData, selectedPaymentMethod);
-        },
-        onError: (error) => {
-            // Manejo de errores
-            console.error('Payment Brick error:', error);
-            paymentStatus.value = {
-            type: 'error',
-            title: 'Error en el pago',
-            message: 'Ocurrió un error al procesar tu pago. Por favor, intenta nuevamente.',
-            buttonText: 'Reintentar'
-            };
-        }
-        },
-        customization: {
-        visual: {
-            style: {
-            theme: 'dark'
+        paymentBrickController.value = await bricksBuilder.create('wallet', 'paymentBrick_container', {
+            initialization: {
+                preferenceId: preferenceId,
+                // IMPORTANTE: 'self' abre en la misma pestaña, 'blank' abre en nueva pestaña
+                redirectMode: 'self'
             },
-            hideRedirectionPanel: true, // 👈 Oculta el panel de redirección
-        },
-        paymentMethods: {
-            maxInstallments: 12,
-            creditCard: 'all',
-            debitCard: 'all',
-            mercadoPago: 'all'
-        }
-        }
-    });
+            customization: {
+                visual: {
+                    style: {
+                        theme: 'dark'
+                    }
+                },
+                texts: {
+                    valueProp: 'smart_option'
+                }
+            }
+        });
 
     } catch (error) {
-        console.error('Error initializing payment:', error);
-        alert('Error al inicializar el pago');
+        console.error('Error al inicializar el pago:', error);
+        initError.value = error.message || 'Error al inicializar el pago. Por favor, intenta nuevamente.';
     }
-}
-
-async function handlePaymentSubmit(formData, selectedPaymentMethod) {
-    try {
-        // Mostrar estado de "verificando"
-        paymentStatus.value = {
-            type: 'verifying',
-            title: 'Verificando pago...',
-            message: 'Por favor espera mientras verificamos tu pago.',
-        };
-
-        // El SDK de Mercado Pago procesa el pago automáticamente
-        const orderId = localStorage.getItem('currentOrderId');
-
-        // Polling: Intentar obtener el estado actualizado del pago
-        // El webhook puede tardar varios segundos en actualizar la BD
-        const maxAttempts = 15; // 15 intentos
-        const delayBetweenAttempts = 2000; // 2 segundos entre intentos = 30 seg total
-        let paymentInfo = null;
-
-        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-            console.log(`🔄 Intento ${attempt}/${maxAttempts}: Consultando estado del pago...`);
-
-            // Esperar antes de consultar
-            await new Promise(resolve => setTimeout(resolve, delayBetweenAttempts));
-
-            // Consultar estado
-            paymentInfo = await mercadopagoClient.getPaymentStatus(orderId);
-
-            // Si el pago fue aprobado o rechazado, salir del loop
-            if (paymentInfo.status === 'approved' || paymentInfo.status === 'rejected') {
-                console.log(`✅ Estado final obtenido: ${paymentInfo.status}`);
-                break;
-            }
-
-            // Si llegamos al último intento y sigue pending, aceptarlo como pending real
-            if (attempt === maxAttempts) {
-                console.log('⏱️ Timeout alcanzado. El pago permanece como pending.');
-            }
-        }
-
-        // Mostrar resultado final
-        if (paymentInfo.status === 'approved') {
-            paymentStatus.value = {
-                type: 'success',
-                title: '¡Pago exitoso!',
-                message: `Tu pago de $${formatPrice(paymentInfo.transactionAmount)} fue aprobado.`,
-                buttonText: 'Ver mi pedido'
-            };
-            emit('success', paymentInfo);
-        } else if (paymentInfo.status === 'pending' || paymentInfo.status === 'in_process') {
-            paymentStatus.value = {
-                type: 'pending',
-                title: 'Pago pendiente',
-                message: 'Tu pago está siendo procesado. Te notificaremos cuando se confirme.',
-                buttonText: 'Entendido'
-            };
-            emit('pending', paymentInfo);
-        } else {
-            // rejected, cancelled, etc.
-            paymentStatus.value = {
-                type: 'failure',
-                title: 'Pago rechazado',
-                message: paymentInfo.statusDetail || 'El pago no pudo ser procesado.',
-                buttonText: 'Reintentar'
-            };
-            emit('failure', paymentInfo);
-        }
-
-    } catch (error) {
-        console.error('Error processing payment:', error);
-        throw error;
-    }
-}
-
-// Funciones de navegación después del pago
-function verPedido() {
-    const orderId = localStorage.getItem('currentOrderId');
-    emit('success');
-    cerrar();
-    // Redirigir a la página de detalle del pedido
-    if (orderId) {
-        router.push(`/pedido/${orderId}`);
-    } else {
-        // Si no hay orderId, ir a mis pedidos
-        router.push('/mis-pedidos');
-    }
-}
-
-function seguirComprando() {
-    emit('success');
-    cerrar();
-    // Volver al home
-    router.push('/');
 }
 
 function reintentar() {
-    // Reintentar - recargar el brick
-    paymentStatus.value = null;
+    initError.value = null;
     if (paymentBrickController.value) {
         paymentBrickController.value.unmount();
     }
@@ -262,15 +133,11 @@ function cerrar() {
 }
 
 onUnmounted(() => {
-  // Limpiar el brick al cerrar el modal
+    // Limpiar el brick al cerrar el modal
     if (paymentBrickController.value) {
         paymentBrickController.value.unmount();
     }
 });
-
-function formatPrice(price) {
-    return new Intl.NumberFormat('es-AR').format(price);
-}
 </script>
 
 <style scoped>
@@ -292,9 +159,10 @@ function formatPrice(price) {
 .modal-container {
     background: #2C3E50;
     border-radius: 8px;
-    max-width: 450px;
-    width: 100%;
-    max-height: 80vh;
+    width: fit-content;
+    min-width: 240px;
+    max-width: 500px;
+    max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -303,29 +171,31 @@ function formatPrice(price) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0.75rem;
+    padding: 0.3rem 0.5rem;
     background: linear-gradient(135deg, #1e2a38 0%, #2C3E50 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
 }
 
 .header-title {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #ff9800;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.1px;
     text-transform: uppercase;
 }
 
 .close-btn {
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     cursor: pointer;
     color: rgb(255, 255, 255);
     transition: all 0.2s;
     font-weight: bold;
     line-height: 1;
     padding: 0;
+    margin-left: 0.3rem;
     opacity: 0.7;
 }
 
@@ -340,8 +210,9 @@ function formatPrice(price) {
 }
 
 #paymentBrick_container {
-    min-height: 280px;
-    border-radius: 6px;
+    min-height: 0;
+    height: auto;
+    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -350,6 +221,8 @@ function formatPrice(price) {
     text-align: center;
     border-radius: 6px;
     margin-top: 0.5rem;
+    min-width: 250px;
+    max-width: 450px;
 }
 
 .payment-status h3 {
@@ -380,11 +253,74 @@ function formatPrice(price) {
     border: 1px solid rgba(33, 150, 243, 0.3);
 }
 
-.payment-status.error,
+.payment-status {
+    padding: 1rem;
+    text-align: center;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    min-width: 250px;
+    max-width: 450px;
+}
+
+.payment-status.error {
+    background: rgba(220, 53, 69, 0.15);
+    color: #f44336;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.payment-status.processing {
+    background: rgba(33, 150, 243, 0.15);
+    color: #2196f3;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.payment-status.success {
+    background: rgba(40, 167, 69, 0.15);
+    color: #4caf50;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.payment-status.pending {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
 .payment-status.failure {
     background: rgba(220, 53, 69, 0.15);
     color: #f44336;
     border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.payment-status h3 {
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.payment-status p {
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem 0;
+}
+
+/* Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 1rem;
+    border: 4px solid rgba(33, 150, 243, 0.2);
+    border-top: 4px solid #2196f3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.close-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .payment-actions {
@@ -456,7 +392,7 @@ function formatPrice(price) {
     }
     
     #paymentBrick_container {
-        min-height: 320px;
+        min-height: 0;
     }
     
     .payment-status {
@@ -505,7 +441,7 @@ function formatPrice(price) {
     }
     
     #paymentBrick_container {
-        min-height: 300px;
+        min-height: 0;
     }
     
     .payment-status {
@@ -563,7 +499,7 @@ function formatPrice(price) {
     }
     
     #paymentBrick_container {
-        min-height: 280px;
+        min-height: 0;
         border-radius: 8px;
     }
     
@@ -625,7 +561,7 @@ function formatPrice(price) {
     }
     
     #paymentBrick_container {
-        min-height: 250px;
+        min-height: 0;
     }
     
     .payment-status {
