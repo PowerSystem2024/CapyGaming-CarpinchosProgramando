@@ -43,7 +43,7 @@
 
     /* Alturas del navbar para diferentes breakpoints */
     --navbar-height-desktop: 135px;
-    --navbar-height-mobile: 132px;
+    --navbar-height-mobile: 80px;
 
     line-height: 1.5;
     font-weight: 400;

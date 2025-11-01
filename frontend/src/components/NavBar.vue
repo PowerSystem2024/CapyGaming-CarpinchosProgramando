@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="linea"></div>
+    <div class="linea" v-if="windowWidth > 900"></div>
     <div class="sub-navbar" v-if="windowWidth > 900">
       <div class="menu-item">
         <Dropdown title="Categorias" :items="Categorias" />
