@@ -77,17 +77,7 @@ export default {
           preguntas: [
             { 
               pregunta: "¿Qué es Capygaming?", 
-              respuesta: "Capygaming es un proyecto académico universitario que simula una tienda online de videojuegos y hardware. Todo el sitio, incluidos productos, precios y promociones, es parte de la simulación y no representa transacciones reales.", 
-              abierta: false 
-            },
-            { 
-              pregunta: "¿Qué significa que el sitio sea un proyecto académico?", 
-              respuesta: "Capygaming es una simulación creada para prácticas universitarias. Todo el contenido, funcionalidades de compra y promociones son ficticios y solo sirven para aprender y experimentar con un sitio de e-commerce.", 
-              abierta: false 
-            },
-            { 
-              pregunta: "¿Puedo comprar productos reales en Capygaming?", 
-              respuesta: "No, todas las compras son simuladas con fines educativos. No se envían productos ni se realizan cobros reales.", 
+              respuesta: "Capygaming es un proyecto académico universitario que simula una tienda online de videojuegos y hardware. Todo el sitio, incluidos productos, precios y promociones, es parte de la simulación y solo sirven para aprender y experimentar con un sitio de e-commerce. No representa transacciones reales.", 
               abierta: false 
             }
           ]
@@ -97,26 +87,16 @@ export default {
           nombreCorto: "Registro y Seguridad",
           preguntas: [
             { pregunta: "¿Es seguro registrarse en el sitio?", respuesta: "Sí, aunque el sitio es un proyecto académico, tratamos tus datos con responsabilidad. Se almacenan únicamente para simular registros y compras dentro del proyecto. No se realizan envíos ni cobros reales.", abierta: false },
-            { pregunta: "¿Qué hago si olvido mi contraseña?", respuesta: "Podés simular la recuperación de contraseña. Esto es parte de la experiencia de aprendizaje, no es un restablecimiento real.", abierta: false },
-            { pregunta: "¿Puedo compartir mi cuenta con otra persona?", respuesta: "No, cada usuario debe usar su propia cuenta para practicar el flujo de registro y compras de manera individual.", abierta: false }
+            { pregunta: "¿Qué hago si olvido mi contraseña?", respuesta: "Podés simular la recuperación de contraseña. Esto es parte de la experiencia de aprendizaje, no es un restablecimiento real.", abierta: false }
           ]
         },
         {
           nombre: "Compras y Promociones",
           nombreCorto: "Compras",
           preguntas: [
-            { pregunta: "¿Cómo funciona la compra de productos en Capygaming?", respuesta: "Podés agregar productos al carrito, simular pagos y finalizar la compra. Todo esto es una práctica educativa y no genera obligaciones reales.", abierta: false },
-            { pregunta: "¿Los precios y promociones son reales?", respuesta:"No, los precios y promociones son ficticios y pueden cambiar según la simulación. Esto permite practicar la dinámica de ventas y marketing en un e-commerce.", abierta: false },
-            { pregunta: "¿Puedo aplicar códigos de descuento o promociones?", respuesta: "Sí, podés probar códigos dentro de la simulación, pero no se aplicarán a compras reales.", abierta: false },
-            { pregunta: "¿Por qué algunos productos aparecen como “agotados”?", respuesta: "Esto forma parte de la simulación para replicar cómo funcionan los sistemas de stock en un e-commerce real.", abierta: false } 
-          ]
-        },
-        {
-          nombre: "Envíos y Devoluciones",
-          nombreCorto: "Envíos",
-          preguntas: [
-            { pregunta: "¿Cómo se realizan los envíos?", respuesta: "Como parte del proyecto, no se realizan envíos reales. Se simula el proceso de entrega para fines educativos.", abierta: false },
-            { pregunta: " ¿Puedo devolver productos?", respuesta: "Se puede practicar el flujo de cambios o devoluciones dentro del sistema, pero no implica devolución real de productos ni pagos.", abierta: false }
+            { pregunta: "¿Cómo funciona la compra de productos en Capygaming?", respuesta: "Podés agregar productos al carrito, simular pagos mediante Mercado Pago y finalizar la compra. Todo esto es una práctica educativa y no genera obligaciones reales.", abierta: false },
+            { pregunta: "¿Puedo aplicar códigos de descuento o promociones?", respuesta: "Sí, podés probar códigos dentro de la simulación (codigo: Capy10), pero no se aplicarán a compras reales.", abierta: false },
+            { pregunta: "¿Por qué algunos productos aparecen como “Sin Stock”?", respuesta: "Esto forma parte de la simulación para replicar cómo funcionan los sistemas de stock en un e-commerce real.", abierta: false } 
           ]
         },
         {
@@ -130,7 +110,7 @@ export default {
           nombre: "Contacto y Soporte",
           nombreCorto: "Contacto",
           preguntas: [
-            { pregunta: "¿Cómo puedo hacer consultas sobre el proyecto?", respuesta: "Para dudas o sugerencias sobre la simulación, podés enviar un correo a 'legales@capygaming.com'.", abierta: false }
+            { pregunta: "¿Cómo puedo hacer consultas sobre el proyecto?", respuesta: "Para dudas o sugerencias sobre el proyecto, podés enviar un correo a 'capygaming.2025@gmail.com'.", abierta: false }
           ]
         }
       ]
@@ -183,9 +163,10 @@ export default {
   padding-left: 12rem;
   padding-right: 12rem;
   padding-bottom: 5rem;
+  padding-top: 0.5rem;
   background-color: var(--color-background);
   color: var(--color-foreground);
-  margin-top: 10%;
+  margin-top: 2.5rem;
 }
 
 /* --- Sección: Top Header --- */
@@ -687,6 +668,11 @@ export default {
 
 /* Pantallas Medianas y Pequeñas (max-width: 900px) */
 @media (max-width: 900px) {
+  .faq-page-wrapper {
+      padding: 1rem;
+      margin-top:1rem;
+  }
+
   .faq-container {
     flex-direction: column;
     border: none;
@@ -797,6 +783,7 @@ export default {
 @media (max-width: 500px) {
     .faq-page-wrapper {
         padding: 1rem;
+        margin-top:1rem;
     }
     
     .top-title {
