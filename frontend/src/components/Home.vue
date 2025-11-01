@@ -36,45 +36,30 @@
   </div>
 
   <div class="card-container">
-      <div class="card">
+      <router-link to="/categoria/hardware/procesadores" class="card">
         <img src="../assets/imagenesHome/Categorias/procesadores.jpg" alt="Procesadores" />
-        <div class="overlay">
-          <h3>PROCESADORES</h3>
-          <router-link to="/categoria/hardware/procesadores" class="btn">Ver productos</router-link>
-        </div>
-      </div>
+        <h3 class="card-title">PROCESADORES</h3>
+      </router-link>
 
-      <div class="card">
-        <img src="../assets/imagenesHome/Categorias/motherboards.jpg" alt="Motherboards" />
-        <div class="overlay">
-          <h3>PLACAS MADRE</h3>
-          <router-link to="/categoria/hardware/motherboard" class="btn">Ver productos</router-link>
-        </div>
-      </div>
+      <router-link to="/categoria/hardware/motherboard" class="card">
+        <img src="../assets/imagenesHome/Categorias/motherboards.jpg" alt="Placas Madre" />
+        <h3 class="card-title">PLACAS MADRE</h3>
+      </router-link>
 
-      <div class="card">
-        <img src="../assets/imagenesHome/Categorias/ram.jpg" alt="Memoria RAM" />
-        <div class="overlay">
-          <h3>MEMORIAS RAM</h3>
-          <router-link to="/categoria/hardware/memorias ram" class="btn">Ver productos</router-link>
-        </div>
-      </div>
+      <router-link to="/categoria/hardware/memorias ram" class="card">
+        <img src="../assets/imagenesHome/Categorias/ram.jpg" alt="Memorias Ram" />
+        <h3 class="card-title">MEMORIAS RAM</h3>
+      </router-link>
 
-      <div class="card">
-        <img src="../assets/imagenesHome/Categorias/videocard.jpg" alt="Placas de Video" />
-        <div class="overlay">
-          <h3>PLACAS DE VIDEO</h3>
-          <router-link to="/categoria/hardware/placas de video" class="btn">Ver productos</router-link>
-        </div>
-      </div>
+      <router-link to="/categoria/hardware/placas de video" class="card">
+        <img src="../assets/imagenesHome/Categorias/videocard.jpg" alt="Placas de video" />
+        <h3 class="card-title">PLACAS DE VIDEO</h3>
+      </router-link>
 
-      <div class="card">
-        <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Periféricos" />
-        <div class="overlay">
-          <h3>PERIFÉRICOS</h3>
-          <router-link to="/categoria/perifericos" class="btn">Ver productos</router-link>
-        </div>
-      </div>
+      <router-link to="/categoria/hardware/perifericos" class="card">
+        <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Procesadores" />
+        <h3 class="card-title">PERIFÉRICOS</h3>
+      </router-link>
     </div>
 </section>
 
@@ -474,110 +459,135 @@ const prevReciente = () => {
 
 /* Contenedor de tarjetas */
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columnas iguales */
   padding: 2rem 1rem;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  gap: 0.5rem;
   box-sizing: border-box;
 }
 
 .card {
   position: relative;
   overflow: hidden;
-  border: none;
-  border-radius: 1rem;
+  border: 2px solid var(--color-primary); /* Borde amarillo */
+  border-radius: 12px;
   cursor: pointer;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 250px;
-  height: 350px;
-  flex-shrink: 0;
-}
-
-.btn {
-  width: 50%; 
-  padding: 0.6rem 1rem; 
-  border: none; 
-  border-radius: 8px; 
-  background: var(--color-primary); 
-  color: var(--color-background); 
-  cursor: pointer; 
-  transition: all 0.25s ease-in-out; 
-  font-weight: 600;
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 3; /* Más ancho que alto */
+  transition: all 0.3s ease;
   text-decoration: none;
-  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+/* Animación de borde brillante que recorre todo el perímetro */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    var(--color-primary),
+    #ffd700, /* amarillo más brillante */
+    var(--color-primary)
+  );
+  border-radius: 12px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  filter: blur(8px); /* Efecto de brillo/glow */
 }
 
-.btn:hover { 
-  background-color: var(--color-secondary); 
-  color: var(--color-foreground); 
+.card:hover::before {
+  opacity: 1;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    to top,
+    rgba(243, 156, 18, 0.15) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::after {
+  opacity: 0; /* Desaparece al hover para que destaque el gradiente del título */
+}
+
+.card:hover {
+  border-width: 3px; /* Borde más grueso */
+  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+  transform: translateY(-4px);
+}
+
+.card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.2rem 1rem;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: white;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.3) 80%,
+    transparent 100%
+  ); /* Gradiente negro desde abajo para que se lea el texto */
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.card:hover .card-title {
+  color: var(--color-primary); /* Amarillo al hover */
+  background: linear-gradient(
+    to top,
+    rgba(243, 156, 18, 0.4) 0%,
+    rgba(243, 156, 18, 0.2) 50%,
+    transparent 100%
+  );
+}
+
+.card:hover .card-image-wrapper img {
+  transform: scale(1.08); /* Zoom sutil al hover */
 }
 
 .card img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease, filter 0.6s ease;
-  display: block;
-  border-radius: 1rem;
+  transition: transform 0.4s ease;
+  z-index: 1;
 }
 
 .card:hover img {
-  transform: scale(1.05);
-  filter: brightness(0.4);
+  transform: scale(1.08); 
 }
 
-.overlay {
-  position: absolute;
-  bottom: -100%;
-  left: 0; 
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  color: white;
-  text-align: center;
-  background: transparent;
-  transition: bottom 0.6s ease;
-}
 
-.card:hover .overlay {
-  bottom: 0;
-}
-
-.overlay h3 {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  background: none;
-  margin: 0;
-}
-
-.overlay button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background: var(--color-primary);
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.3s;
-}
-
-.overlay button:hover {
-  background: var(--chart-3);
-}
 
 /* ===== ESTILOS PARA BENEFICIOS ===== */
 .benefits-bar {
@@ -860,14 +870,15 @@ const prevReciente = () => {
   }
 
   .card-container {
-    max-width: 1000px;
-    gap: 1.5rem;
-    padding: 1.5rem;
+  grid-template-columns: repeat(5, 1fr); /* 3 columnas */
+  gap: 0.75rem;
+
   }
 
   .card {
     width: 220px;
     height: 320px;
+    aspect-ratio: 6/3;
   }
 
   .benefits-bar {
@@ -923,24 +934,14 @@ const prevReciente = () => {
   }
 
   .card-container {
-    gap: 1rem;
-    padding: 1rem;
-    justify-content: center;
+  grid-template-columns: repeat(3, 1fr); /* 2 columnas */
   }
 
   .card {
     width: calc(50% - 1rem);
     height: 280px;
     max-width: 200px;
-  }
-
-  .overlay h3 {
-    font-size: 1.2rem;
-  }
-
-  .overlay button {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    aspect-ratio: 5/3;
   }
 
   .benefits-bar {
@@ -1006,28 +1007,11 @@ const prevReciente = () => {
   }
 
   .card-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem 0.5rem;
-    justify-content: center;
+  padding: 0rem 0.5rem;
   }
 
   .card {
-    width: calc(50% - 0.5rem);
-    height: 200px;
-    max-width: 160px;
-    padding: 0.5rem;
-  }
-
-  .overlay h3 {
-    font-size: 0.9rem;
-  }
-
-  .overlay .btn {
-    width: 80%;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+  aspect-ratio: 16 / 9; /* Más horizontal en móvil */
   }
 
   .benefits-bar {
@@ -1234,9 +1218,5 @@ const prevReciente = () => {
     max-width: 1600px;
   }
 
-  .card {
-    width: 280px;
-    height: 380px;
-  }
 }
 </style>

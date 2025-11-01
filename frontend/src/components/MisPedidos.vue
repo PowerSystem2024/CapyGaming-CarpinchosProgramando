@@ -194,7 +194,7 @@ function formatPaymentMethod(method) {
 .pedidos-container {
   min-height: 100vh;
   background: var(--color-background);
-  padding: 10rem 1rem 2rem 1rem;
+  padding: 2.5rem 1rem 2rem 1rem;
 }
 
 .pedidos-content {

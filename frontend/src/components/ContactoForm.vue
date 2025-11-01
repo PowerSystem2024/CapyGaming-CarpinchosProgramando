@@ -1,6 +1,5 @@
 <template>
   <div class="contacto">
-    <h2>Contáctanos</h2>
     <form @submit.prevent="enviarMensaje">
       <input v-model="nombre" type="text" name="nombre" placeholder="Tu nombre" required />
       <input v-model="email" type="email" name="email" placeholder="Tu correo" required />
@@ -65,21 +64,16 @@ export default {
 
 /* CONTENEDOR DEL FORMULARIo */
  .contacto {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 25px;
-    background: rgb(202, 16, 0, 0); /* Fondo */
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-
-    
-    border: 1px solid #F39C12;;
-
-    /* Sombra fina */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-
-    outline: none !important; /* Quitar outline si estaba */
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: var(--color-card); 
+  border-radius: 12px; 
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border); 
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+  transition: all 0.3s ease;
 
 }
 
@@ -95,27 +89,32 @@ export default {
 /*INPUTS Y TEXTAREA*/
 .contacto input,
 .contacto textarea {
-  margin: 10px 0;
-  padding: 12px;
+  margin: 15px 0;
+  padding: 14px 16px;
   width: 100%;
-  border: none; /* Quitar borde */
-  border-bottom: 1px solid #ccc; /* Línea inferior suave */
-  border-radius: 0; /* Sin bordes redondeados */
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   font-size: 15px;
-  color: #eee7e7; /* Texto oscuro para mejor lectura */
-  background: transparent; /* Fondo transparente */
-  outline: none; /* Quitar recuadro por defecto */
-  transition: border-color 0.3s ease;
+  color: var(--color-foreground); 
+  background: var(--color-background); 
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .contacto input::placeholder,
 .contacto textarea::placeholder {
-  color: #999; /* Placeholder visible pero suave */
+  color: var(--color-muted-foreground); /* Placeholder visible pero suave */
 }
 
+.contacto input:hover,
+.contacto textarea:hover {
+  border-color: var(--color-primary);
+}
 .contacto input:focus,
 .contacto textarea:focus {
-  border-bottom: 1px solid #F39C12; /* Línea inferior naranja al enfocar */
+  border-color: var(--color-primary); /* 👈 Borde naranja completo */
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1); /* 👈 Glow naranja al enfocar */
+  background: var(--color-card);
 }
 
 /* TEXTAREA*/
@@ -126,48 +125,73 @@ export default {
 
 /*BOTÓN ENVIAR*/
 .contacto button {
-  background: #F39C12; /* Naranja */
-  color: white;
-  padding: 14px;
+  background: var(--color-primary);
+  color: #000; 
+  padding: 14px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px; 
   cursor: pointer;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600; 
   margin-top: 15px;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
 .contacto button:hover:not(:disabled) {
-  background: #e68a00; /* Naranja más oscuro al pasar cursor */
+  background: #e68a00;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+}
+
+.contacto button:active:not(:disabled) {
+  transform: translateY(0); 
 }
 
 button:disabled {
-  background: gray;
+  background: var(--color-muted);
+  color: var(--color-muted-foreground);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* MENSAJES*/
 .success {
-  color: green;
-  margin-top: 12px;
-  text-align: center;
-  font-weight: bold;
+  background: rgba(40, 167, 69, 0.1); 
+  color: #4caf50;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  border-left: 4px solid #4caf50;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-align: left; 
+  font-weight: 500;
 }
 
 .error {
-  color: red;
-  margin-top: 12px;
-  text-align: center;
-  font-weight: bold;
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-left: 4px solid var(--color-destructive);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Desktop grande */
+@media (max-width: 1199px) {
+  .contacto {
+    padding: 2rem;
+  }
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .contacto {
-    padding: 15px;
-    margin: 20px;
+    padding: 1.5rem;
+    margin: 0 1rem;
   }
 
   .contacto h2 {
@@ -177,19 +201,24 @@ button:disabled {
   .contacto input,
   .contacto textarea {
     font-size: 14px;
-    padding: 10px;
+    padding: 12px 14px;
   }
 
   .contacto button {
     font-size: 14px;
-    padding: 12px;
+    padding: 12px 20px;
   }
 }
 
 @media (max-width: 480px) {
   .contacto {
-    padding: 12px;
-    margin: 15px;
+    padding: 1rem;
+    margin: 0 0.5rem;
+  }
+
+  .contacto input,
+  .contacto textarea {
+    padding: 10px 12px;
   }
 
   .contacto h2 {
@@ -198,7 +227,7 @@ button:disabled {
 
   .contacto button {
     font-size: 13px;
-    padding: 10px;
+    padding: 10px 16px;
   }
 }
 </style>
