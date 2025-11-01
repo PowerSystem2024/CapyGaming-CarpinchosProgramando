@@ -8,8 +8,8 @@
         </router-link>
       </div>
 
-      <!-- Buscador (solo desktop) -->
-      <div class="search" ref="buscador">
+      <!-- Buscador -->
+      <div class="search" :class="{'search-mobile-inline': windowWidth <= 900}" ref="buscador">
         <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados" />
         <button class="search-btn" @click="irAResultados">
           <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar" />
@@ -76,13 +76,6 @@
           </svg>
         </button>
       </div>
-    </div>
-
-    <div class="search-mobile" v-if="windowWidth <= 900">
-      <input type="text" placeholder="Buscar productos" v-model="searchText" @keyup.enter="irAResultados" />
-      <button class="search-btn" @click="irAResultados">
-        <img src="../assets/IconosNavBarFooter/search.svg" alt="Buscar" />
-      </button>
     </div>
 
     <div class="linea"></div>
@@ -405,6 +398,8 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
+  flex: 0 1 auto;
+  justify-content: center;
 }
 
 .search img {
@@ -414,8 +409,8 @@ export default {
 
 .search input {
   width: 100%;
-  max-width: 550px;
-  min-width: 300px;
+  max-width: 700px;
+  min-width: 450px;
   height: 45px;
   padding-left: 10px;
   padding-right: 40px;
@@ -429,8 +424,8 @@ export default {
 
 @media (max-width: 1199px) {
   .search input {
-    min-width: 250px;
-    max-width: 400px;
+    min-width: 260px;
+    max-width: 380px;
   }
 }
 
@@ -859,8 +854,34 @@ export default {
   }
 
   /* Ocultar elementos de desktop en móvil */
-  .search,
   .user-options {
+    display: none;
+  }
+
+  /* Buscador compacto en mobile */
+  .search-mobile-inline {
+    flex: 1;
+    max-width: none;
+    margin: 0 0.5rem;
+  }
+
+  .search-mobile-inline input {
+    max-width: 100%;
+    min-width: 100px;
+    height: 38px;
+    font-size: 0.85rem;
+    padding-right: 35px;
+  }
+
+  .search-mobile-inline button {
+    right: 3px;
+  }
+
+  .search-mobile-inline img {
+    max-height: 20px;
+  }
+
+  .search-mobile-inline .sugerencias-list {
     display: none;
   }
 
@@ -958,63 +979,6 @@ export default {
     background: transparent;
   }
 
-  /* 🔹 Buscador móvil */
-  .search-mobile {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-    padding: 0.75rem 1rem;
-    width: 100%;
-  }
-
-  .search-mobile img {
-    max-height: 22px;
-  }
-
-  .search-mobile input {
-    flex: 1;
-    height: 42px;
-    padding: 0 40px 0 12px;
-    font-size: 0.9rem;
-    border: 1.5px solid var(--color-primary);
-    outline: none;
-    border-radius: 5px;
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-  }
-
-  .search-mobile button {
-    position: absolute;
-    right: 1.5rem;
-    background: transparent;
-    border: none;
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .search-responsive {
-    display: flex;
-    margin-bottom: 1rem;
-    gap: 0.5rem;
-  }
-
-  .search-responsive input {
-    flex: 1;
-    height: 40px;
-    padding: 0 10px;
-    font-size: 0.9rem;
-  }
-
-  .search-responsive button {
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-  }
-
   /* 🔹 Animación suave */
   .slide-fade-enter-active,
   .slide-fade-leave-active {
@@ -1048,8 +1012,13 @@ export default {
     height: 40px;
   }
 
-  .search-mobile {
-    padding: 0.6rem;
+  .search-mobile-inline {
+    margin: 0 0.3rem;
+  }
+
+  .search-mobile-inline input {
+    height: 36px;
+    font-size: 0.8rem;
   }
 
   .menu-toggle svg {
@@ -1075,14 +1044,20 @@ export default {
     height: 38px;
   }
 
-  .search-mobile {
-    padding: 0.5rem;
+  .search-mobile-inline {
+    margin: 0 0.25rem;
   }
 
-  .search-mobile input {
-    font-size: 0.85rem;
-    height: 38px;
-    padding: 0 35px 0 10px;
+  .search-mobile-inline input {
+    height: 34px;
+    font-size: 0.75rem;
+    min-width: 80px;
+    padding-left: 8px;
+    padding-right: 32px;
+  }
+
+  .search-mobile-inline img {
+    max-height: 18px;
   }
 
   .menu-toggle svg {

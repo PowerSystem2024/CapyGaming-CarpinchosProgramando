@@ -456,6 +456,7 @@ const prevReciente = () => {
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 8px;
 }
 
 .separator h2 {
