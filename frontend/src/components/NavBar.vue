@@ -155,6 +155,7 @@ import { getCart } from "../utils/cartUtils"; //Importamos la funcion que devuel
 import Dropdown from "./Dropdown.vue";
 import debounce from 'lodash.debounce'; // Importa la función debounce de lodash
 import { useAuth } from '../composables/useAuth.js';
+import apiClient from '../api/apiClient.js';
 
 export default {
   name: "NavBar",
@@ -281,9 +282,8 @@ export default {
       }
       this.mostrarSugerencias = true;
       try {
-        const res = await fetch(`/api/productos/buscar?nombre=${encodeURIComponent(texto)}`);
-        if (!res.ok) throw new Error('Error en la respuesta del servidor');
-        const productos = await res.json();
+        const res = await apiClient.get(`/api/productos/buscar?nombre=${encodeURIComponent(texto)}`);
+        const productos = res.data;
         if (!Array.isArray(productos)) throw new Error('Respuesta no es un array');
         this.sugerencias = productos.slice(0, 5);
       } catch (error) {
