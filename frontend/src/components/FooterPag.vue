@@ -44,7 +44,9 @@ import Marcas from './Marcas.vue';
       <div class="footer-section">
         <h4>Medios de pago</h4>
         <div class="pagos-icons">
-          <img src="../assets/IconosNavBarFooter/MERCADOPAGOHZ.svg" alt="MercadoPago" />
+          <a href="https://www.mercadopago.com.ar/home" target="_blank">
+            <img class="mp-icon" src="../assets/IconosNavBarFooter/MP_RGB_HANDSHAKE_color_horizontal.png" alt="MercadoPago" />
+          </a>
         </div>
       </div>
 
@@ -154,11 +156,16 @@ import Marcas from './Marcas.vue';
   border-radius: 50%;
 }
 
-.pagos-icons {
+.pagos-icons .mp-icon {
   width: 130px;
   height: auto;
   display: flex;
-  background-color: #fff;
+  border-radius: 8px;
+}
+
+.pagos-icons{
+    background-color: #FBF30A;
+    border-radius: 8px;
 }
 
 .footer-bottom {
