@@ -78,6 +78,7 @@ export default {
 @import url(../assets/styles/base.css);
 
 .quienes-somos h1{
+  margin-top: 0;
   color: var(--color-primary);
   font-size: 2.8rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -95,7 +96,7 @@ export default {
 
 .about-us-container {
   margin: 0 auto;
-  padding: 2.5rem 20px;
+  padding: 0.5rem 20px 2rem 20px;
   background-color: var(--color-background);
 }
 
