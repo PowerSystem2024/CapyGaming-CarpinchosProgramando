@@ -8,7 +8,7 @@
         <router-link to="/">Ir a comprar</router-link>
     </div>
 
-    <div v-else>
+    <div v-else class="products-wrapper">
       <div class="products-grid">
         <div v-for="product in cartItems" :key="product.id" class="product-card">
           <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
@@ -172,36 +172,40 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
     font-family: 'Poppins', sans-serif;
-    padding: 2rem;
+    padding: 1rem 0 1.5rem 0;
     background-color: var(--color-background) !important;
     color: var(--color-foreground);
     width: 100%;
     margin: 0 auto;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 135px);
     box-sizing: border-box;
   }
   
   /* No aplicar herencia de fondo a todos los elementos */
 
   .carrito-container h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-align: center;
-    padding: 20px;
     color: var(--color-primary) !important;
     background-color: var(--color-accent) !important;
-    padding: 1rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    width: 100%;
+    width: calc(100% - 3rem);
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-top: 2.5rem;
+    margin-top: 0.5rem;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+    box-sizing: border-box;
   }
 
   .carrito-vacio {
@@ -247,12 +251,19 @@ export default {
     transform: scale(1.1);
   }
 
+  .products-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
   .products-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
     width: 100%;
-    max-width: 1200px;
     background-color: var(--color-background) !important;
     padding: 0;
     margin: 0;
@@ -409,17 +420,17 @@ export default {
 
   /* Sección del total */
   .total-carrito {
-    width: 100%;
+    width: calc(100% - 3rem);
     max-width: 1200px;
+    margin: 0 auto;
     border-top: 2px solid var(--color-border);
-    padding-top: 20px;
     background-color: var(--color-card) !important;
-    padding: 20px;
+    padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
   
   .total-carrito * {
