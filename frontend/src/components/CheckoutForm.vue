@@ -13,51 +13,71 @@
             <div class="section-header" @click="goToStep(1)">
               <span class="step-number">1</span>
               <h3>Datos Personales</h3>
+              <span v-if="currentStep !== 1 && formData.nombre" class="section-summary">
+                {{ formData.nombre }} {{ formData.apellidos }}
+              </span>
               <span v-if="currentStep !== 1 && formData.nombre" class="section-status">✓</span>
             </div>
 
             <div v-if="currentStep === 1" class="section-content">
-              <div class="login-prompt">
+              <!-- Mostrar mensaje informativo si está logueado -->
+              <div v-if="isUserLoggedIn" class="user-info-notice">
+                <span class="info-icon">ℹ️</span>
+                <div>
+                  <strong>Datos de tu cuenta</strong>
+                  <p>Estás usando la información de tu cuenta registrada. Puedes modificarla si lo necesitas.</p>
+                </div>
+              </div>
+
+              <!-- Mostrar prompt de login solo si NO está logueado -->
+              <div v-if="!isUserLoggedIn" class="login-prompt">
                 <p>¿Ya tienes una cuenta? <a href="#" @click.prevent="showLogin">Inicia sesión</a></p>
               </div>
 
               <form @submit.prevent="nextStep" class="form-container">
-                <div class="form-group">
-                  <label for="nombre">Nombre *</label>
-                  <input type="text" id="nombre" v-model="formData.nombre" @input="validateNombre"
-                    placeholder="Ej: Juan" required />
-                  <span v-if="errors.nombre" class="error">{{ errors.nombre }}</span>
+                <!-- Agrupar nombre y apellidos en la misma fila -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" v-model="formData.nombre" @input="validateNombre"
+                      placeholder="Ej: Juan" required />
+                    <span v-if="errors.nombre" class="error">{{ errors.nombre }}</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="apellidos">Apellidos *</label>
+                    <input type="text" id="apellidos" v-model="formData.apellidos" @input="validateApellidos"
+                      placeholder="Ej: Pérez García" required />
+                    <span v-if="errors.apellidos" class="error">{{ errors.apellidos }}</span>
+                  </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="apellidos">Apellidos *</label>
-                  <input type="text" id="apellidos" v-model="formData.apellidos" @input="validateApellidos"
-                    placeholder="Ej: Pérez García" required />
-                  <span v-if="errors.apellidos" class="error">{{ errors.apellidos }}</span>
+                <!-- Agrupar email y DNI en la misma fila -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" v-model="formData.email" placeholder="tu@email.com" required />
+                    <span v-if="errors.email" class="error">{{ errors.email }}</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="dni">DNI *</label>
+                    <input type="text" id="dni" v-model="formData.dni" placeholder="12345678" required />
+                    <span v-if="errors.dni" class="error">{{ errors.dni }}</span>
+                  </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="email">Dirección de correo electrónico *</label>
-                  <input type="email" id="email" v-model="formData.email" placeholder="tu@email.com" required />
-                  <span v-if="errors.email" class="error">{{ errors.email }}</span>
-                </div>
-
-                <div class="form-group">
+                <!-- Solo mostrar contraseña si NO está logueado -->
+                <div v-if="!isUserLoggedIn" class="form-group">
                   <label for="password">Contraseña *</label>
                   <div class="password-input">
                     <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password"
-                      placeholder="••••••••" required />
+                      placeholder="••••••••" :required="!isUserLoggedIn" />
                     <button type="button" class="toggle-password" @click="showPassword = !showPassword">
                       {{ showPassword ? '👁️' : '👁️‍🗨️' }}
                     </button>
                   </div>
                   <span v-if="errors.password" class="error">{{ errors.password }}</span>
-                </div>
-
-                <div class="form-group">
-                  <label for="dni">DNI *</label>
-                  <input type="text" id="dni" v-model="formData.dni" placeholder="12345678" required />
-                  <span v-if="errors.dni" class="error">{{ errors.dni }}</span>
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -79,6 +99,9 @@
             <div class="section-header" @click="goToStep(2)" :class="{ 'disabled': currentStep < 2 }">
               <span class="step-number">2</span>
               <h3>Direcciones</h3>
+              <span v-if="currentStep > 2 && formData.direccion" class="section-summary">
+                {{ formData.direccion }}, {{ formData.ciudad }}
+              </span>
               <span v-if="currentStep > 2 && formData.direccion" class="section-status">✓</span>
             </div>
 
@@ -89,26 +112,6 @@
                   <input type="text" id="alias" v-model="formData.alias"
                     placeholder='Ej: "Casa", "Oficina", "Casa de mis padres"' />
                   <small>Nombre para identificar esta dirección</small>
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="nombreDireccion">Nombre *</label>
-                    <input type="text" id="nombreDireccion" v-model="formData.nombreDireccion" placeholder="Juan"
-                      required />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="apellidosDireccion">Apellidos *</label>
-                    <input type="text" id="apellidosDireccion" v-model="formData.apellidosDireccion"
-                      placeholder="Pérez García" required />
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="dniDireccion">DNI *</label>
-                  <input type="text" id="dniDireccion" v-model="formData.dniDireccion" placeholder="12345678"
-                    required />
                 </div>
 
                 <div class="form-group">
@@ -263,6 +266,11 @@
             <div class="section-header" @click="goToStep(3)" :class="{ 'disabled': currentStep < 3 }">
               <span class="step-number">3</span>
               <h3>Método de envío</h3>
+              <span v-if="currentStep > 3 && formData.metodoEnvio" class="section-summary">
+                {{ formData.metodoEnvio === 'standard' ? 'Envío Estándar' :
+                   formData.metodoEnvio === 'express' ? 'Envío Express' :
+                   'Envío Gratis' }}
+              </span>
               <span v-if="currentStep > 3 && formData.metodoEnvio" class="section-status">✓</span>
             </div>
 
@@ -461,9 +469,6 @@ export default {
 
         // Paso 2: Direcciones de envío
         alias: '',
-        nombreDireccion: '',
-        apellidosDireccion: '',
-        dniDireccion: '',
         direccion: '',
         ciudad: '',
         codigoPostal: '',
@@ -497,6 +502,9 @@ export default {
     }
   },
   computed: {
+    isUserLoggedIn() {
+      return AuthService.isAuthenticated();
+    },
     totalItems() {
       return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
     },
@@ -592,9 +600,6 @@ export default {
         privacyAccepted: false,
         newsletter: false,
         alias: '',
-        nombreDireccion: '',
-        apellidosDireccion: '',
-        dniDireccion: '',
         direccion: '',
         ciudad: '',
         codigoPostal: '',
@@ -638,14 +643,12 @@ export default {
           if (!this.formData.nombre) this.errors.nombre = 'El nombre es requerido';
           if (!this.formData.apellidos) this.errors.apellidos = 'Los apellidos son requeridos';
           if (!this.formData.email) this.errors.email = 'El email es requerido';
-          if (!this.formData.password) this.errors.password = 'La contraseña es requerida';
+          // Solo validar contraseña si el usuario NO está logueado
+          if (!this.isUserLoggedIn && !this.formData.password) this.errors.password = 'La contraseña es requerida';
           if (!this.formData.dni) this.errors.dni = 'El DNI es requerido';
           if (!this.formData.privacyAccepted) this.errors.privacy = 'Debes aceptar la política de privacidad';
           break;
         case 2:
-          if (!this.formData.nombreDireccion) this.errors.nombreDireccion = 'El nombre es requerido';
-          if (!this.formData.apellidosDireccion) this.errors.apellidosDireccion = 'Los apellidos son requeridos';
-          if (!this.formData.dniDireccion) this.errors.dniDireccion = 'El DNI es requerido';
           if (!this.formData.direccion) this.errors.direccion = 'La dirección es requerida';
           if (!this.formData.ciudad) this.errors.ciudad = 'La ciudad es requerida';
           if (!this.formData.codigoPostal) this.errors.codigoPostal = 'El código postal es requerido';
@@ -836,7 +839,7 @@ export default {
 /* Lado izquierdo - Formulario */
 .checkout-form {
   flex: 1;
-  padding: 40px;
+  padding: 24px;
   overflow-y: auto;
   background: var(--color-background);
 }
@@ -860,12 +863,12 @@ export default {
 }
 
 .checkout-form h2 {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: var(--color-primary);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 600;
   background: transparent;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   border-bottom: 2px solid var(--color-primary);
 }
 
@@ -873,7 +876,7 @@ export default {
 .form-section {
   background: var(--color-card);
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   border: 1px solid var(--color-border);
   overflow: hidden;
   transition: all 0.3s;
@@ -886,8 +889,8 @@ export default {
 .section-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 20px;
+  gap: 12px;
+  padding: 14px 16px;
   cursor: pointer;
   background: var(--color-accent);
   transition: background-color 0.3s;
@@ -904,8 +907,8 @@ export default {
 }
 
 .step-number {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--color-primary);
   color: var(--color-primary-foreground);
@@ -913,7 +916,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
 }
 
@@ -921,15 +924,29 @@ export default {
   flex: 1;
   margin: 0;
   color: var(--color-foreground);
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: transparent;
   font-weight: 500;
 }
 
+.section-summary {
+  color: var(--color-muted-foreground);
+  font-size: 0.85rem;
+  background: transparent;
+  margin-left: auto;
+  margin-right: 12px;
+  font-style: italic;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .section-status {
   color: #4caf50;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   background: transparent;
+  flex-shrink: 0;
 }
 
 .section-collapsed .section-header {
@@ -938,16 +955,54 @@ export default {
 }
 
 .section-content {
-  padding: 25px;
+  padding: 16px;
   background: var(--color-card);
 }
 
 /* Estilos del formulario */
+.user-info-notice {
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.user-info-notice .info-icon {
+  font-size: 1.3rem;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.user-info-notice div {
+  flex: 1;
+  background: transparent;
+}
+
+.user-info-notice strong {
+  color: var(--color-secondary);
+  display: block;
+  margin-bottom: 4px;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+.user-info-notice p {
+  color: var(--color-foreground);
+  background: transparent;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 .login-prompt {
   background: var(--color-accent);
-  padding: 15px;
+  padding: 12px;
   border-radius: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-align: center;
   border: 1px solid var(--color-primary);
 }
@@ -955,6 +1010,8 @@ export default {
 .login-prompt p {
   color: var(--color-foreground);
   background: transparent;
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 .login-prompt a {
@@ -971,16 +1028,16 @@ export default {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--color-foreground);
   font-weight: 500;
   background-color: var(--color-card);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .form-group input[type="text"],
@@ -989,10 +1046,10 @@ export default {
 .form-group input[type="tel"],
 .form-group select {
   width: 100%;
-  padding: 12px;
+  padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background-color: var(--color-card);
   color: var(--color-foreground);
   transition: all 0.3s;
@@ -1038,7 +1095,7 @@ export default {
 
 .form-row {
   display: flex;
-  gap: 20px;
+  gap: 12px;
 }
 
 .form-row .form-group {
@@ -1048,12 +1105,12 @@ export default {
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 15px;
+  gap: 6px;
+  padding: 12px;
   background: var(--color-accent);
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  margin: 10px 0;
+  margin: 8px 0;
 }
 
 .checkbox-group label {
@@ -1132,9 +1189,9 @@ export default {
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   border: none;
-  padding: 14px 30px;
+  padding: 10px 24px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
@@ -1162,8 +1219,8 @@ export default {
 .shipping-option {
   display: flex;
   align-items: flex-start;
-  gap: 15px;
-  padding: 20px;
+  gap: 12px;
+  padding: 14px;
   border: 2px solid var(--color-border);
   border-radius: 12px;
   cursor: pointer;
@@ -1216,7 +1273,7 @@ export default {
 
 .shipping-header strong {
   color: var(--color-foreground);
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: transparent;
   display: flex;
   align-items: center;
@@ -1225,7 +1282,7 @@ export default {
 
 .shipping-time {
   color: var(--color-muted-foreground);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   background: transparent;
   display: block;
   margin-bottom: 5px;
@@ -1234,7 +1291,7 @@ export default {
 .shipping-price {
   color: var(--color-primary);
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: transparent;
 }
 
@@ -1268,15 +1325,15 @@ export default {
 
 .order-comments textarea {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   resize: none;
-  min-height: 100px;
+  min-height: 70px;
   transition: border-color 0.3s;
 }
 
@@ -1350,9 +1407,9 @@ export default {
 
 /* Lado derecho - Resumen */
 .order-summary {
-  width: 400px;
+  width: 350px;
   background: var(--color-card);
-  padding: 40px 30px;
+  padding: 24px 20px;
   border-left: 2px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -1363,11 +1420,11 @@ export default {
 }
 
 .order-summary h3 {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: var(--color-primary);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   border-bottom: 2px solid var(--color-primary);
 }
 
@@ -1394,8 +1451,8 @@ export default {
 
 .summary-item {
   display: flex;
-  gap: 10px;
-  padding: 12px 0;
+  gap: 8px;
+  padding: 8px 0;
   border-bottom: 1px solid var(--color-border);
   align-items: center;
 }
@@ -1403,20 +1460,20 @@ export default {
 .item-quantity {
   color: var(--color-primary);
   font-weight: bold;
-  min-width: 35px;
-  font-size: 0.95rem;
+  min-width: 30px;
+  font-size: 0.85rem;
 }
 
 .item-name {
   flex: 1;
   color: var(--color-foreground);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .item-price {
   color: var(--color-secondary);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .summary-total {
@@ -1427,9 +1484,9 @@ export default {
 .total-line {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 8px 0;
   color: var(--color-foreground);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .total-line span {
@@ -1446,9 +1503,9 @@ export default {
 
 .total-line.total-final {
   border-top: 2px solid var(--color-primary);
-  margin-top: 10px;
-  padding-top: 20px;
-  font-size: 1.3rem;
+  margin-top: 8px;
+  padding-top: 14px;
+  font-size: 1.15rem;
 }
 
 .total-line.total-final strong {
@@ -1459,7 +1516,7 @@ export default {
 .promo-code {
   display: flex;
   gap: 8px;
-  margin: 15px 0;
+  margin: 12px 0;
 }
 
 .promo-code input {
@@ -1547,12 +1604,16 @@ input,
   }
 
   .checkout-form {
-    padding: 30px 20px;
+    padding: 20px 16px;
     background-color: var(--color-card);
   }
 
   .order-summary {
-    padding: 30px 20px;
+    padding: 20px 16px;
+  }
+
+  .section-summary {
+    display: none;
   }
 }
 
@@ -1564,7 +1625,7 @@ input,
   }
 
   .checkout-form {
-    padding: 20px 15px;
+    padding: 16px 12px;
     background-color: var(--color-card);
   }
 
@@ -1575,30 +1636,36 @@ input,
   }
 
   .section-header {
-    padding: 15px;
+    padding: 12px;
   }
 
   .step-number {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     font-size: 0.9rem;
   }
 
   .section-header h3 {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .checkout-form h2 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
   }
 
   .order-summary h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    margin-bottom: 16px;
   }
 
   .close-button {
     font-size: 1.1rem;
     padding: 4px;
+  }
+
+  .section-content {
+    padding: 12px;
   }
 }
 </style>
