@@ -1,8 +1,13 @@
 <template>
-  <div class="offers-container">
-    <h2 class="section-title">OFERTAS DEL DÍA</h2>
-    <div class="offers-grid">
-      <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card card" @click="abrirDetalle(offer)">
+  <section class="offers-container">
+    <div class="separator">
+      <h2>Ofertas del Día</h2>
+    </div>
+
+    <div class="offers-carousel-wrapper">
+      <div class="offers-carousel-container">
+        <div class="offers-carousel-track">
+          <div v-for="offer in ofertasConDescuento" :key="offer.id" class="offer-card" @click="abrirDetalle(offer)">
         <!-- Badge con flip -->
         <div class="flip-container">
           <div class="flipper">
@@ -47,10 +52,13 @@
           </span>
           Agregar al carrito
         </button>
+          </div>
+        </div>
       </div>
     </div>
+
     <p v-if="error" class="error-message">{{ error }}</p>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -146,96 +154,110 @@ agregarAlCarrito(oferta) {
 <style scoped>
 @import url(../assets/styles/base.css);
 
-/* TITULO: OFERTAS DEL DIA */
-h2 {
-  color: var(--color-primary); /* Naranja destacado */
-  padding: 5px;
-  font-size: 2rem;
-}
-
-.section-title {
+/* TITULO: OFERTAS DEL DIA - Mismo estilo que Productos Destacados */
+.separator {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: var(--color-primary);
-  margin: 0 12rem;  /* Margenes a losl ados de la linea */
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  background: var(--color-primary);
+  margin: 0 0 1rem 0;
+  padding: 0.4rem 1rem;
   position: relative;
-  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  z-index: 10;
 }
 
-.section-title::before,
-.section-title::after {
-  content: "";
-  flex: 1;
-  height: 2px;
-  background-color: var(--color-primary);
-  opacity: 0.5;
+.separator h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--color-background);
+  margin: 0;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* PRODUCTOS EN OFERTA */
 .offers-container {
-  padding: 2rem 1.8rem;
+  width: 100%;
+  padding: 3rem 2rem;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.offers-grid {
-    display: grid;
-    justify-items: center;
-    grid-template-columns: repeat(4, 1fr); /* 👈 fuerza 4 columnas exactas */
-    margin: 0 auto; /* 👈 centra el grid */
-    padding: 0 12rem; /* 👈 espacio a los lados */
-    gap: 0.5rem;
-    width: 100%;
-    background-color: var(--color-background);
-    border-radius: 10px;
-    align-items: stretch; /*fuerza que todas las columnas tengan la misma altura  */
+.offers-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 1rem;
+  width: 100%;
+}
+
+.offers-carousel-container {
+  flex: 1;
+  overflow: hidden;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.offers-carousel-track {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .offer-card {
+  flex: 0 0 calc(22% - 1.5rem);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background-color: var(--color-card);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: var(--color-card);
   position: relative;
   overflow: hidden;
-  min-height: 440px;
-  max-height: 440px;
-  padding: 1rem;
+  padding: 0;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .offer-card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 2px 10px #111920;
+  transform: translateY(-8px);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 30px rgba(243, 156, 18, 0.4);
 }
 
 .offer-media {
+  position: relative;
+  width: 100%;
+  height: 320px;
   display: flex;
-  flex: 0 0 55%;
   justify-content: center;
   align-items: center;
-  min-height: 55%;
-  margin-bottom: 1rem;
-  background: var(--color-card);
+  background: var(--color-background);
+  padding: 1rem;
+  overflow: hidden;
 }
 
 .offer-image {
-  width: 100%;
-  max-height: 100%;
+  max-width: 95%;
+  max-height: 95%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  box-shadow: 0 1px 4px rgba(194, 36, 36, 0);
-  align-self: center;
   transition: transform 0.3s ease;
 }
 
 .offer-card:hover .offer-image {
   transform: scale(1.1);
-  transition: transform 0.3s ease;
 }
 
 .offer-content {
@@ -246,16 +268,19 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   background: var(--color-card);
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  text-align: center;
 }
 
 .offer-title {
     font-size: 1rem;
     font-weight: 600;
     text-align: center;
-    color: var(--color-primary);
-    background-color: var(--color-card);
-    
-    line-clamp: 2;
+    color: var(--color-foreground);
+    background: transparent;
+    margin: 0 0 0.5rem 0;
+    min-height: 2.5rem;
+    line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -264,43 +289,46 @@ h2 {
 }
 
 .offer-prices {
-  background: var(--color-card);
+  background: transparent;
   display: flex;
   flex-direction: column;
+  margin: 0.8rem 0 1.2rem 0;
 }
 
 .old-price {
   text-decoration: line-through;
-  color: #ffffff59;
-  background: var(--color-card);
-  font-size: 0.9rem;
+  color: var(--color-muted-foreground);
+  background: transparent;
+  font-size: 0.85rem;
+  margin: 0 0 0.3rem 0;
 }
 
 .new-price {
   color: var(--color-secondary);
-  font-weight: 600;
-  font-size: 21px;
-  background: var(--color-card);
-  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  background: transparent;
 }
 
 .offer-btn {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: auto;
-  background-color: var(--color-primary);
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  background: var(--color-primary);
   color: var(--color-background);
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
 .offer-btn:hover {
-    background-color: var(--sidebar-ring);
-    color: var(--color-foreground);
+  background: var(--sidebar-ring);
+  color: var(--color-foreground);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
 /* Para que el icono del carrito del boton cambie de color */
@@ -415,83 +443,135 @@ h2 {
 
 
 @media (max-width: 1200px) {
-  .offers-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    padding: 0 2rem;
-    max-width: 100%;
+  .separator {
+    padding: 0.4rem 1rem;
   }
 }
 
 /* Tablet */
 @media (max-width: 900px) {
   .offers-container {
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem;
   }
 
-  .section-title {
-    font-size: 1.75rem;
-    margin: 0 2rem;
+  .separator {
+    padding: 0.3rem 0.8rem;
   }
 
-  .offers-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    padding: 0 1rem;
-    gap: 1rem;
+  .separator h2 {
+    font-size: 1.4rem;
+    padding: 0 0.5rem;
+  }
+
+  .offers-carousel-track {
+    gap: 1.5rem;
   }
 
   .offer-card {
+    min-width: calc((100% - 3rem) / 3);
+  }
+
+  .offer-media {
+    height: 280px;
+  }
+
+  .offer-content {
     padding: 1rem;
   }
 
   .offer-title {
     font-size: 0.95rem;
+    min-height: 2.2rem;
+  }
+
+  .offer-prices {
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  .new-price {
+    font-size: 1rem;
   }
 
   .offer-btn {
-    font-size: 0.95rem;
-    padding: 0.6rem;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
   }
 }
 
 /* Móviles */
 @media (max-width: 599px) {
   .offers-container {
-    padding: 1rem 0.5rem;
+    padding: 1.5rem 0.5rem;
   }
 
-  .section-title {
-    font-size: 1.5rem;
-    margin: 0 1rem;
+  .separator {
+    padding: 0.3rem 0.5rem;
   }
 
-  .offers-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .separator h2 {
+    font-size: 1.2rem;
+    padding: 0 0.3rem;
+  }
+
+  .offers-carousel-wrapper {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .offers-carousel-container {
+    order: 1;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-card);
+    padding: 2rem 0;
+  }
+
+  .offers-carousel-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .offers-carousel-container::-webkit-scrollbar-track {
+    background: var(--color-card);
+    border-radius: 3px;
+  }
+
+  .offers-carousel-container::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
+
+  .offers-carousel-track {
+    gap: 1rem;
+    justify-content: flex-start;
     padding: 0 0.5rem;
-    gap: 0.75rem;
   }
 
   .offer-card {
-    padding: 0.75rem;
-    min-height: auto;
+    min-width: calc(100% - 1rem);
+    max-width: 280px;
+    flex-shrink: 0;
+    scroll-snap-align: center;
   }
 
   .offer-media {
-    height: 140px;
+    height: 200px;
   }
 
-  .offer-image {
-    max-height: 130px;
+  .offer-content {
+    padding: 1rem;
   }
 
   .offer-title {
     font-size: 0.85rem;
     line-height: 1.2;
-    height: 2.4em;
-    -webkit-line-clamp: 2;
+    min-height: 2.2rem;
   }
 
   .offer-prices {
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 1rem 0;
   }
 
   .old-price {
@@ -505,11 +585,15 @@ h2 {
   .offer-btn {
     font-size: 0.85rem;
     padding: 0.5rem 0.4rem;
-    margin-top: 0.5rem;
+  }
+
+  .flip-container {
+    width: 50px;
+    height: 50px;
   }
 
   .badge-descuento {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .badge-off {
@@ -519,45 +603,55 @@ h2 {
 
 /* Móviles pequeños */
 @media (max-width: 400px) {
-  .section-title {
-    font-size: 1.3rem;
-    margin: 0 0.5rem;
+  .offers-container {
+    padding: 1rem 0.3rem;
   }
 
-  .offers-grid {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 0.25rem;
-    gap: 0.5rem;
+  .separator {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .separator h2 {
+    font-size: 1rem;
+    padding: 0 0.3rem;
   }
 
   .offer-card {
-    padding: 0.6rem;
+    min-width: calc(100% - 0.6rem);
+    max-width: 280px;
+    flex-shrink: 0;
   }
 
   .offer-media {
-    height: 120px;
+    height: 160px;
   }
 
-  .offer-image {
-    max-height: 110px;
+  .offer-content {
+    padding: 1rem;
   }
 
   .offer-title {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    min-height: 2.2rem;
   }
 
   .new-price {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .offer-btn {
-    font-size: 0.8rem;
-    padding: 0.45rem 0.3rem;
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
   }
 
   .icon-wrapper {
     width: 16px;
     height: 16px;
+  }
+
+  .flip-container {
+    width: 45px;
+    height: 45px;
   }
 }
 
