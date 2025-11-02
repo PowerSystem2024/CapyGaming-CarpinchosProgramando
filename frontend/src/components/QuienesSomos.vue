@@ -96,7 +96,7 @@ export default {
 
 .about-us-container {
   margin: 0 auto;
-  padding: 0.5rem 20px 2rem 20px;
+  padding: 1rem 20px 2rem 20px;
   background-color: var(--color-background);
 }
 
