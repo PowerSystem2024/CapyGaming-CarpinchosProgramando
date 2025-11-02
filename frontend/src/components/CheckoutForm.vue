@@ -1667,5 +1667,16 @@ input,
   .section-content {
     padding: 12px;
   }
+
+  .promo-code {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-promo {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
 }
 </style>
