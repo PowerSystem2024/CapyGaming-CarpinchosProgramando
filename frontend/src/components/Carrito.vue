@@ -8,26 +8,24 @@
         <router-link to="/">Ir a comprar</router-link>
     </div>
 
-    <div v-else class="products-wrapper">
-      <div class="products-grid">
-        <div v-for="product in cartItems" :key="product.id" class="product-card">
-          <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
-          <div class="product-info">
-            <h3 @click="irADetalle(product.id)" class="producto-titulo-link">{{ product.nombre }}</h3>
-            <p class="precio">Precio: ${{ product.precio }}</p>
-            
-            <p>Cantidad: {{ product.quantity }}</p>
-            <p>Subtotal: ${{ product.quantity * product.precio }}</p>
-      
-            <div class="cantidad-controls">
-              <button @click="decrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity <= 1">-</button>
-                <span class="cantidad">{{ product.quantity }}</span>
-              <button @click="incrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity >= product.stock">+</button>
-            </div>
+    <div v-else class="products-grid">
+      <div v-for="product in cartItems" :key="product.id" class="product-card">
+        <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
+        <div class="product-info">
+          <h3 @click="irADetalle(product.id)" class="producto-titulo-link">{{ product.nombre }}</h3>
+          <p class="precio">Precio: ${{ product.precio }}</p>
 
-            <p class="Subtotal">Subtotal: ${{ product.precio * product.quantity }}</p>
-            <button @click="removeItem(product.id)" class="btn-eliminar">🗑️ Eliminar</button>
+          <p>Cantidad: {{ product.quantity }}</p>
+          <p>Subtotal: ${{ product.quantity * product.precio }}</p>
+
+          <div class="cantidad-controls">
+            <button @click="decrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity <= 1">-</button>
+              <span class="cantidad">{{ product.quantity }}</span>
+            <button @click="incrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity >= product.stock">+</button>
           </div>
+
+          <p class="Subtotal">Subtotal: ${{ product.precio * product.quantity }}</p>
+          <button @click="removeItem(product.id)" class="btn-eliminar">🗑️ Eliminar</button>
         </div>
       </div>
     </div>
@@ -186,26 +184,21 @@ export default {
   /* No aplicar herencia de fondo a todos los elementos */
 
   .carrito-container h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     text-align: center;
+    padding: 1rem;
     color: var(--color-primary) !important;
     background-color: var(--color-accent) !important;
-    padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    width: calc(100% - 3rem);
+    width: 100%;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-top: 0.5rem;
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.3;
-    box-sizing: border-box;
+    margin-top: 10%;
   }
 
   .carrito-vacio {
@@ -420,17 +413,17 @@ export default {
 
   /* Sección del total */
   .total-carrito {
-    width: calc(100% - 3rem);
+    width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
     border-top: 2px solid var(--color-border);
+    padding-top: 20px;
     background-color: var(--color-card) !important;
-    padding: 16px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
   }
   
   .total-carrito * {
