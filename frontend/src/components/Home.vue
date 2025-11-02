@@ -56,8 +56,8 @@
         <h3 class="card-title">PLACAS DE VIDEO</h3>
       </router-link>
 
-      <router-link to="/categoria/hardware/perifericos" class="card">
-        <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Procesadores" />
+      <router-link to="/categoria/perifericos" class="card">
+        <img src="../assets/imagenesHome/Categorias/perifericos.jpg" alt="Periféricos" />
         <h3 class="card-title">PERIFÉRICOS</h3>
       </router-link>
     </div>
@@ -867,7 +867,7 @@ const prevReciente = () => {
   }
 
   .hero .carousel {
-    height: 450px;
+    height: 400px;
   }
 
   .card-container {
@@ -920,7 +920,7 @@ const prevReciente = () => {
   }
 
   .hero .carousel {
-    height: 400px;
+    height: 350px;
   }
 
   .prev,
@@ -1002,7 +1002,7 @@ const prevReciente = () => {
   }
 
   .hero .carousel {
-    height: 300px;
+    height: 250px;
   }
 
   .separator h2 {
@@ -1116,13 +1116,17 @@ const prevReciente = () => {
   }
 
   .hero .carousel {
-    height: 250px;
+    height: 200px;
   }
 
   .prev,
   .next {
     font-size: 1.2rem;
     padding: 0.2rem 0.4rem;
+  }
+
+  .indicators {
+    bottom: 10px;
   }
 
   .indicators span {
