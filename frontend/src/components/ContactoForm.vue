@@ -1,6 +1,5 @@
 <template>
   <div class="contacto">
-    <h2>Contáctanos</h2>
     <p class="contacto-descripcion">
       ¿Tenés alguna consulta o sugerencia? Completá el formulario y nos pondremos en contacto a la brevedad.
       Estamos aquí para ayudarte.
@@ -88,22 +87,11 @@ export default {
   transform: translateY(-2px);
 }
 
-/* TÍTULO DEL FORMULARIO */
-.contacto h2 {
-  text-align: center;
-  color: var(--color-primary);
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 /* DESCRIPCIÓN DEL FORMULARIO */
 .contacto-descripcion {
   text-align: center;
   color: var(--color-muted-foreground);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
@@ -270,10 +258,6 @@ button:disabled {
     margin: 0 1rem;
   }
 
-  .contacto h2 {
-    font-size: 1.4rem;
-  }
-
   .contacto input,
   .contacto textarea {
     font-size: 14px;
@@ -295,10 +279,6 @@ button:disabled {
   .contacto input,
   .contacto textarea {
     padding: 10px 12px;
-  }
-
-  .contacto h2 {
-    font-size: 1.2rem;
   }
 
   .contacto button {
