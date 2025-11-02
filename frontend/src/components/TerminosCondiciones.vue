@@ -176,7 +176,7 @@ export default {
 .terms-header {
   width: 100%;
   text-align: center;
-  padding: 1rem 0 1.5rem 0;
+  padding: 2rem 0 1.5rem 0;
   margin: 0;
   background-color: var(--color-background);
 }
@@ -309,7 +309,7 @@ export default {
   }
 
   .terms-header {
-    padding: 1rem 0 1.5rem 0;
+    padding: 1.5rem 0 1.5rem 0;
   }
   
   .terms-header h1 {
@@ -328,7 +328,7 @@ export default {
   }
 
   .terms-header {
-    padding: 1rem 0 1rem 0;
+    padding: 1.25rem 0 1rem 0;
   }
   
   .terms-header h1 {
