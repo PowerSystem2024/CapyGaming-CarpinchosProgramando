@@ -100,16 +100,16 @@ html, body {
 
 /* Contenedor principal con padding-top para compensar el navbar fixed */
 .main-content {
-  padding-top: var(--navbar-height-desktop);
-  min-height: calc(100vh - var(--navbar-height-desktop));
+  padding-top: 135px;
+  min-height: calc(100vh - 135px);
   transition: padding-top 0.3s ease;
 }
 
 /* Responsive: ajustar padding-top en mobile */
 @media (max-width: 900px) {
   .main-content {
-    padding-top: var(--navbar-height-mobile);
-    min-height: calc(100vh - var(--navbar-height-mobile));
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
   }
 }
 </style>

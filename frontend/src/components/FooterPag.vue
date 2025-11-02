@@ -54,9 +54,8 @@ import Marcas from './Marcas.vue';
       <div class="footer-section">
         <h4>Contacto</h4>
         <ul>
-          <li><a href="#">Tel: +54 9 2284 37-1768 </a></li>
-          <li><a href="#">capygaming@capy.com.ar</a></li>
-          <p class="contact-horario">LUN A VIER DE 10 A 13 / 14 A 17 HS</p>
+          <li><a href="#">capygaming.2025@gmail.com</a></li>
+          <p class="contact-horario">LUN A VIER DE 10 A 19 HS</p>
         </ul>
         <div class="social-icons">
           <a href="#"><img src="../assets/IconosNavBarFooter/twitter.svg" alt="Twitter" /></a>
@@ -248,7 +247,7 @@ import Marcas from './Marcas.vue';
   }
 
   .pagos-icons {
-    width: 110px;
+    width: 130px;
   }
 
   .footer-bottom {
@@ -269,7 +268,9 @@ import Marcas from './Marcas.vue';
   .footer-section h4 {
     font-size: 0.95rem;
   }
-
+.pagos-icons {
+    width: 130px;
+  }
   .footer-section ul li {
     font-size: 0.85rem;
   }

@@ -165,12 +165,6 @@ export default {
   width: 100%;
 }
 
-/* Espacio reservado para el navbar fijo */
-.navbar-spacer {
-  height: 140px; /* Altura total del navbar (navbar + sub-navbar) */
-  width: 100%;
-}
-
 .terms-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -182,7 +176,7 @@ export default {
 .terms-header {
   width: 100%;
   text-align: center;
-  padding: 3rem 0 2rem 0;
+  padding: 2rem 0 1.5rem 0;
   margin: 0;
   background-color: var(--color-background);
 }
@@ -313,13 +307,9 @@ export default {
   .terms-container {
     padding: 0 1.5rem;
   }
-  
-  .navbar-spacer {
-    height: 130px;
-  }
-  
+
   .terms-header {
-    padding: 2.5rem 0 1.5rem 0;
+    padding: 1.5rem 0 1.5rem 0;
   }
   
   .terms-header h1 {
@@ -336,13 +326,9 @@ export default {
   .terms-container {
     padding: 0 1rem;
   }
-  
-  .navbar-spacer {
-    height: 120px;
-  }
-  
+
   .terms-header {
-    padding: 2rem 0 1rem 0;
+    padding: 1.25rem 0 1rem 0;
   }
   
   .terms-header h1 {
@@ -367,13 +353,9 @@ export default {
   .terms-container {
     padding: 0 0.5rem;
   }
-  
-  .navbar-spacer {
-    height: 110px;
-  }
-  
+
   .terms-header {
-    padding: 1.5rem 0 0.5rem 0;
+    padding: 0.75rem 0 0.75rem 0;
   }
   
   .terms-header h1 {
@@ -402,10 +384,10 @@ export default {
 }
 
 @media (max-width: 360px) {
-  .navbar-spacer {
-    height: 100px;
+  .terms-header {
+    padding: 0.75rem 0 0.75rem 0;
   }
-  
+
   .terms-header h1 {
     font-size: 1.6rem;
   }

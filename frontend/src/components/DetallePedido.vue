@@ -233,7 +233,7 @@ function handleImageError(event) {
 .detalle-container {
   min-height: 100vh;
   background: var(--color-background);
-  padding: 12rem 1rem 2rem 1rem;
+  padding: 2.5rem 1rem 2rem 1rem;
 }
 
 .detalle-content {
