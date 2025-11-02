@@ -198,7 +198,7 @@ export default {
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-top: 10%;
+    margin-top: 0;
   }
 
   .carrito-vacio {
@@ -563,7 +563,6 @@ export default {
 
     .carrito-container h1 {
       font-size: 1.8rem;
-      margin-top: 5%;
       padding: 0.8rem;
     }
 
@@ -604,7 +603,6 @@ export default {
 
     .carrito-container h1 {
       font-size: 1.6rem;
-      margin-top: 4%;
       padding: 0.7rem;
     }
 
@@ -698,7 +696,6 @@ export default {
 
     .carrito-container h1 {
       font-size: 1.4rem;
-      margin-top: 3%;
       padding: 0.6rem;
     }
 
@@ -786,7 +783,6 @@ export default {
 
     .carrito-container h1 {
       font-size: 1.2rem;
-      margin-top: 2%;
       padding: 0.5rem;
     }
 
