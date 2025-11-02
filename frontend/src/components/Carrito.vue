@@ -8,17 +8,14 @@
         <router-link to="/">Ir a comprar</router-link>
     </div>
 
-    <div v-else>
+    <div v-else class="products-wrapper">
       <div class="products-grid">
         <div v-for="product in cartItems" :key="product.id" class="product-card">
           <img :src="product.imagenes[0]" :alt="product.nombre" width="100" />
           <div class="product-info">
             <h3 @click="irADetalle(product.id)" class="producto-titulo-link">{{ product.nombre }}</h3>
             <p class="precio">Precio: ${{ product.precio }}</p>
-            
-            <p>Cantidad: {{ product.quantity }}</p>
-            <p>Subtotal: ${{ product.quantity * product.precio }}</p>
-      
+
             <div class="cantidad-controls">
               <button @click="decrementQuantity(product)" class="btn-cantidad" :disabled="product.quantity <= 1">-</button>
                 <span class="cantidad">{{ product.quantity }}</span>
@@ -172,36 +169,38 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
     font-family: 'Poppins', sans-serif;
-    padding: 2rem;
+    padding: 2.5rem 0 1.5rem 0;
     background-color: var(--color-background) !important;
     color: var(--color-foreground);
     width: 100%;
     margin: 0 auto;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 135px);
     box-sizing: border-box;
   }
   
   /* No aplicar herencia de fondo a todos los elementos */
 
   .carrito-container h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 2rem;
     text-align: center;
-    padding: 20px;
+    padding: 1rem 1.5rem;
     color: var(--color-primary) !important;
     background-color: var(--color-accent) !important;
-    padding: 1rem;
     border-radius: 8px;
-    width: 100%;
-    max-width: 1200px;
+    width: calc(100% - 2rem);
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     display: block;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-top: 2.5rem;
+    margin-top: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
   }
 
   .carrito-vacio {
@@ -247,12 +246,21 @@ export default {
     transform: scale(1.1);
   }
 
+  .products-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+
+  /* El contenido dentro del wrapper tiene este ancho efectivo */
+
   .products-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
-    max-width: 1200px;
     background-color: var(--color-background) !important;
     padding: 0;
     margin: 0;
@@ -264,81 +272,98 @@ export default {
 
   .product-card {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 20px;
+    gap: 2rem;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     background-color: var(--color-card) !important;
     color: var(--color-card-foreground);
     border: 1px solid var(--color-border);
     margin: 0;
-    box-shadow: none !important;
-    transition: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease;
+    max-width: 100%;
   }
   .product-card * {
     background-color: transparent !important;
   }
 
-  /* Sin efecto hover que levanta la tarjeta */
   .product-card:hover {
-    /* Solo cambio sutil de borde */
     border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.2) !important;
   }
 
   .product-card img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 8px;
     flex-shrink: 0;
-    background-color: transparent !important;
-    border: none;
+    background-color: var(--color-background) !important;
+    border: 1px solid var(--color-border);
+    padding: 0.5rem;
+    margin: 0;
   }
 
   .product-info {
     flex: 1;
     background-color: transparent !important;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    text-align: left;
   }
 
   .product-info h3 {
-    margin: 0 0 10px 0;
+    margin: 0;
     font-size: 1rem;
     color: var(--color-primary);
+    font-weight: 600;
+    line-height: 1.3;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
   }
 
   .producto-titulo-link {
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
 
-.producto-titulo-link:hover {
-  color: var(--sidebar-ring);
-  text-decoration: underline;
-}
+  .producto-titulo-link:hover {
+    color: var(--sidebar-ring);
+  }
 
   .precio {
-    font-weight: bold;
+    font-weight: 600;
     color: var(--color-foreground);
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    margin: 0;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
   }
 
   .cantidad-controls {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin: 15px 0;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
   }
 
   .btn-cantidad {
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--color-border);
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--color-border);
     background-color: var(--color-background) !important;
     color: var(--color-foreground) !important;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     transition: all 0.3s;
     display: inline-flex;
@@ -360,33 +385,40 @@ export default {
   }
 
   .cantidad {
-    font-weight: bold;
-    font-size: 1.1rem;
-    min-width: 30px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    min-width: 35px;
     text-align: center;
     color: var(--color-foreground);
   }
 
   .Subtotal {
-    font-weight: bold;
-    color: var(--color-secondary);
-    font-size: 1.1rem;
-    margin: 10px 0;
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+    margin: 0;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    text-align: right;
   }
 
   .btn-eliminar {
     background-color: var(--color-destructive) !important;
     color: var(--color-destructive-foreground) !important;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-    font-size: 1rem;
+    transition: all 0.2s;
+    font-weight: 500;
+    font-size: 0.8rem;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    gap: 4px;
+    margin: 0;
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
   }
 
   .btn-eliminar:hover {
@@ -403,23 +435,24 @@ export default {
   
   /* Modificador para el botón vaciar en acciones finales */
   .acciones-finales .btn-eliminar.btn-vaciar {
-    padding: 12px 24px;
-    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
   }
 
-  /* Sección del total */
+  /* Sección del total - debe coincidir exactamente con products-wrapper */
   .total-carrito {
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
     border-top: 2px solid var(--color-border);
-    padding-top: 20px;
     background-color: var(--color-card) !important;
-    padding: 20px;
+    padding: 1rem;
+    margin: 1rem auto 0 auto;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 0.75rem;
+    box-sizing: border-box;
   }
   
   .total-carrito * {
@@ -430,9 +463,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    margin-top: 20px;
-    padding-top: 20px;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
     border-top: 1px solid var(--color-border);
     background-color: transparent !important;
   }
@@ -452,11 +485,11 @@ export default {
     background-color: var(--color-primary);
     color: var(--color-primary-foreground);
     border: none;
-    padding: 12px 30px;
-    font-size: 1.1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
     transition: all 0.3s;
     align-self: flex-end;
   }
@@ -519,19 +552,19 @@ export default {
 
   /* Resumen de totales */
   .resumen-totales {
-    background-color: var(--color-accent) !important;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 10px 0;
-    border: 1px solid var(--color-border);
+    background-color: transparent !important;
+    padding: 0.5rem 0;
+    border-radius: 0;
+    margin: 0;
+    border: none;
   }
 
   .total-line {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 0.4rem 0;
     color: var(--color-foreground);
-    font-size: 1rem;
+    font-size: 0.95rem;
     background-color: transparent !important;
   }
   
@@ -541,9 +574,9 @@ export default {
 
   .total-line.total-final {
     border-top: 2px solid var(--color-primary);
-    padding-top: 12px;
-    margin-top: 8px;
-    font-size: 1.3rem;
+    padding-top: 0.6rem;
+    margin-top: 0.4rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: var(--color-primary);
     background-color: transparent !important;
@@ -554,27 +587,23 @@ export default {
   /* Tablets y pantallas medianas (768px - 1199px) */
   @media (max-width: 1199px) {
     .carrito-container {
-      padding: 1.5rem;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
     }
 
     .carrito-container h1 {
-      font-size: 1.8rem;
-      margin-top: 5%;
-      padding: 0.8rem;
-    }
-
-    .products-grid {
-      max-width: 900px;
+      font-size: 1.6rem;
+      padding: 0.8rem 1.2rem;
+      width: calc(100% - 2rem);
     }
 
     .product-card {
-      gap: 15px;
-      padding: 0.8rem;
+      padding: 0.9rem;
+      gap: 0.9rem;
     }
 
     .product-card img {
-      width: 90px;
-      height: 90px;
+      width: 100px;
+      height: 100px;
     }
 
     .product-info h3 {
@@ -594,14 +623,67 @@ export default {
   /* Tablets pequeñas (600px - 767px) */
   @media (max-width: 767px) {
     .carrito-container {
-      padding: 1rem;
+      padding: 1.75rem 1rem 1rem 1rem;
       gap: 0.8rem;
     }
 
     .carrito-container h1 {
-      font-size: 1.6rem;
-      margin-top: 4%;
-      padding: 0.7rem;
+      font-size: 1.4rem;
+      padding: 0.7rem 1rem;
+      width: calc(100% - 1.5rem);
+    }
+
+    .product-card {
+      flex-direction: column;
+      padding: 1rem;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .product-card img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      align-self: center;
+    }
+
+    .product-info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .product-info h3 {
+      font-size: 1rem;
+      text-align: center;
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    .precio {
+      font-size: 0.95rem;
+      text-align: center;
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    .cantidad-controls {
+      justify-content: center;
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    .Subtotal {
+      text-align: center;
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    .btn-eliminar {
+      align-self: center;
+      grid-column: unset;
+      grid-row: unset;
     }
 
     .carrito-vacio {
@@ -616,52 +698,6 @@ export default {
     .carrito-vacio a {
       font-size: 0.9rem;
       padding: 0.5rem 0.9rem;
-    }
-
-    .products-grid {
-      gap: 1rem;
-    }
-
-    .product-card {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 0.8rem;
-    }
-
-    .product-card img {
-      width: 80px;
-      height: 80px;
-      align-self: center;
-    }
-
-    .product-info {
-      width: 100%;
-    }
-
-    .product-info h3 {
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    .precio {
-      font-size: 1rem;
-      text-align: center;
-    }
-
-    .cantidad-controls {
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .Subtotal {
-      font-size: 1rem;
-      text-align: center;
-    }
-
-    .product-card .btn-eliminar {
-      width: 100%;
-      justify-content: center;
     }
 
     .total-carrito {
@@ -688,14 +724,32 @@ export default {
   /* Móviles (480px - 599px) */
   @media (max-width: 599px) {
     .carrito-container {
-      padding: 0.8rem;
+      padding: 1.5rem 0.8rem 0.8rem 0.8rem;
       gap: 0.6rem;
     }
 
     .carrito-container h1 {
-      font-size: 1.4rem;
-      margin-top: 3%;
-      padding: 0.6rem;
+      font-size: 1.2rem;
+      padding: 0.6rem 0.8rem;
+      width: calc(100% - 1rem);
+    }
+
+    .product-card {
+      padding: 0.8rem;
+      gap: 0.8rem;
+    }
+
+    .product-card img {
+      width: 85px;
+      height: 85px;
+    }
+
+    .product-info h3 {
+      font-size: 0.85rem;
+    }
+
+    .precio {
+      font-size: 1rem;
     }
 
     .carrito-vacio {
@@ -712,27 +766,6 @@ export default {
       padding: 0.4rem 0.8rem;
     }
 
-    .products-grid {
-      gap: 0.8rem;
-    }
-
-    .product-card {
-      padding: 0.7rem;
-    }
-
-    .product-card img {
-      width: 70px;
-      height: 70px;
-    }
-
-    .product-info h3 {
-      font-size: 0.85rem;
-    }
-
-    .precio {
-      font-size: 0.9rem;
-    }
-
     .cantidad-controls {
       gap: 10px;
     }
@@ -744,11 +777,16 @@ export default {
     }
 
     .cantidad {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .Subtotal {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .btn-eliminar {
+      font-size: 0.8rem;
+      padding: 6px 12px;
     }
 
     .total-carrito {
@@ -776,14 +814,14 @@ export default {
   /* Móviles pequeños (hasta 479px) */
   @media (max-width: 479px) {
     .carrito-container {
-      padding: 0.5rem;
+      padding: 1.2rem 0.5rem 0.5rem 0.5rem;
       gap: 0.5rem;
     }
 
     .carrito-container h1 {
-      font-size: 1.2rem;
-      margin-top: 2%;
-      padding: 0.5rem;
+      font-size: 1.1rem;
+      padding: 0.5rem 0.7rem;
+      width: calc(100% - 0.5rem);
     }
 
     .carrito-vacio {
@@ -802,11 +840,12 @@ export default {
 
     .product-card {
       padding: 0.6rem;
+      gap: 0.6rem;
     }
 
     .product-card img {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
     }
 
     .product-info h3 {
@@ -814,7 +853,7 @@ export default {
     }
 
     .precio {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
     .cantidad-controls {
@@ -828,12 +867,16 @@ export default {
     }
 
     .cantidad {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+    }
+
+    .Subtotal {
+      font-size: 0.85rem;
     }
 
     .product-card .btn-eliminar {
       padding: 6px 10px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     .total-carrito {
@@ -870,12 +913,16 @@ export default {
       margin: 0 auto;
     }
 
+    .products-wrapper {
+      max-width: 900px;
+    }
+
     .products-grid {
-      max-width: 1400px;
+      max-width: 100%;
     }
 
     .total-carrito {
-      max-width: 1400px;
+      max-width: 900px;
     }
   }
 

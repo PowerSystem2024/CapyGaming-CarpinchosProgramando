@@ -78,6 +78,7 @@ export default {
 @import url(../assets/styles/base.css);
 
 .quienes-somos h1{
+  margin-top: 0;
   color: var(--color-primary);
   font-size: 2.8rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -95,7 +96,7 @@ export default {
 
 .about-us-container {
   margin: 0 auto;
-  padding: 2.5rem 20px;
+  padding: 2rem 20px 2rem 20px;
   background-color: var(--color-background);
 }
 
@@ -171,18 +172,62 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   line-height: 1.4;
 }
 
-@media (max-width: 600px) {
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets y pantallas medianas (768px - 1199px) */
+@media (max-width: 1199px) {
+  .about-us-container {
+    padding: 1.5rem 20px 2rem 20px;
+  }
+
+  .quienes-somos h1 {
+    font-size: 2.4rem;
+  }
+}
+
+/* Tablets pequeñas (600px - 767px) */
+@media (max-width: 767px) {
+  .about-us-container {
+    padding: 1.5rem 15px 1.5rem 15px;
+  }
+
+  .quienes-somos h1 {
+    font-size: 2rem;
+  }
+
   .team-member {
     width: 100%;
     max-width: 300px;
   }
-  
+
   .about-us h2 {
     font-size: 2em;
   }
-  
+
   .about-us p {
     font-size: 1.1em;
+  }
+}
+
+/* Móviles (480px - 599px) */
+@media (max-width: 599px) {
+  .about-us-container {
+    padding: 1.2rem 10px 1.2rem 10px;
+  }
+
+  .quienes-somos h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Móviles pequeños (hasta 479px) */
+@media (max-width: 479px) {
+  .about-us-container {
+    padding: 1rem 10px 1rem 10px;
+  }
+
+  .quienes-somos h1 {
+    font-size: 1.6rem;
   }
 }
 </style>

@@ -581,6 +581,7 @@ const prevReciente = () => {
   object-fit: cover;
   transition: transform 0.4s ease;
   z-index: 1;
+  border-radius: 12px;
 }
 
 .card:hover img {
@@ -934,13 +935,15 @@ const prevReciente = () => {
   }
 
   .card-container {
-  grid-template-columns: repeat(3, 1fr); /* 2 columnas */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .card {
-    width: calc(50% - 1rem);
-    height: 280px;
-    max-width: 200px;
+    width: 100%;
+    height: auto;
+    max-width: none;
     aspect-ratio: 5/3;
   }
 
@@ -1007,11 +1010,16 @@ const prevReciente = () => {
   }
 
   .card-container {
-  padding: 0rem 0.5rem;
+    grid-template-columns: 1fr;
+    padding: 1rem 0.5rem;
+    gap: 1rem;
   }
 
   .card {
-  aspect-ratio: 16 / 9; /* Más horizontal en móvil */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    aspect-ratio: 5 / 3;
   }
 
   .benefits-bar {
@@ -1132,15 +1140,17 @@ const prevReciente = () => {
   }
 
   .card-container {
+    grid-template-columns: 1fr;
     gap: 0.8rem;
-    padding: 0.8rem 0.3rem;
+    padding: 0.8rem 0.5rem;
   }
 
   .card {
-    width: calc(50% - 0.4rem);
-    height: 180px;
-    max-width: 140px;
-    padding: 0.3rem;
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    margin: 0 auto;
+    aspect-ratio: 5 / 3;
   }
 
   .overlay h3 {

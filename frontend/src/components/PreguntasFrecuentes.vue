@@ -673,6 +673,10 @@ export default {
       margin-top:1rem;
   }
 
+  .top-title {
+    font-size: 2.4rem;
+  }
+
   .faq-container {
     flex-direction: column;
     border: none;
@@ -779,15 +783,29 @@ export default {
 }
 
 
-/* Pantallas Móviles Pequeñas (max-width: 500px) */
-@media (max-width: 500px) {
+/* Tablets pequeñas (max-width: 767px) */
+@media (max-width: 767px) {
+  .top-title {
+    font-size: 2rem;
+  }
+}
+
+/* Móviles (max-width: 599px) */
+@media (max-width: 599px) {
+  .top-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* Pantallas Móviles Pequeñas (max-width: 479px) */
+@media (max-width: 479px) {
     .faq-page-wrapper {
         padding: 1rem;
         margin-top:1rem;
     }
-    
+
     .top-title {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         margin-bottom: 1rem;
     }
 
