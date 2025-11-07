@@ -16,6 +16,8 @@ Antes de comenzar, asegúrate de tener instalado:
 
 - **Docker Desktop** ([Descargar aquí](https://www.docker.com/products/docker-desktop))
 
+**Nota importante:** Con Docker **NO necesitas instalar** Node.js, npm, nodemon ni ninguna dependencia. Todo se instala automáticamente dentro de los contenedores.
+
 ### 📦 Pasos de Instalación
 
 #### 1. Clonar el Repositorio
