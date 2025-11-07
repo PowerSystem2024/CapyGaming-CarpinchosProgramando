@@ -223,9 +223,3 @@ Estas son las tecnologías utilizadas en este proyecto:
 Disfruta de tus juegos con los mejores productos y el respaldo de Carpinchos Programando.
 
 Para mas información visitá nuestra [Wiki](https://github.com/PowerSystem2024/CapyGaming-CarpinchosProgramando/wiki)
-
----
-
-#### Nuestra app está es producción!
-
-Podes visitarla [aquí](https://capygaming-frontend-uffp.onrender.com/) 💗
