@@ -1,7 +1,7 @@
 [file name]: AuthModal.vue
 <template>
-  <div v-if="visible" class="modal-overlay" @click="close">
-    <div class="modal-content" @click.stop>
+  <div v-if="visible" class="modal-overlay">
+    <div class="modal-content">
       <!-- Botón cerrar -->
       <button class="close-btn" @click="close">
         ×
